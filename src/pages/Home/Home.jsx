@@ -5,12 +5,14 @@ import HowItWorks from './HowItWorks';
 import Testimonials from './Testimonials';
 import CallToAction from './CallToAction';
 import SuccessStoriesCarousel from './SuccessStoriesCarousel';
+import PopularCampsSection from './PopularCampsSection';
 
 const Home = () => {
   return (
     <div>
       <HeroSection />
       <SuccessStoriesCarousel />
+      <PopularCampsSection />
       <FeaturesSection />
       <HowItWorks />
       <Testimonials />
