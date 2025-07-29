@@ -12,6 +12,8 @@ import {
   ArrowRight,
   ChevronLeft,
   ChevronRight,
+  Grid,
+  List,
 } from "lucide-react";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
@@ -33,6 +35,7 @@ const AvailableCamps = () => {
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState("participantCount");
+  const [layout, setLayout] = useState("grid-3"); // 'grid-2' or 'grid-3'
 
   const { data, isLoading, isError, error, isPreviousData } = useQuery({
     queryKey: ["camps", { page, search, sort }],
@@ -48,6 +51,10 @@ const AvailableCamps = () => {
   const handleSortChange = (e) => {
     setSort(e.target.value);
     setPage(1);
+  };
+
+  const toggleLayout = () => {
+    setLayout(layout === "grid-3" ? "grid-2" : "grid-3");
   };
 
   return (
@@ -67,7 +74,7 @@ const AvailableCamps = () => {
           </p>
         </div>
 
-        {/* Search and Sort */}
+        {/* Search, Sort and Layout Controls */}
         <div className="flex flex-col md:flex-row justify-between gap-4 mb-8">
           <div className="relative flex-1 max-w-2xl">
             <Search
@@ -84,6 +91,20 @@ const AvailableCamps = () => {
           </div>
 
           <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2">
+              <button
+                onClick={toggleLayout}
+                className="p-2 rounded-lg border border-gray-300 hover:bg-gray-100 transition-colors"
+                aria-label="Toggle layout"
+              >
+                {layout === "grid-3" ? (
+                  <Grid className="text-blue-600" size={20} />
+                ) : (
+                  <List className="text-blue-600" size={20} />
+                )}
+              </button>
+            </div>
+
             <label htmlFor="sort" className="text-gray-600 whitespace-nowrap">
               Sort by:
             </label>
@@ -131,7 +152,13 @@ const AvailableCamps = () => {
             </div>
           </div>
         ) : isLoading || isPreviousData ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div
+            className={`grid grid-cols-1 ${
+              layout === "grid-3"
+                ? "sm:grid-cols-2 lg:grid-cols-3"
+                : "sm:grid-cols-2"
+            } gap-8`}
+          >
             {[...Array(6)].map((_, index) => (
               <div
                 key={index}
@@ -170,28 +197,33 @@ const AvailableCamps = () => {
               </div>
             ) : (
               <>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div
+                  className={`grid grid-cols-1 ${
+                    layout === "grid-3"
+                      ? "sm:grid-cols-2 lg:grid-cols-3"
+                      : "sm:grid-cols-2"
+                  } gap-8`}
+                >
                   {data.camps.map((camp) => (
                     <div
                       key={camp._id}
                       className="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-1 group"
                     >
-                      <div className="relative h-48 bg-gray-100 overflow-hidden">
-                        <img
-                          src={
-                            camp.imageURL ||
-                            `https://placehold.co/600x400?text=${encodeURIComponent(
-                              camp.name.substring(0, 20)
-                            )}`
-                          }
-                          alt={camp.name}
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                          onError={(e) => {
-                            e.target.src = `https://placehold.co/600x400?text=${encodeURIComponent(
-                              camp.name.substring(0, 20)
-                            )}`;
-                          }}
-                        />
+                      <div className="relative h-48 bg-gradient-to-r from-blue-500 to-purple-600 overflow-hidden flex items-center justify-center">
+                        {camp.imageURL ? (
+                          <img
+                            src={camp.imageURL}
+                            alt={camp.name}
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                            onError={(e) => {
+                              e.target.src = `https://placehold.co/600x400?text=${encodeURIComponent(
+                                camp.name.substring(0, 20)
+                              )}`;
+                            }}
+                          />
+                        ) : (
+                          <span className="text-6xl">🏥</span>
+                        )}
                         <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4">
                           <h2 className="text-xl font-bold text-white">
                             {camp.name}
@@ -240,9 +272,13 @@ const AvailableCamps = () => {
                         </div>
                         <Link
                           to={`/camp-details/${camp._id}`}
-                          className="mt-4 inline-flex items-center justify-center w-full bg-gradient-to-r from-blue-50 to-gray-50 hover:from-blue-100 hover:to-gray-100 text-blue-600 font-medium py-2 px-4 rounded-lg border border-gray-200 transition-colors"
+                          className="mt-4 inline-flex items-center justify-center w-full bg-gradient-to-r from-blue-50 to-gray-50 hover:from-blue-100 hover:to-gray-100 text-blue-600 font-medium py-2 px-4 rounded-lg border border-gray-200 transition-colors group-hover:shadow-sm"
                         >
-                          View Details <ArrowRight className="ml-2" size={16} />
+                          View Details{" "}
+                          <ArrowRight
+                            className="ml-2 group-hover:translate-x-1 transition-transform"
+                            size={16}
+                          />
                         </Link>
                       </div>
                     </div>

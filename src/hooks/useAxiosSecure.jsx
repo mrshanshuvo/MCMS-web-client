@@ -8,13 +8,15 @@ const axiosSecure = axios.create({
 const useAxiosSecure = () => {
   const { user, logOut } = useAuth();
   const navigate = useNavigate();
-  axiosSecure.interceptors.request.use((config) => {
-    config.headers.authorization = `Bearer ${user?.accessToken}`;
-    return config;
-  },
+  axiosSecure.interceptors.request.use(
+    (config) => {
+      config.headers.authorization = `Bearer ${user?.accessToken}`;
+      return config;
+    },
     (error) => {
       return Promise.reject(error);
-    });
+    }
+  );
 
   axiosSecure.interceptors.response.use(
     (response) => {
@@ -24,20 +26,21 @@ const useAxiosSecure = () => {
       console.log("inside res interceptor", error);
       const status = error.response?.status;
       if (status === 403) {
-        navigate('/forbidden')
+        navigate("/forbidden");
       }
       if (status === 401) {
         logOut()
           .then(() => {
             console.log("Logged out due to unauthorized access");
-            navigate('/login');
+            navigate("/login");
           })
           .catch((err) => {
             console.error("Error during logout:", err);
           });
       }
       return Promise.reject(error);
-    });
+    }
+  );
   return axiosSecure;
 };
 

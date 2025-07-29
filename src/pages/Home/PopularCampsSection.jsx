@@ -36,9 +36,16 @@ const PopularCampsSection = () => {
 
   // Fallback image URL
   const getFallbackImage = (campName) => {
-    return `https://via.placeholder.com/400x300/cccccc/969696.png?text=${encodeURIComponent(
+    // Use a more reliable placeholder service
+    const placeholderUrl = `https://placehold.co/400x300/cccccc/969696/png?text=${encodeURIComponent(
       campName
     )}`;
+
+    // Alternative options (comment out the one you prefer)
+    // const placeholderUrl = `https://dummyimage.com/400x300/cccccc/969696.png&text=${encodeURIComponent(campName)}`;
+    // const placeholderUrl = `/placeholder.jpg`; // Local fallback
+
+    return placeholderUrl;
   };
 
   if (isError) {
