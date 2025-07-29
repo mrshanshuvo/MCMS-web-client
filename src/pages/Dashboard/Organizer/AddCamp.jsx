@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import { toast } from "react-toastify";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import {
   Calendar,
@@ -10,17 +9,20 @@ import {
   Upload,
   Loader2,
 } from "lucide-react";
+import Swal from "sweetalert2";
+import { useNavigate } from "react-router";
 
 const imgbbAPIKey = import.meta.env.VITE_IMGBB_API_KEY;
 
 const AddCamp = () => {
   const axiosSecure = useAxiosSecure();
+  const navigate = useNavigate();
 
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-    reset,
+    // reset,
   } = useForm();
 
   const [imageUploading, setImageUploading] = useState(false);
@@ -58,14 +60,45 @@ const AddCamp = () => {
         description: data.description || "",
       };
 
-      await axiosSecure.post("/camps", campData);
-
-      toast.success("Medical camp added successfully!");
-      reset();
+      const response = await axiosSecure.post("/camps", campData);
+      // console.log("Response from server:", response.data);
+      if (response.data.campId) {
+        // reset();
+        Swal.fire({
+          icon: "success",
+          title: "Medical Camp Created!",
+          html: `
+          <p>Your camp was submitted successfully.</p>
+          <button id="goDashboard" style="
+            margin-top: 12px;
+            background-color: #3085d6;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 5px;
+            cursor: pointer;
+          ">
+            Go to Manage Camps
+          </button>
+        `,
+          showConfirmButton: false,
+          showCloseButton: true, // shows the "X" button
+          didOpen: () => {
+            const btn = Swal.getPopup().querySelector("#goDashboard");
+            btn.addEventListener("click", () => {
+              Swal.close();
+              navigate("/dashboard/manage-camps");
+            });
+          },
+        });
+      }
     } catch (error) {
-      setImageUploading(false);
-      toast.error("Failed to add camp. Please try again.");
       console.error(error);
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Something went wrong!",
+      });
     }
   };
 

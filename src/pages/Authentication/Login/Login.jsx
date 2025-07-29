@@ -22,15 +22,12 @@ const Login = () => {
     signInUser(data.email, data.password)
       .then(async (userCredential) => {
         const user = userCredential.user;
-        toast.success(`Welcome to MCMS, ${user.displayName || "User"}!`);
-
-        const userInfoDB = {
-          email: user.email,
-          last_login: new Date().toISOString(),
-        };
+        toast.success(`Welcome to MCMS, ${user.displayName || "participant"}!`);
 
         try {
-          await axiosInstance.post("/users", userInfoDB);
+          await axiosInstance.patch(`/users/${user.email}`, {
+            last_login: new Date().toISOString(),
+          });
         } catch (error) {
           console.error("Error updating last_login:", error);
         }
@@ -54,7 +51,7 @@ const Login = () => {
           email: user.email,
           name: user.displayName,
           photoURL: user.photoURL,
-          role: "user",
+          role: "participant",
           created_at: new Date().toISOString(),
           last_login: new Date().toISOString(),
         };
@@ -80,18 +77,34 @@ const Login = () => {
       <div className="text-center">
         <div className="flex justify-center mb-4">
           <div className="bg-blue-50 p-3 rounded-full">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-10 w-10 text-blue-600"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
+              />
             </svg>
           </div>
         </div>
         <h1 className="text-2xl font-bold text-blue-800">Welcome Back</h1>
-        <p className="text-blue-600 mt-2">Login to access your medical camp dashboard</p>
+        <p className="text-blue-600 mt-2">
+          Login to access your medical camp dashboard
+        </p>
       </div>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         <div>
-          <label htmlFor="email" className="block text-sm font-medium text-blue-800">
+          <label
+            htmlFor="email"
+            className="block text-sm font-medium text-blue-800"
+          >
             Email Address
           </label>
           <input
@@ -107,11 +120,16 @@ const Login = () => {
             className="mt-1 block w-full px-3 py-2 border border-blue-200 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
             placeholder="your@email.com"
           />
-          {errors.email && <p className="mt-1 text-sm text-red-600">{errors.email.message}</p>}
+          {errors.email && (
+            <p className="mt-1 text-sm text-red-600">{errors.email.message}</p>
+          )}
         </div>
 
         <div>
-          <label htmlFor="password" className="block text-sm font-medium text-blue-800">
+          <label
+            htmlFor="password"
+            className="block text-sm font-medium text-blue-800"
+          >
             Password
           </label>
           <input
@@ -127,7 +145,11 @@ const Login = () => {
             className="mt-1 block w-full px-3 py-2 border border-blue-200 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
             placeholder="••••••••"
           />
-          {errors.password && <p className="mt-1 text-sm text-red-600">{errors.password.message}</p>}
+          {errors.password && (
+            <p className="mt-1 text-sm text-red-600">
+              {errors.password.message}
+            </p>
+          )}
         </div>
 
         <div className="flex items-center justify-between">
@@ -138,11 +160,17 @@ const Login = () => {
               type="checkbox"
               className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-blue-300 rounded"
             />
-            <label htmlFor="remember-me" className="ml-2 block text-sm text-blue-700">
+            <label
+              htmlFor="remember-me"
+              className="ml-2 block text-sm text-blue-700"
+            >
               Remember me
             </label>
           </div>
-          <a href="#" className="text-sm font-medium text-blue-600 hover:text-blue-500">
+          <a
+            href="#"
+            className="text-sm font-medium text-blue-600 hover:text-blue-500"
+          >
             Forgot password?
           </a>
         </div>

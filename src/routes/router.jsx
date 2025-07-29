@@ -17,6 +17,7 @@ import PrivateRoute from "./PrivateRoute";
 import OrganizerDashboard from "../pages/Dashboard/Organizer/OrganizerDashboard";
 import ParticipantRoute from "./ParticipantRoute";
 import ParticipantDashboard from "../pages/Dashboard/Participant/ParticipantDashboard";
+import DashboardRouter from "./DashboardRouter";
 
 export const router = createBrowserRouter([
   {
@@ -51,19 +52,7 @@ export const router = createBrowserRouter([
     children: [
       {
         path: "",
-        element: (
-          <OrganizerRoute>
-            <OrganizerDashboard></OrganizerDashboard>
-          </OrganizerRoute>
-        ),
-      },
-      {
-        path: "",
-        element: (
-          <ParticipantRoute>
-            <ParticipantDashboard />
-          </ParticipantRoute>
-        ),
+        element: <DashboardRouter />,
       },
       {
         path: "add-camp",
