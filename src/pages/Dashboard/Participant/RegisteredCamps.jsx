@@ -2,14 +2,11 @@ import React, { useState, useEffect } from "react";
 import { format } from "date-fns";
 import useAuth from "../../../hooks/useAuth";
 import {
-  Calendar,
-  MapPin,
-  User,
-  DollarSign,
   CheckCircle,
   Clock,
   AlertCircle,
   Loader2,
+  CalendarCheck,
 } from "lucide-react";
 import {
   Elements,
@@ -225,6 +222,65 @@ const RegisteredCamps = () => {
     fetchRegisteredCamps();
   };
 
+  const handleCancelRegistration = async (campId) => {
+    if (
+      !window.confirm(
+        "Are you sure you want to cancel your registration for this camp?"
+      )
+    )
+      return;
+    try {
+      setLoading(true);
+      setError(null);
+      const response = await fetch(
+        `http://localhost:5000/cancel-registration/${campId}`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${await user.getIdToken()}`,
+          },
+        }
+      );
+      if (!response.ok) throw new Error("Failed to cancel registration");
+      fetchRegisteredCamps();
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const getStatusBadge = (status) => {
+    switch (status) {
+      case "Paid":
+        return (
+          <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">
+            <CheckCircle className="mr-1 h-4 w-4" />
+            Paid
+          </span>
+        );
+      case "Pending":
+        return (
+          <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-yellow-100 text-yellow-800">
+            <Clock className="mr-1 h-4 w-4" />
+            Pending
+          </span>
+        );
+      default:
+        return (
+          <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-red-100 text-red-800">
+            <AlertCircle className="mr-1 h-4 w-4" />
+            Unpaid
+          </span>
+        );
+    }
+  };
+
+  const openFeedbackModal = (campId) => {
+    alert(`Open feedback modal for camp ID: ${campId}`);
+  };
+
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-[300px]">
@@ -263,32 +319,6 @@ const RegisteredCamps = () => {
     );
   }
 
-  const getStatusBadge = (status) => {
-    switch (status) {
-      case "Paid":
-        return (
-          <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">
-            <CheckCircle className="mr-1 h-4 w-4" />
-            Paid
-          </span>
-        );
-      case "Pending":
-        return (
-          <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-yellow-100 text-yellow-800">
-            <Clock className="mr-1 h-4 w-4" />
-            Pending
-          </span>
-        );
-      default:
-        return (
-          <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-red-100 text-red-800">
-            <AlertCircle className="mr-1 h-4 w-4" />
-            Unpaid
-          </span>
-        );
-    }
-  };
-
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#f0f9ff] to-white py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
@@ -316,44 +346,125 @@ const RegisteredCamps = () => {
             <table className="w-full">
               <thead className="bg-gradient-to-r from-[#1e3a8a] to-[#0f766e] text-white">
                 <tr>
-                  <th className="px-6 py-4 text-left">Camp</th>
-                  <th className="px-6 py-4 text-left">Date & Time</th>
-                  <th className="px-6 py-4 text-left">Location</th>
-                  <th className="px-6 py-4 text-left">Fees</th>
-                  <th className="px-6 py-4 text-left">Professional</th>
-                  <th className="px-6 py-4 text-left">Registered On</th>
-                  <th className="px-6 py-4 text-left">Status</th>
-                  <th className="px-6 py-4 text-left">Actions</th>
+                  <th
+                    className="px-4 py-2
+ text-left"
+                  >
+                    Camp
+                  </th>
+                  <th
+                    className="px-4 py-2
+ text-left"
+                  >
+                    Date & Time
+                  </th>
+                  <th
+                    className="px-4 py-2
+ text-left"
+                  >
+                    Location
+                  </th>
+                  <th
+                    className="px-4 py-2
+ text-left"
+                  >
+                    Fees
+                  </th>
+                  <th
+                    className="px-4 py-2
+ text-left"
+                  >
+                    Professional
+                  </th>
+                  <th
+                    className="px-4 py-2
+ text-left"
+                  >
+                    Registered On
+                  </th>
+                  <th
+                    className="px-4 py-2
+ text-left"
+                  >
+                    Status
+                  </th>
+                  <th
+                    className="px-4 py-2
+ text-left"
+                  >
+                    Actions
+                  </th>
+                  <th
+                    className="px-4 py-2
+ text-left"
+                  >
+                    Cancel
+                  </th>
+                  <th
+                    className="px-4 py-2
+ text-left"
+                  >
+                    Feedback
+                  </th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200">
                 {camps.map((camp) => (
                   <tr key={camp._id} className="hover:bg-gray-50">
-                    <td className="px-6 py-4">
+                    <td
+                      className="px-4 py-2
+"
+                    >
                       <div className="flex items-center space-x-3">
                         <div>
                           <p className="font-medium">{camp.name}</p>
                         </div>
                       </div>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
+                    <td
+                      className="px-4 py-2
+ whitespace-nowrap"
+                    >
                       {format(new Date(camp.dateTime), "MMM d, yyyy")} <br />
                       {format(new Date(camp.dateTime), "h:mm a")}
                     </td>
-
-                    <td className="px-6 py-4">{camp.location}</td>
-                    <td className="px-6 py-4 font-medium">${camp.fees}</td>
-                    <td className="px-6 py-4">{camp.healthcareProfessional}</td>
-                    <td className="px-6 py-4 whitespace-nowrap">
+                    <td
+                      className="px-4 py-2
+"
+                    >
+                      {camp.location}
+                    </td>
+                    <td
+                      className="px-4 py-2
+ font-medium"
+                    >
+                      ${camp.fees}
+                    </td>
+                    <td
+                      className="px-4 py-2
+"
+                    >
+                      {camp.healthcareProfessional}
+                    </td>
+                    <td
+                      className="px-4 py-2
+ whitespace-nowrap"
+                    >
                       {format(
                         new Date(camp.participants[0]?.registrationDate),
                         "MMM d, yyyy"
                       )}
                     </td>
-                    <td className="px-6 py-4">
+                    <td
+                      className="px-4 py-2
+"
+                    >
                       {getStatusBadge(camp.participants[0]?.paymentStatus)}
                     </td>
-                    <td className="px-6 py-4">
+                    <td
+                      className="px-4 py-2
+"
+                    >
                       {camp.participants[0]?.paymentStatus !== "Paid" && (
                         <button
                           onClick={() => {
@@ -364,6 +475,41 @@ const RegisteredCamps = () => {
                         >
                           Pay Now
                         </button>
+                      )}
+                    </td>
+                    <td
+                      className="px-4 py-2
+"
+                    >
+                      {camp.participants[0]?.paymentStatus !== "Paid" ? (
+                        <button
+                          onClick={() => handleCancelRegistration(camp._id)}
+                          className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600"
+                        >
+                          Cancel
+                        </button>
+                      ) : (
+                        <button
+                          disabled
+                          className="px-3 py-1 bg-gray-300 text-gray-500 rounded cursor-not-allowed"
+                        >
+                          Cancel
+                        </button>
+                      )}
+                    </td>
+                    <td
+                      className="px-4 py-2
+"
+                    >
+                      {camp.participants[0]?.paymentStatus === "Paid" ? (
+                        <button
+                          onClick={() => openFeedbackModal(camp._id)}
+                          className="px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700"
+                        >
+                          Feedback
+                        </button>
+                      ) : (
+                        "N/A"
                       )}
                     </td>
                   </tr>

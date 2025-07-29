@@ -13,6 +13,7 @@ import {
   ClipboardCheck,
   ChartBar,
   CreditCard,
+  User2,
 } from "lucide-react";
 import useAuth from "../../hooks/useAuth";
 import useUserRole from "../../hooks/useUserRole";
@@ -37,6 +38,11 @@ const Sidebar = () => {
       to: "/dashboard/add-camp",
       label: "Add New Camp",
       icon: <PlusCircle size={18} />,
+    },
+    {
+      to: "/dashboard/organizer-profile",
+      label: "Organizer Profile",
+      icon: <User2 size={18} />,
     },
     {
       to: "/dashboard/manage-camps",

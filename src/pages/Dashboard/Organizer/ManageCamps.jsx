@@ -40,7 +40,7 @@ const ManageCamps = () => {
 
     if (confirm.isConfirmed) {
       try {
-        const res = await axiosSecure.delete(`/camps/${id}`);
+        const res = await axiosSecure.delete(`/delete-camp/${id}`);
         if (res.data.deletedCount > 0) {
           toast.success("Camp deleted successfully");
           refetch();
