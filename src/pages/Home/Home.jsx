@@ -18,7 +18,6 @@ const Home = () => {
       <HowItWorks />
       <Testimonials />
       <CallToAction />
-      <ParticipantRoute></ParticipantRoute>
     </div>
   );
 };

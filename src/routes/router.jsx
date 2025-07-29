@@ -18,6 +18,10 @@ import OrganizerDashboard from "../pages/Dashboard/Organizer/OrganizerDashboard"
 import ParticipantRoute from "./ParticipantRoute";
 import ParticipantDashboard from "../pages/Dashboard/Participant/ParticipantDashboard";
 import DashboardRouter from "./DashboardRouter";
+import Analytics from "../pages/Dashboard/Participant/Analytics";
+import ParticipantProfile from "../pages/Dashboard/Participant/ParticipantProfile";
+import RegisteredCamps from "../pages/Dashboard/Participant/RegisteredCamps";
+import PaymentHistory from "../pages/Dashboard/Participant/PaymentHistory";
 
 export const router = createBrowserRouter([
   {
@@ -84,6 +88,38 @@ export const router = createBrowserRouter([
           <OrganizerRoute>
             <FeedbackList />
           </OrganizerRoute>
+        ),
+      },
+      {
+        path: "analytics",
+        element: (
+          <ParticipantRoute>
+            <Analytics />
+          </ParticipantRoute>
+        ),
+      },
+      {
+        path: "profile",
+        element: (
+          <ParticipantRoute>
+            <ParticipantProfile />
+          </ParticipantRoute>
+        ),
+      },
+      {
+        path: "registered-camps",
+        element: (
+          <ParticipantRoute>
+            <RegisteredCamps />
+          </ParticipantRoute>
+        ),
+      },
+      {
+        path: "payment-history",
+        element: (
+          <ParticipantRoute>
+            <PaymentHistory />
+          </ParticipantRoute>
         ),
       },
     ],

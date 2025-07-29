@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams } from "react-router";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
@@ -12,36 +12,116 @@ import {
   CheckCircle,
   Loader2,
   Shield,
+  AlertCircle,
 } from "lucide-react";
+import useAuth from "../../hooks/useAuth";
 
 const fetchCampById = async (campId) => {
   const res = await axios.get(`http://localhost:5000/camps/${campId}`);
   return res.data.camp;
 };
 
+const checkRegistrationStatus = async (campId, idToken) => {
+  const res = await axios.get(`http://localhost:5000/registrations/check`, {
+    params: { campId },
+    headers: {
+      Authorization: `Bearer ${idToken}`,
+    },
+  });
+  return res.data.registered;
+};
+
 const CampDetails = () => {
   const { campId } = useParams();
   const [joining, setJoining] = useState(false);
   const [joinSuccess, setJoinSuccess] = useState(false);
+  const [isAlreadyRegistered, setIsAlreadyRegistered] = useState(false);
+  const [checkingRegistration, setCheckingRegistration] = useState(false);
+  const { user } = useAuth();
 
   const {
     data: camp,
     isLoading,
     isError,
     error,
+    refetch,
   } = useQuery({
     queryKey: ["camp", campId],
     queryFn: () => fetchCampById(campId),
     staleTime: 5 * 60 * 1000,
   });
 
+  // Check registration status when component mounts and user is available
+  useEffect(() => {
+    const checkUserRegistration = async () => {
+      if (user && campId) {
+        setCheckingRegistration(true);
+        try {
+          const idToken = await user.getIdToken();
+          const registered = await checkRegistrationStatus(campId, idToken);
+          setIsAlreadyRegistered(registered);
+          if (registered) {
+            setJoinSuccess(true);
+          }
+        } catch (error) {
+          console.error("Failed to check registration status:", error);
+        } finally {
+          setCheckingRegistration(false);
+        }
+      }
+    };
+
+    checkUserRegistration();
+  }, [user, campId]);
+
   const handleJoinCamp = async () => {
+    if (!user) {
+      alert("You must be logged in to register.");
+      return;
+    }
+
+    if (isAlreadyRegistered) {
+      return;
+    }
+
     setJoining(true);
+
     try {
-      await new Promise((resolve) => setTimeout(resolve, 1500));
+      const idToken = await user.getIdToken();
+
+      // 1. Add registration
+      await axios.post(
+        "http://localhost:5000/registrations",
+        {
+          campId,
+          participantName: user.displayName || "Anonymous",
+          participantEmail: user.email,
+          paymentStatus: "Unpaid",
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${idToken}`,
+          },
+        }
+      );
+
+      // 2. Increment participant count
+      await axios.patch(
+        `http://localhost:5000/camps/${campId}/increment`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${idToken}`,
+          },
+        }
+      );
+
       setJoinSuccess(true);
-    } catch {
-      alert("Failed to join the camp.");
+      setIsAlreadyRegistered(true);
+      refetch();
+    } catch (error) {
+      alert("Failed to register for the camp.");
+      console.error(error);
     } finally {
       setJoining(false);
     }
@@ -63,6 +143,56 @@ const CampDetails = () => {
     );
   }
 
+  // Determine button state and content
+  const getButtonContent = () => {
+    if (checkingRegistration) {
+      return (
+        <>
+          <Loader2 className="animate-spin mr-2" size={20} />
+          Checking Registration...
+        </>
+      );
+    }
+
+    if (isAlreadyRegistered || joinSuccess) {
+      return (
+        <>
+          <CheckCircle className="mr-2" size={20} />
+          Already Registered
+        </>
+      );
+    }
+
+    if (joining) {
+      return (
+        <>
+          <Loader2 className="animate-spin mr-2" size={20} />
+          Processing...
+        </>
+      );
+    }
+
+    return (
+      <>
+        Register Now
+        <ChevronRight
+          className="ml-2 group-hover:translate-x-1 transition-transform"
+          size={20}
+        />
+      </>
+    );
+  };
+
+  const getButtonStyle = () => {
+    if (isAlreadyRegistered || joinSuccess) {
+      return "bg-green-500 shadow-lg cursor-not-allowed";
+    }
+    if (joining || checkingRegistration) {
+      return "bg-blue-400 cursor-not-allowed";
+    }
+    return "bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 shadow-lg hover:shadow-xl";
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#f0f9ff] to-white py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto">
@@ -76,6 +206,21 @@ const CampDetails = () => {
             {camp.participantCount} Participants
           </div>
         </div>
+
+        {/* Registration status alert */}
+        {isAlreadyRegistered && (
+          <div className="mb-6 bg-green-50 border border-green-200 rounded-lg p-4 flex items-center">
+            <CheckCircle className="text-green-600 mr-3" size={20} />
+            <div>
+              <p className="text-green-800 font-medium">
+                You're already registered!
+              </p>
+              <p className="text-green-600 text-sm">
+                You have successfully registered for this medical camp.
+              </p>
+            </div>
+          </div>
+        )}
 
         {/* Main card */}
         <div className="bg-white rounded-3xl shadow-xl overflow-hidden border border-gray-100">
@@ -176,34 +321,15 @@ const CampDetails = () => {
             {/* Join button */}
             <button
               onClick={handleJoinCamp}
-              disabled={joining || joinSuccess}
-              className={`group w-full py-4 px-6 rounded-xl font-bold text-white transition-all duration-300 ${
-                joinSuccess
-                  ? "bg-green-500 shadow-lg"
-                  : joining
-                  ? "bg-blue-400"
-                  : "bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 shadow-lg hover:shadow-xl"
-              } flex items-center justify-center`}
+              disabled={
+                joining ||
+                joinSuccess ||
+                isAlreadyRegistered ||
+                checkingRegistration
+              }
+              className={`group w-full py-4 px-6 rounded-xl font-bold text-white transition-all duration-300 ${getButtonStyle()} flex items-center justify-center`}
             >
-              {joinSuccess ? (
-                <>
-                  <CheckCircle className="mr-2" size={20} />
-                  Registration Confirmed
-                </>
-              ) : joining ? (
-                <>
-                  <Loader2 className="animate-spin mr-2" size={20} />
-                  Processing...
-                </>
-              ) : (
-                <>
-                  Register Now
-                  <ChevronRight
-                    className="ml-2 group-hover:translate-x-1 transition-transform"
-                    size={20}
-                  />
-                </>
-              )}
+              {getButtonContent()}
             </button>
 
             {/* Additional info */}

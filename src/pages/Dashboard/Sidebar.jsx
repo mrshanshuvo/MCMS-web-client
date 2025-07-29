@@ -11,6 +11,8 @@ import {
   CalendarCheck,
   HeartPulse,
   ClipboardCheck,
+  ChartBar,
+  CreditCard,
 } from "lucide-react";
 import useAuth from "../../hooks/useAuth";
 import useUserRole from "../../hooks/useUserRole";
@@ -56,24 +58,24 @@ const Sidebar = () => {
   // Participant-specific links
   const participantLinks = [
     {
-      to: "/dashboard/available-camps",
-      label: "Available Camps",
-      icon: <Stethoscope size={18} />,
+      to: "/dashboard/analytics",
+      label: "Analytics",
+      icon: <ChartBar size={18} />,
     },
     {
-      to: "/dashboard/my-registrations",
-      label: "My Registrations",
+      to: "/dashboard/profile",
+      label: "Participant Profile",
+      icon: <User size={18} />,
+    },
+    {
+      to: "/dashboard/registered-camps",
+      label: "Registered Camps",
       icon: <CalendarCheck size={18} />,
     },
     {
-      to: "/dashboard/medical-history",
-      label: "Medical History",
-      icon: <HeartPulse size={18} />,
-    },
-    {
-      to: "/dashboard/feedback",
-      label: "Give Feedback",
-      icon: <ClipboardCheck size={18} />,
+      to: "/dashboard/payment-history",
+      label: "Payment History",
+      icon: <CreditCard size={18} />,
     },
   ];
 
