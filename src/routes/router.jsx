@@ -14,15 +14,21 @@ import ManageRegistrations from "../pages/Dashboard/Organizer/ManageRegistration
 import FeedbackList from "../pages/Dashboard/Organizer/FeedbackList";
 import OrganizerRoute from "./OrganizerRoute";
 import PrivateRoute from "./PrivateRoute";
-import OrganizerDashboard from "../pages/Dashboard/Organizer/OrganizerDashboard";
 import ParticipantRoute from "./ParticipantRoute";
-import ParticipantDashboard from "../pages/Dashboard/Participant/ParticipantDashboard";
 import DashboardRouter from "./DashboardRouter";
 import Analytics from "../pages/Dashboard/Participant/Analytics";
 import ParticipantProfile from "../pages/Dashboard/Participant/ParticipantProfile";
 import RegisteredCamps from "../pages/Dashboard/Participant/RegisteredCamps";
 import PaymentHistory from "../pages/Dashboard/Participant/PaymentHistory";
 import OrganizerProfile from "../pages/Dashboard/Organizer/OrganizerProfile";
+import SuccessStories from "../pages/SuccessStories/SuccessStories";
+import AboutUs from "../pages/AboutUs/AboutUs";
+import Blog from "../pages/Blog/Blog";
+import FAQs from "../pages/FAQs/FAQs";
+import Docs from "../pages/Docs/Docs";
+import PPolicy from "../pages/PPolicy/PPolicy";
+import TermsOfService from "../pages/TermsOfService/TermsOfService";
+import ContactUs from "../pages/ContactUs/ContactUs";
 
 export const router = createBrowserRouter([
   {
@@ -35,6 +41,14 @@ export const router = createBrowserRouter([
         Component: Home,
       },
       { path: "available-camps", Component: AvailableCamps },
+      { path: "success-stories", Component: SuccessStories },
+      { path: "about", Component: AboutUs },
+      { path: "blog", Component: Blog },
+      { path: "faqs", Component: FAQs },
+      { path: "docs", Component: Docs },
+      { path: "pPolicy", Component: PPolicy },
+      { path: "terms", Component: TermsOfService },
+      { path: "contact", Component: ContactUs },
       { path: "camp-details/:campId", Component: CampDetails },
     ],
   },

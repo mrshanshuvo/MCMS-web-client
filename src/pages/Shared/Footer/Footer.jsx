@@ -1,6 +1,6 @@
-import React from 'react';
-import { NavLink } from 'react-router';
-import { MapPin, Mail, Phone, Clock, Heart } from 'lucide-react';
+import React from "react";
+import { NavLink } from "react-router";
+import { MapPin, Mail, Phone, Clock, Heart } from "lucide-react";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -13,8 +13,8 @@ const Footer = () => {
         { name: "Available Camps", path: "/available-camps" },
         { name: "Join Us", path: "/login" },
         { name: "Dashboard", path: "/dashboard" },
-        { name: "Success Stories", path: "/success-stories" }
-      ]
+        { name: "Success Stories", path: "/success-stories" },
+      ],
     },
     {
       title: "Resources",
@@ -22,17 +22,17 @@ const Footer = () => {
         { name: "Blog", path: "/blog" },
         { name: "FAQs", path: "/faqs" },
         { name: "Documentation", path: "/docs" },
-        { name: "Privacy Policy", path: "/privacy" },
-        { name: "Terms of Service", path: "/terms" }
-      ]
-    }
+        { name: "Privacy Policy", path: "/pPolicy" },
+        { name: "Terms of Service", path: "/terms" },
+      ],
+    },
   ];
 
   const contactInfo = [
     { icon: MapPin, text: "Green Road, Dhaka, Bangladesh" },
     { icon: Mail, text: "support@mcms.com" },
     { icon: Phone, text: "+880 1234-567890" },
-    { icon: Clock, text: "Mon-Fri: 9AM - 6PM" }
+    { icon: Clock, text: "Mon-Fri: 9AM - 6PM" },
   ];
 
   return (
@@ -44,17 +44,20 @@ const Footer = () => {
             MCMS
           </h2>
           <p className="text-blue-100 leading-relaxed">
-            Medical Camp Management System helps organize and manage medical camps efficiently and securely across Bangladesh.
+            Medical Camp Management System helps organize and manage medical
+            camps efficiently and securely across Bangladesh.
           </p>
           <div className="flex space-x-4">
-            {['Facebook', 'Twitter', 'LinkedIn', 'YouTube'].map((social) => (
+            {["Facebook", "Twitter", "LinkedIn", "YouTube"].map((social) => (
               <a
                 key={social}
                 href="#"
                 className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors"
                 aria-label={`${social} page`}
               >
-                <span className="text-lg">{social === 'YouTube' ? '▶️' : social[0]}</span>
+                <span className="text-lg">
+                  {social === "YouTube" ? "▶️" : social[0]}
+                </span>
               </a>
             ))}
           </div>
@@ -63,14 +66,18 @@ const Footer = () => {
         {/* Links Sections */}
         {footerLinks.map((section) => (
           <div key={section.title} className="space-y-4">
-            <h3 className="text-lg font-semibold text-white/90">{section.title}</h3>
+            <h3 className="text-lg font-semibold text-white/90">
+              {section.title}
+            </h3>
             <ul className="space-y-3">
               {section.links.map((link) => (
                 <li key={link.name}>
                   <NavLink
                     to={link.path}
                     className={({ isActive }) =>
-                      `text-blue-100 hover:text-yellow-300 transition-colors ${isActive ? 'text-yellow-300 font-medium' : ''}`
+                      `text-blue-100 hover:text-yellow-300 transition-colors ${
+                        isActive ? "text-yellow-300 font-medium" : ""
+                      }`
                     }
                   >
                     {link.name}
@@ -89,7 +96,10 @@ const Footer = () => {
               const Icon = item.icon;
               return (
                 <li key={index} className="flex items-start space-x-3">
-                  <Icon className="mt-0.5 flex-shrink-0 text-yellow-300" size={18} />
+                  <Icon
+                    className="mt-0.5 flex-shrink-0 text-yellow-300"
+                    size={18}
+                  />
                   <span className="text-blue-100">{item.text}</span>
                 </li>
               );
@@ -105,10 +115,16 @@ const Footer = () => {
             © {currentYear} MCMS. All rights reserved.
           </div>
           <div className="flex items-center space-x-6">
-            <a href="#" className="text-blue-100 hover:text-yellow-300 text-sm transition-colors">
+            <a
+              href="#"
+              className="text-blue-100 hover:text-yellow-300 text-sm transition-colors"
+            >
               Privacy Policy
             </a>
-            <a href="#" className="text-blue-100 hover:text-yellow-300 text-sm transition-colors">
+            <a
+              href="#"
+              className="text-blue-100 hover:text-yellow-300 text-sm transition-colors"
+            >
               Terms of Service
             </a>
             <div className="flex items-center text-sm text-blue-100">

@@ -16,7 +16,8 @@ const Navbar = () => {
     { path: "/", label: "Home" },
     { path: "/available-camps", label: "Available Camps" },
     { path: "/success-stories", label: "Success Stories" },
-    { path: "/about", label: "About Us" }
+    { path: "/about", label: "About Us" },
+    { path: "/contact", label: "Contact Us" },
   ];
 
   const handleLogout = async () => {
@@ -34,8 +35,11 @@ const Navbar = () => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setDropdownOpen(false);
       }
-      if (mobileMenuRef.current && !mobileMenuRef.current.contains(event.target) &&
-        !event.target.closest('button[aria-label="Toggle Menu"]')) {
+      if (
+        mobileMenuRef.current &&
+        !mobileMenuRef.current.contains(event.target) &&
+        !event.target.closest('button[aria-label="Toggle Menu"]')
+      ) {
         setIsOpen(false);
       }
     }
@@ -69,9 +73,10 @@ const Navbar = () => {
                 <NavLink
                   to={link.path}
                   className={({ isActive }) =>
-                    `px-1 py-2 font-medium transition-colors relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-yellow-300 hover:after:w-full after:transition-all ${isActive
-                      ? "text-yellow-300 after:w-full"
-                      : "text-white hover:text-yellow-200"
+                    `px-1 py-2 font-medium transition-colors relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-yellow-300 hover:after:w-full after:transition-all ${
+                      isActive
+                        ? "text-yellow-300 after:w-full"
+                        : "text-white hover:text-yellow-200"
                     }`
                   }
                 >
@@ -107,7 +112,9 @@ const Navbar = () => {
                 <div className="absolute right-0 mt-2 w-56 bg-white text-gray-800 shadow-xl rounded-lg overflow-hidden z-50">
                   <div className="px-4 py-3 border-b border-gray-100 bg-gradient-to-r from-blue-50 to-gray-50">
                     <p className="font-semibold truncate">{user.displayName}</p>
-                    <p className="text-sm text-gray-500 truncate">{user.email}</p>
+                    <p className="text-sm text-gray-500 truncate">
+                      {user.email}
+                    </p>
                   </div>
 
                   <NavLink
@@ -158,9 +165,10 @@ const Navbar = () => {
                   to={link.path}
                   onClick={() => setIsOpen(false)}
                   className={({ isActive }) =>
-                    `block px-3 py-2 rounded-lg font-medium transition-colors ${isActive
-                      ? "bg-white/10 text-yellow-300"
-                      : "text-white hover:bg-white/10 hover:text-yellow-200"
+                    `block px-3 py-2 rounded-lg font-medium transition-colors ${
+                      isActive
+                        ? "bg-white/10 text-yellow-300"
+                        : "text-white hover:bg-white/10 hover:text-yellow-200"
                     }`
                   }
                 >
