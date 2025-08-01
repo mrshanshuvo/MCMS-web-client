@@ -6,7 +6,7 @@ import Testimonials from "./Testimonials";
 import CallToAction from "./CallToAction";
 import SuccessStoriesCarousel from "./SuccessStoriesCarousel";
 import PopularCampsSection from "./PopularCampsSection";
-import ParticipantRoute from "../../routes/ParticipantRoute";
+import FeedbackRatings from "./FeedbackRatings";
 
 const Home = () => {
   return (
@@ -18,6 +18,7 @@ const Home = () => {
       <HowItWorks />
       <Testimonials />
       <CallToAction />
+      <FeedbackRatings />
     </div>
   );
 };

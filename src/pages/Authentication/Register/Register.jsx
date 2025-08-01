@@ -24,20 +24,25 @@ const Register = () => {
 
   const onSubmit = (data) => {
     createUser(data.email, data.password)
-      .then(async () => {
-        toast.success("Welcome to MCMS! Your account has been created.");
+      .then(async (result) => {
+        const firebaseUser = result.user;
+        const idToken = await firebaseUser.getIdToken();
 
         const userInfoDB = {
           email: data.email,
           name: data.name,
           photoURL: profilePic,
-          role: "user",
+          role: "participant",
           created_at: new Date().toISOString(),
           last_login: new Date().toISOString(),
         };
 
         try {
-          await axiosInstance.post("/users", userInfoDB);
+          await axiosInstance.post("/users", userInfoDB, {
+            headers: {
+              Authorization: `Bearer ${idToken}`,
+            },
+          });
         } catch (error) {
           toast.error("Failed to save user to MCMS DB.");
           console.error("Error saving user:", error);
@@ -75,7 +80,9 @@ const Register = () => {
 
     try {
       const res = await axios.post(
-        `https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_IMGBB_API_KEY}`,
+        `https://api.imgbb.com/1/upload?key=${
+          import.meta.env.VITE_IMGBB_API_KEY
+        }`,
         formData
       );
 
@@ -91,7 +98,6 @@ const Register = () => {
       console.error("Image upload error:", error);
     }
   };
-
 
   const handleGoogleSignIn = () => {
     signInWithGoogle()
@@ -136,7 +142,10 @@ const Register = () => {
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         {/* Profile Image Upload */}
         <div>
-          <label htmlFor="image" className="block text-sm font-medium text-blue-800">
+          <label
+            htmlFor="image"
+            className="block text-sm font-medium text-blue-800"
+          >
             Upload Profile Picture
           </label>
           <input
@@ -149,7 +158,10 @@ const Register = () => {
 
         {/* Name */}
         <div>
-          <label htmlFor="name" className="block text-sm font-medium text-blue-800">
+          <label
+            htmlFor="name"
+            className="block text-sm font-medium text-blue-800"
+          >
             Name
           </label>
           <input
@@ -162,12 +174,17 @@ const Register = () => {
             className="mt-1 block w-full px-3 py-2 border border-blue-200 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
             placeholder="Your full name"
           />
-          {errors.name && <p className="mt-1 text-sm text-red-600">{errors.name.message}</p>}
+          {errors.name && (
+            <p className="mt-1 text-sm text-red-600">{errors.name.message}</p>
+          )}
         </div>
 
         {/* Email */}
         <div>
-          <label htmlFor="email" className="block text-sm font-medium text-blue-800">
+          <label
+            htmlFor="email"
+            className="block text-sm font-medium text-blue-800"
+          >
             Email
           </label>
           <input
@@ -183,12 +200,17 @@ const Register = () => {
             className="mt-1 block w-full px-3 py-2 border border-blue-200 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
             placeholder="you@example.com"
           />
-          {errors.email && <p className="mt-1 text-sm text-red-600">{errors.email.message}</p>}
+          {errors.email && (
+            <p className="mt-1 text-sm text-red-600">{errors.email.message}</p>
+          )}
         </div>
 
         {/* Password */}
         <div>
-          <label htmlFor="password" className="block text-sm font-medium text-blue-800">
+          <label
+            htmlFor="password"
+            className="block text-sm font-medium text-blue-800"
+          >
             Password
           </label>
           <input
@@ -201,7 +223,11 @@ const Register = () => {
             className="mt-1 block w-full px-3 py-2 border border-blue-200 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
             placeholder="Password"
           />
-          {errors.password && <p className="mt-1 text-sm text-red-600">{errors.password.message}</p>}
+          {errors.password && (
+            <p className="mt-1 text-sm text-red-600">
+              {errors.password.message}
+            </p>
+          )}
         </div>
 
         {/* Register Button */}
@@ -216,7 +242,10 @@ const Register = () => {
       {/* Already Have Account */}
       <div className="text-center text-sm text-blue-700">
         Already have an account?{" "}
-        <Link to="/login" className="font-medium text-blue-600 hover:text-blue-500">
+        <Link
+          to="/login"
+          className="font-medium text-blue-600 hover:text-blue-500"
+        >
           Login
         </Link>
       </div>

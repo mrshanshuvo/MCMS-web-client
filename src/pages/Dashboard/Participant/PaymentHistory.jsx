@@ -1,7 +1,5 @@
 import React from "react";
 import { useQuery } from "@tanstack/react-query";
-import useAuth from "../../../hooks/useAuth";
-import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import useCampById from "../../../hooks/useCampById";
 import { Tooltip } from "@mui/material";
 import { format } from "date-fns";
@@ -13,6 +11,8 @@ import {
   AlertCircle,
   Loader2,
 } from "lucide-react";
+import axios from "axios";
+import useAuth from "../../../hooks/useAuth";
 
 const CampInfo = ({ campId }) => {
   const { data: camp, isLoading } = useCampById(campId);
@@ -76,7 +76,6 @@ const CampDate = ({ campId }) => {
 
 const PaymentHistory = () => {
   const { user } = useAuth();
-  const axiosSecure = useAxiosSecure();
 
   const {
     data: payments = [],
@@ -85,8 +84,15 @@ const PaymentHistory = () => {
   } = useQuery({
     queryKey: ["payments", user?.email],
     queryFn: async () => {
-      const res = await axiosSecure.get(`/payments?email=${user?.email}`);
-      return res.data?.data || [];
+      const res = await axios.get(
+        `http://localhost:5000/paymentsByEmail?email=${user?.email}`,
+        {
+          headers: {
+            Authorization: `Bearer ${user.accessToken}`,
+          },
+        }
+      );
+      return res.data.data || [];
     },
     enabled: !!user?.email,
   });

@@ -18,7 +18,6 @@ import ParticipantRoute from "./ParticipantRoute";
 import DashboardRouter from "./DashboardRouter";
 import Analytics from "../pages/Dashboard/Participant/Analytics";
 import ParticipantProfile from "../pages/Dashboard/Participant/ParticipantProfile";
-import RegisteredCamps from "../pages/Dashboard/Participant/RegisteredCamps";
 import PaymentHistory from "../pages/Dashboard/Participant/PaymentHistory";
 import OrganizerProfile from "../pages/Dashboard/Organizer/OrganizerProfile";
 import SuccessStories from "../pages/SuccessStories/SuccessStories";
@@ -29,6 +28,7 @@ import Docs from "../pages/Docs/Docs";
 import PPolicy from "../pages/PPolicy/PPolicy";
 import TermsOfService from "../pages/TermsOfService/TermsOfService";
 import ContactUs from "../pages/ContactUs/ContactUs";
+import RegisteredCamps from "../pages/Dashboard/Participant/RegisteredCamps/RegisteredCamps";
 
 export const router = createBrowserRouter([
   {
@@ -106,7 +106,7 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: "feedbacks",
+        path: "feedback",
         element: (
           <OrganizerRoute>
             <FeedbackList />

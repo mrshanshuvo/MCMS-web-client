@@ -270,6 +270,12 @@ const AvailableCamps = () => {
                             participants
                           </span>
                         </div>
+
+                        {/* Added description */}
+                        <p className="text-gray-600 text-sm truncate">
+                          {camp.description}
+                        </p>
+
                         <Link
                           to={`/camp-details/${camp._id}`}
                           className="mt-4 inline-flex items-center justify-center w-full bg-gradient-to-r from-blue-50 to-gray-50 hover:from-blue-100 hover:to-gray-100 text-blue-600 font-medium py-2 px-4 rounded-lg border border-gray-200 transition-colors group-hover:shadow-sm"

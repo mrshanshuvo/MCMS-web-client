@@ -96,7 +96,7 @@ const ParticipantDashboard = () => {
             <div className="text-center py-8 text-gray-500">
               <p>You don't have any upcoming camp registrations</p>
               <button
-                onClick={() => navigate("/dashboard/available-camps")}
+                onClick={() => navigate("/available-camps")}
                 className="mt-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-2 rounded-lg font-medium hover:shadow-lg transition-all"
               >
                 Browse Available Camps

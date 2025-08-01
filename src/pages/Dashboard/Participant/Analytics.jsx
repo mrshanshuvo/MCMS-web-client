@@ -20,9 +20,14 @@ import {
   AlertCircle,
 } from "lucide-react";
 
-const fetchRegisteredCamps = async (email) => {
+const fetchRegisteredCamps = async (email, token) => {
   const res = await fetch(
-    `http://localhost:5000/camps-with-registrations/${email}`
+    `http://localhost:5000/camps-with-registrations/${email}`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
   );
   if (!res.ok) {
     throw new Error("Failed to fetch camps data");
@@ -39,7 +44,7 @@ const Analytics = () => {
     error,
   } = useQuery({
     queryKey: ["registeredCamps", user?.email],
-    queryFn: () => fetchRegisteredCamps(user.email),
+    queryFn: () => fetchRegisteredCamps(user?.email, user?.accessToken),
     enabled: !!user?.email,
   });
 

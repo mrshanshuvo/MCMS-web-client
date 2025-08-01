@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useParams } from "react-router";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
@@ -12,7 +12,7 @@ import {
   CheckCircle,
   Loader2,
   Shield,
-  AlertCircle,
+  X,
 } from "lucide-react";
 import useAuth from "../../hooks/useAuth";
 
@@ -31,72 +31,147 @@ const checkRegistrationStatus = async (campId, idToken) => {
   return res.data.registered;
 };
 
+const fetchUserRole = async (email) => {
+  const res = await axios.get(`http://localhost:5000/users/${email}/role`);
+  return res.data.role || "participant";
+};
+
 const CampDetails = () => {
   const { campId } = useParams();
-  const [joining, setJoining] = useState(false);
-  const [joinSuccess, setJoinSuccess] = useState(false);
-  const [isAlreadyRegistered, setIsAlreadyRegistered] = useState(false);
-  const [checkingRegistration, setCheckingRegistration] = useState(false);
   const { user } = useAuth();
 
+  // modal open state
+  const [modalOpen, setModalOpen] = useState(false);
+  // form states
+  const [formData, setFormData] = useState({
+    participantName: user?.displayName || "",
+    participantEmail: user?.email || "",
+    age: "",
+    phoneNumber: "",
+    gender: "",
+    emergencyContact: "",
+  });
+  const [formSubmitting, setFormSubmitting] = useState(false);
+  const [joinSuccess, setJoinSuccess] = useState(false);
+  const [joinError, setJoinError] = useState("");
+
+  // Fetch camp details
   const {
     data: camp,
     isLoading,
     isError,
     error,
-    refetch,
+    refetch: refetchCamp,
   } = useQuery({
     queryKey: ["camp", campId],
     queryFn: () => fetchCampById(campId),
     staleTime: 5 * 60 * 1000,
+    enabled: !!campId,
   });
 
-  // Check registration status when component mounts and user is available
-  useEffect(() => {
-    const checkUserRegistration = async () => {
-      if (user && campId) {
-        setCheckingRegistration(true);
-        try {
-          const idToken = await user.getIdToken();
-          const registered = await checkRegistrationStatus(campId, idToken);
-          setIsAlreadyRegistered(registered);
-          if (registered) {
-            setJoinSuccess(true);
-          }
-        } catch (error) {
-          console.error("Failed to check registration status:", error);
-        } finally {
-          setCheckingRegistration(false);
-        }
-      }
-    };
+  // Fetch user role
+  const {
+    data: role = "participant",
+    isLoading: roleLoading,
+    isError: roleError,
+  } = useQuery({
+    queryKey: ["userRole", user?.email],
+    queryFn: () => fetchUserRole(user.email),
+    enabled: !!user?.email,
+    staleTime: 5 * 60 * 1000,
+  });
 
-    checkUserRegistration();
-  }, [user, campId]);
+  // Check registration status
+  const {
+    data: isAlreadyRegistered = false,
+    isLoading: checkingRegistration,
+    refetch: refetchRegistration,
+  } = useQuery({
+    queryKey: ["registrationStatus", campId, user?.email],
+    queryFn: async () => {
+      const idToken = await user.getIdToken();
+      return await checkRegistrationStatus(campId, idToken);
+    },
+    enabled: !!user && !!campId,
+    staleTime: 5 * 60 * 1000,
+  });
 
-  const handleJoinCamp = async () => {
+  if (isLoading || roleLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-gradient-to-b from-[#f0f9ff] to-white">
+        <Loader2 className="animate-spin h-12 w-12 text-blue-600" />
+      </div>
+    );
+  }
+
+  if (isError) {
+    return (
+      <div className="container mx-auto p-8 text-center text-red-600 bg-white rounded-xl shadow-lg max-w-4xl">
+        <p>{error.message || "Failed to load camp details."}</p>
+      </div>
+    );
+  }
+
+  if (roleError) {
+    return (
+      <div className="container mx-auto p-8 text-center text-red-600 bg-white rounded-xl shadow-lg max-w-4xl">
+        <p>Failed to load user role.</p>
+      </div>
+    );
+  }
+
+  const isOrganizer = role === "organizer";
+
+  const openModal = () => {
     if (!user) {
       alert("You must be logged in to register.");
       return;
     }
+    setJoinError("");
+    setModalOpen(true);
+  };
 
-    if (isAlreadyRegistered) {
+  const closeModal = () => {
+    if (formSubmitting) return; // block close while submitting
+    setModalOpen(false);
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((f) => ({ ...f, [name]: value }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    // Validate required fields
+    if (
+      !formData.age ||
+      !formData.phoneNumber ||
+      !formData.gender ||
+      !formData.emergencyContact
+    ) {
+      setJoinError("Please fill all required fields.");
       return;
     }
 
-    setJoining(true);
+    setFormSubmitting(true);
+    setJoinError("");
 
     try {
       const idToken = await user.getIdToken();
 
-      // 1. Add registration
+      // 1. Register the participant
       await axios.post(
         "http://localhost:5000/registrations",
         {
           campId,
-          participantName: user.displayName || "Anonymous",
-          participantEmail: user.email,
-          paymentStatus: "Unpaid",
+          participantName: formData.participantName,
+          participantEmail: formData.participantEmail,
+          age: formData.age,
+          phoneNumber: formData.phoneNumber,
+          gender: formData.gender,
+          emergencyContact: formData.emergencyContact,
         },
         {
           headers: {
@@ -117,86 +192,33 @@ const CampDetails = () => {
       );
 
       setJoinSuccess(true);
-      setIsAlreadyRegistered(true);
-      refetch();
+      setModalOpen(false);
+      await refetchRegistration();
+      refetchCamp();
     } catch (error) {
-      alert("Failed to register for the camp.");
-      console.error(error);
+      console.error(
+        "Registration Error:",
+        error.response?.data || error.message
+      );
+
+      // Handle specific errors
+      if (error.response?.status === 404) {
+        setJoinError("Camp not found - please refresh and try again");
+      } else {
+        setJoinError(
+          error.response?.data?.error ||
+            "Registration failed. Please try again."
+        );
+      }
     } finally {
-      setJoining(false);
+      setFormSubmitting(false);
     }
-  };
-
-  if (isLoading) {
-    return (
-      <div className="flex items-center justify-center min-h-screen bg-gradient-to-b from-[#f0f9ff] to-white">
-        <Loader2 className="animate-spin h-12 w-12 text-blue-600" />
-      </div>
-    );
-  }
-
-  if (isError) {
-    return (
-      <div className="container mx-auto p-8 text-center text-red-600 bg-white rounded-xl shadow-lg max-w-4xl">
-        <p>{error.message || "Failed to load camp details."}</p>
-      </div>
-    );
-  }
-
-  // Determine button state and content
-  const getButtonContent = () => {
-    if (checkingRegistration) {
-      return (
-        <>
-          <Loader2 className="animate-spin mr-2" size={20} />
-          Checking Registration...
-        </>
-      );
-    }
-
-    if (isAlreadyRegistered || joinSuccess) {
-      return (
-        <>
-          <CheckCircle className="mr-2" size={20} />
-          Already Registered
-        </>
-      );
-    }
-
-    if (joining) {
-      return (
-        <>
-          <Loader2 className="animate-spin mr-2" size={20} />
-          Processing...
-        </>
-      );
-    }
-
-    return (
-      <>
-        Register Now
-        <ChevronRight
-          className="ml-2 group-hover:translate-x-1 transition-transform"
-          size={20}
-        />
-      </>
-    );
-  };
-
-  const getButtonStyle = () => {
-    if (isAlreadyRegistered || joinSuccess) {
-      return "bg-green-500 shadow-lg cursor-not-allowed";
-    }
-    if (joining || checkingRegistration) {
-      return "bg-blue-400 cursor-not-allowed";
-    }
-    return "bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 shadow-lg hover:shadow-xl";
   };
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#f0f9ff] to-white py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto">
-        {/* Header with medical badge */}
+        {/* Header and participant count */}
         <div className="flex justify-between items-start mb-6">
           <div className="inline-flex items-center px-4 py-2 bg-blue-100 rounded-full text-blue-800 font-medium mb-4">
             <div className="w-2 h-2 bg-blue-600 rounded-full mr-2 animate-pulse"></div>
@@ -207,7 +229,7 @@ const CampDetails = () => {
           </div>
         </div>
 
-        {/* Registration status alert */}
+        {/* Already Registered alert */}
         {isAlreadyRegistered && (
           <div className="mb-6 bg-green-50 border border-green-200 rounded-lg p-4 flex items-center">
             <CheckCircle className="text-green-600 mr-3" size={20} />
@@ -224,7 +246,7 @@ const CampDetails = () => {
 
         {/* Main card */}
         <div className="bg-white rounded-3xl shadow-xl overflow-hidden border border-gray-100">
-          {/* Camp image with medical placeholder */}
+          {/* Camp image */}
           <div className="relative h-64 sm:h-80 w-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center">
             {camp.imageURL ? (
               <img
@@ -241,7 +263,7 @@ const CampDetails = () => {
             </div>
           </div>
 
-          {/* Content */}
+          {/* Camp info */}
           <div className="p-6 sm:p-8">
             <h1 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-2">
               {camp.name}
@@ -318,34 +340,236 @@ const CampDetails = () => {
               </div>
             )}
 
-            {/* Join button */}
+            {/* Join Camp Button */}
             <button
-              onClick={handleJoinCamp}
+              onClick={openModal}
               disabled={
-                joining ||
+                isOrganizer ||
                 joinSuccess ||
                 isAlreadyRegistered ||
-                checkingRegistration
+                checkingRegistration ||
+                formSubmitting
               }
-              className={`group w-full py-4 px-6 rounded-xl font-bold text-white transition-all duration-300 ${getButtonStyle()} flex items-center justify-center`}
+              className={`group w-full py-4 px-6 rounded-xl font-bold text-white transition-all duration-300 ${
+                isOrganizer
+                  ? "bg-gray-400 cursor-not-allowed"
+                  : joinSuccess || isAlreadyRegistered
+                  ? "bg-green-500 shadow-lg cursor-not-allowed"
+                  : "bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 shadow-lg hover:shadow-xl"
+              } flex items-center justify-center`}
             >
-              {getButtonContent()}
+              {isOrganizer ? (
+                <>
+                  <Shield className="mr-2" size={20} />
+                  You are an Organizer
+                </>
+              ) : checkingRegistration ? (
+                <>
+                  <Loader2 className="animate-spin mr-2" size={20} />
+                  Checking Registration...
+                </>
+              ) : joinSuccess || isAlreadyRegistered ? (
+                <>
+                  <CheckCircle className="mr-2" size={20} />
+                  Already Registered
+                </>
+              ) : formSubmitting ? (
+                <>
+                  <Loader2 className="animate-spin mr-2" size={20} />
+                  Processing...
+                </>
+              ) : (
+                <>
+                  Register Now
+                  <ChevronRight
+                    className="ml-2 group-hover:translate-x-1 transition-transform"
+                    size={20}
+                  />
+                </>
+              )}
             </button>
-
-            {/* Additional info */}
-            <div className="mt-6 text-center text-sm text-gray-500 flex items-center justify-center space-x-4">
-              <span className="flex items-center">
-                <Shield className="mr-1 text-blue-500" size={14} />
-                HIPAA Compliant
-              </span>
-              <span className="flex items-center">
-                <CheckCircle className="mr-1 text-green-500" size={14} />
-                Verified Professionals
-              </span>
-            </div>
           </div>
         </div>
       </div>
+
+      {/* Modal Overlay */}
+      {modalOpen && (
+        <div
+          className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+          onClick={closeModal}
+          aria-modal="true"
+          role="dialog"
+        >
+          <div
+            className="bg-white rounded-2xl max-w-md w-full p-6 relative"
+            onClick={(e) => e.stopPropagation()} // prevent closing modal when clicking inside
+          >
+            {/* Modal header */}
+            <div className="flex justify-between items-center mb-6">
+              <h3 className="text-xl font-semibold">Join Camp Registration</h3>
+              <button
+                onClick={closeModal}
+                disabled={formSubmitting}
+                aria-label="Close modal"
+                className="text-gray-400 hover:text-gray-600 transition"
+              >
+                <X size={24} />
+              </button>
+            </div>
+
+            {/* Read-only camp info */}
+            <div className="mb-4 space-y-2 text-gray-700">
+              <p>
+                <strong>Camp Name:</strong> {camp.name}
+              </p>
+              <p>
+                <strong>Fees:</strong> ${camp.fees.toFixed(2)}
+              </p>
+              <p>
+                <strong>Location:</strong> {camp.location}
+              </p>
+              <p>
+                <strong>Healthcare Professional:</strong>{" "}
+                {camp.healthcareProfessional}
+              </p>
+            </div>
+
+            {/* Registration form */}
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div>
+                <label
+                  htmlFor="participantName"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Participant Name *
+                </label>
+                <input
+                  type="text"
+                  id="participantName"
+                  name="participantName"
+                  value={formData.participantName}
+                  onChange={handleInputChange}
+                  required
+                  className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+
+              <div>
+                <label
+                  htmlFor="participantEmail"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Participant Email *
+                </label>
+                <input
+                  type="email"
+                  id="participantEmail"
+                  name="participantEmail"
+                  value={formData.participantEmail}
+                  onChange={handleInputChange}
+                  required
+                  className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+
+              <div>
+                <label
+                  htmlFor="age"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Age *
+                </label>
+                <input
+                  type="number"
+                  id="age"
+                  name="age"
+                  min="1"
+                  max="120"
+                  value={formData.age}
+                  onChange={handleInputChange}
+                  required
+                  className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+
+              <div>
+                <label
+                  htmlFor="phoneNumber"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Phone Number *
+                </label>
+                <input
+                  type="tel"
+                  id="phoneNumber"
+                  name="phoneNumber"
+                  value={formData.phoneNumber}
+                  onChange={handleInputChange}
+                  pattern="^\+?\d{7,15}$"
+                  placeholder="+8801xxxxxxxxx"
+                  required
+                  className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+
+              <div>
+                <label
+                  htmlFor="gender"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Gender *
+                </label>
+                <select
+                  id="gender"
+                  name="gender"
+                  value={formData.gender}
+                  onChange={handleInputChange}
+                  required
+                  className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
+                  <option value="">Select gender</option>
+                  <option value="Male">Male</option>
+                  <option value="Female">Female</option>
+                  <option value="Other">Other</option>
+                  <option value="Prefer not to say">Prefer not to say</option>
+                </select>
+              </div>
+
+              <div>
+                <label
+                  htmlFor="emergencyContact"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Emergency Contact *
+                </label>
+                <input
+                  type="tel"
+                  id="emergencyContact"
+                  name="emergencyContact"
+                  value={formData.emergencyContact}
+                  onChange={handleInputChange}
+                  pattern="^\+?\d{7,15}$"
+                  placeholder="+8801xxxxxxxxx"
+                  required
+                  className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+
+              {joinError && (
+                <p className="text-red-600 text-sm font-medium">{joinError}</p>
+              )}
+
+              <button
+                type="submit"
+                disabled={formSubmitting}
+                className="w-full bg-blue-600 text-white py-3 rounded-xl font-bold hover:bg-blue-700 transition disabled:opacity-50"
+              >
+                {formSubmitting ? "Registering..." : "Submit Registration"}
+              </button>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
