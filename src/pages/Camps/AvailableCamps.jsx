@@ -26,7 +26,7 @@ const fetchCamps = async ({ queryKey }) => {
   if (sort) params.append("sort", sort);
 
   const res = await axios.get(
-    `http://localhost:5000/camps?${params.toString()}`
+    `https://mcms-server-red.vercel.app/camps?${params.toString()}`
   );
   return res.data;
 };

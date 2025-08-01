@@ -14,7 +14,7 @@ import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 
 const fetchCamps = async () => {
-  const { data } = await axios.get("http://localhost:5000/camps");
+  const { data } = await axios.get("https://mcms-server-red.vercel.app/camps");
   return data.camps;
 };
 

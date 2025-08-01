@@ -22,7 +22,7 @@ import {
 
 const fetchRegisteredCamps = async (email, token) => {
   const res = await fetch(
-    `http://localhost:5000/camps-with-registrations/${email}`,
+    `https://mcms-server-red.vercel.app/camps-with-registrations/${email}`,
     {
       headers: {
         Authorization: `Bearer ${token}`,

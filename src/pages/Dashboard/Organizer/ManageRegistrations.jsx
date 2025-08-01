@@ -17,9 +17,12 @@ const ManageRegistrations = () => {
   } = useQuery({
     queryKey: ["registrations"],
     queryFn: async () => {
-      const res = await axios.get("http://localhost:5000/registrations", {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const res = await axios.get(
+        "https://mcms-server-red.vercel.app/registrations",
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
       return res.data;
     },
   });
@@ -28,7 +31,7 @@ const ManageRegistrations = () => {
   const confirmMutation = useMutation({
     mutationFn: (registrationId) =>
       axios.patch(
-        `http://localhost:5000/registrations/${registrationId}/confirm`,
+        `https://mcms-server-red.vercel.app/registrations/${registrationId}/confirm`,
         {},
         { headers: { Authorization: `Bearer ${token}` } }
       ),
@@ -44,9 +47,12 @@ const ManageRegistrations = () => {
   // Mutation to cancel registration
   const cancelMutation = useMutation({
     mutationFn: (registrationId) =>
-      axios.delete(`http://localhost:5000/registrations/${registrationId}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      }),
+      axios.delete(
+        `https://mcms-server-red.vercel.app/registrations/${registrationId}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      ),
     onSuccess: () => {
       queryClient.invalidateQueries(["registrations"]);
       Swal.fire("Cancelled!", "Registration has been cancelled.", "success");

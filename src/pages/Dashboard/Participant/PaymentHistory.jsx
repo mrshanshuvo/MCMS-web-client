@@ -85,7 +85,7 @@ const PaymentHistory = () => {
     queryKey: ["payments", user?.email],
     queryFn: async () => {
       const res = await axios.get(
-        `http://localhost:5000/paymentsByEmail?email=${user?.email}`,
+        `https://mcms-server-red.vercel.app/paymentsByEmail?email=${user?.email}`,
         {
           headers: {
             Authorization: `Bearer ${user.accessToken}`,

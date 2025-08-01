@@ -114,7 +114,10 @@ const Register = () => {
         };
 
         try {
-          await axiosInstance.post("http://localhost:5000/users", userInfoDB);
+          await axiosInstance.post(
+            "https://mcms-server-red.vercel.app/users",
+            userInfoDB
+          );
         } catch (error) {
           toast.error("Failed to store user info to MCMS DB.");
           console.error("DB store error:", error);
