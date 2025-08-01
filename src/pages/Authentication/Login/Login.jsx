@@ -44,8 +44,7 @@ const Login = () => {
     signInWithGoogle()
       .then(async (result) => {
         const user = result.user;
-
-        toast.success("Google login to MCMS successful!");
+        const idToken = await user.getIdToken();
 
         const userInfoDB = {
           email: user.email,
@@ -57,8 +56,11 @@ const Login = () => {
         };
 
         try {
-          const res = await axiosInstance.post("/users", userInfoDB);
-          console.log("User saved or already exists:", res.data);
+          await axiosInstance.post("/users", userInfoDB, {
+            headers: {
+              Authorization: `Bearer ${idToken}`,
+            },
+          });
         } catch (error) {
           toast.error("Error saving user info: " + error.message);
           console.error("Error saving user:", error);

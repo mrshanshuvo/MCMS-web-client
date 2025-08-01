@@ -104,19 +104,17 @@ const Register = () => {
       .then(async (result) => {
         const user = result.user;
 
-        toast.success("Google Sign-in successful. Welcome to MCMS!");
-
         const userInfoDB = {
           email: user.email,
           name: user.displayName,
           photoURL: user.photoURL,
-          role: "user",
+          role: "participant",
           created_at: new Date().toISOString(),
           last_login: new Date().toISOString(),
         };
 
         try {
-          await axiosInstance.post("/users", userInfoDB);
+          await axiosInstance.post("http://localhost:5000/users", userInfoDB);
         } catch (error) {
           toast.error("Failed to store user info to MCMS DB.");
           console.error("DB store error:", error);
