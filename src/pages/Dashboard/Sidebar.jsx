@@ -67,11 +67,6 @@ const Sidebar = () => {
       label: "Manage Registrations",
       icon: <ClipboardList size={18} />,
     },
-    {
-      to: "/dashboard/feedbacks",
-      label: "User Feedback",
-      icon: <MessageSquare size={18} />,
-    },
   ];
 
   // Participant-specific links

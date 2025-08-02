@@ -11,7 +11,6 @@ import DashboardLayout from "../layouts/DashboardLayout";
 import AddCamp from "../pages/Dashboard/Organizer/AddCamp";
 import ManageCamps from "../pages/Dashboard/Organizer/ManageCamps";
 import ManageRegistrations from "../pages/Dashboard/Organizer/ManageRegistrations";
-import FeedbackList from "../pages/Dashboard/Organizer/FeedbackList";
 import OrganizerRoute from "./OrganizerRoute";
 import PrivateRoute from "./PrivateRoute";
 import ParticipantRoute from "./ParticipantRoute";
@@ -102,14 +101,6 @@ export const router = createBrowserRouter([
         element: (
           <OrganizerRoute>
             <ManageRegistrations />
-          </OrganizerRoute>
-        ),
-      },
-      {
-        path: "feedback",
-        element: (
-          <OrganizerRoute>
-            <FeedbackList />
           </OrganizerRoute>
         ),
       },

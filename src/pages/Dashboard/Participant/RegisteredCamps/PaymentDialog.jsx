@@ -24,14 +24,15 @@ const PaymentDialog = ({
 
     if (!stripe || !elements) return;
     const token = user.accessToken;
+
     try {
       const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/create-payment-intent`,
+        `https://mcms-server-red.vercel.app/create-payment-intent`,
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`, // 👈 This is the golden ticket
+            Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify({
             amount: camp.fees,
@@ -42,6 +43,29 @@ const PaymentDialog = ({
 
       if (!response.ok) throw new Error("Failed to create payment intent");
       const { clientSecret } = await response.json();
+
+      // ✅ Handle free camp (no payment intent needed)
+      if (!clientSecret) {
+        await fetch(`https://mcms-server-red.vercel.app/payments`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            campId: camp._id,
+            registrationId: registration._id,
+            transactionId: `FREE_PAYMENT_${Date.now()}`,
+            amount: 0,
+            paymentMethod: "FREE",
+          }),
+        });
+
+        setPaymentIntent({ status: "succeeded", id: "FREE_PAYMENT" });
+        onPaymentSuccess();
+        setIsProcessing(false);
+        return;
+      }
 
       const { error: stripeError, paymentIntent } =
         await stripe.confirmCardPayment(clientSecret, {
@@ -57,17 +81,17 @@ const PaymentDialog = ({
 
       if (paymentIntent.status === "succeeded") {
         setPaymentIntent(paymentIntent);
-        await fetch(`${import.meta.env.VITE_API_URL}/payments`, {
+        await fetch(`https://mcms-server-red.vercel.app/payments`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`, // 👈 Same here
+            Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify({
             campId: camp._id,
             registrationId: registration._id,
             transactionId: paymentIntent.id,
-            amount: paymentIntent.amount / 100,
+            amount: paymentIntent.amount,
           }),
         });
         onPaymentSuccess();

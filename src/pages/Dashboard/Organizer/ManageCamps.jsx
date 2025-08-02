@@ -11,19 +11,22 @@ const ManageCamps = () => {
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
   const [editingCamp, setEditingCamp] = useState(null);
+  const [page, setPage] = useState(1);
+  const limit = 5;
 
-  const {
-    data: camps = [],
-    refetch,
-    isLoading,
-  } = useQuery({
-    queryKey: ["myCamps", user?.email],
+  const { data, isLoading, refetch } = useQuery({
+    queryKey: ["myCamps", user?.email, page],
     enabled: !!user?.email,
     queryFn: async () => {
-      const res = await axiosSecure.get("/organizer/camps");
+      const res = await axiosSecure.get(
+        `/organizer/camps?page=${page}&limit=${limit}`
+      );
       return res.data;
     },
   });
+
+  const camps = data?.camps || [];
+  const totalPages = data?.totalPages || 1;
 
   const handleDelete = async (id) => {
     const confirm = await Swal.fire({
@@ -53,6 +56,14 @@ const ManageCamps = () => {
 
   const handleEdit = (camp) => {
     setEditingCamp(camp);
+  };
+
+  const handlePrevious = () => {
+    setPage((prev) => Math.max(prev - 1, 1));
+  };
+
+  const handleNext = () => {
+    setPage((prev) => Math.min(prev + 1, totalPages));
   };
 
   if (isLoading) {
@@ -87,37 +98,56 @@ const ManageCamps = () => {
         {/* Camps Table */}
         <div className="bg-white rounded-3xl shadow-xl border border-gray-100 overflow-hidden">
           <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead className="bg-gradient-to-r from-[#1e3a8a] to-[#0f766e] text-white">
+            <table className="w-full min-w-[600px]">
+              {" "}
+              {/* add min width for horizontal scroll */}
+              <thead className="bg-gradient-to-r from-[#1e3a8a] to-[#0f766e] text-white text-sm sm:text-base">
                 <tr>
-                  <th className="px-6 py-4 text-left">#</th>
-                  <th className="px-6 py-4 text-left">Camp Name</th>
-                  <th className="px-6 py-4 text-left">Date & Time</th>
-                  <th className="px-6 py-4 text-left">Location</th>
-                  <th className="px-6 py-4 text-left">Fees</th>
-                  <th className="px-6 py-4 text-left">Participants</th>
-                  <th className="px-6 py-4 text-left">Actions</th>
+                  <th className="px-3 sm:px-6 py-3 text-left">#</th>
+                  <th className="px-3 sm:px-6 py-3 text-left">Camp Name</th>
+                  <th className="px-3 sm:px-6 py-3 text-left">Date & Time</th>
+                  <th className="px-3 sm:px-6 py-3 text-left hidden sm:table-cell">
+                    Location
+                  </th>{" "}
+                  {/* hide on xs */}
+                  <th className="px-3 sm:px-6 py-3 text-left hidden md:table-cell">
+                    Fees
+                  </th>{" "}
+                  {/* hide on small */}
+                  <th className="px-3 sm:px-6 py-3 text-left hidden lg:table-cell">
+                    Participants
+                  </th>{" "}
+                  {/* show only lg+ */}
+                  <th className="px-3 sm:px-6 py-3 text-left">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-200">
+              <tbody className="divide-y divide-gray-200 text-sm sm:text-base">
                 {camps.length > 0 ? (
                   camps.map((camp, idx) => (
                     <tr
                       key={camp._id}
                       className="hover:bg-gray-50 transition-colors"
                     >
-                      <td className="px-6 py-4">{idx + 1}</td>
-                      <td className="px-6 py-4 font-medium">{camp.name}</td>
-                      <td className="px-6 py-4">
+                      <td className="px-3 sm:px-6 py-3">
+                        {(page - 1) * limit + idx + 1}
+                      </td>
+                      <td className="px-3 sm:px-6 py-3 font-medium">
+                        {camp.name}
+                      </td>
+                      <td className="px-3 sm:px-6 py-3">
                         {new Date(camp.dateTime).toLocaleString()}
                       </td>
-                      <td className="px-6 py-4">{camp.location}</td>
-                      <td className="px-6 py-4">${camp.fees.toFixed(2)}</td>
-                      <td className="px-6 py-4">
+                      <td className="px-3 sm:px-6 py-3 hidden sm:table-cell">
+                        {camp.location}
+                      </td>
+                      <td className="px-3 sm:px-6 py-3 hidden md:table-cell">
+                        ${camp.fees.toFixed(2)}
+                      </td>
+                      <td className="px-3 sm:px-6 py-3 hidden lg:table-cell">
                         {camp.participantCount || 0}
                       </td>
-                      <td className="px-6 py-4">
-                        <div className="flex gap-3">
+                      <td className="px-3 sm:px-6 py-3">
+                        <div className="flex gap-2 sm:gap-3">
                           <button
                             onClick={() => handleEdit(camp)}
                             className="p-2 rounded-lg bg-blue-50 text-blue-600 hover:bg-blue-100 transition-colors"
@@ -149,6 +179,27 @@ const ManageCamps = () => {
               </tbody>
             </table>
           </div>
+        </div>
+
+        {/* Pagination Controls */}
+        <div className="flex justify-center mt-6 gap-4">
+          <button
+            onClick={handlePrevious}
+            disabled={page === 1}
+            className="px-4 py-2 rounded-md bg-blue-100 text-blue-700 hover:bg-blue-200 disabled:opacity-50"
+          >
+            Previous
+          </button>
+          <span className="text-gray-700 font-medium self-center">
+            Page {page} of {totalPages}
+          </span>
+          <button
+            onClick={handleNext}
+            disabled={page === totalPages}
+            className="px-4 py-2 rounded-md bg-blue-100 text-blue-700 hover:bg-blue-200 disabled:opacity-50"
+          >
+            Next
+          </button>
         </div>
       </div>
 

@@ -11,7 +11,7 @@ const FeedbackRatings = () => {
     queryKey: ["homeFeedback"],
     queryFn: async () => {
       const res = await fetch(
-        `${import.meta.env.VITE_API_URL}/feedback?limit=6`
+        `https://mcms-server-red.vercel.app/feedback?limit=6`
       );
       if (!res.ok) throw new Error("Failed to fetch feedback");
       return res.json();
