@@ -28,6 +28,7 @@ import PPolicy from "../pages/PPolicy/PPolicy";
 import TermsOfService from "../pages/TermsOfService/TermsOfService";
 import ContactUs from "../pages/ContactUs/ContactUs";
 import RegisteredCamps from "../pages/Dashboard/Participant/RegisteredCamps/RegisteredCamps";
+import FeedbackPage from "../pages/FeedbackPage/FeedbackPage";
 
 export const router = createBrowserRouter([
   {
@@ -49,6 +50,7 @@ export const router = createBrowserRouter([
       { path: "terms", Component: TermsOfService },
       { path: "contact", Component: ContactUs },
       { path: "camp-details/:campId", Component: CampDetails },
+      { path: "feedback", Component: FeedbackPage },
     ],
   },
   {

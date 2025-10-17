@@ -12,11 +12,11 @@ import useAxiosSecure from "../../hooks/useAxiosSecure";
 import { useQuery } from "@tanstack/react-query";
 
 const iconMap = {
-  Users: <Users className="text-blue-500" size={18} />,
-  CheckCircle: <CheckCircle className="text-green-500" size={18} />,
-  Activity: <Activity className="text-purple-500" size={18} />,
-  Star: <Star className="text-yellow-400 fill-yellow-400" size={18} />,
-  Heart: <Heart className="text-red-500 fill-red-500" size={18} />,
+  Users: <Users className="text-[#F4CE14]" size={18} />,
+  CheckCircle: <CheckCircle className="text-[#495E57]" size={18} />,
+  Activity: <Activity className="text-[#F4CE14]" size={18} />,
+  Star: <Star className="text-[#F4CE14] fill-[#F4CE14]" size={18} />,
+  Heart: <Heart className="text-[#495E57] fill-[#495E57]" size={18} />,
 };
 
 const STORIES_PER_PAGE = 6;
@@ -50,15 +50,15 @@ const SuccessStories = () => {
   };
 
   return (
-    <section className="bg-gradient-to-b from-gray-50 to-white py-16 px-4 sm:px-6 lg:px-8">
+    <section className="bg-gradient-to-b from-[#F5F7F8] to-white py-16 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-16">
-          <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">
+          <h2 className="text-3xl sm:text-4xl font-bold text-[#45474B] mb-4">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#495E57] to-[#F4CE14]">
               Success Stories
             </span>
           </h2>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+          <p className="text-lg text-[#45474B]/70 max-w-2xl mx-auto">
             Real impact. Real results. See how MCMS is transforming healthcare
             delivery.
           </p>
@@ -68,7 +68,7 @@ const SuccessStories = () => {
           {paginatedStories.map((story) => (
             <div
               key={story.id}
-              className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-all duration-300 hover:-translate-y-1 border border-gray-100"
+              className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-all duration-300 hover:-translate-y-1 border border-[#495E57]/10"
             >
               {/* Image */}
               <div className="relative h-48 w-full overflow-hidden">
@@ -84,10 +84,10 @@ const SuccessStories = () => {
               <div className="p-6">
                 <div className="flex items-start justify-between mb-3">
                   <div>
-                    <h3 className="text-xl font-bold text-gray-900">
+                    <h3 className="text-xl font-bold text-[#45474B]">
                       {story.name}
                     </h3>
-                    <p className="text-blue-600 font-medium">{story.role}</p>
+                    <p className="text-[#495E57] font-medium">{story.role}</p>
                   </div>
                   <div className="flex">
                     {[...Array(5)].map((_, i) => (
@@ -95,8 +95,8 @@ const SuccessStories = () => {
                         key={i}
                         className={`${
                           i < story.rating
-                            ? "text-yellow-400 fill-yellow-400"
-                            : "text-gray-300"
+                            ? "text-[#F4CE14] fill-[#F4CE14]"
+                            : "text-[#495E57]/30"
                         } ml-1`}
                         size={16}
                       />
@@ -104,16 +104,16 @@ const SuccessStories = () => {
                   </div>
                 </div>
 
-                <blockquote className="text-gray-700 mb-4 italic relative pl-4 border-l-2 border-blue-200">
+                <blockquote className="text-[#45474B]/80 mb-4 italic relative pl-4 border-l-2 border-[#F4CE14]">
                   "{story.quote}"
                 </blockquote>
 
                 <div className="mb-4">
-                  <span className="inline-flex items-center px-3 py-1 rounded-full bg-blue-50 text-blue-700 text-sm font-medium mb-2">
-                    <CheckCircle className="mr-1 text-blue-600" size={14} />
+                  <span className="inline-flex items-center px-3 py-1 rounded-full bg-[#495E57]/10 text-[#495E57] text-sm font-medium mb-2">
+                    <CheckCircle className="mr-1 text-[#495E57]" size={14} />
                     Key Achievement
                   </span>
-                  <p className="font-semibold text-gray-800">
+                  <p className="font-semibold text-[#45474B]">
                     {story.achievement}
                   </p>
                 </div>
@@ -122,15 +122,15 @@ const SuccessStories = () => {
                   {story.stats.map((stat, index) => (
                     <div
                       key={index}
-                      className="bg-gray-50 rounded-lg p-3 hover:bg-blue-50 transition-colors"
+                      className="bg-[#F5F7F8] rounded-lg p-3 hover:bg-[#495E57]/10 transition-colors"
                     >
                       <div className="flex items-center justify-center mb-1">
                         {iconMap[stat.icon]}
                       </div>
-                      <p className="font-bold text-gray-900 text-center">
+                      <p className="font-bold text-[#45474B] text-center">
                         {stat.value}
                       </p>
-                      <p className="text-xs text-gray-500 text-center">
+                      <p className="text-xs text-[#45474B]/60 text-center">
                         {stat.label}
                       </p>
                     </div>
@@ -147,7 +147,7 @@ const SuccessStories = () => {
             <button
               onClick={() => goToPage(currentPage - 1)}
               disabled={currentPage === 1}
-              className="flex cursor-pointer items-center gap-1 px-4 py-2 rounded-lg border border-gray-300 hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              className="flex cursor-pointer items-center gap-1 px-4 py-2 rounded-lg border border-[#495E57]/30 hover:bg-[#495E57]/10 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-[#45474B]"
             >
               <ChevronLeft size={16} />
               Previous
@@ -171,21 +171,23 @@ const SuccessStories = () => {
                     onClick={() => goToPage(pageNum)}
                     className={`w-10 cursor-pointer h-10 rounded-full flex items-center justify-center ${
                       currentPage === pageNum
-                        ? "bg-blue-600 text-white"
-                        : "hover:bg-gray-300"
+                        ? "bg-[#495E57] text-[#F5F7F8]"
+                        : "hover:bg-[#495E57]/10 text-[#45474B]"
                     }`}
                   >
                     {pageNum}
                   </button>
                 );
               })}
-              {totalPages > 5 && <span className="mx-1">...</span>}
+              {totalPages > 5 && (
+                <span className="mx-1 text-[#45474B]">...</span>
+              )}
             </div>
 
             <button
               onClick={() => goToPage(currentPage + 1)}
               disabled={currentPage === totalPages}
-              className="flex items-center cursor-pointer gap-1 px-4 py-2 rounded-lg border border-gray-300 hover:bg-gray-300 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              className="flex items-center cursor-pointer gap-1 px-4 py-2 rounded-lg border border-[#495E57]/30 hover:bg-[#495E57]/10 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-[#45474B]"
             >
               Next
               <ChevronRight size={16} />

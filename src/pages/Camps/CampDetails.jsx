@@ -13,8 +13,10 @@ import {
   Loader2,
   Shield,
   X,
+  Star,
 } from "lucide-react";
 import useAuth from "../../hooks/useAuth";
+import Swal from "sweetalert2";
 
 const fetchCampById = async (campId) => {
   const res = await axios.get(`http://localhost:5000/camps/${campId}`);
@@ -98,8 +100,8 @@ const CampDetails = () => {
 
   if (isLoading || roleLoading) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-gradient-to-b from-[#f0f9ff] to-white">
-        <Loader2 className="animate-spin h-12 w-12 text-blue-600" />
+      <div className="flex items-center justify-center min-h-screen bg-gradient-to-b from-[#F5F7F8] to-white">
+        <Loader2 className="animate-spin h-12 w-12 text-[#495E57]" />
       </div>
     );
   }
@@ -124,9 +126,24 @@ const CampDetails = () => {
 
   const openModal = () => {
     if (!user) {
-      alert("You must be logged in to register.");
+      Swal.fire({
+        icon: "warning",
+        title: "You must be logged in!",
+        text: "Please log in to register for the camp.",
+        showCancelButton: true,
+        confirmButtonText: "Login",
+        cancelButtonText: "Cancel",
+        confirmButtonColor: "#495E57",
+        cancelButtonColor: "#E53E3E",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          // Redirect to login page
+          window.location.href = "/login"; // replace with your login route
+        }
+      });
       return;
     }
+
     setJoinError("");
     setModalOpen(true);
   };
@@ -216,15 +233,16 @@ const CampDetails = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#f0f9ff] to-white py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gradient-to-b from-[#F5F7F8] to-white py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto">
         {/* Header and participant count */}
         <div className="flex justify-between items-start mb-6">
-          <div className="inline-flex items-center px-4 py-2 bg-blue-100 rounded-full text-blue-800 font-medium mb-4">
-            <div className="w-2 h-2 bg-blue-600 rounded-full mr-2 animate-pulse"></div>
+          <div className="inline-flex items-center px-4 py-2 bg-[#495E57]/10 rounded-full text-[#495E57] font-medium mb-4">
+            <div className="w-2 h-2 bg-[#495E57] rounded-full mr-2 animate-pulse"></div>
             Medical Camp Details
           </div>
-          <div className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium">
+          <div className="bg-[#F4CE14]/20 text-[#45474B] px-3 py-1 rounded-full text-sm font-medium flex items-center">
+            <Users size={14} className="mr-1" />
             {camp.participantCount} Participants
           </div>
         </div>
@@ -245,9 +263,9 @@ const CampDetails = () => {
         )}
 
         {/* Main card */}
-        <div className="bg-white rounded-3xl shadow-xl overflow-hidden border border-gray-100">
+        <div className="bg-white rounded-3xl shadow-xl overflow-hidden border border-[#495E57]/10">
           {/* Camp image */}
-          <div className="relative h-64 sm:h-80 w-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center">
+          <div className="relative h-64 sm:h-80 w-full bg-gradient-to-br from-[#495E57]/10 to-[#F4CE14]/10 flex items-center justify-center">
             {camp.imageURL ? (
               <img
                 src={camp.imageURL}
@@ -257,31 +275,33 @@ const CampDetails = () => {
             ) : (
               <span className="text-6xl">🏥</span>
             )}
-            <div className="absolute bottom-4 right-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-sm font-semibold text-blue-800 flex items-center">
-              <MapPin size={16} className="mr-1" />
+            <div className="absolute bottom-4 right-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-sm font-semibold text-[#45474B] flex items-center">
+              <MapPin size={16} className="mr-1 text-[#495E57]" />
               {camp.location}
             </div>
           </div>
 
           {/* Camp info */}
           <div className="p-6 sm:p-8">
-            <h1 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-2">
+            <h1 className="text-3xl lg:text-4xl font-bold text-[#45474B] mb-2">
               {camp.name}
             </h1>
-            <p className="text-xl text-blue-600 mb-6">
+            <p className="text-xl text-[#495E57] mb-6">
               {camp.healthcareProfessional}
             </p>
 
             {/* Details grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
-              <div className="bg-blue-50/50 p-4 rounded-xl border border-blue-100">
+              <div className="bg-[#495E57]/5 p-4 rounded-xl border border-[#495E57]/10">
                 <div className="flex items-center mb-2">
-                  <Calendar className="text-blue-600 mr-2" size={20} />
-                  <span className="font-semibold text-gray-800">
+                  <div className="w-8 h-8 bg-[#495E57]/10 rounded-lg flex items-center justify-center mr-3">
+                    <Calendar className="text-[#495E57]" size={16} />
+                  </div>
+                  <span className="font-semibold text-[#45474B]">
                     Date & Time
                   </span>
                 </div>
-                <p className="text-gray-700">
+                <p className="text-[#45474B]">
                   {new Date(camp.dateTime).toLocaleString(undefined, {
                     year: "numeric",
                     month: "long",
@@ -292,34 +312,40 @@ const CampDetails = () => {
                 </p>
               </div>
 
-              <div className="bg-blue-50/50 p-4 rounded-xl border border-blue-100">
+              <div className="bg-[#495E57]/5 p-4 rounded-xl border border-[#495E57]/10">
                 <div className="flex items-center mb-2">
-                  <DollarSign className="text-blue-600 mr-2" size={20} />
-                  <span className="font-semibold text-gray-800">
+                  <div className="w-8 h-8 bg-[#F4CE14]/20 rounded-lg flex items-center justify-center mr-3">
+                    <DollarSign className="text-[#F4CE14]" size={16} />
+                  </div>
+                  <span className="font-semibold text-[#45474B]">
                     Registration Fee
                   </span>
                 </div>
-                <p className="text-gray-700">${camp.fees.toFixed(2)}</p>
+                <p className="text-[#45474B]">${camp.fees.toFixed(2)}</p>
               </div>
 
-              <div className="bg-blue-50/50 p-4 rounded-xl border border-blue-100">
+              <div className="bg-[#495E57]/5 p-4 rounded-xl border border-[#495E57]/10">
                 <div className="flex items-center mb-2">
-                  <User className="text-blue-600 mr-2" size={20} />
-                  <span className="font-semibold text-gray-800">
+                  <div className="w-8 h-8 bg-[#495E57]/10 rounded-lg flex items-center justify-center mr-3">
+                    <User className="text-[#495E57]" size={16} />
+                  </div>
+                  <span className="font-semibold text-[#45474B]">
                     Lead Doctor
                   </span>
                 </div>
-                <p className="text-gray-700">{camp.healthcareProfessional}</p>
+                <p className="text-[#45474B]">{camp.healthcareProfessional}</p>
               </div>
 
-              <div className="bg-blue-50/50 p-4 rounded-xl border border-blue-100">
+              <div className="bg-[#495E57]/5 p-4 rounded-xl border border-[#495E57]/10">
                 <div className="flex items-center mb-2">
-                  <Users className="text-blue-600 mr-2" size={20} />
-                  <span className="font-semibold text-gray-800">
+                  <div className="w-8 h-8 bg-[#495E57]/10 rounded-lg flex items-center justify-center mr-3">
+                    <Users className="text-[#495E57]" size={16} />
+                  </div>
+                  <span className="font-semibold text-[#45474B]">
                     Available Slots
                   </span>
                 </div>
-                <p className="text-gray-700">
+                <p className="text-[#45474B]">
                   {camp.participantCount} remaining
                 </p>
               </div>
@@ -328,12 +354,12 @@ const CampDetails = () => {
             {/* Description */}
             {camp.description && (
               <div className="mb-8">
-                <h2 className="text-xl font-bold text-gray-900 mb-4 flex items-center">
-                  <ChevronRight className="text-blue-600 mr-2" />
+                <h2 className="text-xl font-bold text-[#45474B] mb-4 flex items-center">
+                  <ChevronRight className="text-[#495E57] mr-2" />
                   Camp Overview
                 </h2>
-                <div className="prose prose-blue max-w-none">
-                  <p className="text-gray-700 leading-relaxed">
+                <div className="prose max-w-none">
+                  <p className="text-[#45474B] leading-relaxed">
                     {camp.description}
                   </p>
                 </div>
@@ -355,7 +381,7 @@ const CampDetails = () => {
                   ? "bg-gray-400 cursor-not-allowed"
                   : joinSuccess || isAlreadyRegistered
                   ? "bg-green-500 shadow-lg cursor-not-allowed"
-                  : "bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 shadow-lg hover:shadow-xl"
+                  : "bg-gradient-to-r from-[#495E57] to-[#495E57]/90 hover:from-[#45474B] hover:to-[#45474B] shadow-lg hover:shadow-xl"
               } flex items-center justify-center`}
             >
               {isOrganizer ? (
@@ -382,7 +408,7 @@ const CampDetails = () => {
                 <>
                   Register Now
                   <ChevronRight
-                    className="ml-2 group-hover:translate-x-1 transition-transform"
+                    className="ml-2 text-[#F4CE14] group-hover:translate-x-1 transition-transform"
                     size={20}
                   />
                 </>
@@ -401,24 +427,26 @@ const CampDetails = () => {
           role="dialog"
         >
           <div
-            className="bg-white rounded-2xl max-w-md w-full p-6 relative"
+            className="bg-white rounded-2xl max-w-md w-full p-6 relative border border-[#495E57]/10"
             onClick={(e) => e.stopPropagation()} // prevent closing modal when clicking inside
           >
             {/* Modal header */}
             <div className="flex justify-between items-center mb-6">
-              <h3 className="text-xl font-semibold">Join Camp Registration</h3>
+              <h3 className="text-xl font-semibold text-[#45474B]">
+                Join Camp Registration
+              </h3>
               <button
                 onClick={closeModal}
                 disabled={formSubmitting}
                 aria-label="Close modal"
-                className="text-gray-400 hover:text-gray-600 transition"
+                className="text-[#45474B] hover:text-[#495E57] transition"
               >
                 <X size={24} />
               </button>
             </div>
 
             {/* Read-only camp info */}
-            <div className="mb-4 space-y-2 text-gray-700">
+            <div className="mb-4 space-y-2 text-[#45474B] bg-[#F5F7F8] p-4 rounded-lg">
               <p>
                 <strong>Camp Name:</strong> {camp.name}
               </p>
@@ -439,7 +467,7 @@ const CampDetails = () => {
               <div>
                 <label
                   htmlFor="participantName"
-                  className="block text-sm font-medium text-gray-700"
+                  className="block text-sm font-medium text-[#45474B]"
                 >
                   Participant Name *
                 </label>
@@ -450,14 +478,14 @@ const CampDetails = () => {
                   value={formData.participantName}
                   onChange={handleInputChange}
                   required
-                  className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="mt-1 block w-full rounded-lg border border-[#495E57]/20 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#495E57] bg-white"
                 />
               </div>
 
               <div>
                 <label
                   htmlFor="participantEmail"
-                  className="block text-sm font-medium text-gray-700"
+                  className="block text-sm font-medium text-[#45474B]"
                 >
                   Participant Email *
                 </label>
@@ -468,14 +496,14 @@ const CampDetails = () => {
                   value={formData.participantEmail}
                   onChange={handleInputChange}
                   required
-                  className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="mt-1 block w-full rounded-lg border border-[#495E57]/20 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#495E57] bg-white"
                 />
               </div>
 
               <div>
                 <label
                   htmlFor="age"
-                  className="block text-sm font-medium text-gray-700"
+                  className="block text-sm font-medium text-[#45474B]"
                 >
                   Age *
                 </label>
@@ -488,14 +516,14 @@ const CampDetails = () => {
                   value={formData.age}
                   onChange={handleInputChange}
                   required
-                  className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="mt-1 block w-full rounded-lg border border-[#495E57]/20 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#495E57] bg-white"
                 />
               </div>
 
               <div>
                 <label
                   htmlFor="phoneNumber"
-                  className="block text-sm font-medium text-gray-700"
+                  className="block text-sm font-medium text-[#45474B]"
                 >
                   Phone Number *
                 </label>
@@ -508,14 +536,14 @@ const CampDetails = () => {
                   pattern="^\+?\d{7,15}$"
                   placeholder="+8801xxxxxxxxx"
                   required
-                  className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="mt-1 block w-full rounded-lg border border-[#495E57]/20 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#495E57] bg-white"
                 />
               </div>
 
               <div>
                 <label
                   htmlFor="gender"
-                  className="block text-sm font-medium text-gray-700"
+                  className="block text-sm font-medium text-[#45474B]"
                 >
                   Gender *
                 </label>
@@ -525,7 +553,7 @@ const CampDetails = () => {
                   value={formData.gender}
                   onChange={handleInputChange}
                   required
-                  className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="mt-1 block w-full rounded-lg border border-[#495E57]/20 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#495E57] bg-white"
                 >
                   <option value="">Select gender</option>
                   <option value="Male">Male</option>
@@ -538,7 +566,7 @@ const CampDetails = () => {
               <div>
                 <label
                   htmlFor="emergencyContact"
-                  className="block text-sm font-medium text-gray-700"
+                  className="block text-sm font-medium text-[#45474B]"
                 >
                   Emergency Contact *
                 </label>
@@ -551,7 +579,7 @@ const CampDetails = () => {
                   pattern="^\+?\d{7,15}$"
                   placeholder="+8801xxxxxxxxx"
                   required
-                  className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="mt-1 block w-full rounded-lg border border-[#495E57]/20 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#495E57] bg-white"
                 />
               </div>
 
@@ -562,9 +590,16 @@ const CampDetails = () => {
               <button
                 type="submit"
                 disabled={formSubmitting}
-                className="w-full bg-blue-600 text-white py-3 rounded-xl font-bold hover:bg-blue-700 transition disabled:opacity-50"
+                className="w-full bg-gradient-to-r from-[#495E57] to-[#495E57]/90 hover:from-[#45474B] hover:to-[#45474B] text-white py-3 rounded-xl font-bold transition-all duration-200 disabled:opacity-50 flex items-center justify-center"
               >
-                {formSubmitting ? "Registering..." : "Submit Registration"}
+                {formSubmitting ? (
+                  <>
+                    <Loader2 className="animate-spin mr-2" size={16} />
+                    Registering...
+                  </>
+                ) : (
+                  "Submit Registration"
+                )}
               </button>
             </form>
           </div>

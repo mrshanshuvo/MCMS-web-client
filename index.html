@@ -2,12 +2,59 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/mcmsLogoC.png" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- SEO Meta -->
+    <meta
+      name="description"
+      content="MCMS - Medical Camp Management System to efficiently manage medical camps and health events."
+    />
+    <meta name="keywords" content="Medical, Camp, Management, Health, MCMS" />
+    <meta name="author" content="Shahid Hasan Shuvo" />
+
+    <!-- Social / Open Graph Meta -->
+    <meta property="og:title" content="MCMS - Medical Camp Management System" />
+    <meta
+      property="og:description"
+      content="Efficiently manage medical camps and health events with MCMS."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="/mcmsLogoC.png" />
+    <meta property="og:url" content="https://yourdomain.com" />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="/mcmsLogo.png" />
+
+    <!-- Preconnect / Preload for performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <!-- Example Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Manifest for PWA -->
+    <link rel="manifest" href="/manifest.json" />
+
+    <!-- Title -->
     <title>MCMS - Medical Camp Management System</title>
+
+    <!-- Optional: theme-color for mobile browsers -->
+    <meta name="theme-color" content="#4A628A" />
   </head>
-  <body>
-    <div id="root"></div>
+  <body class="bg-white text-gray-900 font-sans">
+    <!-- Root container for React -->
+    <div id="root" role="main"></div>
+
+    <!-- Main React entry -->
     <script type="module" src="/src/main.jsx"></script>
+
+    <!-- NoScript fallback -->
+    <noscript>
+      This app requires JavaScript to run. Please enable JavaScript in your
+      browser.
+    </noscript>
   </body>
 </html>

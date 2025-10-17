@@ -78,7 +78,8 @@ const Login = () => {
     <div className="space-y-6">
       <div className="text-center">
         <div className="flex justify-center mb-4">
-          <div className="bg-blue-50 p-3 rounded-full">
+          <div className="bg-[#495E57]/10 p-3 rounded-full">
+            {/* Logo */}
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-10 w-10 text-blue-600"
@@ -95,8 +96,8 @@ const Login = () => {
             </svg>
           </div>
         </div>
-        <h1 className="text-2xl font-bold text-blue-800">Welcome Back</h1>
-        <p className="text-blue-600 mt-2">
+        <h1 className="text-2xl font-bold text-[#45474B]">Welcome Back</h1>
+        <p className="text-[#45474B]/70 mt-2">
           Login to access your medical camp dashboard
         </p>
       </div>
@@ -105,7 +106,7 @@ const Login = () => {
         <div>
           <label
             htmlFor="email"
-            className="block text-sm font-medium text-blue-800"
+            className="block text-sm font-medium text-[#45474B]"
           >
             Email Address
           </label>
@@ -119,7 +120,7 @@ const Login = () => {
                 message: "Invalid email address",
               },
             })}
-            className="mt-1 block w-full px-3 py-2 border border-blue-200 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            className="mt-1 block w-full px-3 py-2 border border-[#495E57]/20 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#495E57] focus:border-[#495E57] bg-white"
             placeholder="your@email.com"
           />
           {errors.email && (
@@ -130,7 +131,7 @@ const Login = () => {
         <div>
           <label
             htmlFor="password"
-            className="block text-sm font-medium text-blue-800"
+            className="block text-sm font-medium text-[#45474B]"
           >
             Password
           </label>
@@ -144,7 +145,7 @@ const Login = () => {
                 message: "Password must be at least 6 characters",
               },
             })}
-            className="mt-1 block w-full px-3 py-2 border border-blue-200 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            className="mt-1 block w-full px-3 py-2 border border-[#495E57]/20 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#495E57] focus:border-[#495E57] bg-white"
             placeholder="••••••••"
           />
           {errors.password && (
@@ -160,18 +161,18 @@ const Login = () => {
               id="remember-me"
               name="remember-me"
               type="checkbox"
-              className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-blue-300 rounded"
+              className="h-4 w-4 text-[#495E57] focus:ring-[#495E57] border-[#495E57]/30 rounded"
             />
             <label
               htmlFor="remember-me"
-              className="ml-2 block text-sm text-blue-700"
+              className="ml-2 block text-sm text-[#45474B]"
             >
               Remember me
             </label>
           </div>
           <a
             href="#"
-            className="text-sm font-medium text-blue-600 hover:text-blue-500"
+            className="text-sm font-medium text-[#495E57] hover:text-[#45474B] transition-colors"
           >
             Forgot password?
           </a>
@@ -179,18 +180,18 @@ const Login = () => {
 
         <button
           type="submit"
-          className="w-full flex justify-center py-2 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+          className="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-gradient-to-r from-[#495E57] to-[#495E57]/90 hover:from-[#45474B] hover:to-[#45474B] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#495E57] transition-all duration-200"
         >
           Sign in
         </button>
       </form>
 
-      <div className="text-center text-sm text-blue-700">
+      <div className="text-center text-sm text-[#45474B]">
         New to MCMS?{" "}
         <Link
           state={{ from }}
           to="/register"
-          className="font-medium text-blue-600 hover:text-blue-500"
+          className="font-medium text-[#495E57] hover:text-[#45474B] transition-colors"
         >
           Create an account
         </Link>
@@ -198,20 +199,20 @@ const Login = () => {
 
       <div className="relative">
         <div className="absolute inset-0 flex items-center">
-          <div className="w-full border-t border-blue-200"></div>
+          <div className="w-full border-t border-[#495E57]/20"></div>
         </div>
         <div className="relative flex justify-center text-sm">
-          <span className="px-2 bg-white text-blue-500">Or continue with</span>
+          <span className="px-2 bg-white text-[#45474B]">Or continue with</span>
         </div>
       </div>
 
       <button
         type="button"
         onClick={handleGoogleSignIn}
-        className="w-full flex justify-center items-center gap-2 py-2 px-4 border border-blue-200 rounded-lg shadow-sm text-sm font-medium text-blue-700 bg-white hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+        className="w-full flex justify-center items-center gap-2 py-3 px-4 border border-[#495E57]/20 rounded-lg shadow-sm text-sm font-medium text-[#45474B] bg-white hover:bg-[#495E57]/5 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#495E57] transition-all duration-200"
       >
         <FcGoogle className="w-5 h-5" />
-        Google
+        Continue with Google
       </button>
     </div>
   );

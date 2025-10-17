@@ -14,6 +14,7 @@ import {
   ChevronRight,
   Grid,
   List,
+  Star,
 } from "lucide-react";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
@@ -57,19 +58,30 @@ const AvailableCamps = () => {
     setLayout(layout === "grid-3" ? "grid-2" : "grid-3");
   };
 
+  // Fallback image URL
+  const getFallbackImage = (campName) => {
+    return `https://placehold.co/400x300/495E57/F4CE14/png?text=${encodeURIComponent(
+      campName
+    )}`;
+  };
+
   return (
-    <div className="bg-gradient-to-b from-gray-50 to-white min-h-screen py-12">
+    <div className="bg-gradient-to-b from-[#F5F7F8] to-white min-h-screen py-12">
       <div className="container mx-auto px-4 max-w-7xl">
         {/* Header */}
         <div className="text-center mb-12">
-          <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
+          <div className="inline-flex items-center gap-2 bg-[#495E57]/10 text-[#495E57] px-4 py-2 rounded-full text-sm font-medium mb-4">
+            <Star size={16} className="text-[#F4CE14]" fill="#F4CE14" />
+            Available Medical Camps
+          </div>
+          <h1 className="text-3xl sm:text-4xl font-bold text-[#45474B] mb-4">
             Available
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#495E57] to-[#F4CE14]">
               {" "}
               Medical Camps
             </span>
           </h1>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+          <p className="text-lg text-[#45474B]/70 max-w-2xl mx-auto">
             Find and join medical camps that match your expertise and interests
           </p>
         </div>
@@ -78,7 +90,7 @@ const AvailableCamps = () => {
         <div className="flex flex-col md:flex-row justify-between gap-4 mb-8">
           <div className="relative flex-1 max-w-2xl">
             <Search
-              className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
+              className="absolute left-3 top-1/2 -translate-y-1/2 text-[#495E57]"
               size={18}
             />
             <input
@@ -86,7 +98,7 @@ const AvailableCamps = () => {
               placeholder="Search camps by name, location or professional..."
               value={search}
               onChange={handleSearchChange}
-              className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full pl-10 pr-4 py-3 border border-[#495E57]/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#495E57] focus:border-transparent bg-white"
             />
           </div>
 
@@ -94,25 +106,25 @@ const AvailableCamps = () => {
             <div className="flex items-center gap-2">
               <button
                 onClick={toggleLayout}
-                className="p-2 rounded-lg border border-gray-300 hover:bg-gray-100 transition-colors"
+                className="p-2 rounded-lg border border-[#495E57]/20 hover:bg-[#495E57]/10 transition-colors"
                 aria-label="Toggle layout"
               >
                 {layout === "grid-3" ? (
-                  <Grid className="text-blue-600" size={20} />
+                  <Grid className="text-[#495E57]" size={20} />
                 ) : (
-                  <List className="text-blue-600" size={20} />
+                  <List className="text-[#495E57]" size={20} />
                 )}
               </button>
             </div>
 
-            <label htmlFor="sort" className="text-gray-600 whitespace-nowrap">
+            <label htmlFor="sort" className="text-[#45474B] whitespace-nowrap">
               Sort by:
             </label>
             <select
               id="sort"
               value={sort}
               onChange={handleSortChange}
-              className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="px-4 py-2 border border-[#495E57]/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#495E57] focus:border-transparent bg-white"
             >
               <option value="participantCount">Most Popular</option>
               <option value="campFeesAsc">Price: Low to High</option>
@@ -162,20 +174,25 @@ const AvailableCamps = () => {
             {[...Array(6)].map((_, index) => (
               <div
                 key={index}
-                className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden"
+                className="bg-white border border-[#495E57]/10 rounded-xl overflow-hidden shadow-sm"
               >
                 <Skeleton height={200} className="w-full" />
-                <div className="p-5">
-                  <Skeleton count={1} height={28} className="mb-4" />
-                  <div className="space-y-3">
+                <div className="p-6">
+                  <Skeleton count={1} height={28} className="mb-4 rounded-lg" />
+                  <div className="space-y-4">
                     {[...Array(4)].map((_, i) => (
-                      <div key={i} className="flex items-center gap-3">
-                        <Skeleton circle width={16} height={16} />
-                        <Skeleton width={100} height={16} />
+                      <div key={i} className="flex items-center">
+                        <Skeleton
+                          circle
+                          width={32}
+                          height={32}
+                          className="mr-3"
+                        />
+                        <Skeleton width={120} height={16} />
                       </div>
                     ))}
                   </div>
-                  <Skeleton height={40} className="mt-4 rounded-lg" />
+                  <Skeleton height={48} className="mt-4 rounded-lg" />
                 </div>
               </div>
             ))}
@@ -184,13 +201,13 @@ const AvailableCamps = () => {
           <>
             {data.camps.length === 0 ? (
               <div className="text-center py-12">
-                <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-blue-100">
-                  <Search className="h-6 w-6 text-blue-600" />
+                <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-[#495E57]/10">
+                  <Search className="h-6 w-6 text-[#495E57]" />
                 </div>
-                <h3 className="mt-2 text-lg font-medium text-gray-900">
+                <h3 className="mt-2 text-lg font-medium text-[#45474B]">
                   No camps found
                 </h3>
-                <p className="mt-1 text-gray-500">
+                <p className="mt-1 text-[#45474B]/70">
                   Try adjusting your search or filter to find what you're
                   looking for.
                 </p>
@@ -207,82 +224,101 @@ const AvailableCamps = () => {
                   {data.camps.map((camp) => (
                     <div
                       key={camp._id}
-                      className="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-1 group"
+                      className="bg-white border border-[#495E57]/10 rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all duration-300 hover:-translate-y-1 group"
                     >
-                      <div className="relative h-48 bg-gradient-to-r from-blue-500 to-purple-600 overflow-hidden flex items-center justify-center">
-                        {camp.imageURL ? (
-                          <img
-                            src={camp.imageURL}
-                            alt={camp.name}
-                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                            onError={(e) => {
-                              e.target.src = `https://placehold.co/600x400?text=${encodeURIComponent(
-                                camp.name.substring(0, 20)
-                              )}`;
-                            }}
-                          />
-                        ) : (
-                          <span className="text-6xl">🏥</span>
-                        )}
-                        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4">
+                      <div className="relative h-48 bg-gradient-to-br from-[#495E57]/10 to-[#F4CE14]/10 overflow-hidden">
+                        <img
+                          src={camp.imageURL || getFallbackImage(camp.name)}
+                          alt={camp.name}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                          onError={(e) => {
+                            e.target.src = getFallbackImage(camp.name);
+                          }}
+                        />
+                        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-[#45474B] to-transparent p-4">
                           <h2 className="text-xl font-bold text-white">
                             {camp.name}
                           </h2>
                         </div>
                       </div>
-                      <div className="p-5 space-y-3">
-                        <div className="flex items-center text-gray-700">
-                          <MapPin className="mr-2 text-blue-500" size={16} />
-                          <span>{camp.location}</span>
+                      <div className="p-6 space-y-4">
+                        <div className="flex items-center text-[#45474B]">
+                          <div className="flex-shrink-0 w-8 h-8 bg-[#495E57]/10 rounded-lg flex items-center justify-center mr-3">
+                            <MapPin className="text-[#495E57]" size={16} />
+                          </div>
+                          <span className="text-sm font-medium">
+                            {camp.location}
+                          </span>
                         </div>
-                        <div className="flex items-center text-gray-700">
-                          <Calendar className="mr-2 text-blue-500" size={16} />
-                          <span>
+                        <div className="flex items-center text-[#45474B]">
+                          <div className="flex-shrink-0 w-8 h-8 bg-[#495E57]/10 rounded-lg flex items-center justify-center mr-3">
+                            <Calendar className="text-[#495E57]" size={16} />
+                          </div>
+                          <span className="text-sm">
                             {new Date(camp.dateTime).toLocaleDateString(
                               "en-US",
                               {
                                 year: "numeric",
                                 month: "short",
                                 day: "numeric",
-                                hour: "2-digit",
-                                minute: "2-digit",
                               }
                             )}
                           </span>
                         </div>
-                        <div className="flex items-center text-gray-700">
-                          <DollarSign
-                            className="mr-2 text-blue-500"
-                            size={16}
-                          />
-                          <span>${camp.fees.toFixed(2)}</span>
+                        <div className="flex items-center text-[#45474B]">
+                          <div className="flex-shrink-0 w-8 h-8 bg-[#F4CE14]/20 rounded-lg flex items-center justify-center mr-3">
+                            <DollarSign className="text-[#F4CE14]" size={16} />
+                          </div>
+                          <span className="text-sm font-semibold">
+                            ${camp.fees.toFixed(2)}
+                          </span>
                         </div>
-                        <div className="flex items-center text-gray-700">
-                          <User className="mr-2 text-blue-500" size={16} />
-                          <span className="truncate">
+                        <div className="flex items-center text-[#45474B]">
+                          <div className="flex-shrink-0 w-8 h-8 bg-[#495E57]/10 rounded-lg flex items-center justify-center mr-3">
+                            <User className="text-[#495E57]" size={16} />
+                          </div>
+                          <span className="text-sm truncate">
                             {camp.healthcareProfessional}
                           </span>
                         </div>
-                        <div className="flex items-center text-gray-700">
-                          <Users className="mr-2 text-blue-500" size={16} />
-                          <span>
-                            {camp.participantCount.toLocaleString()}{" "}
-                            participants
-                          </span>
+                        <div className="flex items-center text-[#45474B]">
+                          <div className="flex-shrink-0 w-8 h-8 bg-[#495E57]/10 rounded-lg flex items-center justify-center mr-3">
+                            <Users className="text-[#495E57]" size={16} />
+                          </div>
+                          <div className="flex-1">
+                            <span className="text-sm font-medium">
+                              {camp.participantCount.toLocaleString()}{" "}
+                              participants
+                            </span>
+                            {/* Progress bar */}
+                            <div className="mt-2 w-full bg-[#F5F7F8] rounded-full h-1.5">
+                              <div
+                                className="bg-[#F4CE14] h-1.5 rounded-full transition-all duration-500"
+                                style={{
+                                  width: `${Math.min(
+                                    (camp.participantCount / 500) * 100,
+                                    100
+                                  )}%`,
+                                }}
+                              />
+                            </div>
+                          </div>
                         </div>
 
-                        {/* Added description */}
-                        <p className="text-gray-600 text-sm truncate">
-                          {camp.description}
-                        </p>
+                        {/* Description */}
+                        {camp.description && (
+                          <p className="text-[#45474B]/70 text-sm line-clamp-2">
+                            {camp.description}
+                          </p>
+                        )}
 
                         <Link
                           to={`/camp-details/${camp._id}`}
-                          className="mt-4 inline-flex items-center justify-center w-full bg-gradient-to-r from-blue-50 to-gray-50 hover:from-blue-100 hover:to-gray-100 text-blue-600 font-medium py-2 px-4 rounded-lg border border-gray-200 transition-colors group-hover:shadow-sm"
+                          className="mt-4 w-full bg-gradient-to-r from-[#495E57] to-[#495E57]/90 hover:from-[#45474B] hover:to-[#45474B] text-white font-semibold py-3 px-4 rounded-lg flex items-center justify-center transition-all duration-200 shadow-sm hover:shadow-md group/link"
                         >
-                          View Details{" "}
+                          View Details
                           <ArrowRight
-                            className="ml-2 group-hover:translate-x-1 transition-transform"
+                            className="ml-2 text-[#F4CE14] group-hover/link:translate-x-1 transition-transform duration-200"
                             size={16}
                           />
                         </Link>
@@ -296,7 +332,7 @@ const AvailableCamps = () => {
                   <button
                     onClick={() => setPage((old) => Math.max(old - 1, 1))}
                     disabled={page === 1}
-                    className="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                    className="flex items-center gap-2 px-4 py-2 border border-[#495E57]/20 rounded-lg hover:bg-[#495E57]/10 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-[#45474B]"
                   >
                     <ChevronLeft size={16} />
                     Previous
@@ -319,10 +355,10 @@ const AvailableCamps = () => {
                           <button
                             key={pageNum}
                             onClick={() => setPage(pageNum)}
-                            className={`w-10 h-10 rounded-full flex items-center justify-center ${
+                            className={`w-10 h-10 rounded-full flex items-center justify-center transition-colors ${
                               page === pageNum
-                                ? "bg-blue-600 text-white"
-                                : "hover:bg-gray-100"
+                                ? "bg-[#495E57] text-white"
+                                : "text-[#45474B] hover:bg-[#495E57]/10"
                             }`}
                           >
                             {pageNum}
@@ -330,14 +366,16 @@ const AvailableCamps = () => {
                         );
                       }
                     )}
-                    {data.totalPages > 5 && <span className="mx-2">...</span>}
+                    {data.totalPages > 5 && (
+                      <span className="mx-2 text-[#45474B]">...</span>
+                    )}
                   </div>
                   <button
                     onClick={() =>
                       setPage((old) => (old < data.totalPages ? old + 1 : old))
                     }
                     disabled={page === data.totalPages || data.totalPages === 0}
-                    className="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                    className="flex items-center gap-2 px-4 py-2 border border-[#495E57]/20 rounded-lg hover:bg-[#495E57]/10 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-[#45474B]"
                   >
                     Next <ChevronRight size={16} />
                   </button>

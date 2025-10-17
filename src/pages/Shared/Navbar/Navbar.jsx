@@ -1,16 +1,15 @@
-import React, { useState, useContext, useEffect, useRef } from "react";
-import { NavLink, useNavigate } from "react-router";
+import React, { useState, useEffect, useRef } from "react";
 import { Menu, X, User, LogOut, LayoutDashboard } from "lucide-react";
-import { AuthContext } from "../../../contexts/AuthContext/AuthContext";
-import MCMSLogo from "../MCMSLogo/MCMSLogo";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const { user, logOut } = useContext(AuthContext);
-  const navigate = useNavigate();
+  const [scrolled, setScrolled] = useState(false);
   const dropdownRef = useRef(null);
   const mobileMenuRef = useRef(null);
+
+  // Mock user for demo - replace with actual auth context
+  const user = null; // Set to { displayName: "John Doe", email: "john@example.com", photoURL: null } to test logged-in state
 
   const navLinks = [
     { path: "/", label: "Home" },
@@ -20,14 +19,18 @@ const Navbar = () => {
     { path: "/contact", label: "Contact Us" },
   ];
 
-  const handleLogout = async () => {
-    try {
-      await logOut();
-      navigate("/");
-    } catch (error) {
-      console.error("Logout error:", error);
-    }
+  const handleLogout = () => {
+    console.log("Logging out...");
   };
+
+  // Handle scroll effect
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   // Close dropdown/menu if click outside
   useEffect(() => {
@@ -45,181 +48,209 @@ const Navbar = () => {
     }
 
     document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   return (
-    <nav className="bg-gradient-to-r from-[#1e3a8a] via-[#3A7CA5] to-[#0f766e] text-white shadow-lg sticky top-0 z-50">
-      <div className="container mx-auto px-4 py-3 flex justify-between items-center">
-        {/* Logo */}
-        <NavLink
-          to="/"
-          className="flex items-center gap-2 group"
-          onClick={() => setIsOpen(false)}
-        >
-          <MCMSLogo className="group-hover:scale-110 transition-transform" />
-          <span className="font-bold text-xl bg-gradient-to-r from-yellow-300 to-orange-300 bg-clip-text text-transparent">
-            MCMS
-          </span>
-        </NavLink>
-
-        {/* Desktop Nav */}
-        <div className="hidden md:flex items-center gap-8">
-          <ul className="flex gap-6 items-center">
-            {navLinks.map((link) => (
-              <li key={link.path}>
-                <NavLink
-                  to={link.path}
-                  className={({ isActive }) =>
-                    `px-1 py-2 font-medium transition-colors relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-yellow-300 hover:after:w-full after:transition-all ${
-                      isActive
-                        ? "text-yellow-300 after:w-full"
-                        : "text-white hover:text-yellow-200"
-                    }`
-                  }
-                >
-                  {link.label}
-                </NavLink>
-              </li>
-            ))}
-          </ul>
-
-          {!user ? (
-            <NavLink
-              to="/login"
-              className="bg-gradient-to-r from-yellow-400 to-orange-400 text-gray-900 px-5 py-2 rounded-lg font-semibold shadow-md hover:shadow-yellow-300/30 transition-all flex items-center gap-2"
-            >
-              Join Us
-              <User size={18} />
-            </NavLink>
-          ) : (
-            <div className="relative" ref={dropdownRef}>
-              <div
-                className="flex items-center gap-2 cursor-pointer group"
-                onClick={() => setDropdownOpen(!dropdownOpen)}
-              >
-                <img
-                  src={user.photoURL || "/default-avatar.png"}
-                  alt={user.displayName || "User"}
-                  className="w-10 h-10 rounded-full border-2 border-white/30 group-hover:border-yellow-300 transition-all shadow-md"
-                  title={user.displayName}
-                />
-              </div>
-
-              {dropdownOpen && (
-                <div className="absolute right-0 mt-2 w-56 bg-white text-gray-800 shadow-xl rounded-lg overflow-hidden z-50">
-                  <div className="px-4 py-3 border-b border-gray-100 bg-gradient-to-r from-blue-50 to-gray-50">
-                    <p className="font-semibold truncate">{user.displayName}</p>
-                    <p className="text-sm text-gray-500 truncate">
-                      {user.email}
-                    </p>
-                  </div>
-
-                  <NavLink
-                    to="/dashboard"
-                    className="flex items-center gap-2 px-4 py-3 hover:bg-yellow-50 transition-colors"
-                    onClick={() => setDropdownOpen(false)}
-                  >
-                    <LayoutDashboard size={16} className="text-blue-600" />
-                    Dashboard
-                  </NavLink>
-
-                  <button
-                    onClick={() => {
-                      setDropdownOpen(false);
-                      handleLogout();
-                    }}
-                    className="w-full text-left flex items-center gap-2 px-4 py-3 hover:bg-red-50 transition-colors border-t border-gray-100"
-                  >
-                    <LogOut size={16} className="text-red-500" />
-                    Logout
-                  </button>
-                </div>
-              )}
+    <nav
+      className={`sticky top-0 z-50 transition-all duration-300 ${
+        scrolled
+          ? "bg-white shadow-lg"
+          : "bg-white/95 backdrop-blur-md shadow-md"
+      }`}
+    >
+      <div className="container mx-auto px-4 py-4">
+        <div className="flex justify-between items-center">
+          {/* Logo */}
+          <a
+            href="/"
+            className="flex items-center gap-3 group"
+            onClick={() => setIsOpen(false)}
+          >
+            <div className="w-12 h-12 bg-gradient-to-br from-[#ffffff] to-[#99bbff] rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-md">
+              <img src="/mcmsLogo.png" alt="MCMS Logo" />
             </div>
-          )}
-        </div>
+            <div className="flex flex-col">
+              <span className="font-bold text-xl text-[#45474B] leading-tight">
+                MCMS
+              </span>
+              <span className="text-xs text-[#495E57]/60 leading-tight">
+                Medical Camp
+              </span>
+            </div>
+          </a>
 
-        {/* Mobile Menu Button */}
-        <button
-          onClick={() => setIsOpen(!isOpen)}
-          className="md:hidden p-2 rounded-lg hover:bg-white/10 transition-colors"
-          aria-label="Toggle Menu"
-        >
-          {isOpen ? <X size={24} /> : <Menu size={24} />}
-        </button>
+          {/* Desktop Nav */}
+          <div className="hidden lg:flex items-center gap-8">
+            <ul className="flex gap-1 items-center">
+              {navLinks.map((link) => (
+                <li key={link.path}>
+                  <a
+                    href={link.path}
+                    className="px-4 py-2 font-medium text-[#45474B] hover:text-[#495E57] hover:bg-[#F5F7F8] rounded-lg transition-all duration-200 relative group"
+                  >
+                    {link.label}
+                    <span className="absolute bottom-1 left-4 right-4 h-0.5 bg-[#F4CE14] scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
+                  </a>
+                </li>
+              ))}
+            </ul>
+
+            {!user ? (
+              <a
+                href="/login"
+                className="bg-[#495E57] text-[#F5F7F8] px-6 py-2.5 rounded-xl font-semibold shadow-md hover:bg-[#45474B] hover:shadow-lg transition-all duration-300 flex items-center gap-2 group"
+              >
+                <span>Join Us</span>
+                <User
+                  size={18}
+                  className="group-hover:scale-110 transition-transform"
+                />
+              </a>
+            ) : (
+              <div className="relative" ref={dropdownRef}>
+                <button
+                  className="flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-[#F5F7F8] transition-all duration-200 group"
+                  onClick={() => setDropdownOpen(!dropdownOpen)}
+                >
+                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#495E57] to-[#45474B] flex items-center justify-center text-[#F4CE14] font-semibold border-2 border-[#F4CE14]/20 group-hover:border-[#F4CE14]/40 transition-all shadow-md">
+                    {user.displayName?.[0]?.toUpperCase() || "U"}
+                  </div>
+                </button>
+
+                {dropdownOpen && (
+                  <div className="absolute right-0 mt-3 w-64 bg-white shadow-2xl rounded-2xl overflow-hidden border border-[#495E57]/10 animate-[slideDown_0.2s_ease-out]">
+                    <div className="px-5 py-4 border-b border-[#495E57]/10 bg-gradient-to-br from-[#F5F7F8] to-white">
+                      <p className="font-semibold text-[#45474B] truncate">
+                        {user.displayName}
+                      </p>
+                      <p className="text-sm text-[#495E57]/60 truncate mt-0.5">
+                        {user.email}
+                      </p>
+                    </div>
+
+                    <a
+                      href="/dashboard"
+                      className="flex items-center gap-3 px-5 py-3.5 hover:bg-[#F5F7F8] transition-colors group"
+                      onClick={() => setDropdownOpen(false)}
+                    >
+                      <div className="w-8 h-8 rounded-lg bg-[#495E57]/10 flex items-center justify-center group-hover:bg-[#495E57]/20 transition-colors">
+                        <LayoutDashboard size={16} className="text-[#495E57]" />
+                      </div>
+                      <span className="text-[#45474B] font-medium">
+                        Dashboard
+                      </span>
+                    </a>
+
+                    <button
+                      onClick={() => {
+                        setDropdownOpen(false);
+                        handleLogout();
+                      }}
+                      className="w-full text-left flex items-center gap-3 px-5 py-3.5 hover:bg-red-50 transition-colors border-t border-[#495E57]/10 group"
+                    >
+                      <div className="w-8 h-8 rounded-lg bg-red-50 flex items-center justify-center group-hover:bg-red-100 transition-colors">
+                        <LogOut size={16} className="text-red-500" />
+                      </div>
+                      <span className="text-[#45474B] font-medium">Logout</span>
+                    </button>
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+
+          {/* Mobile Menu Button */}
+          <button
+            onClick={() => setIsOpen(!isOpen)}
+            className="lg:hidden p-2.5 rounded-xl hover:bg-[#F5F7F8] transition-colors text-[#45474B]"
+            aria-label="Toggle Menu"
+          >
+            {isOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
+        </div>
       </div>
 
       {/* Mobile Menu */}
       {isOpen && (
         <div
           ref={mobileMenuRef}
-          className="md:hidden bg-gradient-to-b from-blue-900/95 to-teal-900/95 backdrop-blur-sm px-4 py-6 absolute w-full z-40 shadow-xl"
+          className="lg:hidden bg-white border-t border-[#495E57]/10 absolute w-full shadow-2xl animate-[slideDown_0.3s_ease-out]"
         >
-          <ul className="space-y-4">
-            {navLinks.map((link) => (
-              <li key={link.path}>
-                <NavLink
-                  to={link.path}
-                  onClick={() => setIsOpen(false)}
-                  className={({ isActive }) =>
-                    `block px-3 py-2 rounded-lg font-medium transition-colors ${
-                      isActive
-                        ? "bg-white/10 text-yellow-300"
-                        : "text-white hover:bg-white/10 hover:text-yellow-200"
-                    }`
-                  }
-                >
-                  {link.label}
-                </NavLink>
-              </li>
-            ))}
-
-            {user ? (
-              <>
-                <li className="px-3 py-2 text-sm text-white/80 border-t border-white/10 mt-4">
-                  Logged in as {user.displayName || user.email}
-                </li>
-                <li>
-                  <NavLink
-                    to="/dashboard"
+          <div className="container mx-auto px-4 py-6">
+            <ul className="space-y-2">
+              {navLinks.map((link) => (
+                <li key={link.path}>
+                  <a
+                    href={link.path}
                     onClick={() => setIsOpen(false)}
-                    className="flex items-center gap-2 px-3 py-2 rounded-lg text-white hover:bg-white/10"
+                    className="block px-4 py-3 rounded-xl font-medium text-[#45474B] hover:bg-[#F5F7F8] hover:text-[#495E57] transition-all duration-200"
                   >
-                    <LayoutDashboard size={18} />
-                    Dashboard
-                  </NavLink>
+                    {link.label}
+                  </a>
                 </li>
-                <li>
-                  <button
-                    onClick={() => {
-                      setIsOpen(false);
-                      handleLogout();
-                    }}
-                    className="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-red-300 hover:bg-red-900/20"
+              ))}
+
+              {user ? (
+                <>
+                  <li className="px-4 py-3 text-sm text-[#495E57]/60 border-t border-[#495E57]/10 mt-4">
+                    <div className="font-medium text-[#45474B] mb-1">
+                      {user.displayName}
+                    </div>
+                    <div>{user.email}</div>
+                  </li>
+                  <li>
+                    <a
+                      href="/dashboard"
+                      onClick={() => setIsOpen(false)}
+                      className="flex items-center gap-3 px-4 py-3 rounded-xl text-[#45474B] hover:bg-[#F5F7F8] transition-all"
+                    >
+                      <LayoutDashboard size={20} />
+                      <span className="font-medium">Dashboard</span>
+                    </a>
+                  </li>
+                  <li>
+                    <button
+                      onClick={() => {
+                        setIsOpen(false);
+                        handleLogout();
+                      }}
+                      className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-red-600 hover:bg-red-50 transition-all"
+                    >
+                      <LogOut size={20} />
+                      <span className="font-medium">Logout</span>
+                    </button>
+                  </li>
+                </>
+              ) : (
+                <li className="mt-4">
+                  <a
+                    href="/login"
+                    onClick={() => setIsOpen(false)}
+                    className="flex items-center justify-center gap-2 bg-[#495E57] text-[#F5F7F8] px-4 py-3 rounded-xl font-semibold shadow-md hover:bg-[#45474B] transition-all"
                   >
-                    <LogOut size={18} />
-                    Logout
-                  </button>
+                    <span>Join Us</span>
+                    <User size={18} />
+                  </a>
                 </li>
-              </>
-            ) : (
-              <li className="mt-4">
-                <NavLink
-                  to="/login"
-                  onClick={() => setIsOpen(false)}
-                  className="flex items-center justify-center gap-2 bg-gradient-to-r from-yellow-400 to-orange-400 text-gray-900 px-4 py-2 rounded-lg font-semibold shadow-md"
-                >
-                  Join Us
-                  <User size={18} />
-                </NavLink>
-              </li>
-            )}
-          </ul>
+              )}
+            </ul>
+          </div>
         </div>
       )}
+
+      <style jsx>{`
+        @keyframes slideDown {
+          from {
+            opacity: 0;
+            transform: translateY(-10px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+      `}</style>
     </nav>
   );
 };
