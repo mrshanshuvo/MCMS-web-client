@@ -17,29 +17,22 @@ import {
 import useAuth from "../../hooks/useAuth";
 
 const fetchCampById = async (campId) => {
-  const res = await axios.get(
-    `https://mcms-server-red.vercel.app/camps/${campId}`
-  );
+  const res = await axios.get(`http://localhost:5000/camps/${campId}`);
   return res.data.camp;
 };
 
 const checkRegistrationStatus = async (campId, idToken) => {
-  const res = await axios.get(
-    `https://mcms-server-red.vercel.app/registrations/check`,
-    {
-      params: { campId },
-      headers: {
-        Authorization: `Bearer ${idToken}`,
-      },
-    }
-  );
+  const res = await axios.get(`http://localhost:5000/registrations/check`, {
+    params: { campId },
+    headers: {
+      Authorization: `Bearer ${idToken}`,
+    },
+  });
   return res.data.registered;
 };
 
 const fetchUserRole = async (email) => {
-  const res = await axios.get(
-    `https://mcms-server-red.vercel.app/users/${email}/role`
-  );
+  const res = await axios.get(`http://localhost:5000/users/${email}/role`);
   return res.data.role || "participant";
 };
 
@@ -170,7 +163,7 @@ const CampDetails = () => {
 
       // 1. Register the participant
       await axios.post(
-        "https://mcms-server-red.vercel.app/registrations",
+        "http://localhost:5000/registrations",
         {
           campId,
           participantName: formData.participantName,
@@ -189,7 +182,7 @@ const CampDetails = () => {
 
       // 2. Increment participant count
       await axios.patch(
-        `https://mcms-server-red.vercel.app/camps/${campId}/increment`,
+        `http://localhost:5000/camps/${campId}/increment`,
         {},
         {
           headers: {

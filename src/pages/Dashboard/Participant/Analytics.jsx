@@ -15,14 +15,11 @@ import {
 import { Calendar, DollarSign, Loader2, AlertCircle } from "lucide-react";
 
 const fetchAnalytics = async (uid, token) => {
-  const res = await fetch(
-    `https://mcms-server-red.vercel.app/analytics/${uid}`,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }
-  );
+  const res = await fetch(`http://localhost:5000/analytics/${uid}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
   if (!res.ok) {
     throw new Error("Failed to fetch analytics");
   }

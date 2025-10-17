@@ -38,7 +38,7 @@ const OrganizerProfile = () => {
     enabled: !!authUser?.email,
     queryFn: async () => {
       const res = await axios.get(
-        `https://mcms-server-red.vercel.app/users/${authUser.email}`,
+        `http://localhost:5000/users/${authUser.email}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -51,7 +51,7 @@ const OrganizerProfile = () => {
   const updateMutation = useMutation({
     mutationFn: (updatedData) =>
       axios.put(
-        `https://mcms-server-red.vercel.app/users/${authUser.email}`,
+        `http://localhost:5000/users/${authUser.email}`,
         {
           name: updatedData.name,
           photoURL: updatedData.photoURL,

@@ -30,9 +30,7 @@ const CampInfo = ({ campId }) => {
   const { data: camp, isLoading } = useQuery({
     queryKey: ["camp", campId],
     queryFn: async () => {
-      const res = await axios.get(
-        `https://mcms-server-red.vercel.app/camps/${campId}`
-      );
+      const res = await axios.get(`http://localhost:5000/camps/${campId}`);
       return res.data.camp.camp;
     },
     enabled: !!campId,

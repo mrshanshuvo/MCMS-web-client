@@ -27,7 +27,7 @@ const PaymentDialog = ({
 
     try {
       const response = await fetch(
-        `https://mcms-server-red.vercel.app/create-payment-intent`,
+        `http://localhost:5000/create-payment-intent`,
         {
           method: "POST",
           headers: {
@@ -46,7 +46,7 @@ const PaymentDialog = ({
 
       // ✅ Handle free camp (no payment intent needed)
       if (!clientSecret) {
-        await fetch(`https://mcms-server-red.vercel.app/payments`, {
+        await fetch(`http://localhost:5000/payments`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -81,7 +81,7 @@ const PaymentDialog = ({
 
       if (paymentIntent.status === "succeeded") {
         setPaymentIntent(paymentIntent);
-        await fetch(`https://mcms-server-red.vercel.app/payments`, {
+        await fetch(`http://localhost:5000/payments`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

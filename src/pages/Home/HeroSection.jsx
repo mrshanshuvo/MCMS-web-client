@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { ArrowRight, Play, Star, CheckCircle } from 'lucide-react';
+import React, { useState, useEffect } from "react";
+import { ArrowRight, Play, Star, CheckCircle } from "lucide-react";
 
 const HeroSection = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -24,7 +24,13 @@ const HeroSection = () => {
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 py-24 lg:py-32">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
-          <div className={`space-y-6 transition-all duration-700 ease-out ${isVisible ? 'translate-x-0 opacity-100' : '-translate-x-8 opacity-0'}`}>
+          <div
+            className={`space-y-6 transition-all duration-700 ease-out ${
+              isVisible
+                ? "translate-x-0 opacity-100"
+                : "-translate-x-8 opacity-0"
+            }`}
+          >
             <div className="inline-flex items-center px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full text-sm font-medium border border-white/20">
               <div className="w-2 h-2 bg-green-400 rounded-full mr-2 animate-pulse" />
               Trusted by 10,000+ healthcare professionals
@@ -39,24 +45,40 @@ const HeroSection = () => {
             </h1>
 
             <p className="text-lg lg:text-xl text-blue-100 leading-relaxed">
-              Join MCMS to organize, manage, and participate in medical camps across the nation.
-              <span className="font-semibold text-white"> Simplified. Secure. Scalable.</span>
+              Join MCMS to organize, manage, and participate in medical camps
+              across the nation.
+              <span className="font-semibold text-white">
+                {" "}
+                Simplified. Secure. Scalable.
+              </span>
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4">
               <button className="group bg-gradient-to-r from-yellow-400 to-orange-400 text-gray-900 font-bold px-6 py-3 rounded-lg shadow-lg hover:shadow-yellow-400/25 transition-all duration-300 flex items-center justify-center">
                 Explore Medical Camps
-                <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" size={20} />
+                <ArrowRight
+                  className="ml-2 group-hover:translate-x-1 transition-transform"
+                  size={20}
+                />
               </button>
 
               <button className="group flex items-center justify-center px-6 py-3 border-2 border-white/30 rounded-lg backdrop-blur-sm hover:bg-white/10 transition-all duration-300">
-                <Play className="mr-2 group-hover:scale-110 transition-transform" size={18} />
+                <Play
+                  className="mr-2 group-hover:scale-110 transition-transform"
+                  size={18}
+                />
                 Watch Demo
               </button>
             </div>
           </div>
 
-          <div className={`relative transition-all duration-700 ease-out delay-150 ${isVisible ? 'translate-x-0 opacity-100' : 'translate-x-8 opacity-0'}`}>
+          <div
+            className={`relative transition-all duration-700 ease-out delay-150 ${
+              isVisible
+                ? "translate-x-0 opacity-100"
+                : "translate-x-8 opacity-0"
+            }`}
+          >
             <div className="bg-white/10 backdrop-blur-xl rounded-2xl p-6 border border-white/20 shadow-xl">
               <div className="aspect-video bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center text-6xl">
                 🏥
