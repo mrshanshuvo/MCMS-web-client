@@ -10,7 +10,9 @@ const FeedbackRatings = () => {
   } = useQuery({
     queryKey: ["homeFeedback"],
     queryFn: async () => {
-      const res = await fetch(`http://localhost:5000/feedback?limit=6`);
+      const res = await fetch(
+        `https://mcms-server-red.vercel.app/feedback?limit=6`
+      );
       if (!res.ok) throw new Error("Failed to fetch feedback");
       return res.json();
     },

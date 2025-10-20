@@ -1,5 +1,8 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
+import { NavLink, useNavigate } from "react-router";
 import { Menu, X, User, LogOut, LayoutDashboard } from "lucide-react";
+import { AuthContext } from "../../../contexts/AuthContext/AuthContext";
+import MCMSLogo from "../MCMSLogo/MCMSLogo";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -7,46 +10,52 @@ const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const dropdownRef = useRef(null);
   const mobileMenuRef = useRef(null);
+  const { user, logOut } = useContext(AuthContext);
+  const navigate = useNavigate();
 
-  // Mock user for demo - replace with actual auth context
-  const user = null; // Set to { displayName: "John Doe", email: "john@example.com", photoURL: null } to test logged-in state
+  const navLinks = !user
+    ? [
+        { path: "/", label: "Home" },
+        { path: "/available-camps", label: "Available Camps" },
+        { path: "/about", label: "About Us" },
+      ]
+    : [
+        { path: "/", label: "Home" },
+        { path: "/available-camps", label: "Available Camps" },
+        { path: "/success-stories", label: "Success Stories" },
+        { path: "/about", label: "About Us" },
+        { path: "/contact", label: "Contact Us" },
+      ];
 
-  const navLinks = [
-    { path: "/", label: "Home" },
-    { path: "/available-camps", label: "Available Camps" },
-    { path: "/success-stories", label: "Success Stories" },
-    { path: "/about", label: "About Us" },
-    { path: "/contact", label: "Contact Us" },
-  ];
-
-  const handleLogout = () => {
-    console.log("Logging out...");
+  // handle logout
+  const handleLogout = async () => {
+    try {
+      await logOut();
+      navigate("/");
+    } catch (error) {
+      console.error("Logout error:", error);
+    }
   };
 
-  // Handle scroll effect
+  // scroll shadow effect
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
-    };
+    const handleScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Close dropdown/menu if click outside
+  // click outside detection
   useEffect(() => {
-    function handleClickOutside(event) {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+    const handleClickOutside = (e) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target))
         setDropdownOpen(false);
-      }
       if (
         mobileMenuRef.current &&
-        !mobileMenuRef.current.contains(event.target) &&
-        !event.target.closest('button[aria-label="Toggle Menu"]')
-      ) {
+        !mobileMenuRef.current.contains(e.target) &&
+        !e.target.closest('button[aria-label="Toggle Menu"]')
+      )
         setIsOpen(false);
-      }
-    }
-
+    };
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
@@ -62,43 +71,34 @@ const Navbar = () => {
       <div className="container mx-auto px-4 py-4">
         <div className="flex justify-between items-center">
           {/* Logo */}
-          <a
-            href="/"
-            className="flex items-center gap-3 group"
-            onClick={() => setIsOpen(false)}
-          >
-            <div className="w-12 h-12 bg-gradient-to-br from-[#ffffff] to-[#99bbff] rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-md">
-              <img src="/mcmsLogo.png" alt="MCMS Logo" />
-            </div>
-            <div className="flex flex-col">
-              <span className="font-bold text-xl text-[#45474B] leading-tight">
-                MCMS
-              </span>
-              <span className="text-xs text-[#495E57]/60 leading-tight">
-                Medical Camp
-              </span>
-            </div>
-          </a>
+          <MCMSLogo />
 
           {/* Desktop Nav */}
           <div className="hidden lg:flex items-center gap-8">
             <ul className="flex gap-1 items-center">
               {navLinks.map((link) => (
                 <li key={link.path}>
-                  <a
-                    href={link.path}
-                    className="px-4 py-2 font-medium text-[#45474B] hover:text-[#495E57] hover:bg-[#F5F7F8] rounded-lg transition-all duration-200 relative group"
+                  <NavLink
+                    to={link.path}
+                    className={({ isActive }) =>
+                      `px-4 py-2 font-medium rounded-lg transition-all duration-200 relative group ${
+                        isActive
+                          ? "text-[#495E57] bg-[#F5F7F8]"
+                          : "text-[#45474B] hover:text-[#495E57] hover:bg-[#F5F7F8]"
+                      }`
+                    }
                   >
                     {link.label}
                     <span className="absolute bottom-1 left-4 right-4 h-0.5 bg-[#F4CE14] scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
-                  </a>
+                  </NavLink>
                 </li>
               ))}
             </ul>
 
+            {/* Auth area */}
             {!user ? (
-              <a
-                href="/login"
+              <NavLink
+                to="/login"
                 className="bg-[#495E57] text-[#F5F7F8] px-6 py-2.5 rounded-xl font-semibold shadow-md hover:bg-[#45474B] hover:shadow-lg transition-all duration-300 flex items-center gap-2 group"
               >
                 <span>Join Us</span>
@@ -106,31 +106,33 @@ const Navbar = () => {
                   size={18}
                   className="group-hover:scale-110 transition-transform"
                 />
-              </a>
+              </NavLink>
             ) : (
               <div className="relative" ref={dropdownRef}>
                 <button
                   className="flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-[#F5F7F8] transition-all duration-200 group"
                   onClick={() => setDropdownOpen(!dropdownOpen)}
                 >
-                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#495E57] to-[#45474B] flex items-center justify-center text-[#F4CE14] font-semibold border-2 border-[#F4CE14]/20 group-hover:border-[#F4CE14]/40 transition-all shadow-md">
-                    {user.displayName?.[0]?.toUpperCase() || "U"}
-                  </div>
+                  <img
+                    src={user.photoURL || "/default-avatar.png"}
+                    alt={user.displayName || "User"}
+                    className="w-10 h-10 rounded-full border-2 border-[#F4CE14]/30 group-hover:border-[#F4CE14]/60 transition-all shadow-md object-cover"
+                  />
                 </button>
 
                 {dropdownOpen && (
                   <div className="absolute right-0 mt-3 w-64 bg-white shadow-2xl rounded-2xl overflow-hidden border border-[#495E57]/10 animate-[slideDown_0.2s_ease-out]">
                     <div className="px-5 py-4 border-b border-[#495E57]/10 bg-gradient-to-br from-[#F5F7F8] to-white">
                       <p className="font-semibold text-[#45474B] truncate">
-                        {user.displayName}
+                        {user.displayName || "User"}
                       </p>
                       <p className="text-sm text-[#495E57]/60 truncate mt-0.5">
                         {user.email}
                       </p>
                     </div>
 
-                    <a
-                      href="/dashboard"
+                    <NavLink
+                      to="/dashboard"
                       className="flex items-center gap-3 px-5 py-3.5 hover:bg-[#F5F7F8] transition-colors group"
                       onClick={() => setDropdownOpen(false)}
                     >
@@ -140,7 +142,7 @@ const Navbar = () => {
                       <span className="text-[#45474B] font-medium">
                         Dashboard
                       </span>
-                    </a>
+                    </NavLink>
 
                     <button
                       onClick={() => {
@@ -181,13 +183,19 @@ const Navbar = () => {
             <ul className="space-y-2">
               {navLinks.map((link) => (
                 <li key={link.path}>
-                  <a
-                    href={link.path}
+                  <NavLink
+                    to={link.path}
                     onClick={() => setIsOpen(false)}
-                    className="block px-4 py-3 rounded-xl font-medium text-[#45474B] hover:bg-[#F5F7F8] hover:text-[#495E57] transition-all duration-200"
+                    className={({ isActive }) =>
+                      `block px-4 py-3 rounded-xl font-medium text-[#45474B] transition-all duration-200 ${
+                        isActive
+                          ? "bg-[#F5F7F8] text-[#495E57]"
+                          : "hover:bg-[#F5F7F8] hover:text-[#495E57]"
+                      }`
+                    }
                   >
                     {link.label}
-                  </a>
+                  </NavLink>
                 </li>
               ))}
 
@@ -200,14 +208,14 @@ const Navbar = () => {
                     <div>{user.email}</div>
                   </li>
                   <li>
-                    <a
-                      href="/dashboard"
+                    <NavLink
+                      to="/dashboard"
                       onClick={() => setIsOpen(false)}
                       className="flex items-center gap-3 px-4 py-3 rounded-xl text-[#45474B] hover:bg-[#F5F7F8] transition-all"
                     >
                       <LayoutDashboard size={20} />
                       <span className="font-medium">Dashboard</span>
-                    </a>
+                    </NavLink>
                   </li>
                   <li>
                     <button
@@ -224,14 +232,14 @@ const Navbar = () => {
                 </>
               ) : (
                 <li className="mt-4">
-                  <a
-                    href="/login"
+                  <NavLink
+                    to="/login"
                     onClick={() => setIsOpen(false)}
                     className="flex items-center justify-center gap-2 bg-[#495E57] text-[#F5F7F8] px-4 py-3 rounded-xl font-semibold shadow-md hover:bg-[#45474B] transition-all"
                   >
                     <span>Join Us</span>
                     <User size={18} />
-                  </a>
+                  </NavLink>
                 </li>
               )}
             </ul>
@@ -239,16 +247,10 @@ const Navbar = () => {
         </div>
       )}
 
-      <style jsx>{`
+      <style>{`
         @keyframes slideDown {
-          from {
-            opacity: 0;
-            transform: translateY(-10px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
+          from { opacity: 0; transform: translateY(-10px); }
+          to { opacity: 1; transform: translateY(0); }
         }
       `}</style>
     </nav>

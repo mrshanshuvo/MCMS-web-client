@@ -13,7 +13,7 @@ import {
 import { useNavigate } from "react-router";
 
 const fetchUserByEmail = async (email) => {
-  const res = await fetch(`http://localhost:5000/users/${email}`);
+  const res = await fetch(`https://mcms-server-red.vercel.app/users/${email}`);
   if (!res.ok) throw new Error("Failed to fetch user");
   return res.json();
 };
@@ -50,14 +50,17 @@ const ParticipantProfile = () => {
     if (!authUser) throw new Error("User not authenticated");
     const token = await authUser.getIdToken();
 
-    const res = await fetch(`http://localhost:5000/users/${email}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(updates),
-    });
+    const res = await fetch(
+      `https://mcms-server-red.vercel.app/users/${email}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(updates),
+      }
+    );
 
     if (!res.ok) {
       const errText = await res.text();

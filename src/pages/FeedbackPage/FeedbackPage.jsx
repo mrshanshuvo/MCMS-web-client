@@ -26,7 +26,7 @@ const FeedbackPage = () => {
   } = useQuery({
     queryKey: ["allFeedback"],
     queryFn: async () => {
-      const res = await fetch(`http://localhost:5000/feedback`);
+      const res = await fetch(`https://mcms-server-red.vercel.app/feedback`);
       if (!res.ok) throw new Error("Failed to fetch feedback");
       return res.json();
     },
