@@ -1,16 +1,14 @@
-import React from "react";
 import {
   LayoutDashboard,
   CalendarCheck,
   Users,
   BarChart2,
-  DollarSign,
   MessageSquare,
-  Settings,
   AlertCircle,
   ArrowRight,
 } from "lucide-react";
 
+import { FaBangladeshiTakaSign } from "react-icons/fa6";
 const stats = [
   {
     name: "Upcoming Camps",
@@ -27,7 +25,7 @@ const stats = [
   {
     name: "Revenue",
     value: "$24,800",
-    icon: DollarSign,
+    icon: FaBangladeshiTakaSign,
     change: "↑ 12% from last month",
   },
   {

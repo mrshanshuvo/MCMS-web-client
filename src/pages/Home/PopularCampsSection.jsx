@@ -2,18 +2,11 @@ import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { Link } from "react-router";
-import {
-  MapPin,
-  Calendar,
-  Users,
-  User,
-  DollarSign,
-  ArrowRight,
-  Star,
-} from "lucide-react";
+import { MapPin, Calendar, Users, User, ArrowRight, Star } from "lucide-react";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 
+import { FaBangladeshiTakaSign } from "react-icons/fa6";
 const fetchCamps = async () => {
   const { data } = await axios.get("https://mcms-server-red.vercel.app/camps");
   return data.camps;
@@ -38,7 +31,7 @@ const PopularCampsSection = () => {
   // Fallback image URL
   const getFallbackImage = (campName) => {
     const placeholderUrl = `https://placehold.co/400x300/495E57/F4CE14/png?text=${encodeURIComponent(
-      campName
+      campName,
     )}`;
     return placeholderUrl;
   };
@@ -151,7 +144,10 @@ const PopularCampsSection = () => {
                       </div>
                       <div className="flex items-center text-[#45474B]">
                         <div className="flex-shrink-0 w-8 h-8 bg-[#F4CE14]/20 rounded-lg flex items-center justify-center mr-3">
-                          <DollarSign className="text-[#F4CE14]" size={16} />
+                          <FaBangladeshiTakaSign
+                            className="text-[#F4CE14]"
+                            size={16}
+                          />
                         </div>
                         <span className="text-sm font-semibold">
                           ${camp.fees.toFixed(2)}
@@ -182,7 +178,7 @@ const PopularCampsSection = () => {
                               style={{
                                 width: `${Math.min(
                                   (camp.participantCount / 500) * 100,
-                                  100
+                                  100,
                                 )}%`,
                               }}
                             />

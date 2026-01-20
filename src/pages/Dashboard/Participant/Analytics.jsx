@@ -12,7 +12,8 @@ import {
   Legend,
   Cell,
 } from "recharts";
-import { Calendar, DollarSign, Loader2, AlertCircle } from "lucide-react";
+import { Calendar, Loader2, AlertCircle } from "lucide-react";
+import { FaBangladeshiTakaSign } from "react-icons/fa6";
 
 const fetchAnalytics = async (uid, token) => {
   const res = await fetch(
@@ -58,7 +59,7 @@ const Analytics = () => {
           <h3 className="font-bold text-gray-800 mb-2">{label}</h3>
           <div className="space-y-1">
             <p className="flex items-center text-sm">
-              <DollarSign className="mr-2 text-blue-600" size={14} />
+              <FaBangladeshiTakaSign className="mr-2 text-blue-600" size={14} />
               <span className="font-medium">Fees:</span> ${data.fees}
             </p>
             <p className="flex items-center text-sm">
@@ -74,6 +75,25 @@ const Analytics = () => {
       );
     }
     return null;
+  };
+
+  const FreeLabel = (props) => {
+    const { x, y, width, value } = props;
+
+    if (value !== 0) return null;
+
+    return (
+      <text
+        x={x + width / 2}
+        y={y - 6}
+        textAnchor="middle"
+        fill="#16a34a"
+        fontSize={10}
+        fontWeight="600"
+      >
+        FREE
+      </text>
+    );
   };
 
   if (isLoading) {
@@ -140,27 +160,43 @@ const Analytics = () => {
 
         {/* Chart */}
         <div className="bg-white rounded-3xl shadow-xl border border-gray-100 p-6">
-          <div className="h-[500px] w-full">
+          <div className="h-[420px] w-full">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart
                 data={chartData}
-                margin={{ top: 20, right: 30, left: 20, bottom: 70 }}
+                margin={{ top: 10, right: 20, left: 0, bottom: 10 }}
               >
                 <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
-                <XAxis
-                  dataKey="name"
-                  angle={-30}
-                  textAnchor="end"
-                  interval={0}
-                  height={90}
-                  tick={{ fontSize: 12 }}
+                <XAxis dataKey="name" tick={false} axisLine={false} />
+                <YAxis
+                  tick={{ fontSize: 12, fill: "#6b7280" }}
+                  axisLine={false}
+                  tickLine={false}
                 />
-                <YAxis />
-                <Tooltip content={<CustomTooltip />} />
-                <Legend />
-                <Bar dataKey="fees" name="Camp Fees ($)" radius={[4, 4, 0, 0]}>
-                  {chartData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill="#3b82f6" />
+                <Tooltip
+                  content={<CustomTooltip />}
+                  cursor={{ fill: "rgba(59,130,246,0.08)" }}
+                />
+                <Legend
+                  verticalAlign="top"
+                  align="right"
+                  iconType="circle"
+                  wrapperStyle={{ paddingBottom: 8 }}
+                />
+                <Bar
+                  dataKey="fees"
+                  name="Camp Fees (৳)"
+                  radius={[6, 6, 0, 0]}
+                  barSize={28}
+                  label={<FreeLabel />}
+                >
+                  {chartData.map((_, index) => (
+                    <Cell
+                      key={`cell-${index}`}
+                      fill="#3b82f6"
+                      stroke="#1d4ed8"
+                      strokeWidth={0.5}
+                    />
                   ))}
                 </Bar>
               </BarChart>
@@ -171,11 +207,14 @@ const Analytics = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
             <div className="bg-blue-50/50 p-5 rounded-xl border border-blue-100">
               <h3 className="text-lg font-semibold text-gray-800 mb-3 flex items-center">
-                <DollarSign className="text-blue-600 mr-2" size={20} />
+                <FaBangladeshiTakaSign
+                  className="text-blue-600 mr-2"
+                  size={20}
+                />
                 Total Fees
               </h3>
-              <p className="text-2xl font-bold text-blue-600">
-                $
+              <p className="text-2xl font-bold text-blue-600 flex items-center gap-1">
+                <FaBangladeshiTakaSign className="inline-block" />
                 {chartData
                   .reduce((sum, camp) => sum + (camp.fees || 0), 0)
                   .toFixed(2)}

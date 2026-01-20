@@ -6,7 +6,6 @@ import {
   MapPin,
   Calendar,
   Users,
-  DollarSign,
   User,
   Search,
   ArrowRight,
@@ -18,6 +17,7 @@ import {
 } from "lucide-react";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
+import { FaBangladeshiTakaSign } from "react-icons/fa6";
 
 const fetchCamps = async ({ queryKey }) => {
   const [_key, { page, search, sort }] = queryKey;
@@ -267,7 +267,10 @@ const AvailableCamps = () => {
                         </div>
                         <div className="flex items-center text-[#45474B]">
                           <div className="flex-shrink-0 w-8 h-8 bg-[#F4CE14]/20 rounded-lg flex items-center justify-center mr-3">
-                            <DollarSign className="text-[#F4CE14]" size={16} />
+                            <FaBangladeshiTakaSign
+                              className="text-[#F4CE14]"
+                              size={16}
+                            />
                           </div>
                           <span className="text-sm font-semibold">
                             ${camp.fees.toFixed(2)}

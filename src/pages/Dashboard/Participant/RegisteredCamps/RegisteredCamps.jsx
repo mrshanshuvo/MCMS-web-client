@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   Loader2,
@@ -7,9 +7,6 @@ import {
   ChevronLeft,
   ChevronRight,
   ArrowRight,
-  CreditCard,
-  XCircle,
-  MessageSquareText,
 } from "lucide-react";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
@@ -121,7 +118,7 @@ const RegisteredCamps = () => {
 
   if (isError) {
     return (
-      <div className="bg-red-50 border-l-4 border-red-500 p-4 rounded-lg my-6 mx-4 max-w-7xl mx-auto">
+      <div className="bg-red-50 border-l-4 border-red-500 p-4 rounded-lg my-6 mx-4 max-w-7xl">
         <div className="flex items-center">
           <AlertCircle className="h-5 w-5 text-red-500 mr-3" />
           <div>

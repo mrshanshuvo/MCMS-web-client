@@ -7,7 +7,6 @@ import {
   Calendar,
   Users,
   User,
-  DollarSign,
   ChevronRight,
   CheckCircle,
   Loader2,
@@ -17,6 +16,7 @@ import {
 } from "lucide-react";
 import useAuth from "../../hooks/useAuth";
 import Swal from "sweetalert2";
+import { FaBangladeshiTakaSign } from "react-icons/fa6";
 
 const fetchCampById = async (campId) => {
   const res = await axios.get(
@@ -322,7 +322,10 @@ const CampDetails = () => {
               <div className="bg-[#495E57]/5 p-4 rounded-xl border border-[#495E57]/10">
                 <div className="flex items-center mb-2">
                   <div className="w-8 h-8 bg-[#F4CE14]/20 rounded-lg flex items-center justify-center mr-3">
-                    <DollarSign className="text-[#F4CE14]" size={16} />
+                    <FaBangladeshiTakaSign
+                      className="text-[#F4CE14]"
+                      size={16}
+                    />
                   </div>
                   <span className="font-semibold text-[#45474B]">
                     Registration Fee

@@ -2,16 +2,9 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import Swal from "sweetalert2";
-import {
-  Loader2,
-  Calendar,
-  MapPin,
-  User,
-  DollarSign,
-  Upload,
-  X,
-} from "lucide-react";
+import { Loader2, Calendar, MapPin, User, Upload, X } from "lucide-react";
 
+import { FaBangladeshiTakaSign } from "react-icons/fa6";
 const imgbbAPIKey = import.meta.env.VITE_IMGBB_API_KEY;
 
 const CampFormModal = ({ initialData, onClose, onUpdated }) => {
@@ -183,7 +176,7 @@ const CampFormModal = ({ initialData, onClose, onUpdated }) => {
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                  <DollarSign className="text-gray-500" size={18} />
+                  <FaBangladeshiTakaSign className="text-gray-500" size={18} />
                 </div>
                 <input
                   type="number"

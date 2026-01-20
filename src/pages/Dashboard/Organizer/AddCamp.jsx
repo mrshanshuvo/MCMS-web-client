@@ -1,16 +1,10 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
-import {
-  Calendar,
-  MapPin,
-  User,
-  DollarSign,
-  Upload,
-  Loader2,
-} from "lucide-react";
+import { Calendar, MapPin, User, Upload, Loader2 } from "lucide-react";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router";
+import { FaBangladeshiTakaSign } from "react-icons/fa6";
 
 const imgbbAPIKey = import.meta.env.VITE_IMGBB_API_KEY;
 
@@ -192,7 +186,10 @@ const AddCamp = () => {
                 </label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                    <DollarSign className="text-gray-500" size={18} />
+                    <FaBangladeshiTakaSign
+                      className="text-gray-500"
+                      size={18}
+                    />
                   </div>
                   <input
                     type="number"

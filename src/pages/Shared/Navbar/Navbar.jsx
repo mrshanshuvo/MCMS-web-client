@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef, useContext } from "react";
 import { NavLink, useNavigate } from "react-router";
 import { Menu, X, User, LogOut, LayoutDashboard } from "lucide-react";
 import { AuthContext } from "../../../contexts/AuthContext/AuthContext";
-import MCMSLogo from "../MCMSLogo/MCMSLogo";
+import CareCampLogo from "../CareCampLogo/CareCampLogo";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -71,7 +71,7 @@ const Navbar = () => {
       <div className="container mx-auto px-4 py-4">
         <div className="flex justify-between items-center">
           {/* Logo */}
-          <MCMSLogo />
+          <CareCampLogo />
 
           {/* Desktop Nav */}
           <div className="hidden lg:flex items-center gap-8">

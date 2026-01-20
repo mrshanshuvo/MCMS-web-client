@@ -1,25 +1,14 @@
 import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import useAuth from "../../../hooks/useAuth";
-import {
-  User,
-  Calendar,
-  Loader2,
-  Edit,
-  X,
-  Check,
-  AlertCircle,
-} from "lucide-react";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
+import { User, Calendar, Loader2, Edit, X, Check } from "lucide-react";
 import { useNavigate } from "react-router";
-
-const fetchUserByEmail = async (email) => {
-  const res = await fetch(`https://mcms-server-red.vercel.app/users/${email}`);
-  if (!res.ok) throw new Error("Failed to fetch user");
-  return res.json();
-};
+import Swal from "sweetalert2";
 
 const ParticipantProfile = () => {
   const { user: authUser } = useAuth();
+  const axiosSecure = useAxiosSecure();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const email = authUser?.email;
@@ -31,8 +20,8 @@ const ParticipantProfile = () => {
     phone: "",
     address: "",
   });
+  const [originalData, setOriginalData] = useState({}); // Store original data
   const [formErrors, setFormErrors] = useState({});
-  const [toast, setToast] = useState(null); // { type: "success"|"error", msg: string }
 
   // Validation function
   const validate = () => {
@@ -41,32 +30,35 @@ const ParticipantProfile = () => {
     if (!formData.phone.trim()) errors.phone = "Phone is required";
     else if (!/^\+?\d{7,15}$/.test(formData.phone.trim()))
       errors.phone = "Invalid phone number";
-    // Address optional, no validation
     return errors;
   };
 
-  // Update user API
-  const updateUser = async ({ email, updates }) => {
-    if (!authUser) throw new Error("User not authenticated");
-    const token = await authUser.getIdToken();
+  // Filter out empty/unchanged fields
+  const getCleanUpdates = (currentData, originalData) => {
+    const updates = {};
 
-    const res = await fetch(
-      `https://mcms-server-red.vercel.app/users/${email}`,
-      {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(updates),
+    // Only include fields that have changed AND are not empty
+    Object.keys(currentData).forEach((key) => {
+      const currentValue = currentData[key]?.trim() || "";
+      const originalValue = originalData[key]?.trim() || "";
+
+      // Include field if:
+      // 1. It has changed AND
+      // 2. It's not empty (or if it's address which can be explicitly cleared)
+      if (currentValue !== originalValue && currentValue !== "") {
+        updates[key] = currentValue;
       }
-    );
+      // Special case: if address is explicitly cleared (user removes existing address)
+      else if (
+        key === "address" &&
+        currentValue === "" &&
+        originalValue !== ""
+      ) {
+        updates[key] = ""; // Allow clearing address
+      }
+    });
 
-    if (!res.ok) {
-      const errText = await res.text();
-      throw new Error(errText || "Failed to update user");
-    }
-    return res.json();
+    return updates;
   };
 
   // Fetch user data with React Query
@@ -77,63 +69,132 @@ const ParticipantProfile = () => {
     isError,
   } = useQuery({
     queryKey: ["user", email],
-    queryFn: () => fetchUserByEmail(email),
+    queryFn: async () => {
+      const res = await axiosSecure.get(`/users/${email}`);
+      return res.data;
+    },
     enabled: !!email,
     onSuccess: (data) => {
-      setFormData({
+      const initialData = {
         name: data.name || "",
         photoURL: data.photoURL || "",
         phone: data.phone || "",
         address: data.address || "",
-      });
+      };
+      setFormData(initialData);
+      setOriginalData(initialData); // Store original data for comparison
       setFormErrors({});
     },
   });
 
   // Mutation to update user
   const updateUserMutation = useMutation({
-    mutationFn: updateUser,
-    onSuccess: (updatedUser) => {
+    mutationFn: async ({ email, updates }) => {
+      // Filter out empty fields before sending
+      const cleanUpdates = getCleanUpdates(updates, originalData);
+
+      // Don't send request if nothing changed
+      if (Object.keys(cleanUpdates).length === 0) {
+        throw new Error("No changes detected");
+      }
+
+      const res = await axiosSecure.put(`/users/${email}`, cleanUpdates);
+      return res.data;
+    },
+    onSuccess: async (updatedUser) => {
       queryClient.setQueryData(["user", email], updatedUser);
       setIsEditing(false);
-      setToast({ type: "success", msg: "Profile updated successfully!" });
+
+      // Update original data with new values
+      const newOriginalData = {
+        name: updatedUser.name || "",
+        photoURL: updatedUser.photoURL || "",
+        phone: updatedUser.phone || "",
+        address: updatedUser.address || "",
+      };
+      setOriginalData(newOriginalData);
       setFormErrors({});
+
+      await Swal.fire({
+        icon: "success",
+        title: "Updated!",
+        text: "Profile updated successfully.",
+        confirmButtonColor: "#16a34a",
+      });
     },
-    onError: (err) => {
-      setToast({ type: "error", msg: err.message || "Update failed" });
+    onError: async (err) => {
+      if (err.message === "No changes detected") {
+        await Swal.fire({
+          icon: "info",
+          title: "No changes",
+          text: "No changes were made to the profile.",
+          confirmButtonColor: "#3b82f6",
+        });
+        setIsEditing(false);
+      } else {
+        await Swal.fire({
+          icon: "error",
+          title: "Update failed",
+          text:
+            err.response?.data?.message ||
+            err.message ||
+            "Something went wrong.",
+          confirmButtonColor: "#d33",
+        });
+      }
     },
   });
 
-  // Handle input changes and reset toast/errors
+  // Handle input changes and reset errors
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
-    setToast(null);
     setFormErrors((prev) => ({ ...prev, [name]: null }));
   };
 
   // Handle form submit
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const errors = validate();
     if (Object.keys(errors).length > 0) {
       setFormErrors(errors);
       return;
     }
-    updateUserMutation.mutate({ email, updates: formData });
+
+    // Check if there are any changes
+    const updates = getCleanUpdates(formData, originalData);
+    if (Object.keys(updates).length === 0) {
+      await Swal.fire({
+        icon: "info",
+        title: "No changes",
+        text: "No changes were made to the profile.",
+        confirmButtonColor: "#3b82f6",
+      });
+      setIsEditing(false);
+      return;
+    }
+
+    const result = await Swal.fire({
+      title: "Are you sure?",
+      text: "Do you want to save these changes?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes, update",
+      cancelButtonText: "Cancel",
+      confirmButtonColor: "#16a34a",
+      cancelButtonColor: "#d33",
+    });
+
+    if (result.isConfirmed) {
+      updateUserMutation.mutate({ email, updates: formData });
+    }
   };
 
   // Cancel editing and reset form
   const handleCancelEdit = () => {
     setIsEditing(false);
-    setFormData({
-      name: user.name || "",
-      photoURL: user.photoURL || "",
-      phone: user.phone || "",
-      address: user.address || "",
-    });
+    setFormData(originalData); // Reset to original data
     setFormErrors({});
-    setToast(null);
   };
 
   if (!email)
@@ -201,19 +262,6 @@ const ParticipantProfile = () => {
           </p>
         </div>
 
-        {/* Toast messages */}
-        {toast && (
-          <div
-            className={`mb-6 p-4 rounded-lg max-w-md mx-auto text-center ${
-              toast.type === "success"
-                ? "bg-green-100 text-green-700 border border-green-300"
-                : "bg-red-100 text-red-700 border border-red-300"
-            }`}
-          >
-            {toast.msg}
-          </div>
-        )}
-
         {/* Profile Card */}
         <form
           onSubmit={handleSubmit}
@@ -224,36 +272,20 @@ const ParticipantProfile = () => {
           <div className="bg-gradient-to-r from-[#1e3a8a] to-[#0f766e] p-6 text-white text-center">
             <div className="relative mx-auto w-32 h-32 rounded-full border-4 border-white/20 mb-4 overflow-hidden">
               <img
-                src={
-                  formData.photoURL || "https://i.ibb.co/5h7FQs6N/unnamed.jpg"
-                }
-                alt={formData.name || "User"}
+                src={user?.photoURL || "https://i.ibb.co/5h7FQs6N/unnamed.jpg"}
+                alt={user?.name || "user"}
                 className="w-full h-full object-cover"
                 onError={(e) => {
                   e.target.src = "https://i.ibb.co/5h7FQs6N/unnamed.jpg";
                 }}
               />
             </div>
-            {isEditing ? (
-              <input
-                aria-label="Full name"
-                type="text"
-                name="name"
-                value={formData.name}
-                onChange={handleInputChange}
-                className={`w-full max-w-md mx-auto px-4 py-2 rounded-lg bg-white/20 text-white placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-white ${
-                  formErrors.name ? "ring-red-500" : ""
-                }`}
-                placeholder="Enter your name"
-              />
-            ) : (
-              <>
-                <h3 className="text-2xl font-bold">
-                  {user.name || "Participant"}
-                </h3>
-                <p className="text-blue-200">{user.email}</p>
-              </>
-            )}
+            <>
+              <h3 className="text-2xl font-bold">
+                {user.name || "Participant"}
+              </h3>
+              <p className="text-blue-200">{user.email}</p>
+            </>
           </div>
 
           {/* Profile Details */}
