@@ -1,13 +1,12 @@
 import React from "react";
-import HeroSection from "./HeroSection";
-import FeaturesSection from "./FeaturesSection";
-import HowItWorks from "./HowItWorks";
-import Testimonials from "./Testimonials";
-import CallToAction from "./CallToAction";
-import SuccessStoriesCarousel from "./SuccessStoriesCarousel";
-import PopularCampsSection from "./PopularCampsSection";
-import FeedbackRatings from "./FeedbackRatings";
-
+import HeroSection from "../../components/Home/HeroSection/HeroSection";
+import SuccessStoriesCarousel from "../../components/Home/SuccessStoriesCarousel/SuccessStoriesCarousel";
+import PopularCampsSection from "../../components/Home/PopularCampsSection/PopularCampsSection";
+import FeaturesSection from "../../components/Home/FeaturesSection/FeaturesSection";
+import HowItWorks from "../../components/Home/HowItWorks/HowItWorks";
+import Testimonials from "../../components/Home/Testimonials/Testimonials";
+import CallToAction from "../../components/Home/CallToAction/CallToAction";
+import FeedbackRatings from "../../components/Home/FeedbackRatings/FeedbackRatings";
 const Home = () => {
   return (
     <div>

@@ -1,26 +1,30 @@
 import React from "react";
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
 import { Link } from "react-router";
 import { MapPin, Calendar, Users, User, ArrowRight, Star } from "lucide-react";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 
 import { FaBangladeshiTakaSign } from "react-icons/fa6";
-const fetchCamps = async () => {
-  const { data } = await axios.get("https://mcms-server-red.vercel.app/camps");
-  return data.camps;
-};
+import useAxios from "../../../hooks/useAxios";
 
 const PopularCampsSection = () => {
+  const axios = useAxios();
+
   const {
     data: camps = [],
     isLoading,
     isError,
     error,
+    refetch,
+    isFetching,
   } = useQuery({
     queryKey: ["camps"],
-    queryFn: fetchCamps,
+    queryFn: async () => {
+      const res = await axios.get("/camps");
+      return res.data?.camps || [];
+    },
+    staleTime: 60_000,
   });
 
   // Sort camps by participantCount descending and take top 6
@@ -42,12 +46,17 @@ const PopularCampsSection = () => {
         <div className="container mx-auto px-4 text-center">
           <div className="bg-red-50 border border-red-200 text-red-700 px-6 py-4 rounded-lg max-w-2xl mx-auto">
             <h3 className="font-bold text-lg mb-2">Error Loading Camps</h3>
-            <p>{error.message}</p>
+            <p className="break-words">
+              {error?.message || "Something went wrong."}
+            </p>
+
             <button
-              onClick={() => window.location.reload()}
-              className="mt-4 bg-red-600 hover:bg-red-700 text-white font-medium py-2 px-4 rounded transition-colors"
+              type="button"
+              onClick={() => refetch()}
+              disabled={isFetching}
+              className="mt-4 bg-red-600 hover:bg-red-700 disabled:opacity-60 disabled:cursor-not-allowed text-white font-medium py-2 px-4 rounded transition-colors"
             >
-              Try Again
+              {isFetching ? "Retrying..." : "Try Again"}
             </button>
           </div>
         </div>
@@ -149,9 +158,12 @@ const PopularCampsSection = () => {
                             size={16}
                           />
                         </div>
-                        <span className="text-sm font-semibold">
-                          ${camp.fees.toFixed(2)}
-                        </span>
+                        <div className="flex gap-1 justify-center items-center">
+                          <span className="text-sm font-semibold">
+                            {camp.fees.toFixed(2)}
+                          </span>
+                          <FaBangladeshiTakaSign size={14} />
+                        </div>
                       </div>
                       <div className="flex items-center text-[#45474B]">
                         <div className="flex-shrink-0 w-8 h-8 bg-[#495E57]/10 rounded-lg flex items-center justify-center mr-3">

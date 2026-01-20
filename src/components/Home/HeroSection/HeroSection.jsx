@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { ArrowRight, Play, Users, Heart, TrendingUp, X } from "lucide-react";
 import { Link } from "react-router";
 
@@ -11,10 +11,31 @@ const HeroSection = () => {
     return () => clearTimeout(timer);
   }, []);
 
-  const gridPattern = encodeURIComponent(
-    `<svg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
-      <path d="M0 20h40M20 0v40" stroke="rgba(73, 94, 87, 0.05)" stroke-width="1"/>
-    </svg>`
+  // close on ESC + lock scroll
+  useEffect(() => {
+    if (!showDemo) return;
+
+    const onKeyDown = (e) => {
+      if (e.key === "Escape") setShowDemo(false);
+    };
+
+    document.addEventListener("keydown", onKeyDown);
+    document.body.style.overflow = "hidden";
+
+    return () => {
+      document.removeEventListener("keydown", onKeyDown);
+      document.body.style.overflow = "";
+    };
+  }, [showDemo]);
+
+  const gridPattern = useMemo(
+    () =>
+      encodeURIComponent(
+        `<svg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+          <path d="M0 20h40M20 0v40" stroke="rgba(73, 94, 87, 0.05)" stroke-width="1"/>
+        </svg>`,
+      ),
+    [],
   );
 
   return (
@@ -23,14 +44,20 @@ const HeroSection = () => {
       <div
         className="absolute inset-0 opacity-100"
         style={{ backgroundImage: `url("data:image/svg+xml,${gridPattern}")` }}
+        aria-hidden="true"
       />
-      <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-gradient-to-bl from-[#F4CE14]/10 to-transparent rounded-full blur-3xl" />
-      <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-[#495E57]/5 rounded-full blur-3xl" />
+      <div
+        className="absolute top-0 right-0 w-[600px] h-[600px] bg-gradient-to-bl from-[#F4CE14]/10 to-transparent rounded-full blur-3xl"
+        aria-hidden="true"
+      />
+      <div
+        className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-[#495E57]/5 rounded-full blur-3xl"
+        aria-hidden="true"
+      />
 
       {/* Main content */}
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 py-16 sm:py-24">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-          {/* Left content (full width now) */}
           <div
             className={`lg:col-span-12 space-y-8 transition-all duration-1000 ease-out ${
               isVisible
@@ -40,7 +67,7 @@ const HeroSection = () => {
           >
             {/* Mini Badge */}
             <div className="inline-flex items-center gap-3 px-4 py-2 bg-[#495E57] rounded-full">
-              <div className="flex -space-x-2">
+              <div className="flex -space-x-2" aria-hidden="true">
                 {["👨", "👩", "👨"].map((icon, i) => (
                   <div
                     key={i}
@@ -59,9 +86,11 @@ const HeroSection = () => {
             <div className="space-y-6">
               <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold leading-[1.05] text-[#45474B]">
                 Empowering Healthcare
-                {/* <span className="relative z-10"></span> */}
                 <span className="block relative mt-2">
-                  <div className="absolute -bottom-2 left-0 w-full h-4 bg-[#F4CE14] -z-0 transform -skew-y-1" />
+                  <span
+                    className="absolute -bottom-2 left-0 w-full h-4 bg-[#F4CE14] -z-0 transform -skew-y-1"
+                    aria-hidden="true"
+                  />
                 </span>
                 <span className="block mt-3 text-[#495E57]">Communities</span>
               </h1>
@@ -110,27 +139,35 @@ const HeroSection = () => {
 
             {/* Buttons */}
             <div className="flex flex-col sm:flex-row gap-6 pt-4">
-              <Link to="/available-camps">
-                <button className="group relative bg-[#495E57] text-[#F5F7F8] font-semibold px-8 py-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center overflow-hidden cursor-pointer">
-                  <span className="relative z-10 flex items-center">
-                    Explore Medical Camps
-                    <ArrowRight
-                      className="ml-2 group-hover:translate-x-2 transition-transform duration-300"
-                      size={20}
-                    />
-                  </span>
-                  <div className="absolute inset-0 bg-[#45474B] translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
-                </button>
+              {/* Link styled as button (no nested button) */}
+              <Link
+                to="/available-camps"
+                className="group relative bg-[#495E57] text-[#F5F7F8] font-semibold px-8 py-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center overflow-hidden"
+              >
+                <span className="relative z-10 flex items-center">
+                  Explore Medical Camps
+                  <ArrowRight
+                    className="ml-2 group-hover:translate-x-2 transition-transform duration-300"
+                    size={20}
+                    aria-hidden="true"
+                  />
+                </span>
+                <span className="absolute inset-0 bg-[#45474B] translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
               </Link>
 
               <button
+                type="button"
                 onClick={() => setShowDemo(true)}
                 className="relative group flex items-center justify-center px-8 py-4 border-2 border-[#495E57] text-[#495E57] rounded-xl hover:bg-[#495E57] hover:text-[#F5F7F8] transition-all duration-300 overflow-hidden cursor-pointer"
               >
-                <span className="absolute inset-0 rounded-xl bg-[#495E57]/10 group-hover:animate-ping" />
+                <span
+                  className="absolute inset-0 rounded-xl bg-[#495E57]/10 group-hover:animate-ping"
+                  aria-hidden="true"
+                />
                 <Play
                   className="mr-2 relative z-10 group-hover:scale-110 transition-transform duration-300"
                   size={20}
+                  aria-hidden="true"
                 />
                 <span className="font-medium relative z-10">Watch Demo</span>
               </button>
@@ -141,23 +178,44 @@ const HeroSection = () => {
 
       {/* Demo Modal */}
       {showDemo && (
-        <div className="fixed inset-0 z-50 bg-black/70 flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl w-full max-w-3xl shadow-2xl relative overflow-hidden animate-fadeIn">
+        <div
+          className="fixed inset-0 z-50 bg-black/70 flex items-center justify-center p-4"
+          onMouseDown={(e) => {
+            if (e.target === e.currentTarget) setShowDemo(false);
+          }}
+          role="dialog"
+          aria-modal="true"
+          aria-label="MCMS demo video"
+        >
+          <div className="bg-white rounded-2xl w-full max-w-3xl shadow-2xl relative overflow-hidden animate-[fadeIn_0.2s_ease-out]">
             <button
+              type="button"
               onClick={() => setShowDemo(false)}
               className="absolute top-4 right-4 bg-[#495E57] text-white p-2 rounded-full hover:bg-[#F4CE14] hover:text-[#45474B] transition"
+              aria-label="Close demo"
             >
-              <X size={20} />
+              <X size={20} aria-hidden="true" />
             </button>
+
             <div className="aspect-video">
               <iframe
-                className="w-full h-full rounded-2xl"
+                className="w-full h-full"
                 src="https://www.youtube.com/embed/jX3s9Dlh2kc"
                 title="MCMS Demo Video"
                 allow="autoplay; fullscreen"
+                allowFullScreen
+                loading="lazy"
+                referrerPolicy="strict-origin-when-cross-origin"
               />
             </div>
           </div>
+
+          <style>{`
+            @keyframes fadeIn {
+              from { opacity: 0; transform: translateY(8px); }
+              to { opacity: 1; transform: translateY(0); }
+            }
+          `}</style>
         </div>
       )}
     </section>

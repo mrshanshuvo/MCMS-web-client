@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useContext } from "react";
+import React, { useState, useEffect, useRef, useContext, useMemo } from "react";
 import { NavLink, useNavigate } from "react-router";
 import { Menu, X, User, LogOut, LayoutDashboard } from "lucide-react";
 import { AuthContext } from "../../../contexts/AuthContext/AuthContext";
@@ -8,26 +8,32 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+
   const dropdownRef = useRef(null);
   const mobileMenuRef = useRef(null);
+  const menuBtnRef = useRef(null);
+
   const { user, logOut } = useContext(AuthContext);
   const navigate = useNavigate();
 
-  const navLinks = !user
-    ? [
-        { path: "/", label: "Home" },
-        { path: "/available-camps", label: "Available Camps" },
-        { path: "/about", label: "About Us" },
-      ]
-    : [
-        { path: "/", label: "Home" },
-        { path: "/available-camps", label: "Available Camps" },
-        { path: "/success-stories", label: "Success Stories" },
-        { path: "/about", label: "About Us" },
-        { path: "/contact", label: "Contact Us" },
-      ];
+  const navLinks = useMemo(
+    () =>
+      !user
+        ? [
+            { path: "/", label: "Home" },
+            { path: "/available-camps", label: "Available Camps" },
+            { path: "/about", label: "About Us" },
+          ]
+        : [
+            { path: "/", label: "Home" },
+            { path: "/available-camps", label: "Available Camps" },
+            { path: "/success-stories", label: "Success Stories" },
+            { path: "/about", label: "About Us" },
+            { path: "/contact", label: "Contact Us" },
+          ],
+    [user],
+  );
 
-  // handle logout
   const handleLogout = async () => {
     try {
       await logOut();
@@ -37,27 +43,45 @@ const Navbar = () => {
     }
   };
 
-  // scroll shadow effect
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // click outside detection
+  // Close on outside click (dropdown + mobile menu)
   useEffect(() => {
-    const handleClickOutside = (e) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(e.target))
+    const handlePointerDown = (e) => {
+      const target = e.target;
+
+      if (dropdownRef.current && !dropdownRef.current.contains(target)) {
         setDropdownOpen(false);
+      }
+
       if (
         mobileMenuRef.current &&
-        !mobileMenuRef.current.contains(e.target) &&
-        !e.target.closest('button[aria-label="Toggle Menu"]')
-      )
+        !mobileMenuRef.current.contains(target) &&
+        menuBtnRef.current &&
+        !menuBtnRef.current.contains(target)
+      ) {
         setIsOpen(false);
+      }
     };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+
+    document.addEventListener("pointerdown", handlePointerDown);
+    return () => document.removeEventListener("pointerdown", handlePointerDown);
+  }, []);
+
+  // Close on Escape
+  useEffect(() => {
+    const onKeyDown = (e) => {
+      if (e.key === "Escape") {
+        setDropdownOpen(false);
+        setIsOpen(false);
+      }
+    };
+    document.addEventListener("keydown", onKeyDown);
+    return () => document.removeEventListener("keydown", onKeyDown);
   }, []);
 
   return (
@@ -70,7 +94,6 @@ const Navbar = () => {
     >
       <div className="container mx-auto px-4 py-4">
         <div className="flex justify-between items-center">
-          {/* Logo */}
           <CareCampLogo />
 
           {/* Desktop Nav */}
@@ -110,8 +133,12 @@ const Navbar = () => {
             ) : (
               <div className="relative" ref={dropdownRef}>
                 <button
+                  type="button"
                   className="flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-[#F5F7F8] transition-all duration-200 group"
-                  onClick={() => setDropdownOpen(!dropdownOpen)}
+                  onClick={() => setDropdownOpen((v) => !v)}
+                  aria-haspopup="menu"
+                  aria-expanded={dropdownOpen}
+                  aria-controls="user-menu"
                 >
                   <img
                     src={user.photoURL || "/default-avatar.png"}
@@ -121,7 +148,11 @@ const Navbar = () => {
                 </button>
 
                 {dropdownOpen && (
-                  <div className="absolute right-0 mt-3 w-64 bg-white shadow-2xl rounded-2xl overflow-hidden border border-[#495E57]/10 animate-[slideDown_0.2s_ease-out]">
+                  <div
+                    id="user-menu"
+                    role="menu"
+                    className="absolute right-0 mt-3 w-64 bg-white shadow-2xl rounded-2xl overflow-hidden border border-[#495E57]/10 animate-[slideDown_0.2s_ease-out]"
+                  >
                     <div className="px-5 py-4 border-b border-[#495E57]/10 bg-gradient-to-br from-[#F5F7F8] to-white">
                       <p className="font-semibold text-[#45474B] truncate">
                         {user.displayName || "User"}
@@ -135,6 +166,7 @@ const Navbar = () => {
                       to="/dashboard"
                       className="flex items-center gap-3 px-5 py-3.5 hover:bg-[#F5F7F8] transition-colors group"
                       onClick={() => setDropdownOpen(false)}
+                      role="menuitem"
                     >
                       <div className="w-8 h-8 rounded-lg bg-[#495E57]/10 flex items-center justify-center group-hover:bg-[#495E57]/20 transition-colors">
                         <LayoutDashboard size={16} className="text-[#495E57]" />
@@ -145,11 +177,13 @@ const Navbar = () => {
                     </NavLink>
 
                     <button
+                      type="button"
                       onClick={() => {
                         setDropdownOpen(false);
                         handleLogout();
                       }}
                       className="w-full text-left flex items-center gap-3 px-5 py-3.5 hover:bg-red-50 transition-colors border-t border-[#495E57]/10 group"
+                      role="menuitem"
                     >
                       <div className="w-8 h-8 rounded-lg bg-red-50 flex items-center justify-center group-hover:bg-red-100 transition-colors">
                         <LogOut size={16} className="text-red-500" />
@@ -164,9 +198,13 @@ const Navbar = () => {
 
           {/* Mobile Menu Button */}
           <button
-            onClick={() => setIsOpen(!isOpen)}
+            ref={menuBtnRef}
+            type="button"
+            onClick={() => setIsOpen((v) => !v)}
             className="lg:hidden p-2.5 rounded-xl hover:bg-[#F5F7F8] transition-colors text-[#45474B]"
             aria-label="Toggle Menu"
+            aria-expanded={isOpen}
+            aria-controls="mobile-menu"
           >
             {isOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
@@ -176,6 +214,7 @@ const Navbar = () => {
       {/* Mobile Menu */}
       {isOpen && (
         <div
+          id="mobile-menu"
           ref={mobileMenuRef}
           className="lg:hidden bg-white border-t border-[#495E57]/10 absolute w-full shadow-2xl animate-[slideDown_0.3s_ease-out]"
         >
@@ -219,6 +258,7 @@ const Navbar = () => {
                   </li>
                   <li>
                     <button
+                      type="button"
                       onClick={() => {
                         setIsOpen(false);
                         handleLogout();
