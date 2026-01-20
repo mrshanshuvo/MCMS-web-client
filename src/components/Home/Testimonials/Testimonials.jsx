@@ -5,7 +5,7 @@ const testimonials = [
   {
     name: "Dr. Nazmul Huda",
     role: "Chief Medical Officer",
-    quote: "MCMS has revolutionized our approach to community healthcare.",
+    quote: "CareCamp has revolutionized our approach to community healthcare.",
     rating: 5,
     image: "👨‍⚕️",
   },

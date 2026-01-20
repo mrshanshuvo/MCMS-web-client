@@ -35,7 +35,9 @@ const Login = () => {
       const userCredential = await signInUser(data.email, data.password);
       const user = userCredential.user;
 
-      toast.success(`Welcome to MCMS, ${user.displayName || "participant"}!`);
+      toast.success(
+        `Welcome to CareCamp, ${user.displayName || "participant"}!`,
+      );
       await updateLastLogin(user?.email);
 
       navigate(from, { replace: true });
@@ -50,7 +52,9 @@ const Login = () => {
       const result = await signInWithGoogle();
       const user = result.user;
 
-      toast.success(`Welcome to MCMS, ${user.displayName || "participant"}!`);
+      toast.success(
+        `Welcome to CareCamp, ${user.displayName || "participant"}!`,
+      );
 
       const idToken = await user.getIdToken();
 
@@ -201,7 +205,7 @@ const Login = () => {
       </form>
 
       <div className="text-center text-sm text-[#45474B]">
-        New to MCMS?{" "}
+        New to CareCamp?{" "}
         <Link
           state={{ from }}
           to="/register"

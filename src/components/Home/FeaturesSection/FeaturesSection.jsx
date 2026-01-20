@@ -35,7 +35,7 @@ const FeaturesSection = () => {
               fill="#F4CE14"
               aria-hidden="true"
             />
-            Why Choose MCMS
+            Why Choose CareCamp
           </div>
 
           <h2 className="text-3xl sm:text-4xl font-bold text-[#45474B] mb-4">

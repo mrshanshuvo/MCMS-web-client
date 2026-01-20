@@ -1,6 +1,10 @@
 import { NavLink } from "react-router";
 
-const MCMSLogo = ({ variant = "dark", showSubtitle = true, size = "md" }) => {
+const CareCampLogo = ({
+  variant = "dark",
+  showSubtitle = true,
+  size = "md",
+}) => {
   const isLight = variant === "light";
 
   const textMain = isLight ? "text-white" : "text-[#45474B]";
@@ -47,4 +51,4 @@ const MCMSLogo = ({ variant = "dark", showSubtitle = true, size = "md" }) => {
   );
 };
 
-export default MCMSLogo;
+export default CareCampLogo;

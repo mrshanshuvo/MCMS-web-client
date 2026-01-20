@@ -51,7 +51,7 @@ const FAQs = () => {
   // Memoized computations
   const categories = useMemo(
     () => ["All", ...new Set(faqs.map((faq) => faq.category))],
-    [faqs]
+    [faqs],
   );
 
   const filteredFAQs = useMemo(
@@ -59,21 +59,21 @@ const FAQs = () => {
       activeCategory === "All"
         ? faqs
         : faqs.filter((faq) => faq.category === activeCategory),
-    [faqs, activeCategory]
+    [faqs, activeCategory],
   );
 
   const totalPages = useMemo(
     () => Math.ceil(filteredFAQs.length / FAQS_PER_PAGE),
-    [filteredFAQs.length]
+    [filteredFAQs.length],
   );
 
   const paginatedFAQs = useMemo(
     () =>
       filteredFAQs.slice(
         (currentPage - 1) * FAQS_PER_PAGE,
-        currentPage * FAQS_PER_PAGE
+        currentPage * FAQS_PER_PAGE,
       ),
-    [filteredFAQs, currentPage]
+    [filteredFAQs, currentPage],
   );
 
   // Event handlers
@@ -81,7 +81,7 @@ const FAQs = () => {
     (index) => {
       setOpenIndex(index === openIndex ? null : index);
     },
-    [openIndex]
+    [openIndex],
   );
 
   const handleCategoryChange = useCallback(
@@ -96,7 +96,7 @@ const FAQs = () => {
       setCurrentPage(1);
       setOpenIndex(null);
     },
-    [searchParams, setSearchParams]
+    [searchParams, setSearchParams],
   );
 
   const goToPage = useCallback(
@@ -106,7 +106,7 @@ const FAQs = () => {
       setOpenIndex(null);
       window.scrollTo({ top: 0, behavior: "smooth" });
     },
-    [totalPages]
+    [totalPages],
   );
 
   const getPaginationRange = useCallback(() => {
@@ -189,7 +189,7 @@ const FAQs = () => {
             </span>
           </h2>
           <p className="text-xl text-[#45474B]/70 max-w-3xl mx-auto">
-            Find answers to common questions about MCMS
+            Find answers to common questions about CareCamp
           </p>
         </div>
 
@@ -331,7 +331,7 @@ const FAQs = () => {
                 >
                   {page}
                 </button>
-              )
+              ),
             )}
 
             <button
@@ -360,7 +360,7 @@ const FAQs = () => {
             Showing{" "}
             {Math.min(
               (currentPage - 1) * FAQS_PER_PAGE + 1,
-              filteredFAQs.length
+              filteredFAQs.length,
             )}{" "}
             - {Math.min(currentPage * FAQS_PER_PAGE, filteredFAQs.length)} of{" "}
             {filteredFAQs.length} questions

@@ -130,7 +130,7 @@ const SuccessStoriesCarousel = () => {
           </h2>
           <p className="mt-4 text-lg text-[#495E57]/70 max-w-2xl mx-auto">
             Discover how healthcare professionals are transforming communities
-            with MCMS
+            with CareCamp
           </p>
         </div>
 

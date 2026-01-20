@@ -199,7 +199,9 @@ const SECTIONS = [
           practices, please contact our Data Protection Officer:
         </p>
         <div className="bg-[#495E57]/5 p-4 rounded-lg border border-[#495E57]/10">
-          <h3 className="font-medium text-[#45474B] mb-2">MCMS Support Team</h3>
+          <h3 className="font-medium text-[#45474B] mb-2">
+            CareCamp Support Team
+          </h3>
           <ul className="space-y-2 text-[#45474B]/70">
             <li className="flex items-center gap-2">
               <Mail className="w-4 h-4 text-[#495E57]" />
@@ -234,7 +236,7 @@ const PPolicy = () => {
     (id) => {
       setActiveSection(activeSection === id ? null : id);
     },
-    [activeSection]
+    [activeSection],
   );
 
   const scrollToSection = useCallback((id) => {
@@ -254,7 +256,7 @@ const PPolicy = () => {
           Your Privacy Matters
         </div>
         <h1 className="text-4xl font-bold text-[#45474B] mb-4">
-          MCMS
+          CareCamp
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#495E57] to-[#F4CE14]">
             {" "}
             Privacy Policy
@@ -265,7 +267,7 @@ const PPolicy = () => {
         </p>
       </div>
     ),
-    []
+    [],
   );
 
   const TableOfContents = useMemo(
@@ -301,7 +303,7 @@ const PPolicy = () => {
         </ul>
       </nav>
     ),
-    [activeSection, scrollToSection]
+    [activeSection, scrollToSection],
   );
 
   const PolicyContent = useMemo(
@@ -316,7 +318,7 @@ const PPolicy = () => {
           <meta itemProp="dateModified" content="2025-07-30" />
 
           <p className="text-[#45474B]/70 mb-8 leading-relaxed">
-            Your privacy is important to us at MCMS (Medical Camp Management
+            Your privacy is important to us at CareCamp (Medical Camp Management
             System). This Privacy Policy explains how we collect, use, and
             protect your personal information when you use our platform.
           </p>
@@ -396,7 +398,7 @@ const PPolicy = () => {
         </div>
       </article>
     ),
-    [activeSection, toggleSection]
+    [activeSection, toggleSection],
   );
 
   return (

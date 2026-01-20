@@ -18,7 +18,7 @@ const AuthLayout = () => {
 
       {/* Footer */}
       <footer className="py-4 text-center text-sm text-[#45474B]/70 bg-white border-t border-[#495E57]/10">
-        &copy; {new Date().getFullYear()} MCMS. All rights reserved.
+        &copy; {new Date().getFullYear()} CareCamp. All rights reserved.
       </footer>
     </div>
   );

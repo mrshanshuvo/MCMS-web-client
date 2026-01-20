@@ -39,7 +39,7 @@ const Blog = () => {
   // Memoized computations
   const categories = useMemo(
     () => ["All", ...new Set(posts.map((post) => post.category))],
-    [posts]
+    [posts],
   );
 
   const filteredPosts = useMemo(
@@ -47,26 +47,26 @@ const Blog = () => {
       selectedCategory === "All"
         ? posts
         : posts.filter((post) => post.category === selectedCategory),
-    [posts, selectedCategory]
+    [posts, selectedCategory],
   );
 
   const featuredPosts = useMemo(
     () => posts.filter((post) => post.featured).slice(0, 3),
-    [posts]
+    [posts],
   );
 
   const totalPages = useMemo(
     () => Math.ceil(filteredPosts.length / POSTS_PER_PAGE),
-    [filteredPosts.length]
+    [filteredPosts.length],
   );
 
   const currentPosts = useMemo(
     () =>
       filteredPosts.slice(
         (currentPage - 1) * POSTS_PER_PAGE,
-        currentPage * POSTS_PER_PAGE
+        currentPage * POSTS_PER_PAGE,
       ),
-    [filteredPosts, currentPage]
+    [filteredPosts, currentPage],
   );
 
   // Event handlers
@@ -81,7 +81,7 @@ const Blog = () => {
       setSearchParams(newParams);
       setCurrentPage(1);
     },
-    [searchParams, setSearchParams]
+    [searchParams, setSearchParams],
   );
 
   const goToPage = useCallback(
@@ -90,7 +90,7 @@ const Blog = () => {
       setCurrentPage(page);
       window.scrollTo({ top: 0, behavior: "smooth" });
     },
-    [totalPages]
+    [totalPages],
   );
 
   const getPaginationRange = useCallback(() => {
@@ -154,7 +154,7 @@ const Blog = () => {
             Latest Updates
           </div>
           <h2 className="text-4xl font-bold text-[#45474B] mb-4">
-            MCMS
+            CareCamp
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#495E57] to-[#F4CE14]">
               {" "}
               Blog & Insights
@@ -377,7 +377,7 @@ const Blog = () => {
               <span className="font-medium">
                 {Math.min(
                   (currentPage - 1) * POSTS_PER_PAGE + 1,
-                  filteredPosts.length
+                  filteredPosts.length,
                 )}
               </span>{" "}
               -{" "}

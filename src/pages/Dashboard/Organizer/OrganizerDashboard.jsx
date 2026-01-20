@@ -71,7 +71,7 @@ const OrganizerDashboard = () => {
             Organizer Overview
           </div>
           <h1 className="text-3xl font-bold text-gray-900 mb-2">
-            MCMS
+            CareCamp
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">
               {" "}
               Organizer Dashboard

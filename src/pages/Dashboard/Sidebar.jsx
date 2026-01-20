@@ -239,7 +239,7 @@ const Sidebar = () => {
             isOrganizer ? "border-blue-400/10" : "border-teal-400/10"
           } text-xs text-white/50`}
         >
-          <p>MCMS v1.0.0</p>
+          <p>CareCamp v4.0.0</p>
           <p>Logged in as: {isOrganizer ? "Organizer" : "Participant"}</p>
         </div>
       </aside>

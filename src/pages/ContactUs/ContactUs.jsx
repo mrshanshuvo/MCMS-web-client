@@ -19,8 +19,8 @@ const CONTACT_INFO = [
   {
     icon: <Mail className="text-[#495E57]" size={20} />,
     title: "Email",
-    value: "support@mcms.com",
-    action: "mailto:support@mcms.com",
+    value: "support@CareCamp.com",
+    action: "mailto:support@CareCamp.com",
     actionText: "Send us an email",
     bgColor: "bg-[#495E57]/10",
   },
@@ -95,7 +95,7 @@ const ContactUs = () => {
         },
       },
     }),
-    []
+    [],
   );
 
   const sendEmail = useCallback(
@@ -128,25 +128,25 @@ const ContactUs = () => {
           SERVICE_ID,
           TEMPLATE_ID,
           form.current,
-          PUBLIC_KEY
+          PUBLIC_KEY,
         );
 
         toast.success(
           "Message sent successfully! We'll get back to you soon.",
-          toastStyles.success
+          toastStyles.success,
         );
         form.current.reset();
       } catch (error) {
         console.error("EmailJS Error:", error);
         toast.error(
           "Failed to send message. Please try again or contact us directly.",
-          toastStyles.error
+          toastStyles.error,
         );
       } finally {
         setLoading(false);
       }
     },
-    [SERVICE_ID, TEMPLATE_ID, PUBLIC_KEY, toastStyles]
+    [SERVICE_ID, TEMPLATE_ID, PUBLIC_KEY, toastStyles],
   );
 
   // Memoized components
@@ -170,7 +170,7 @@ const ContactUs = () => {
         </p>
       </div>
     ),
-    []
+    [],
   );
 
   const ContactForm = useMemo(
@@ -271,7 +271,7 @@ const ContactUs = () => {
         </div>
       </div>
     ),
-    [loading, sendEmail]
+    [loading, sendEmail],
   );
 
   const ContactInfoCards = useMemo(
@@ -311,7 +311,7 @@ const ContactUs = () => {
         ))}
       </div>
     ),
-    []
+    [],
   );
 
   const SocialLinks = useMemo(
@@ -334,14 +334,14 @@ const ContactUs = () => {
         </div>
       </div>
     ),
-    []
+    [],
   );
 
   const MapSection = useMemo(
     () => (
       <div className="bg-white rounded-2xl shadow-sm border border-[#495E57]/10 overflow-hidden h-64 sm:h-80">
         <iframe
-          title="MCMS Location - Dhaka, Bangladesh"
+          title="CareCamp Location - Dhaka, Bangladesh"
           src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3648.787582899769!2d90.40729131488687!3d23.872331284528456!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3755c4b4c4f34b8d%3A0xe1e88f437e6f4033!2sDhaka!5e0!3m2!1sen!2sbd!4v1650000000000"
           width="100%"
           height="100%"
@@ -349,11 +349,11 @@ const ContactUs = () => {
           loading="lazy"
           referrerPolicy="no-referrer-when-downgrade"
           className="border-0"
-          aria-label="Interactive map showing MCMS location in Dhaka, Bangladesh"
+          aria-label="Interactive map showing CareCamp location in Dhaka, Bangladesh"
         ></iframe>
       </div>
     ),
-    []
+    [],
   );
 
   return (

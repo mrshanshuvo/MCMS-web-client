@@ -97,8 +97,8 @@ const HeroSection = () => {
 
               <p className="text-xl lg:text-2xl text-[#45474B]/70 leading-relaxed max-w-2xl">
                 Connect, organize, and deliver healthcare where it matters most.
-                MCMS brings medical camps to life with seamless coordination and
-                real impact.
+                CareCamp brings medical camps to life with seamless coordination
+                and real impact.
               </p>
             </div>
 
@@ -185,7 +185,7 @@ const HeroSection = () => {
           }}
           role="dialog"
           aria-modal="true"
-          aria-label="MCMS demo video"
+          aria-label="CareCamp demo video"
         >
           <div className="bg-white rounded-2xl w-full max-w-3xl shadow-2xl relative overflow-hidden animate-[fadeIn_0.2s_ease-out]">
             <button
@@ -201,7 +201,7 @@ const HeroSection = () => {
               <iframe
                 className="w-full h-full"
                 src="https://www.youtube.com/embed/jX3s9Dlh2kc"
-                title="MCMS Demo Video"
+                title="CareCamp Demo Video"
                 allow="autoplay; fullscreen"
                 allowFullScreen
                 loading="lazy"

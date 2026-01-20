@@ -44,7 +44,7 @@ const Register = () => {
             },
           });
         } catch (error) {
-          toast.error("Failed to save user to MCMS DB.");
+          toast.error("Failed to save user to CareCamp DB.");
           console.error("Error saving user:", error);
         }
 
@@ -132,7 +132,9 @@ const Register = () => {
         }
       }
 
-      toast.success(`Welcome to MCMS, ${user.displayName || "participant"}!`);
+      toast.success(
+        `Welcome to CareCamp, ${user.displayName || "participant"}!`,
+      );
       navigate(from, { replace: true });
     } catch (error) {
       toast.error("Google sign-in failed: " + error.message);
@@ -146,7 +148,7 @@ const Register = () => {
 
       <div className="text-center">
         <h1 className="text-2xl font-bold text-blue-800">Create an Account</h1>
-        <p className="text-blue-600 mt-2">Register for MCMS</p>
+        <p className="text-blue-600 mt-2">Register for CareCamp</p>
       </div>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">

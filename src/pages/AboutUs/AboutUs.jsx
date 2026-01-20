@@ -57,7 +57,7 @@ const AboutUs = () => {
           Medical Camp Management System
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#495E57] to-[#F4CE14]">
             {" "}
-            (MCMS)
+            (CareCamp)
           </span>
         </h1>
         <p className="text-xl text-[#45474B]/70 max-w-3xl mx-auto leading-relaxed">
@@ -65,7 +65,7 @@ const AboutUs = () => {
         </p>
       </div>
     ),
-    []
+    [],
   );
 
   const MainContent = useMemo(
@@ -76,7 +76,7 @@ const AboutUs = () => {
           <div className="p-8 sm:p-10 lg:p-12">
             <div className="space-y-6 text-[#45474B]/70 text-lg leading-relaxed">
               <p className="text-xl text-[#45474B] font-medium">
-                MCMS is a comprehensive platform designed to streamline the
+                CareCamp is a comprehensive platform designed to streamline the
                 planning, management, and participation of medical camps. It
                 empowers organizers to efficiently coordinate events while
                 providing participants with an intuitive interface to discover
@@ -84,9 +84,9 @@ const AboutUs = () => {
               </p>
               <p>
                 With real-time updates, secure registration, transparent payment
-                tracking, and actionable feedback, MCMS ensures every medical
-                camp runs smoothly, maximizes impact, and fosters a healthier
-                community.
+                tracking, and actionable feedback, CareCamp ensures every
+                medical camp runs smoothly, maximizes impact, and fosters a
+                healthier community.
               </p>
               <p className="font-medium text-[#45474B]">
                 Our mission is to bridge the gap between healthcare providers
@@ -146,7 +146,7 @@ const AboutUs = () => {
         </div>
       </div>
     ),
-    []
+    [],
   );
 
   const StatsSection = useMemo(
@@ -172,14 +172,14 @@ const AboutUs = () => {
         ))}
       </div>
     ),
-    []
+    [],
   );
 
   return (
     <div
       className="min-h-screen bg-gradient-to-b from-[#F5F7F8] to-white py-16 px-4 sm:px-6 lg:px-8"
       role="main"
-      aria-label="About MCMS"
+      aria-label="About CareCamp"
     >
       <div className="max-w-7xl mx-auto">
         {HeaderSection}

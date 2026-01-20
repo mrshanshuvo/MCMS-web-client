@@ -40,7 +40,7 @@ const SuccessStories = () => {
 
   const paginatedStories = stories.slice(
     (currentPage - 1) * STORIES_PER_PAGE,
-    currentPage * STORIES_PER_PAGE
+    currentPage * STORIES_PER_PAGE,
   );
 
   const goToPage = (page) => {
@@ -59,8 +59,8 @@ const SuccessStories = () => {
             </span>
           </h2>
           <p className="text-lg text-[#45474B]/70 max-w-2xl mx-auto">
-            Real impact. Real results. See how MCMS is transforming healthcare
-            delivery.
+            Real impact. Real results. See how CareCamp is transforming
+            healthcare delivery.
           </p>
         </div>
 

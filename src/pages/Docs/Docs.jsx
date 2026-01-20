@@ -57,7 +57,7 @@ const LINKS = [
     icon: <Globe className="w-5 h-5" />,
     title: "Live Website",
     url: "https://mcms-auth.firebaseapp.com/",
-    ariaLabel: "Visit the live MCMS website",
+    ariaLabel: "Visit the live CareCamp website",
   },
   {
     icon: <Github className="w-5 h-5" />,
@@ -133,7 +133,7 @@ const Docs = () => {
           Technical Documentation
         </div>
         <h1 className="text-4xl font-bold text-[#45474B] mb-4">
-          MCMS
+          CareCamp
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#495E57] to-[#F4CE14]">
             {" "}
             Documentation
@@ -144,7 +144,7 @@ const Docs = () => {
         </p>
       </div>
     ),
-    []
+    [],
   );
 
   const OverviewSection = useMemo(
@@ -159,8 +159,8 @@ const Docs = () => {
         </h2>
         <div className="prose max-w-none text-[#45474B]/70 leading-relaxed">
           <p>
-            MCMS (Medical Camp Management System) is a full-featured MERN stack
-            platform that simplifies the organization and participation of
+            CareCamp (Medical Camp Management System) is a full-featured MERN
+            stack platform that simplifies the organization and participation of
             medical camps. It provides role-based dashboards, real-time updates,
             secure payments, and a user-centric interface for both organizers
             and participants.
@@ -168,7 +168,7 @@ const Docs = () => {
         </div>
       </section>
     ),
-    []
+    [],
   );
 
   const UserRolesSection = useMemo(
@@ -209,7 +209,7 @@ const Docs = () => {
         </div>
       </section>
     ),
-    []
+    [],
   );
 
   const FeaturesSection = useMemo(
@@ -251,7 +251,7 @@ const Docs = () => {
         </div>
       </section>
     ),
-    []
+    [],
   );
 
   const ProjectStructureSection = useMemo(
@@ -292,7 +292,7 @@ const Docs = () => {
         </div>
       </section>
     ),
-    []
+    [],
   );
 
   const LinksSection = useMemo(
@@ -332,7 +332,7 @@ const Docs = () => {
         </div>
       </section>
     ),
-    []
+    [],
   );
 
   const SupportSection = useMemo(
@@ -376,7 +376,7 @@ const Docs = () => {
         </div>
       </section>
     ),
-    []
+    [],
   );
 
   return (
@@ -395,7 +395,7 @@ const Docs = () => {
           itemType="https://schema.org/TechArticle"
         >
           <div className="p-8 sm:p-10 lg:p-12">
-            <meta itemProp="headline" content="MCMS Documentation" />
+            <meta itemProp="headline" content="CareCamp Documentation" />
             <meta
               itemProp="description"
               content="Technical documentation for Medical Camp Management System"

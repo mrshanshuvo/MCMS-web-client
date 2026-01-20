@@ -144,7 +144,7 @@ const SECTIONS = [
       <div className="space-y-4">
         <div className="bg-[#495E57]/5 p-4 rounded-lg border border-[#495E57]/10">
           <h3 className="font-medium text-[#45474B] mb-2">
-            MCMS is not liable for:
+            CareCamp is not liable for:
           </h3>
           <ul className="space-y-2 text-[#45474B]/70" role="list">
             {[
@@ -242,7 +242,7 @@ const TermsOfService = () => {
     (id) => {
       setActiveSection(activeSection === id ? null : id);
     },
-    [activeSection]
+    [activeSection],
   );
 
   const scrollToSection = useCallback((id) => {
@@ -268,7 +268,7 @@ const TermsOfService = () => {
           Legal Agreement
         </div>
         <h1 className="text-4xl font-bold text-[#45474B] mb-4">
-          MCMS
+          CareCamp
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#495E57] to-[#F4CE14]">
             {" "}
             Terms of Service
@@ -279,7 +279,7 @@ const TermsOfService = () => {
         </p>
       </div>
     ),
-    []
+    [],
   );
 
   const TableOfContents = useMemo(
@@ -315,7 +315,7 @@ const TermsOfService = () => {
         </ul>
       </nav>
     ),
-    [activeSection, scrollToSection]
+    [activeSection, scrollToSection],
   );
 
   const TermsContent = useMemo(
@@ -331,10 +331,10 @@ const TermsOfService = () => {
 
           <div className="prose max-w-none">
             <p className="text-[#45474B]/70 mb-8 leading-relaxed">
-              Welcome to MCMS (Medical Camp Management System). By accessing or
-              using our platform, you agree to comply with and be bound by these
-              Terms of Service. Please read them carefully before using our
-              services.
+              Welcome to CareCamp (Medical Camp Management System). By accessing
+              or using our platform, you agree to comply with and be bound by
+              these Terms of Service. Please read them carefully before using
+              our services.
             </p>
 
             <div className="space-y-8">
@@ -392,7 +392,7 @@ const TermsOfService = () => {
         <div className="bg-[#495E57]/5 p-8 border-t border-[#495E57]/10">
           <div className="max-w-2xl mx-auto text-center">
             <h3 className="text-xl font-semibold text-[#45474B] mb-3">
-              By using MCMS, you acknowledge that:
+              By using CareCamp, you acknowledge that:
             </h3>
             <ul
               className="space-y-2 text-[#45474B]/70 text-left mb-6"
@@ -441,7 +441,7 @@ const TermsOfService = () => {
         </div>
       </article>
     ),
-    [activeSection, toggleSection, accepted, handleAcceptTerms]
+    [activeSection, toggleSection, accepted, handleAcceptTerms],
   );
 
   return (
