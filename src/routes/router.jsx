@@ -29,6 +29,7 @@ import TermsOfService from "../pages/TermsOfService/TermsOfService";
 import ContactUs from "../pages/ContactUs/ContactUs";
 import RegisteredCamps from "../pages/Dashboard/Participant/RegisteredCamps/RegisteredCamps";
 import FeedbackPage from "../pages/FeedbackPage/FeedbackPage";
+import PublicOnly from "./PublicOnly";
 
 export const router = createBrowserRouter([
   {
@@ -55,7 +56,11 @@ export const router = createBrowserRouter([
   },
   {
     path: "/",
-    Component: AuthLayout,
+    element: (
+      <PublicOnly>
+        <AuthLayout />
+      </PublicOnly>
+    ),
     errorElement: <NotFound />,
     children: [
       { path: "login", Component: Login },

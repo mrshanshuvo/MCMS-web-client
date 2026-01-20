@@ -12,66 +12,79 @@ const Login = () => {
     handleSubmit,
     formState: { errors },
   } = useForm();
+
   const { signInWithGoogle, signInUser } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const from = location.state?.from || "/";
   const axiosInstance = useAxios();
 
-  const onSubmit = (data) => {
-    signInUser(data.email, data.password)
-      .then(async (userCredential) => {
-        const user = userCredential.user;
-        toast.success(`Welcome to MCMS, ${user.displayName || "participant"}!`);
-
-        try {
-          await axiosInstance.patch(`/users/${user.email}`, {
-            last_login: new Date().toISOString(),
-          });
-        } catch (error) {
-          console.error("Error updating last_login:", error);
-        }
-
-        navigate(from, { replace: true });
-      })
-      .catch((error) => {
-        toast.error("Login failed: " + error.message);
-        console.error("Login error:", error);
+  const updateLastLogin = async (email) => {
+    if (!email) return;
+    try {
+      await axiosInstance.patch(`/users/${email}`, {
+        last_login: new Date().toISOString(),
       });
+    } catch (error) {
+      console.error("Error updating last_login:", error);
+    }
   };
 
-  const handleGoogleSignIn = () => {
-    signInWithGoogle()
-      .then(async (result) => {
-        const user = result.user;
-        const idToken = await user.getIdToken();
+  const onSubmit = async (data) => {
+    try {
+      const userCredential = await signInUser(data.email, data.password);
+      const user = userCredential.user;
 
-        const userInfoDB = {
-          email: user.email,
-          name: user.displayName,
-          photoURL: user.photoURL,
-          role: "participant",
-          created_at: new Date().toISOString(),
-          last_login: new Date().toISOString(),
-        };
+      toast.success(`Welcome to MCMS, ${user.displayName || "participant"}!`);
+      await updateLastLogin(user?.email);
 
-        try {
-          await axiosInstance.post("/users", userInfoDB, {
-            headers: {
-              Authorization: `Bearer ${idToken}`,
-            },
-          });
-        } catch (error) {
-          toast.error("Error saving user info: " + error.message);
-          console.error("Error saving user:", error);
+      navigate(from, { replace: true });
+    } catch (error) {
+      toast.error("Login failed: " + error.message);
+      console.error("Login error:", error);
+    }
+  };
+
+  const handleGoogleSignIn = async () => {
+    try {
+      const result = await signInWithGoogle();
+      const user = result.user;
+
+      toast.success(`Welcome to MCMS, ${user.displayName || "participant"}!`);
+
+      const idToken = await user.getIdToken();
+
+      const userInfoDB = {
+        email: user.email,
+        name: user.displayName,
+        photoURL: user.photoURL,
+        role: "participant",
+        created_at: new Date().toISOString(),
+        last_login: new Date().toISOString(),
+      };
+
+      try {
+        // ✅ create if new
+        await axiosInstance.post("/users", userInfoDB, {
+          headers: { Authorization: `Bearer ${idToken}` },
+        });
+      } catch (err) {
+        // ✅ if already exists, just update last_login
+        const status = err?.response?.status;
+        if (status === 409 || status === 400) {
+          await updateLastLogin(user?.email);
+        } else {
+          console.error("Error saving user:", err);
+          toast.error("Error saving user info: " + (err.message || "Unknown"));
         }
+      }
 
-        navigate("/dashboard");
-      })
-      .catch((error) => {
-        toast.error("Google sign-in failed: " + error.message);
-        console.error("Google sign-in error:", error);
-      });
+      // ✅ consistent redirect behavior
+      navigate(from, { replace: true });
+    } catch (error) {
+      toast.error("Google sign-in failed: " + error.message);
+      console.error("Google sign-in error:", error);
+    }
   };
 
   return (
@@ -79,7 +92,6 @@ const Login = () => {
       <div className="text-center">
         <div className="flex justify-center mb-4">
           <div className="bg-[#495E57]/10 p-3 rounded-full">
-            {/* Logo */}
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-10 w-10 text-blue-600"
@@ -170,6 +182,8 @@ const Login = () => {
               Remember me
             </label>
           </div>
+
+          {/* optional: make it a route later */}
           <a
             href="#"
             className="text-sm font-medium text-[#495E57] hover:text-[#45474B] transition-colors"
@@ -199,7 +213,7 @@ const Login = () => {
 
       <div className="relative">
         <div className="absolute inset-0 flex items-center">
-          <div className="w-full border-t border-[#495E57]/20"></div>
+          <div className="w-full border-t border-[#495E57]/20" />
         </div>
         <div className="relative flex justify-center text-sm">
           <span className="px-2 bg-white text-[#45474B]">Or continue with</span>
