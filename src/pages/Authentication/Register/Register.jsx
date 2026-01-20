@@ -83,7 +83,7 @@ const Register = () => {
         `https://api.imgbb.com/1/upload?key=${
           import.meta.env.VITE_IMGBB_API_KEY
         }`,
-        formData
+        formData,
       );
 
       if (res.data && res.data.success) {
@@ -99,36 +99,45 @@ const Register = () => {
     }
   };
 
-  const handleGoogleSignIn = () => {
-    signInWithGoogle()
-      .then(async (result) => {
-        const user = result.user;
+  const handleGoogleSignIn = async () => {
+    try {
+      const result = await signInWithGoogle();
+      const user = result.user;
 
-        const userInfoDB = {
-          email: user.email,
-          name: user.displayName,
-          photoURL: user.photoURL,
-          role: "participant",
-          created_at: new Date().toISOString(),
-          last_login: new Date().toISOString(),
-        };
+      const idToken = await user.getIdToken();
 
-        try {
-          await axiosInstance.post(
-            "https://mcms-server-red.vercel.app/users",
-            userInfoDB
-          );
-        } catch (error) {
-          toast.error("Failed to store user info to MCMS DB.");
-          console.error("DB store error:", error);
+      const userInfoDB = {
+        email: user.email,
+        name: user.displayName,
+        photoURL: user.photoURL,
+        role: "participant",
+        created_at: new Date().toISOString(),
+        last_login: new Date().toISOString(),
+      };
+
+      try {
+        // ✅ create if new
+        await axiosInstance.post("/users", userInfoDB, {
+          headers: { Authorization: `Bearer ${idToken}` },
+        });
+      } catch (err) {
+        // ✅ if user already exists, just update last_login
+        const status = err?.response?.status;
+        if (status === 409 || status === 400) {
+          await axiosInstance.patch(`/users/${user.email}`, {
+            last_login: new Date().toISOString(),
+          });
+        } else {
+          throw err;
         }
+      }
 
-        navigate("/dashboard");
-      })
-      .catch((error) => {
-        toast.error("Google sign-in failed: " + error.message);
-        console.error("Google sign-in error:", error);
-      });
+      toast.success(`Welcome to MCMS, ${user.displayName || "participant"}!`);
+      navigate(from, { replace: true });
+    } catch (error) {
+      toast.error("Google sign-in failed: " + error.message);
+      console.error("Google sign-in error:", error);
+    }
   };
 
   return (
