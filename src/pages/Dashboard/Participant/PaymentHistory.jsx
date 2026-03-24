@@ -103,9 +103,8 @@ const PaymentHistory = () => {
     const statusKey = status?.toLowerCase() || "unknown";
     return (
       <span
-        className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-          statusStyles[statusKey] || "bg-gray-100 text-gray-800"
-        }`}
+        className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${statusStyles[statusKey] || "bg-gray-100 text-gray-800"
+          }`}
       >
         {statusKey === "completed" && <CheckCircle className="mr-1 h-3 w-3" />}
         {statusKey === "pending" && <Clock className="mr-1 h-3 w-3" />}
@@ -171,7 +170,7 @@ const PaymentHistory = () => {
   }
 
   return (
-    <div className="bg-white rounded-3xl shadow-xl border border-gray-100 overflow-hidden">
+    <div className="bg-white rounded-3xl m-8 shadow-xl border border-gray-100 overflow-hidden">
       {/* Header */}
       <div className="bg-gradient-to-r from-[#1e3a8a] to-[#0f766e] p-6 text-white">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">

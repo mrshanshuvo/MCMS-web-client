@@ -1,9 +1,11 @@
 import { Outlet } from "react-router";
 import CareCampLogo from "../pages/Shared/CareCampLogo/CareCampLogo";
+import ScrollToTop from "../components/ScrollToTop";
 
 const AuthLayout = () => {
   return (
     <div className="flex flex-col min-h-screen bg-gradient-to-br from-[#F5F7F8] to-white">
+      <ScrollToTop />
       {/* Header with Logo */}
       <header className="px-6 py-4 bg-white shadow-sm border-b border-[#495E57]/10">
         <CareCampLogo />
