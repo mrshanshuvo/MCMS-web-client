@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import axios from "axios";
+import api from "../../../api";
 import Swal from "sweetalert2";
 import useAuth from "../../../hooks/useAuth";
 import {
@@ -37,8 +37,8 @@ const OrganizerProfile = () => {
     queryKey: ["organizerProfile", authUser?.email],
     enabled: !!authUser?.email,
     queryFn: async () => {
-      const res = await axios.get(
-        `https://mcms-server-red.vercel.app/users/${authUser.email}`,
+      const res = await api.get(
+        `/users/${authUser.email}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -50,8 +50,8 @@ const OrganizerProfile = () => {
 
   const updateMutation = useMutation({
     mutationFn: (updatedData) =>
-      axios.put(
-        `https://mcms-server-red.vercel.app/users/${authUser.email}`,
+      api.put(
+        `/users/${authUser.email}`,
         {
           name: updatedData.name,
           photoURL: updatedData.photoURL,

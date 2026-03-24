@@ -15,7 +15,7 @@ import {
   Filter,
   Download,
 } from "lucide-react";
-import axios from "axios";
+import api from "../../../api";
 import useAuth from "../../../hooks/useAuth";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 
@@ -30,8 +30,8 @@ const CampInfo = ({ campId }) => {
   const { data: camp, isLoading } = useQuery({
     queryKey: ["camp", campId],
     queryFn: async () => {
-      const res = await axios.get(
-        `https://mcms-server-red.vercel.app/camps/${campId}`
+      const res = await api.get(
+        `/camps/${campId}`
       );
       return res.data.camp.camp;
     },

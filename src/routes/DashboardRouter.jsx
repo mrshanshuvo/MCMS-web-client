@@ -3,7 +3,7 @@ import ParticipantDashboard from "../pages/Dashboard/Participant/ParticipantDash
 import useUserRole from "../hooks/useUserRole";
 
 const DashboardRouter = () => {
-  const { role, loading } = useUserRole();
+  const { role, roleLoading: loading } = useUserRole();
 
   if (loading) {
     return <p>Loading your dashboard...</p>;

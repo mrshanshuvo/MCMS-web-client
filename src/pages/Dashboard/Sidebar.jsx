@@ -1,47 +1,44 @@
-import { NavLink } from "react-router";
+import { NavLink, Link, useNavigate } from "react-router";
 import {
-  Home,
   LayoutDashboard,
   PlusCircle,
   Settings,
   ClipboardList,
-  MessageSquare,
   User,
   CalendarCheck,
   ChartBar,
   CreditCard,
   User2,
-  Menu,
   X,
+  LogOut,
 } from "lucide-react";
-import useAuth from "../../hooks/useAuth";
 import useUserRole from "../../hooks/useUserRole";
-import { useState, useEffect } from "react";
+import useAuth from "../../hooks/useAuth";
+import logo from "/care-camp.png"
 
-const Sidebar = () => {
-  const { user } = useAuth();
+const Sidebar = ({ isOpen, setIsOpen }) => {
   const { role } = useUserRole();
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
+  const { logOut } = useAuth();
+  const navigate = useNavigate();
+
+  const handleLogOut = async () => {
+    try {
+      await logOut();
+      navigate("/login");
+    } catch (error) {
+      console.error("Failed to log out", error);
+    }
+  };
+
   const isOrganizer = role === "organizer";
-
-  useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth < 1024);
-    };
-
-    handleResize();
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
 
   // Common links for both roles
   const commonLinks = [
-    { to: "/", label: "Home", icon: <Home size={18} /> },
     {
       to: "/dashboard",
       label: "Dashboard",
       icon: <LayoutDashboard size={18} />,
+      end: true,
     },
   ];
 
@@ -101,146 +98,100 @@ const Sidebar = () => {
 
   return (
     <>
-      {/* Mobile menu button */}
-      {!isMobileMenuOpen && (
-        <button
-          className="fixed top-4 left-4 z-50 lg:hidden p-2 rounded-md bg-gradient-to-r from-[#1e3a8a] to-[#0f766e] text-white shadow-lg"
-          onClick={() => setIsMobileMenuOpen(true)}
-        >
-          <Menu size={24} />
-        </button>
-      )}
-
       {/* Overlay for mobile */}
-      {isMobileMenuOpen && isMobile && (
+      {isOpen && (
         <div
-          className="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden"
-          onClick={() => setIsMobileMenuOpen(false)}
+          className="fixed inset-0 bg-black/50 z-40 lg:hidden transition-opacity duration-300"
+          onClick={() => setIsOpen(false)}
         ></div>
       )}
 
       {/* Sidebar */}
       <aside
-        className={`fixed lg:relative z-40 w-64 min-h-screen bg-gradient-to-b from-[#1e3a8a] to-[#0f766e] text-white p-5 flex flex-col transition-transform duration-300 ease-in-out ${
-          isMobile
-            ? isMobileMenuOpen
-              ? "translate-x-0"
-              : "-translate-x-full"
-            : "translate-x-0"
-        }`}
+        className={`fixed inset-y-0 left-0 lg:relative z-50 w-64 h-full bg-gradient-to-b from-[#1e3a8a] to-[#0f766e] text-white p-5 flex flex-col transition-transform duration-300 ease-in-out lg:translate-x-0 ${isOpen ? "translate-x-0" : "-translate-x-full"
+          }`}
       >
         {/* Close button for mobile */}
-        {isMobile && (
-          <button
-            className="absolute top-4 right-4 lg:hidden"
-            onClick={() => setIsMobileMenuOpen(false)}
-          >
-            <X size={24} className="text-white/70 hover:text-white" />
-          </button>
-        )}
+        <button
+          className="absolute top-4 right-4 lg:hidden p-2 text-white/70 hover:text-white rounded-md hover:bg-white/10"
+          onClick={() => setIsOpen(false)}
+        >
+          <X size={20} />
+        </button>
 
-        {/* Header with role badge */}
-        <div className="mb-8 pt-4">
-          <div
-            className={`inline-flex items-center px-4 py-2 rounded-full text-sm font-medium mb-3 ${
-              isOrganizer
-                ? "bg-blue-100/10 backdrop-blur-sm border border-blue-300/20"
-                : "bg-teal-100/10 backdrop-blur-sm border border-teal-300/20"
-            }`}
+        {/* Logo linking to Home */}
+        <div className="mb-8 pt-2">
+          <Link
+            to="/"
+            className="flex items-center gap-1 group px-2"
+            onClick={() => setIsOpen(false)}
           >
-            <div
-              className={`w-2 h-2 rounded-full mr-2 animate-pulse ${
-                isOrganizer ? "bg-blue-400" : "bg-teal-400"
-              }`}
-            ></div>
-            {isOrganizer ? "Organizer Dashboard" : "Participant Portal"}
-          </div>
-
-          <div className="flex items-center">
-            <div
-              className={`p-2 rounded-lg mr-3 ${
-                isOrganizer
-                  ? "bg-blue-500/20 border border-blue-400/30"
-                  : "bg-teal-500/20 border border-teal-400/30"
-              }`}
-            >
-              {isOrganizer ? (
-                <Settings size={20} className="text-blue-300" />
-              ) : (
-                <User size={20} className="text-teal-300" />
-              )}
-            </div>
-            <h2 className="text-xl sm:text-2xl font-bold">
-              <span className="bg-gradient-to-r from-blue-300 to-teal-300 bg-clip-text text-transparent">
-                {user?.displayName || "User"}
-              </span>
-            </h2>
-          </div>
+            <img src={logo} className="w-14 h-14" alt="CareCamp Logo" />
+            <span className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-200 to-teal-200">
+              CareCamp
+            </span>
+          </Link>
         </div>
 
         {/* Navigation links */}
-        <nav className="space-y-2 flex-1 overflow-y-auto">
+        <nav className="space-y-2 flex-1 overflow-y-auto pr-1">
           {links.map((link) => (
             <NavLink
               key={link.to}
               to={link.to}
+              end={link.end}
+              onClick={() => setIsOpen(false)}
               className={({ isActive }) =>
-                `flex items-center px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300 group ${
-                  isActive
-                    ? isOrganizer
-                      ? "bg-blue-500/10 backdrop-blur-sm border border-blue-400/20 shadow-lg"
-                      : "bg-teal-500/10 backdrop-blur-sm border border-teal-400/20 shadow-lg"
-                    : "hover:bg-white/5 hover:border-white/10 hover:shadow-md"
+                `flex items-center px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300 group ${isActive
+                  ? isOrganizer
+                    ? "bg-blue-500/10 backdrop-blur-sm border border-blue-400/20 shadow-lg"
+                    : "bg-teal-500/10 backdrop-blur-sm border border-teal-400/20 shadow-lg"
+                  : "hover:bg-white/5 hover:border-white/10"
                 }`
               }
-              onClick={() => isMobile && setIsMobileMenuOpen(false)}
             >
               {({ isActive }) => (
                 <>
                   <span
-                    className={`mr-3 ${
-                      isActive
-                        ? isOrganizer
-                          ? "text-blue-300"
-                          : "text-teal-300"
-                        : "text-gray-300"
-                    }`}
+                    className={`mr-3 ${isActive
+                      ? isOrganizer
+                        ? "text-blue-300"
+                        : "text-teal-300"
+                      : "text-gray-300 group-hover:text-white"
+                      }`}
                   >
                     {link.icon}
                   </span>
-                  <span className="truncate">{link.label}</span>
-                  <span className="ml-auto opacity-0 group-hover:opacity-100 transition-opacity">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className={`h-4 w-4 ${
-                        isOrganizer ? "text-blue-300/50" : "text-teal-300/50"
-                      }`}
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M9 5l7 7-7 7"
-                      />
-                    </svg>
-                  </span>
+                  <span className={`truncate ${!isActive && "text-gray-200 group-hover:text-white"}`}>{link.label}</span>
                 </>
               )}
             </NavLink>
           ))}
         </nav>
 
+        {/* Logout Button */}
+        <div className="mt-2 pr-1">
+          <button
+            onClick={() => {
+              setIsOpen(false);
+              handleLogOut();
+            }}
+            className="w-full flex items-center px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300 group hover:bg-red-500/10 border border-transparent hover:border-red-400/20 text-gray-300 hover:text-red-400 cursor-pointer"
+          >
+            <span className="mr-3 text-red-400/80 group-hover:text-red-400 transition-colors">
+              <LogOut size={18} />
+            </span>
+            <span className="truncate transition-colors">Sign Out</span>
+          </button>
+        </div>
+
         {/* Footer */}
         <div
-          className={`mt-auto pt-4 border-t ${
-            isOrganizer ? "border-blue-400/10" : "border-teal-400/10"
-          } text-xs text-white/50`}
+          className={`mt-6 pt-4 border-t ${isOrganizer ? "border-blue-400/20" : "border-teal-400/20"
+            } text-xs text-blue-100/60`}
         >
-          <p>CareCamp v4.0.0</p>
-          <p>Logged in as: {isOrganizer ? "Organizer" : "Participant"}</p>
+          <p>© {new Date().getFullYear()} CareCamp</p>
+          <p className="mt-1">All rights reserved.</p>
         </div>
       </aside>
     </>

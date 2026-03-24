@@ -9,6 +9,7 @@ import {
 import { useQuery } from "@tanstack/react-query";
 import { Link, useSearchParams } from "react-router";
 import { useState, useMemo } from "react";
+import api from "../../api";
 
 const FeedbackPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -26,9 +27,8 @@ const FeedbackPage = () => {
   } = useQuery({
     queryKey: ["allFeedback"],
     queryFn: async () => {
-      const res = await fetch(`https://mcms-server-red.vercel.app/feedback`);
-      if (!res.ok) throw new Error("Failed to fetch feedback");
-      return res.json();
+      const res = await api.get(`/feedback`);
+      return res.data;
     },
   });
 

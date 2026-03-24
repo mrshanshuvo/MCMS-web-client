@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 import { Loader2, AlertCircle, CheckCircle } from "lucide-react";
 import useAuth from "../../../../hooks/useAuth";
+import api from "../../../../api";
 
 const PaymentDialog = ({
   open,
@@ -23,43 +24,37 @@ const PaymentDialog = ({
     setError(null);
 
     if (!stripe || !elements) return;
-    const token = user.accessToken;
+    const token = await user.getIdToken();
 
     try {
-      const response = await fetch(
-        `https://mcms-server-red.vercel.app/create-payment-intent`,
+      const response = await api.post(
+        `/create-payment-intent`,
         {
-          method: "POST",
+          amount: camp.fees,
+          campId: camp._id,
+        },
+        {
           headers: {
-            "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
-          body: JSON.stringify({
-            amount: camp.fees,
-            campId: camp._id,
-          }),
         }
       );
 
-      if (!response.ok) throw new Error("Failed to create payment intent");
-      const { clientSecret } = await response.json();
+      const { clientSecret } = response.data;
 
       // ✅ Handle free camp (no payment intent needed)
       if (!clientSecret) {
-        await fetch(`https://mcms-server-red.vercel.app/payments`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({
+        await api.post(`/payments`, {
             campId: camp._id,
             registrationId: registration._id,
             transactionId: `FREE_PAYMENT_${Date.now()}`,
             amount: 0,
             paymentMethod: "FREE",
-          }),
-        });
+          }, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
 
         setPaymentIntent({ status: "succeeded", id: "FREE_PAYMENT" });
         onPaymentSuccess();
@@ -81,19 +76,16 @@ const PaymentDialog = ({
 
       if (paymentIntent.status === "succeeded") {
         setPaymentIntent(paymentIntent);
-        await fetch(`https://mcms-server-red.vercel.app/payments`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({
+        await api.post(`/payments`, {
             campId: camp._id,
             registrationId: registration._id,
             transactionId: paymentIntent.id,
             amount: paymentIntent.amount,
-          }),
-        });
+          }, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
         onPaymentSuccess();
       }
     } catch (err) {

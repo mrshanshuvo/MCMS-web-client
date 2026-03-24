@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useParams } from "react-router";
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
+import api from "../../api";
 import {
   MapPin,
   Calendar,
@@ -19,15 +19,15 @@ import Swal from "sweetalert2";
 import { FaBangladeshiTakaSign } from "react-icons/fa6";
 
 const fetchCampById = async (campId) => {
-  const res = await axios.get(
-    `https://mcms-server-red.vercel.app/camps/${campId}`
+  const res = await api.get(
+    `/camps/${campId}`
   );
   return res.data.camp;
 };
 
 const checkRegistrationStatus = async (campId, idToken) => {
-  const res = await axios.get(
-    `https://mcms-server-red.vercel.app/registrations/check`,
+  const res = await api.get(
+    `/registrations/check`,
     {
       params: { campId },
       headers: {
@@ -39,8 +39,8 @@ const checkRegistrationStatus = async (campId, idToken) => {
 };
 
 const fetchUserRole = async (email) => {
-  const res = await axios.get(
-    `https://mcms-server-red.vercel.app/users/${email}/role`
+  const res = await api.get(
+    `/users/${email}/role`
   );
   return res.data.role || "participant";
 };
@@ -186,8 +186,8 @@ const CampDetails = () => {
       const idToken = await user.getIdToken();
 
       // 1. Register the participant
-      await axios.post(
-        "https://mcms-server-red.vercel.app/registrations",
+      await api.post(
+        "/registrations",
         {
           campId,
           participantName: formData.participantName,
@@ -205,8 +205,8 @@ const CampDetails = () => {
       );
 
       // 2. Increment participant count
-      await axios.patch(
-        `https://mcms-server-red.vercel.app/camps/${campId}/increment`,
+      await api.patch(
+        `/camps/${campId}/increment`,
         {},
         {
           headers: {

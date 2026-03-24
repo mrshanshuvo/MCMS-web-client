@@ -14,21 +14,18 @@ import {
 } from "recharts";
 import { Calendar, Loader2, AlertCircle } from "lucide-react";
 import { FaBangladeshiTakaSign } from "react-icons/fa6";
+import api from "../../../api";
 
 const fetchAnalytics = async (uid, token) => {
-  const res = await fetch(
-    `https://mcms-server-red.vercel.app/analytics/${uid}`,
+  const res = await api.get(
+    `/analytics/${uid}`,
     {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     }
   );
-  if (!res.ok) {
-    throw new Error("Failed to fetch analytics");
-  }
-  const result = await res.json();
-  return result.data || [];
+  return res.data.data || [];
 };
 
 const Analytics = () => {
@@ -40,7 +37,10 @@ const Analytics = () => {
     error,
   } = useQuery({
     queryKey: ["analytics", user?.uid],
-    queryFn: () => fetchAnalytics(user?.uid, user?.accessToken),
+    queryFn: async () => {
+      const token = user ? await user.getIdToken() : null;
+      return fetchAnalytics(user?.uid, token);
+    },
     enabled: !!user?.uid,
   });
 

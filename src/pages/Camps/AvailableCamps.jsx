@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
+import api from "../../api";
 import { Link } from "react-router";
 import {
   MapPin,
@@ -26,8 +26,8 @@ const fetchCamps = async ({ queryKey }) => {
   if (search) params.append("search", search);
   if (sort) params.append("sort", sort);
 
-  const res = await axios.get(
-    `https://mcms-server-red.vercel.app/camps?${params.toString()}`
+  const res = await api.get(
+    `/camps?${params.toString()}`
   );
   return res.data;
 };
