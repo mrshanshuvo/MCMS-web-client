@@ -29,10 +29,10 @@ const FeedbackModal = ({ open, onClose, feedback }) => {
   const dateText =
     feedback?.date && !Number.isNaN(new Date(feedback.date).getTime())
       ? new Date(feedback.date).toLocaleDateString("en-US", {
-          year: "numeric",
-          month: "long",
-          day: "numeric",
-        })
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      })
       : "";
 
   return (
@@ -101,11 +101,10 @@ const FeedbackModal = ({ open, onClose, feedback }) => {
               <Star
                 key={star}
                 aria-hidden="true"
-                className={`h-5 w-5 ${
-                  star <= rating
-                    ? "fill-[#F4CE14] text-[#F4CE14]"
-                    : "text-[#495E57]/30"
-                }`}
+                className={`h-5 w-5 ${star <= rating
+                  ? "fill-[#F4CE14] text-[#F4CE14]"
+                  : "text-[#495E57]/30"
+                  }`}
               />
             ))}
           </div>
@@ -203,27 +202,43 @@ const FeedbackRatings = () => {
   return (
     <>
       <div className="bg-gradient-to-b from-[#F5F7F8] to-white py-16 px-4 sm:px-6 lg:px-8">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
           {/* Header */}
-          <div className="text-center mb-12">
-            <div className="inline-flex items-center px-4 py-2 bg-[#495E57]/10 rounded-full text-[#495E57] font-medium mb-4">
-              <MessageSquare className="mr-2" size={20} aria-hidden="true" />
-              Participant Feedback
+          <div className="inline-flex items-center px-4 py-2 bg-[#495E57]/10 rounded-full text-[#495E57] font-medium mb-3">
+            <MessageSquare className="mr-2" size={20} aria-hidden="true" />
+            Participant Feedback
+          </div>
+
+          <div className="flex justify-between items-center gap-2 text-left">
+            <div className="mb-8">
+              <h2 className="text-4xl font-bold text-[#45474B] mb-2">
+                What Our
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#495E57] to-[#F4CE14]">
+                  {" "}
+                  Participants Say
+                </span>
+              </h2>
+              <p className="text-xl text-[#45474B]/70 max-w-3xl mx-auto">
+                Hear from those who have experienced our medical camps firsthand
+              </p>
             </div>
-            <h2 className="text-4xl font-bold text-[#45474B] mb-4">
-              What Our
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#495E57] to-[#F4CE14]">
-                {" "}
-                Participants Say
-              </span>
-            </h2>
-            <p className="text-xl text-[#45474B]/70 max-w-3xl mx-auto">
-              Hear from those who have experienced our medical camps firsthand
-            </p>
+
+            {/* View All Link */}
+            <Link
+              to="/feedback"
+              className="inline-flex items-center text-[#495E57] px-4 py-2 bg-amber-100 rounded-full hover:text-[#45474B] hover:bg-amber-200 font-medium transition-colors group/link"
+            >
+              View All Feedback
+              <ChevronRight
+                className="ml-1 group-hover/link:translate-x-1 transition-transform"
+                size={16}
+                aria-hidden="true"
+              />
+            </Link>
           </div>
 
           {/* Rating Summary */}
-          <div className="bg-white rounded-2xl shadow-sm overflow-hidden border border-[#495E57]/10 p-8 mb-12">
+          <div className="bg-white rounded-2xl shadow-sm overflow-hidden border border-[#495E57]/10 py-6 px-8 mb-12">
             <div className="flex flex-col md:flex-row items-center justify-between gap-8">
               {/* Average Rating */}
               <div className="text-center">
@@ -243,11 +258,10 @@ const FeedbackRatings = () => {
                     <Star
                       key={star}
                       aria-hidden="true"
-                      className={`h-6 w-6 ${
-                        star <= Math.round(averageRating)
-                          ? "fill-[#F4CE14] text-[#F4CE14]"
-                          : "text-[#495E57]/30"
-                      }`}
+                      className={`h-6 w-6 ${star <= Math.round(averageRating)
+                        ? "fill-[#F4CE14] text-[#F4CE14]"
+                        : "text-[#495E57]/30"
+                        }`}
                     />
                   ))}
                 </div>
@@ -276,11 +290,10 @@ const FeedbackRatings = () => {
                         <div
                           className="h-full bg-[#F4CE14]"
                           style={{
-                            width: `${
-                              (ratingDistribution[rating - 1] /
-                                feedbacks.length) *
-                                100 || 0
-                            }%`,
+                            width: `${(ratingDistribution[rating - 1] /
+                              feedbacks.length) *
+                              100 || 0
+                              }%`,
                           }}
                         />
                       )}
@@ -299,137 +312,120 @@ const FeedbackRatings = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
             {isLoading
               ? Array.from({ length: 6 }).map((_, i) => (
-                  <LoadingSkeleton key={i} />
-                ))
-              : feedbacks.map((feedback) => {
-                  const rating = clamp(Number(feedback?.rating) || 0, 1, 5);
+                <LoadingSkeleton key={i} />
+              ))
+              : feedbacks.slice(0, 3).map((feedback) => {
+                const rating = clamp(Number(feedback?.rating) || 0, 1, 5);
 
-                  const dateText =
-                    feedback?.date &&
+                const dateText =
+                  feedback?.date &&
                     !Number.isNaN(new Date(feedback.date).getTime())
-                      ? new Date(feedback.date).toLocaleDateString("en-US", {
-                          year: "numeric",
-                          month: "long",
-                          day: "numeric",
-                        })
-                      : "";
+                    ? new Date(feedback.date).toLocaleDateString("en-US", {
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                    })
+                    : "";
 
-                  const fullText = normalizeText(feedback?.feedback || "");
-                  const previewText = truncateChars(
-                    fullText,
-                    FEEDBACK_PREVIEW_CHARS,
-                  );
-                  const isTruncated = fullText.length > previewText.length;
+                const fullText = normalizeText(feedback?.feedback || "");
+                const previewText = truncateChars(
+                  fullText,
+                  FEEDBACK_PREVIEW_CHARS,
+                );
+                const isTruncated = fullText.length > previewText.length;
 
-                  return (
-                    <div
-                      key={
-                        feedback?._id ||
-                        `${feedback?.participantName}-${feedback?.campName}`
-                      }
-                      className="bg-white rounded-xl shadow-sm border border-[#495E57]/10 overflow-hidden hover:shadow-md hover:-translate-y-1 transition-all duration-300 group flex flex-col"
-                    >
-                      <div className="p-6 flex flex-col h-full">
-                        <div className="flex items-center mb-4">
-                          <div className="bg-[#495E57]/10 p-2 rounded-full mr-3 group-hover:bg-[#495E57]/20 transition-colors">
-                            {feedback?.participantPhotoURL ? (
-                              <img
-                                src={feedback.participantPhotoURL}
-                                alt={`${
-                                  feedback.participantName || "Participant"
+                return (
+                  <div
+                    key={
+                      feedback?._id ||
+                      `${feedback?.participantName}-${feedback?.campName}`
+                    }
+                    className="bg-white rounded-xl shadow-sm border border-[#495E57]/10 overflow-hidden hover:shadow-md hover:-translate-y-1 transition-all duration-300 group flex flex-col"
+                  >
+                    <div className="p-6 flex flex-col h-full">
+                      <div className="flex items-center mb-4">
+                        <div className="bg-[#495E57]/10 p-2 rounded-full mr-3 group-hover:bg-[#495E57]/20 transition-colors">
+                          {feedback?.participantPhotoURL ? (
+                            <img
+                              src={feedback.participantPhotoURL}
+                              alt={`${feedback.participantName || "Participant"
                                 } photo`}
-                                className="h-6 w-6 rounded-full object-cover"
-                                loading="lazy"
-                              />
-                            ) : (
-                              <User
-                                className="h-5 w-5 text-[#495E57]"
-                                aria-hidden="true"
-                              />
-                            )}
-                          </div>
-
-                          <div>
-                            <h3 className="font-semibold text-[#45474B]">
-                              {feedback?.participantName || "Anonymous"}
-                            </h3>
-                            <p className="text-xs text-[#495E57]">
-                              {feedback?.campName}
-                            </p>
-                          </div>
-                        </div>
-
-                        <div
-                          className="flex mb-3"
-                          aria-label={`${rating} out of 5 stars`}
-                        >
-                          <span className="sr-only">
-                            {rating} out of 5 stars
-                          </span>
-                          {[1, 2, 3, 4, 5].map((star) => (
-                            <Star
-                              key={star}
-                              aria-hidden="true"
-                              className={`h-5 w-5 ${
-                                star <= rating
-                                  ? "fill-[#F4CE14] text-[#F4CE14]"
-                                  : "text-[#495E57]/30"
-                              }`}
+                              className="h-6 w-6 rounded-full object-cover"
+                              loading="lazy"
                             />
-                          ))}
+                          ) : (
+                            <User
+                              className="h-5 w-5 text-[#495E57]"
+                              aria-hidden="true"
+                            />
+                          )}
                         </div>
 
-                        {/* ✅ consistent preview (same max chars) */}
-                        {fullText && (
-                          <p className="text-[#45474B]/70 mb-4 italic leading-relaxed">
-                            “{previewText}”
+                        <div>
+                          <h3 className="font-semibold text-[#45474B]">
+                            {feedback?.participantName || "Anonymous"}
+                          </h3>
+                          <p className="text-xs text-[#495E57]">
+                            {feedback?.campName}
                           </p>
-                        )}
-
-                        {/* footer row */}
-                        <div className="mt-auto flex items-center justify-between gap-3">
-                          {dateText ? (
-                            <p className="text-xs text-[#45474B]/50">
-                              {dateText}
-                            </p>
-                          ) : (
-                            <span />
-                          )}
-
-                          {/* ✅ view more -> modal */}
-                          {fullText && isTruncated && (
-                            <button
-                              type="button"
-                              onClick={() => setSelectedFeedback(feedback)}
-                              className="text-sm font-medium text-[#495E57] hover:text-[#45474B] inline-flex items-center gap-1 transition-colors cursor-pointer"
-                            >
-                              View more
-                              <ChevronRight
-                                className="h-4 w-4 text-[#F4CE14]"
-                                aria-hidden="true"
-                              />
-                            </button>
-                          )}
                         </div>
                       </div>
-                    </div>
-                  );
-                })}
-          </div>
 
-          {/* View All Link */}
-          <div className="text-center">
-            <Link
-              to="/feedback"
-              className="inline-flex items-center text-[#495E57] hover:text-[#45474B] font-medium transition-colors group/link"
-            >
-              View All Feedback
-              <ChevronRight
-                className="ml-1 text-[#F4CE14] group-hover/link:translate-x-1 transition-transform"
-                size={16}
-                aria-hidden="true"
-              />
-            </Link>
+                      <div
+                        className="flex mb-3"
+                        aria-label={`${rating} out of 5 stars`}
+                      >
+                        <span className="sr-only">
+                          {rating} out of 5 stars
+                        </span>
+                        {[1, 2, 3, 4, 5].map((star) => (
+                          <Star
+                            key={star}
+                            aria-hidden="true"
+                            className={`h-5 w-5 ${star <= rating
+                              ? "fill-[#F4CE14] text-[#F4CE14]"
+                              : "text-[#495E57]/30"
+                              }`}
+                          />
+                        ))}
+                      </div>
+
+                      {/* ✅ consistent preview (same max chars) */}
+                      {fullText && (
+                        <p className="text-[#45474B]/70 mb-4 italic leading-relaxed">
+                          “{previewText}”
+                        </p>
+                      )}
+
+                      {/* footer row */}
+                      <div className="mt-auto flex items-center justify-between gap-3">
+                        {dateText ? (
+                          <p className="text-xs text-[#45474B]/50">
+                            {dateText}
+                          </p>
+                        ) : (
+                          <span />
+                        )}
+
+                        {/* ✅ view more -> modal */}
+                        {fullText && isTruncated && (
+                          <button
+                            type="button"
+                            onClick={() => setSelectedFeedback(feedback)}
+                            className="text-sm font-medium text-[#495E57] hover:text-[#45474B] inline-flex items-center gap-1 transition-colors cursor-pointer"
+                          >
+                            View more
+                            <ChevronRight
+                              className="h-4 w-4 text-[#F4CE14]"
+                              aria-hidden="true"
+                            />
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
           </div>
         </div>
       </div>

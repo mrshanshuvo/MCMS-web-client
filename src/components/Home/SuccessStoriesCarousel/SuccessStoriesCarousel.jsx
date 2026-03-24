@@ -112,26 +112,37 @@ const SuccessStoriesCarousel = () => {
         aria-hidden="true"
       />
 
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="text-center mb-14">
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-white rounded-full shadow-sm border border-[#495E57]/10 mb-6">
-            <Star
-              size={16}
-              className="text-[#F4CE14]"
-              fill="#F4CE14"
-              aria-hidden="true"
-            />
-            <span className="text-sm font-medium text-[#495E57]">
-              Real Impact Stories
-            </span>
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+        <div className="inline-flex items-center gap-2 px-4 py-2 bg-white rounded-full shadow-sm border border-[#495E57]/10 mb-3">
+          <Star
+            size={16}
+            className="text-[#F4CE14]"
+            fill="#F4CE14"
+            aria-hidden="true"
+          />
+          <span className="text-sm font-medium text-[#495E57]">
+            Real Impact Stories
+          </span>
+        </div>
+
+        <div className="flex items-center justify-between text-left">
+          <div className="mb-8">
+            <h2 className="text-4xl sm:text-5xl font-bold text-[#45474B]">
+              Success Stories
+            </h2>
+            <p className="mt-2 text-lg text-[#495E57]/70 mx-auto">
+              Discover how healthcare professionals are transforming communities
+              with CareCamp
+            </p>
           </div>
-          <h2 className="text-4xl sm:text-5xl font-bold text-[#45474B]">
-            Success Stories
-          </h2>
-          <p className="mt-4 text-lg text-[#495E57]/70 max-w-2xl mx-auto">
-            Discover how healthcare professionals are transforming communities
-            with CareCamp
-          </p>
+
+          {/* view more button */}
+          <Link
+            to="/success-stories"
+            className="px-8 py-3 bg-gradient-to-r from-[#F4CE14]/90 to-[#F4CE14] text-[#45474B] font-semibold rounded-full shadow-md hover:shadow-xl hover:from-[#F4CE14] hover:to-[#F4CE14]/90 transition-all duration-300"
+          >
+            View More Success Stories
+          </Link>
         </div>
 
         <div className="relative">
@@ -287,18 +298,6 @@ const SuccessStoriesCarousel = () => {
                 )}
               </button>
             ))}
-          </div>
-
-          {/* view more button */}
-          <div className="flex justify-center mt-12">
-            <div className="bg-white/20 backdrop-blur-md rounded-3xl p-6 flex items-center justify-center shadow-lg border border-white/30 transition-transform duration-300 hover:scale-105">
-              <Link
-                to="/success-stories"
-                className="px-8 py-3 bg-gradient-to-r from-[#F4CE14]/90 to-[#F4CE14] text-[#45474B] font-semibold rounded-full shadow-md hover:shadow-xl hover:from-[#F4CE14] hover:to-[#F4CE14]/90 transition-all duration-300"
-              >
-                View More Success Stories
-              </Link>
-            </div>
           </div>
         </div>
       </div>

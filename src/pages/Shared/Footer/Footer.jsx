@@ -20,24 +20,28 @@ const SOCIAL_LINKS = [
     icon: Facebook,
     url: "https://facebook.com/carecamp",
     ariaLabel: "Visit CareCamp on Facebook",
+    color: "#1877F2",
   },
   {
     name: "Twitter",
     icon: Twitter,
     url: "https://twitter.com/carecamp",
     ariaLabel: "Visit CareCamp on Twitter",
+    color: "#1DA1F2",
   },
   {
     name: "LinkedIn",
     icon: Linkedin,
     url: "https://linkedin.com/company/carecamp",
     ariaLabel: "Visit CareCamp on LinkedIn",
+    color: "#0077B5",
   },
   {
     name: "YouTube",
     icon: Youtube,
     url: "https://youtube.com/@carecamp",
     ariaLabel: "Visit CareCamp on YouTube",
+    color: "#FF0000",
   },
 ];
 
@@ -137,12 +141,15 @@ const Footer = () => {
                 <li key={social.name}>
                   <a
                     href={social.url}
-                    className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-all duration-300 hover:scale-110 focus:outline-none"
+                    className="w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110"
+                    style={{
+                      backgroundColor: social.color,
+                    }}
                     aria-label={social.ariaLabel}
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    <Icon size={16} className="text-white" aria-hidden="true" />
+                    <Icon size={20} className="text-white" aria-hidden="true" />
                   </a>
                 </li>
               );

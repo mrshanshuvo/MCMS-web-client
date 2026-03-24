@@ -5,7 +5,6 @@ import PopularCampsSection from "../../components/Home/PopularCampsSection/Popul
 import FeaturesSection from "../../components/Home/FeaturesSection/FeaturesSection";
 import HowItWorks from "../../components/Home/HowItWorks/HowItWorks";
 import Testimonials from "../../components/Home/Testimonials/Testimonials";
-import CallToAction from "../../components/Home/CallToAction/CallToAction";
 import FeedbackRatings from "../../components/Home/FeedbackRatings/FeedbackRatings";
 const Home = () => {
   return (
@@ -16,7 +15,6 @@ const Home = () => {
       <FeaturesSection />
       <HowItWorks />
       <Testimonials />
-      <CallToAction />
       <FeedbackRatings />
     </div>
   );

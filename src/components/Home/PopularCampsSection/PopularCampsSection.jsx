@@ -66,23 +66,40 @@ const PopularCampsSection = () => {
 
   return (
     <section className="bg-gradient-to-b from-[#F5F7F8] to-white py-16">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12">
-          <div className="inline-flex items-center gap-2 bg-[#495E57]/10 text-[#495E57] px-4 py-2 rounded-full text-sm font-medium mb-4">
-            <Star size={16} className="text-[#F4CE14]" fill="#F4CE14" />
-            Most Popular Camps
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <div className="inline-flex items-center gap-2 bg-[#495E57]/10 text-[#495E57] px-4 py-2 rounded-full text-sm font-medium mb-3">
+          <Star size={16} className="text-[#F4CE14]" fill="#F4CE14" />
+          Most Popular Camps
+        </div>
+
+        <div className="flex items-center justify-between text-left">
+          <div className="mb-8">
+            <h2 className="text-3xl sm:text-4xl font-bold text-[#45474B] mb-2">
+              Popular
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#495E57] to-[#F4CE14]">
+                {" "}
+                Medical Camps
+              </span>
+            </h2>
+            <p className="text-lg text-[#45474B]/70 max-w-2xl mx-auto">
+              Join thousands of healthcare professionals in these upcoming medical
+              camps
+            </p>
           </div>
-          <h2 className="text-3xl sm:text-4xl font-bold text-[#45474B] mb-4">
-            Popular
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#495E57] to-[#F4CE14]">
-              {" "}
-              Medical Camps
+
+          <Link
+            to="/available-camps"
+            className="group relative inline-flex items-center bg-[#495E57] hover:bg-[#45474B] text-white font-semibold py-3 px-6 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden cursor-pointer"
+          >
+            <span className="relative z-10 flex items-center">
+              Explore All Camps
+              <ArrowRight
+                className="ml-2 text-[#F4CE14] group-hover:translate-x-1 transition-transform duration-300"
+                size={18}
+              />
             </span>
-          </h2>
-          <p className="text-lg text-[#45474B]/70 max-w-2xl mx-auto">
-            Join thousands of healthcare professionals in these upcoming medical
-            camps
-          </p>
+            <div className="absolute inset-0 bg-[#45474B] translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
+          </Link>
         </div>
 
         {isLoading ? (
@@ -131,50 +148,56 @@ const PopularCampsSection = () => {
                   </div>
                   <div className="p-6">
                     <div className="space-y-4">
-                      <div className="flex items-center text-[#45474B]">
-                        <div className="flex-shrink-0 w-8 h-8 bg-[#495E57]/10 rounded-lg flex items-center justify-center mr-3">
-                          <MapPin className="text-[#495E57]" size={16} />
-                        </div>
-                        <span className="text-sm font-medium">
-                          {camp.location}
-                        </span>
-                      </div>
-                      <div className="flex items-center text-[#45474B]">
-                        <div className="flex-shrink-0 w-8 h-8 bg-[#495E57]/10 rounded-lg flex items-center justify-center mr-3">
-                          <Calendar className="text-[#495E57]" size={16} />
-                        </div>
-                        <span className="text-sm">
-                          {new Date(camp.dateTime).toLocaleDateString("en-US", {
-                            year: "numeric",
-                            month: "short",
-                            day: "numeric",
-                          })}
-                        </span>
-                      </div>
-                      <div className="flex items-center text-[#45474B]">
-                        <div className="flex-shrink-0 w-8 h-8 bg-[#F4CE14]/20 rounded-lg flex items-center justify-center mr-3">
-                          <FaBangladeshiTakaSign
-                            className="text-[#F4CE14]"
-                            size={16}
-                          />
-                        </div>
-                        <div className="flex gap-1 justify-center items-center">
-                          <span className="text-sm font-semibold">
-                            {camp.fees.toFixed(2)}
+                      <div className="flex justify-between items-center gap-2">
+                        <div className="flex items-center text-[#45474B]">
+                          <div className="flex-shrink-0 w-8 h-8 flex items-center justify-center mr-1">
+                            <MapPin className="text-[#495E57]" size={16} />
+                          </div>
+                          <span className="text-sm font-medium">
+                            {camp.location}
                           </span>
-                          <FaBangladeshiTakaSign size={14} />
+                        </div>
+                        <div className="flex items-center text-[#45474B]">
+                          <div className="flex-shrink-0 w-8 h-8 flex items-center justify-center mr-1">
+                            <FaBangladeshiTakaSign
+                              className="text-[#F4CE14]"
+                              size={16}
+                            />
+                          </div>
+                          <div className="flex gap-1 justify-center items-center">
+                            <span className="text-sm font-semibold">
+                              {camp.fees.toFixed(2)}
+                            </span>
+                            <FaBangladeshiTakaSign size={14} />
+                          </div>
                         </div>
                       </div>
-                      <div className="flex items-center text-[#45474B]">
-                        <div className="flex-shrink-0 w-8 h-8 bg-[#495E57]/10 rounded-lg flex items-center justify-center mr-3">
-                          <User className="text-[#495E57]" size={16} />
+
+                      <div className="flex justify-between items-center gap-2">
+                        <div className="flex items-center text-[#45474B]">
+                          <div className="flex-shrink-0 w-8 h-8 flex items-center justify-center mr-1">
+                            <User className="text-[#495E57]" size={16} />
+                          </div>
+                          <span className="text-sm">
+                            {camp.healthcareProfessional}
+                          </span>
                         </div>
-                        <span className="text-sm">
-                          {camp.healthcareProfessional}
-                        </span>
+                        <div className="flex items-center text-[#45474B]">
+                          <div className="flex-shrink-0 w-8 h-8 flex items-center justify-center mr-1">
+                            <Calendar className="text-[#495E57]" size={16} />
+                          </div>
+                          <span className="text-sm">
+                            {new Date(camp.dateTime).toLocaleDateString("en-US", {
+                              year: "numeric",
+                              month: "short",
+                              day: "numeric",
+                            })}
+                          </span>
+                        </div>
                       </div>
+
                       <div className="flex items-center text-[#45474B]">
-                        <div className="flex-shrink-0 w-8 h-8 bg-[#495E57]/10 rounded-lg flex items-center justify-center mr-3">
+                        <div className="flex-shrink-0 w-8 h-8 flex items-center justify-center mr-1">
                           <Users className="text-[#495E57]" size={16} />
                         </div>
                         <div className="flex-1">
@@ -211,22 +234,6 @@ const PopularCampsSection = () => {
                   </div>
                 </div>
               ))}
-            </div>
-
-            <div className="text-center mt-12">
-              <Link
-                to="/available-camps"
-                className="group relative inline-flex items-center bg-[#495E57] hover:bg-[#45474B] text-white font-semibold py-3 px-6 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden cursor-pointer"
-              >
-                <span className="relative z-10 flex items-center">
-                  Explore All Camps
-                  <ArrowRight
-                    className="ml-2 text-[#F4CE14] group-hover:translate-x-1 transition-transform duration-300"
-                    size={18}
-                  />
-                </span>
-                <div className="absolute inset-0 bg-[#45474B] translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
-              </Link>
             </div>
           </>
         )}

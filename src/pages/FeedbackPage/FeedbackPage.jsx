@@ -2,14 +2,25 @@ import {
   Star,
   User,
   MessageSquare,
-  ChevronLeft,
   Search,
   Filter,
+  ArrowLeft,
+  ChevronDown,
 } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { Link, useSearchParams } from "react-router";
 import { useState, useMemo } from "react";
 import api from "../../api";
+import useActionMenu from "../../hooks/useActionMenu";
+
+const ratingOptions = [
+  { value: "all", label: "All Ratings" },
+  { value: "5", label: "5 Stars", icon: <Star className="h-4 w-4 fill-[#F4CE14] text-[#F4CE14]" /> },
+  { value: "4", label: "4 Stars", icon: <Star className="h-4 w-4 fill-[#F4CE14] text-[#F4CE14]" /> },
+  { value: "3", label: "3 Stars", icon: <Star className="h-4 w-4 fill-[#F4CE14] text-[#F4CE14]" /> },
+  { value: "2", label: "2 Stars", icon: <Star className="h-4 w-4 fill-[#F4CE14] text-[#F4CE14]" /> },
+  { value: "1", label: "1 Star",  icon: <Star className="h-4 w-4 fill-[#F4CE14] text-[#F4CE14]" /> },
+];
 
 const FeedbackPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -19,6 +30,12 @@ const FeedbackPage = () => {
   const [ratingFilter, setRatingFilter] = useState(
     searchParams.get("rating") || "all"
   );
+
+  const ratingMenu = useActionMenu({
+    options: ratingOptions,
+    initialValue: searchParams.get("rating") || "all",
+    onSelect: (val) => handleRatingFilter(val),
+  });
 
   const {
     data: feedbacks = [],
@@ -136,16 +153,16 @@ const FeedbackPage = () => {
   );
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#F5F7F8] to-white py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-6xl mx-auto">
+    <div className="min-h-screen bg-gradient-to-b from-[#F5F7F8] to-white py-12">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
-        <div className="flex items-center justify-between mb-8">
+        <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-4">
             <Link
               to="/"
               className="flex items-center text-[#495E57] hover:text-[#45474B] transition-colors"
             >
-              <ChevronLeft size={20} />
+              <ArrowLeft size={20} />
               <span className="ml-1">Back to Home</span>
             </Link>
           </div>
@@ -155,30 +172,89 @@ const FeedbackPage = () => {
           </div>
         </div>
 
-        {/* Page Header */}
-        <div className="text-center mb-12">
-          <h1 className="text-4xl sm:text-5xl font-bold text-[#45474B] mb-4">
-            Participant
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#495E57] to-[#F4CE14]">
-              {" "}
-              Feedback
-            </span>
-          </h1>
-          <p className="text-xl text-[#45474B]/70 max-w-3xl mx-auto">
-            Read what our participants have to say about their medical camp
-            experiences
-          </p>
+        <div className="flex flex-col md:flex-row justify-between items-start gap-6 mb-6">
+          {/* Page Header */}
+          <div className="flex-1">
+            <h1 className="text-4xl sm:text-5xl font-bold text-[#45474B] mb-2">
+              Participant
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#495E57] to-[#F4CE14]">
+                {" "}
+                Feedback
+              </span>
+            </h1>
+            <p className="text-xl text-[#45474B]/70">
+              Read what our participants have to say about their medical camp
+              experiences
+            </p>
+          </div>
+
+          {/* Search and Filter */}
+          <div className="flex-1 w-full flex flex-col md:flex-row gap-4">
+            {/* Search */}
+            <div className="flex-1 relative">
+              <Search
+                className="absolute left-3 top-1/2 -translate-y-1/2 text-[#495E57]"
+                size={20}
+              />
+              <input
+                type="text"
+                placeholder="Search by participant, camp, or feedback..."
+                value={searchTerm}
+                onChange={(e) => handleSearch(e.target.value)}
+                className="w-full pl-10 pr-4 py-3 border border-[#495E57]/20 rounded-lg focus:outline-none bg-white"
+              />
+            </div>
+
+            {/* Rating Filter */}
+            <div className="relative" ref={ratingMenu.containerRef}>
+              <button
+                onClick={ratingMenu.toggle}
+                className="flex items-center gap-2 px-4 py-3 border border-[#495E57]/20 rounded-lg bg-white hover:border-[#495E57]/50 transition-colors w-full min-w-[140px]"
+              >
+                <Filter size={16} className="text-[#495E57]" />
+                <span className="flex-1 text-left text-[#45474B] text-sm">
+                  {ratingMenu.selectedOption?.label}
+                </span>
+                <ChevronDown
+                  size={16}
+                  className={`text-[#495E57] transition-transform duration-200 ${
+                    ratingMenu.isOpen ? "rotate-180" : ""
+                  }`}
+                />
+              </button>
+
+              {ratingMenu.isOpen && (
+                <div className="absolute right-0 mt-1 w-40 bg-white border border-[#495E57]/15 rounded-xl shadow-lg z-50 overflow-hidden">
+                  {ratingOptions.map((opt) => (
+                    <button
+                      key={opt.value}
+                      onClick={() => ratingMenu.handleSelect(opt.value)}
+                      className={`flex items-center gap-2 w-full px-4 py-2.5 text-sm text-left transition-colors ${
+                        ratingMenu.value === opt.value
+                          ? "bg-[#495E57]/10 text-[#495E57] font-medium"
+                          : "text-[#45474B] hover:bg-[#495E57]/5"
+                      }`}
+                    >
+                      {opt.icon && opt.icon}
+                      {opt.label}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
         </div>
 
         {/* Statistics Card */}
-        <div className="bg-white rounded-2xl shadow-sm border border-[#495E57]/10 p-8 mb-8">
+        <div className="bg-white rounded-2xl shadow-sm border border-[#495E57]/10 py-4 px-8 mb-8">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {/* Average Rating */}
-            <div className="text-center">
+            <div className="flex flex-col items-center justify-center text-center h-full">
               <div className="text-5xl font-bold text-[#45474B] mb-2">
                 {isLoading ? "..." : stats.average.toFixed(1)}
                 <span className="text-2xl text-[#45474B]/60">/5</span>
               </div>
+
               <div className="flex justify-center mb-2">
                 {[1, 2, 3, 4, 5].map((star) => (
                   <Star
@@ -190,6 +266,7 @@ const FeedbackPage = () => {
                   />
                 ))}
               </div>
+
               <p className="text-[#45474B]/70">
                 {isLoading ? "Loading..." : `Based on ${stats.total} reviews`}
               </p>
@@ -231,43 +308,6 @@ const FeedbackPage = () => {
           </div>
         </div>
 
-        {/* Search and Filter */}
-        <div className="bg-white rounded-xl shadow-sm border border-[#495E57]/10 p-6 mb-8">
-          <div className="flex flex-col md:flex-row gap-4">
-            {/* Search */}
-            <div className="flex-1 relative">
-              <Search
-                className="absolute left-3 top-1/2 -translate-y-1/2 text-[#495E57]"
-                size={20}
-              />
-              <input
-                type="text"
-                placeholder="Search by participant, camp, or feedback..."
-                value={searchTerm}
-                onChange={(e) => handleSearch(e.target.value)}
-                className="w-full pl-10 pr-4 py-3 border border-[#495E57]/20 rounded-lg focus:outline-none bg-white"
-              />
-            </div>
-
-            {/* Rating Filter */}
-            <div className="flex items-center gap-2">
-              <Filter className="text-[#495E57]" size={20} />
-              <select
-                value={ratingFilter}
-                onChange={(e) => handleRatingFilter(e.target.value)}
-                className="px-4 py-3 border border-[#495E57]/20 rounded-lg focus:outline-none bg-white"
-              >
-                <option value="all">All Ratings</option>
-                <option value="5">5 Stars</option>
-                <option value="4">4 Stars</option>
-                <option value="3">3 Stars</option>
-                <option value="2">2 Stars</option>
-                <option value="1">1 Star</option>
-              </select>
-            </div>
-          </div>
-        </div>
-
         {/* Results Count */}
         <div className="mb-6">
           <p className="text-[#45474B]/70">
@@ -278,7 +318,7 @@ const FeedbackPage = () => {
         </div>
 
         {/* Feedback Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
           {isLoading ? (
             [...Array(6)].map((_, i) => <LoadingSkeleton key={i} />)
           ) : filteredFeedbacks.length === 0 ? (
