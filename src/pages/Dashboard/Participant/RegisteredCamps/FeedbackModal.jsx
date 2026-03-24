@@ -30,7 +30,7 @@ const FeedbackModal = ({ campId, onClose, onSubmit }) => {
                   type="button"
                   key={star}
                   onClick={() => setRating(star)}
-                  className="text-2xl focus:outline-none"
+                  className="text-2xl focus:outline-none cursor-pointer"
                 >
                   {star <= rating ? (
                     <Star className="fill-yellow-400 text-yellow-400" />
@@ -54,14 +54,14 @@ const FeedbackModal = ({ campId, onClose, onSubmit }) => {
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 border rounded-lg"
+              className="px-4 py-2 border rounded-lg cursor-pointer"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={isSubmitting}
-              className="px-4 py-2 bg-blue-600 text-white rounded-lg disabled:opacity-50"
+              className="px-4 py-2 bg-blue-600 text-white rounded-lg disabled:opacity-50 cursor-pointer"
             >
               {isSubmitting ? "Submitting..." : "Submit"}
             </button>

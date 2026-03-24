@@ -130,7 +130,7 @@ const RegisteredCamps = () => {
             </p>
             <button
               onClick={() => refetch()}
-              className="mt-2 text-sm text-red-600 hover:underline flex items-center"
+              className="mt-2 text-sm text-red-600 hover:underline flex items-center cursor-pointer"
             >
               <ArrowRight className="h-3 w-3 mr-1" />
               Retry
@@ -153,7 +153,7 @@ const RegisteredCamps = () => {
         </p>
         <a
           href="/available-camps"
-          className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg font-medium hover:shadow-lg transition-all"
+          className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg font-medium hover:shadow-lg transition-all cursor-pointer"
         >
           Browse Available Camps
           <ArrowRight className="ml-2 h-4 w-4" />
@@ -239,14 +239,14 @@ const RegisteredCamps = () => {
             <button
               onClick={() => setCurrentPage(1)}
               disabled={currentPage === 1}
-              className="px-3 py-1 rounded-md border border-gray-300 text-gray-700 hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="px-3 py-1 rounded-md border border-gray-300 text-gray-700 hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
             >
               First
             </button>
             <button
               onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
               disabled={currentPage === 1}
-              className="px-3 py-1 rounded-md border border-gray-300 text-gray-700 hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed flex items-center"
+              className="px-3 py-1 rounded-md border border-gray-300 text-gray-700 hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed flex items-center cursor-pointer"
             >
               <ChevronLeft className="h-4 w-4 mr-1" />
               Previous
@@ -256,7 +256,7 @@ const RegisteredCamps = () => {
               <button
                 key={pageNum}
                 onClick={() => setCurrentPage(pageNum)}
-                className={`w-10 h-10 rounded-full flex items-center justify-center ${
+                className={`w-10 h-10 rounded-full flex items-center justify-center cursor-pointer ${
                   currentPage === pageNum
                     ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white"
                     : "hover:bg-gray-100"
@@ -269,7 +269,7 @@ const RegisteredCamps = () => {
             <button
               onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
               disabled={currentPage === totalPages}
-              className="px-3 py-1 rounded-md border border-gray-300 text-gray-700 hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed flex items-center"
+              className="px-3 py-1 rounded-md border border-gray-300 text-gray-700 hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed flex items-center cursor-pointer"
             >
               Next
               <ChevronRight className="h-4 w-4 ml-1" />
@@ -277,7 +277,7 @@ const RegisteredCamps = () => {
             <button
               onClick={() => setCurrentPage(totalPages)}
               disabled={currentPage === totalPages}
-              className="px-3 py-1 rounded-md border border-gray-300 text-gray-700 hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="px-3 py-1 rounded-md border border-gray-300 text-gray-700 hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
             >
               Last
             </button>

@@ -104,7 +104,7 @@ const Navbar = () => {
                   <NavLink
                     to={link.path}
                     className={({ isActive }) =>
-                      `px-4 py-2 font-medium rounded-lg transition-all duration-200 relative group ${
+                      `px-4 py-2 font-medium rounded-lg transition-all duration-200 relative group cursor-pointer ${
                         isActive
                           ? "text-[#495E57] bg-[#F5F7F8]"
                           : "text-[#45474B] hover:text-[#495E57] hover:bg-[#F5F7F8]"
@@ -122,7 +122,7 @@ const Navbar = () => {
             {!user ? (
               <NavLink
                 to="/login"
-                className="bg-[#495E57] text-[#F5F7F8] px-6 py-2.5 rounded-xl font-semibold shadow-md hover:bg-[#45474B] hover:shadow-lg transition-all duration-300 flex items-center gap-2 group"
+                className="bg-[#495E57] text-[#F5F7F8] px-6 py-2.5 rounded-xl font-semibold shadow-md hover:bg-[#45474B] hover:shadow-lg transition-all duration-300 flex items-center gap-2 group cursor-pointer"
               >
                 <span>Join Us</span>
                 <User
@@ -134,7 +134,7 @@ const Navbar = () => {
               <div className="relative" ref={dropdownRef}>
                 <button
                   type="button"
-                  className="flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-[#F5F7F8] transition-all duration-200 group"
+                  className="flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-[#F5F7F8] transition-all duration-200 group cursor-pointer"
                   onClick={() => setDropdownOpen((v) => !v)}
                   aria-haspopup="menu"
                   aria-expanded={dropdownOpen}
@@ -164,7 +164,7 @@ const Navbar = () => {
 
                     <NavLink
                       to="/dashboard"
-                      className="flex items-center gap-3 px-5 py-3.5 hover:bg-[#F5F7F8] transition-colors group"
+                      className="flex items-center gap-3 px-5 py-3.5 hover:bg-[#F5F7F8] transition-colors group cursor-pointer"
                       onClick={() => setDropdownOpen(false)}
                       role="menuitem"
                     >
@@ -182,7 +182,7 @@ const Navbar = () => {
                         setDropdownOpen(false);
                         handleLogout();
                       }}
-                      className="w-full text-left flex items-center gap-3 px-5 py-3.5 hover:bg-red-50 transition-colors border-t border-[#495E57]/10 group"
+                      className="w-full text-left flex items-center gap-3 px-5 py-3.5 hover:bg-red-50 transition-colors border-t border-[#495E57]/10 group cursor-pointer"
                       role="menuitem"
                     >
                       <div className="w-8 h-8 rounded-lg bg-red-50 flex items-center justify-center group-hover:bg-red-100 transition-colors">
@@ -201,7 +201,7 @@ const Navbar = () => {
             ref={menuBtnRef}
             type="button"
             onClick={() => setIsOpen((v) => !v)}
-            className="lg:hidden p-2.5 rounded-xl hover:bg-[#F5F7F8] transition-colors text-[#45474B]"
+            className="lg:hidden p-2.5 rounded-xl hover:bg-[#F5F7F8] transition-colors text-[#45474B] cursor-pointer"
             aria-label="Toggle Menu"
             aria-expanded={isOpen}
             aria-controls="mobile-menu"
@@ -226,7 +226,7 @@ const Navbar = () => {
                     to={link.path}
                     onClick={() => setIsOpen(false)}
                     className={({ isActive }) =>
-                      `block px-4 py-3 rounded-xl font-medium text-[#45474B] transition-all duration-200 ${
+                      `block px-4 py-3 rounded-xl font-medium text-[#45474B] transition-all duration-200 cursor-pointer ${
                         isActive
                           ? "bg-[#F5F7F8] text-[#495E57]"
                           : "hover:bg-[#F5F7F8] hover:text-[#495E57]"
@@ -250,7 +250,7 @@ const Navbar = () => {
                     <NavLink
                       to="/dashboard"
                       onClick={() => setIsOpen(false)}
-                      className="flex items-center gap-3 px-4 py-3 rounded-xl text-[#45474B] hover:bg-[#F5F7F8] transition-all"
+                      className="flex items-center gap-3 px-4 py-3 rounded-xl text-[#45474B] hover:bg-[#F5F7F8] transition-all cursor-pointer"
                     >
                       <LayoutDashboard size={20} />
                       <span className="font-medium">Dashboard</span>
@@ -263,7 +263,7 @@ const Navbar = () => {
                         setIsOpen(false);
                         handleLogout();
                       }}
-                      className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-red-600 hover:bg-red-50 transition-all"
+                      className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-red-600 hover:bg-red-50 transition-all cursor-pointer"
                     >
                       <LogOut size={20} />
                       <span className="font-medium">Logout</span>
@@ -275,7 +275,7 @@ const Navbar = () => {
                   <NavLink
                     to="/login"
                     onClick={() => setIsOpen(false)}
-                    className="flex items-center justify-center gap-2 bg-[#495E57] text-[#F5F7F8] px-4 py-3 rounded-xl font-semibold shadow-md hover:bg-[#45474B] transition-all"
+                    className="flex items-center justify-center gap-2 bg-[#495E57] text-[#F5F7F8] px-4 py-3 rounded-xl font-semibold shadow-md hover:bg-[#45474B] transition-all cursor-pointer"
                   >
                     <span>Join Us</span>
                     <User size={18} />

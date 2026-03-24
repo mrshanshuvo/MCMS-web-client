@@ -60,13 +60,13 @@ const CampTable = ({ camps, onPay, onCancel, onFeedback }) => {
                       <>
                         <button
                           onClick={() => onPay(camp)}
-                          className="px-3 py-1 text-sm bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg hover:shadow-lg transition-all"
+                          className="px-3 py-1 text-sm bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg hover:shadow-lg transition-all cursor-pointer"
                         >
                           Pay Now
                         </button>
                         <button
                           onClick={() => onCancel(camp._id)}
-                          className="px-3 py-1 text-sm bg-red-500 text-white rounded hover:bg-red-600"
+                          className="px-3 py-1 text-sm bg-red-500 text-white rounded hover:bg-red-600 cursor-pointer"
                         >
                           Cancel
                         </button>
@@ -82,7 +82,7 @@ const CampTable = ({ camps, onPay, onCancel, onFeedback }) => {
                         className={`px-3 py-1 text-sm rounded text-white ${
                           camp.hasFeedback
                             ? "bg-gray-400 cursor-not-allowed"
-                            : "bg-blue-600 hover:bg-blue-700"
+                            : "bg-blue-600 hover:bg-blue-700 cursor-pointer"
                         }`}
                         title={
                           camp.hasFeedback

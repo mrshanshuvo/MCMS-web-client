@@ -150,14 +150,14 @@ const ManageCamps = () => {
                         <div className="flex gap-2 sm:gap-3">
                           <button
                             onClick={() => handleEdit(camp)}
-                            className="p-2 rounded-lg bg-blue-50 text-blue-600 hover:bg-blue-100 transition-colors"
+                            className="p-2 rounded-lg bg-blue-50 text-blue-600 hover:bg-blue-100 transition-colors cursor-pointer"
                             title="Edit"
                           >
                             <Pencil size={18} />
                           </button>
                           <button
                             onClick={() => handleDelete(camp._id)}
-                            className="p-2 rounded-lg bg-red-50 text-red-600 hover:bg-red-100 transition-colors"
+                            className="p-2 rounded-lg bg-red-50 text-red-600 hover:bg-red-100 transition-colors cursor-pointer"
                             title="Delete"
                           >
                             <Trash2 size={18} />
@@ -186,7 +186,7 @@ const ManageCamps = () => {
           <button
             onClick={handlePrevious}
             disabled={page === 1}
-            className="px-4 py-2 rounded-md bg-blue-100 text-blue-700 hover:bg-blue-200 disabled:opacity-50"
+            className="px-4 py-2 rounded-md bg-blue-100 text-blue-700 hover:bg-blue-200 disabled:opacity-50 cursor-pointer"
           >
             Previous
           </button>
@@ -196,7 +196,7 @@ const ManageCamps = () => {
           <button
             onClick={handleNext}
             disabled={page === totalPages}
-            className="px-4 py-2 rounded-md bg-blue-100 text-blue-700 hover:bg-blue-200 disabled:opacity-50"
+            className="px-4 py-2 rounded-md bg-blue-100 text-blue-700 hover:bg-blue-200 disabled:opacity-50 cursor-pointer"
           >
             Next
           </button>

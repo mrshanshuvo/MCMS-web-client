@@ -103,7 +103,7 @@ const OrganizerProfile = () => {
         </p>
         <button
           onClick={() => window.location.reload()}
-          className="bg-blue-100 text-blue-600 px-4 py-2 rounded-lg font-medium hover:bg-blue-200 transition-colors"
+          className="bg-blue-100 text-blue-600 px-4 py-2 rounded-lg font-medium hover:bg-blue-200 transition-colors cursor-pointer"
         >
           Try Again
         </button>
@@ -173,7 +173,7 @@ const OrganizerProfile = () => {
 
                 <button
                   onClick={() => setEditing(true)}
-                  className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-3 px-6 rounded-xl font-medium hover:shadow-lg transition-all flex items-center justify-center gap-2"
+                  className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-3 px-6 rounded-xl font-medium hover:shadow-lg transition-all flex items-center justify-center gap-2 cursor-pointer"
                 >
                   <Edit size={18} />
                   Update Profile
@@ -215,7 +215,7 @@ const OrganizerProfile = () => {
                   <button
                     type="submit"
                     disabled={isSubmitting || updateMutation.isLoading}
-                    className="flex-1 bg-green-600 text-white py-3 px-6 rounded-xl font-medium hover:bg-green-700 transition-all flex items-center justify-center gap-2"
+                    className="flex-1 bg-green-600 text-white py-3 px-6 rounded-xl font-medium hover:bg-green-700 transition-all flex items-center justify-center gap-2 cursor-pointer"
                   >
                     {isSubmitting || updateMutation.isLoading ? (
                       <>
@@ -235,7 +235,7 @@ const OrganizerProfile = () => {
                       reset(profile);
                       setEditing(false);
                     }}
-                    className="flex-1 bg-gray-100 text-gray-800 py-3 px-6 rounded-xl font-medium hover:bg-gray-200 transition-colors flex items-center justify-center gap-2"
+                    className="flex-1 bg-gray-100 text-gray-800 py-3 px-6 rounded-xl font-medium hover:bg-gray-200 transition-colors flex items-center justify-center gap-2 cursor-pointer"
                   >
                     <X size={18} />
                     Cancel

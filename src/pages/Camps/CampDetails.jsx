@@ -391,7 +391,7 @@ const CampDetails = () => {
                   ? "bg-gray-400 cursor-not-allowed"
                   : joinSuccess || isAlreadyRegistered
                   ? "bg-green-500 shadow-lg cursor-not-allowed"
-                  : "bg-gradient-to-r from-[#495E57] to-[#495E57]/90 hover:from-[#45474B] hover:to-[#45474B] shadow-lg hover:shadow-xl"
+                  : "bg-gradient-to-r from-[#495E57] to-[#495E57]/90 hover:from-[#45474B] hover:to-[#45474B] shadow-lg hover:shadow-xl cursor-pointer"
               } flex items-center justify-center`}
             >
               {isOrganizer ? (
@@ -449,7 +449,7 @@ const CampDetails = () => {
                 onClick={closeModal}
                 disabled={formSubmitting}
                 aria-label="Close modal"
-                className="text-[#45474B] hover:text-[#495E57] transition"
+                className="text-[#45474B] hover:text-[#495E57] transition cursor-pointer"
               >
                 <X size={24} />
               </button>

@@ -54,7 +54,7 @@ const PopularCampsSection = () => {
               type="button"
               onClick={() => refetch()}
               disabled={isFetching}
-              className="mt-4 bg-red-600 hover:bg-red-700 disabled:opacity-60 disabled:cursor-not-allowed text-white font-medium py-2 px-4 rounded transition-colors"
+              className="mt-4 bg-red-600 hover:bg-red-700 disabled:opacity-60 disabled:cursor-not-allowed text-white font-medium py-2 px-4 rounded transition-colors cursor-pointer"
             >
               {isFetching ? "Retrying..." : "Try Again"}
             </button>
@@ -200,7 +200,7 @@ const PopularCampsSection = () => {
                     </div>
                     <Link
                       to={`/camp-details/${camp._id}`}
-                      className="mt-6 w-full bg-gradient-to-r from-[#495E57] to-[#495E57]/90 hover:from-[#45474B] hover:to-[#45474B] text-white font-semibold py-3 px-4 rounded-lg flex items-center justify-center transition-all duration-200 shadow-sm hover:shadow-md group/link"
+                      className="mt-6 w-full bg-gradient-to-r from-[#495E57] to-[#495E57]/90 hover:from-[#45474B] hover:to-[#45474B] text-white font-semibold py-3 px-4 rounded-lg flex items-center justify-center transition-all duration-200 shadow-sm hover:shadow-md group/link cursor-pointer"
                     >
                       View Details
                       <ArrowRight
@@ -216,7 +216,7 @@ const PopularCampsSection = () => {
             <div className="text-center mt-12">
               <Link
                 to="/available-camps"
-                className="group relative inline-flex items-center bg-[#495E57] hover:bg-[#45474B] text-white font-semibold py-3 px-6 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden"
+                className="group relative inline-flex items-center bg-[#495E57] hover:bg-[#45474B] text-white font-semibold py-3 px-6 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden cursor-pointer"
               >
                 <span className="relative z-10 flex items-center">
                   Explore All Camps

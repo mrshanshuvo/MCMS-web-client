@@ -32,7 +32,7 @@ const CallToAction = () => {
           {/* Use Link for navigation */}
           <Link
             to="/available-camps"
-            className="bg-gradient-to-r from-[#F4CE14] to-[#F4CE14]/90 text-[#45474B] font-bold px-8 py-3 rounded-lg shadow-lg hover:shadow-xl hover:shadow-[#F4CE14]/25 transition-all duration-300 flex items-center justify-center group"
+            className="bg-gradient-to-r from-[#F4CE14] to-[#F4CE14]/90 text-[#45474B] font-bold px-8 py-3 rounded-lg shadow-lg hover:shadow-xl hover:shadow-[#F4CE14]/25 transition-all duration-300 flex items-center justify-center group cursor-pointer"
             aria-label="Start your journey by exploring available medical camps"
           >
             Start Your Journey
@@ -46,7 +46,7 @@ const CallToAction = () => {
           {/* Keep button if it opens a modal */}
           <button
             type="button"
-            className="flex items-center justify-center px-8 py-3 border-2 border-white/30 rounded-lg backdrop-blur-sm hover:bg-white/10 hover:border-white/50 transition-all duration-300 font-medium group"
+            className="flex items-center justify-center px-8 py-3 border-2 border-white/30 rounded-lg backdrop-blur-sm hover:bg-white/10 hover:border-white/50 transition-all duration-300 font-medium group cursor-pointer"
             aria-label="Schedule a demo"
             onClick={() => {
               // open demo modal here

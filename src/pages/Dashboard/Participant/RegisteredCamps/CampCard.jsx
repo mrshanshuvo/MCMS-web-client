@@ -19,7 +19,7 @@ const CampCard = ({ camp, onPay, onCancel, onFeedback }) => {
           </div>
           <button
             onClick={() => setExpanded(!expanded)}
-            className="text-gray-400 hover:text-gray-600"
+            className="text-gray-400 hover:text-gray-600 cursor-pointer"
           >
             <MoreHorizontal className="h-5 w-5" />
           </button>
@@ -54,13 +54,13 @@ const CampCard = ({ camp, onPay, onCancel, onFeedback }) => {
           <>
             <button
               onClick={() => onPay(camp)}
-              className="flex-1 px-3 py-1.5 text-xs sm:text-sm bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg hover:shadow-lg transition-all"
+              className="flex-1 px-3 py-1.5 text-xs sm:text-sm bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg hover:shadow-lg transition-all cursor-pointer"
             >
               Pay Now
             </button>
             <button
               onClick={() => onCancel(camp._id)}
-              className="flex-1 px-3 py-1.5 text-xs sm:text-sm bg-red-500 text-white rounded hover:bg-red-600"
+              className="flex-1 px-3 py-1.5 text-xs sm:text-sm bg-red-500 text-white rounded hover:bg-red-600 cursor-pointer"
             >
               Cancel
             </button>
@@ -69,7 +69,7 @@ const CampCard = ({ camp, onPay, onCancel, onFeedback }) => {
           <>
             <button
               onClick={() => onFeedback(camp._id)}
-              className="flex-1 px-3 py-1.5 text-xs sm:text-sm bg-blue-600 text-white rounded hover:bg-blue-700"
+              className="flex-1 px-3 py-1.5 text-xs sm:text-sm bg-blue-600 text-white rounded hover:bg-blue-700 cursor-pointer"
             >
               Feedback
             </button>

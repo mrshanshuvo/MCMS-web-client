@@ -142,7 +142,7 @@ const HeroSection = () => {
               {/* Link styled as button (no nested button) */}
               <Link
                 to="/available-camps"
-                className="group relative bg-[#495E57] text-[#F5F7F8] font-semibold px-8 py-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center overflow-hidden"
+                className="group relative bg-[#495E57] text-[#F5F7F8] font-semibold px-8 py-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center overflow-hidden cursor-pointer"
               >
                 <span className="relative z-10 flex items-center">
                   Explore Medical Camps

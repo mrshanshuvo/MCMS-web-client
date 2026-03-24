@@ -12,7 +12,7 @@ const TopBar = ({ setIsSidebarOpen }) => {
       <div className="flex items-center">
         <button
           onClick={() => setIsSidebarOpen(true)}
-          className="lg:hidden p-2 -ml-2 mr-2 text-gray-600 hover:bg-gray-100 rounded-md focus:outline-none"
+          className="lg:hidden p-2 -ml-2 mr-2 text-gray-600 hover:bg-gray-100 rounded-md focus:outline-none cursor-pointer"
         >
           <Menu size={24} />
         </button>

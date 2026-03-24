@@ -318,7 +318,7 @@ const AddCamp = () => {
               className={`w-full py-4 px-6 rounded-xl font-bold text-white transition-all duration-300 ${
                 isSubmitting || imageUploading
                   ? "bg-blue-400"
-                  : "bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 shadow-lg hover:shadow-xl"
+                  : "bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 shadow-lg hover:shadow-xl cursor-pointer"
               } flex items-center justify-center`}
             >
               {isSubmitting || imageUploading ? (

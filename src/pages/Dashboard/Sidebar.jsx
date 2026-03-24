@@ -123,7 +123,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
         <div className="mb-8 pt-2">
           <Link
             to="/"
-            className="flex items-center gap-1 group px-2"
+            className="flex items-center gap-1 group px-2 cursor-pointer"
             onClick={() => setIsOpen(false)}
           >
             <img src={logo} className="w-14 h-14" alt="CareCamp Logo" />
@@ -142,7 +142,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
               end={link.end}
               onClick={() => setIsOpen(false)}
               className={({ isActive }) =>
-                `flex items-center px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300 group ${isActive
+                `flex items-center px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300 group cursor-pointer ${isActive
                   ? isOrganizer
                     ? "bg-blue-500/10 backdrop-blur-sm border border-blue-400/20 shadow-lg"
                     : "bg-teal-500/10 backdrop-blur-sm border border-teal-400/20 shadow-lg"

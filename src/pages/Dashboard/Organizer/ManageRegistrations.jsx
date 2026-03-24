@@ -111,7 +111,7 @@ const ManageRegistrations = () => {
                 </td>
                 <td>
                   <button
-                    className="btn btn-sm btn-error px-2 sm:px-3"
+                    className="btn btn-sm btn-error px-2 sm:px-3 cursor-pointer"
                     onClick={() => handleCancel(reg._id)}
                     disabled={
                       reg.paymentStatus === "Paid" &&
@@ -142,7 +142,7 @@ const ManageRegistrations = () => {
         </p>
         <div className="flex items-center gap-2">
           <button
-            className="btn btn-sm"
+            className="btn btn-sm cursor-pointer"
             onClick={handlePrev}
             disabled={currentPage === 1}
           >
@@ -152,7 +152,7 @@ const ManageRegistrations = () => {
             Page {currentPage} of {pagination.totalPages || 1}
           </span>
           <button
-            className="btn btn-sm"
+            className="btn btn-sm cursor-pointer"
             onClick={handleNext}
             disabled={currentPage === pagination.totalPages}
           >

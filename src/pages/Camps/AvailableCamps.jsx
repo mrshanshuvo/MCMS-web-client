@@ -106,7 +106,7 @@ const AvailableCamps = () => {
             <div className="flex items-center gap-2">
               <button
                 onClick={toggleLayout}
-                className="p-2 rounded-lg border border-[#495E57]/20 hover:bg-[#495E57]/10 transition-colors"
+                className="p-2 rounded-lg border border-[#495E57]/20 hover:bg-[#495E57]/10 transition-colors cursor-pointer"
                 aria-label="Toggle layout"
               >
                 {layout === "grid-3" ? (
@@ -317,7 +317,7 @@ const AvailableCamps = () => {
 
                         <Link
                           to={`/camp-details/${camp._id}`}
-                          className="mt-4 w-full bg-gradient-to-r from-[#495E57] to-[#495E57]/90 hover:from-[#45474B] hover:to-[#45474B] text-white font-semibold py-3 px-4 rounded-lg flex items-center justify-center transition-all duration-200 shadow-sm hover:shadow-md group/link"
+                          className="mt-4 w-full bg-gradient-to-r from-[#495E57] to-[#495E57]/90 hover:from-[#45474B] hover:to-[#45474B] text-white font-semibold py-3 px-4 rounded-lg flex items-center justify-center transition-all duration-200 shadow-sm hover:shadow-md group/link cursor-pointer"
                         >
                           View Details
                           <ArrowRight
@@ -335,7 +335,7 @@ const AvailableCamps = () => {
                   <button
                     onClick={() => setPage((old) => Math.max(old - 1, 1))}
                     disabled={page === 1}
-                    className="flex items-center gap-2 px-4 py-2 border border-[#495E57]/20 rounded-lg hover:bg-[#495E57]/10 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-[#45474B]"
+                    className="flex items-center gap-2 px-4 py-2 border border-[#495E57]/20 rounded-lg hover:bg-[#495E57]/10 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-[#45474B] cursor-pointer"
                   >
                     <ChevronLeft size={16} />
                     Previous
@@ -358,7 +358,7 @@ const AvailableCamps = () => {
                           <button
                             key={pageNum}
                             onClick={() => setPage(pageNum)}
-                            className={`w-10 h-10 rounded-full flex items-center justify-center transition-colors ${
+                            className={`w-10 h-10 rounded-full flex items-center justify-center transition-colors cursor-pointer ${
                               page === pageNum
                                 ? "bg-[#495E57] text-white"
                                 : "text-[#45474B] hover:bg-[#495E57]/10"
@@ -378,7 +378,7 @@ const AvailableCamps = () => {
                       setPage((old) => (old < data.totalPages ? old + 1 : old))
                     }
                     disabled={page === data.totalPages || data.totalPages === 0}
-                    className="flex items-center gap-2 px-4 py-2 border border-[#495E57]/20 rounded-lg hover:bg-[#495E57]/10 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-[#45474B]"
+                    className="flex items-center gap-2 px-4 py-2 border border-[#495E57]/20 rounded-lg hover:bg-[#495E57]/10 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-[#45474B] cursor-pointer"
                   >
                     Next <ChevronRight size={16} />
                   </button>
