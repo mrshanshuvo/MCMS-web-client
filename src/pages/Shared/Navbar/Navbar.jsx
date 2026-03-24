@@ -20,17 +20,17 @@ const Navbar = () => {
     () =>
       !user
         ? [
-            { path: "/", label: "Home" },
-            { path: "/available-camps", label: "Available Camps" },
-            { path: "/about", label: "About Us" },
-          ]
+          { path: "/", label: "Home" },
+          { path: "/available-camps", label: "Available Camps" },
+          { path: "/about", label: "About Us" },
+        ]
         : [
-            { path: "/", label: "Home" },
-            { path: "/available-camps", label: "Available Camps" },
-            { path: "/success-stories", label: "Success Stories" },
-            { path: "/about", label: "About Us" },
-            { path: "/contact", label: "Contact Us" },
-          ],
+          { path: "/", label: "Home" },
+          { path: "/available-camps", label: "Available Camps" },
+          { path: "/success-stories", label: "Success Stories" },
+          { path: "/about", label: "About Us" },
+          { path: "/contact", label: "Contact Us" },
+        ],
     [user],
   );
 
@@ -86,13 +86,12 @@ const Navbar = () => {
 
   return (
     <nav
-      className={`sticky top-0 z-50 transition-all duration-300 ${
-        scrolled
-          ? "bg-white shadow-lg"
-          : "bg-white/95 backdrop-blur-md shadow-md"
-      }`}
+      className={`transition-all duration-300 ${scrolled
+        ? "bg-white/50 shadow-lg backdrop-blur-md"
+        : "bg-white/50 backdrop-blur-md shadow-md"
+        }`}
     >
-      <div className="container mx-auto px-4 py-4">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-2">
         <div className="flex justify-between items-center">
           <CareCampLogo />
 
@@ -104,10 +103,9 @@ const Navbar = () => {
                   <NavLink
                     to={link.path}
                     className={({ isActive }) =>
-                      `px-4 py-2 font-medium rounded-lg transition-all duration-200 relative group cursor-pointer ${
-                        isActive
-                          ? "text-[#495E57] bg-[#F5F7F8]"
-                          : "text-[#45474B] hover:text-[#495E57] hover:bg-[#F5F7F8]"
+                      `px-4 py-2 font-medium rounded-lg transition-all duration-200 relative group cursor-pointer ${isActive
+                        ? "text-[#495E57] bg-[#F5F7F8]"
+                        : "text-[#45474B] hover:text-[#495E57] hover:bg-[#F5F7F8]"
                       }`
                     }
                   >
@@ -226,10 +224,9 @@ const Navbar = () => {
                     to={link.path}
                     onClick={() => setIsOpen(false)}
                     className={({ isActive }) =>
-                      `block px-4 py-3 rounded-xl font-medium text-[#45474B] transition-all duration-200 cursor-pointer ${
-                        isActive
-                          ? "bg-[#F5F7F8] text-[#495E57]"
-                          : "hover:bg-[#F5F7F8] hover:text-[#495E57]"
+                      `block px-4 py-3 rounded-xl font-medium text-[#45474B] transition-all duration-200 cursor-pointer ${isActive
+                        ? "bg-[#F5F7F8] text-[#495E57]"
+                        : "hover:bg-[#F5F7F8] hover:text-[#495E57]"
                       }`
                     }
                   >

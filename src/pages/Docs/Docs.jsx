@@ -381,11 +381,11 @@ const Docs = () => {
 
   return (
     <div
-      className="min-h-screen bg-gradient-to-b from-[#F5F7F8] to-white py-16 px-4 sm:px-6 lg:px-8"
+      className="min-h-screen bg-gradient-to-b from-[#F5F7F8] to-white py-16"
       role="main"
       aria-label="Documentation"
     >
-      <div className="max-w-6xl mx-auto">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {HeaderSection}
 
         {/* Documentation Content */}

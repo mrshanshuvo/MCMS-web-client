@@ -90,8 +90,8 @@ const FeedbackPage = () => {
 
   if (isError) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-[#F5F7F8] to-white py-12 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-6xl mx-auto text-center">
+      <div className="min-h-screen bg-gradient-to-b from-[#F5F7F8] to-white py-12">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <div className="bg-red-50 border border-red-200 rounded-xl p-8">
             <h2 className="text-2xl font-bold text-red-800 mb-4">
               Failed to Load Feedback
@@ -183,11 +183,10 @@ const FeedbackPage = () => {
                 {[1, 2, 3, 4, 5].map((star) => (
                   <Star
                     key={star}
-                    className={`h-6 w-6 ${
-                      star <= Math.round(stats.average)
-                        ? "fill-[#F4CE14] text-[#F4CE14]"
-                        : "text-[#495E57]/30"
-                    }`}
+                    className={`h-6 w-6 ${star <= Math.round(stats.average)
+                      ? "fill-[#F4CE14] text-[#F4CE14]"
+                      : "text-[#495E57]/30"
+                      }`}
                   />
                 ))}
               </div>
@@ -215,10 +214,9 @@ const FeedbackPage = () => {
                         <div
                           className="h-full bg-[#F4CE14] transition-all duration-500"
                           style={{
-                            width: `${
-                              (stats.distribution[rating - 1] / stats.total) *
+                            width: `${(stats.distribution[rating - 1] / stats.total) *
                               100
-                            }%`,
+                              }%`,
                           }}
                         ></div>
                       )}
@@ -329,11 +327,10 @@ const FeedbackPage = () => {
                     {[1, 2, 3, 4, 5].map((star) => (
                       <Star
                         key={star}
-                        className={`h-5 w-5 ${
-                          star <= feedback.rating
-                            ? "fill-[#F4CE14] text-[#F4CE14]"
-                            : "text-[#495E57]/30"
-                        }`}
+                        className={`h-5 w-5 ${star <= feedback.rating
+                          ? "fill-[#F4CE14] text-[#F4CE14]"
+                          : "text-[#495E57]/30"
+                          }`}
                       />
                     ))}
                   </div>
@@ -353,13 +350,12 @@ const FeedbackPage = () => {
                       })}
                     </p>
                     <div
-                      className={`px-2 py-1 rounded-full text-xs font-medium ${
-                        feedback.rating >= 4
-                          ? "bg-green-50 text-green-700"
-                          : feedback.rating >= 3
+                      className={`px-2 py-1 rounded-full text-xs font-medium ${feedback.rating >= 4
+                        ? "bg-green-50 text-green-700"
+                        : feedback.rating >= 3
                           ? "bg-yellow-50 text-yellow-700"
                           : "bg-red-50 text-red-700"
-                      }`}
+                        }`}
                     >
                       {feedback.rating} Star{feedback.rating !== 1 ? "s" : ""}
                     </div>

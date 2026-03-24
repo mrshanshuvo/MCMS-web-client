@@ -50,8 +50,8 @@ const SuccessStories = () => {
   };
 
   return (
-    <section className="bg-gradient-to-b from-[#F5F7F8] to-white py-16 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-7xl mx-auto">
+    <section className="bg-gradient-to-b from-[#F5F7F8] to-white py-16">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <h2 className="text-3xl sm:text-4xl font-bold text-[#45474B] mb-4">
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#495E57] to-[#F4CE14]">
@@ -93,11 +93,10 @@ const SuccessStories = () => {
                     {[...Array(5)].map((_, i) => (
                       <Star
                         key={i}
-                        className={`${
-                          i < story.rating
+                        className={`${i < story.rating
                             ? "text-[#F4CE14] fill-[#F4CE14]"
                             : "text-[#495E57]/30"
-                        } ml-1`}
+                          } ml-1`}
                         size={16}
                       />
                     ))}
@@ -169,11 +168,10 @@ const SuccessStories = () => {
                   <button
                     key={pageNum}
                     onClick={() => goToPage(pageNum)}
-                    className={`w-10 cursor-pointer h-10 rounded-full flex items-center justify-center ${
-                      currentPage === pageNum
+                    className={`w-10 cursor-pointer h-10 rounded-full flex items-center justify-center ${currentPage === pageNum
                         ? "bg-[#495E57] text-[#F5F7F8]"
                         : "hover:bg-[#495E57]/10 text-[#45474B]"
-                    }`}
+                      }`}
                   >
                     {pageNum}
                   </button>

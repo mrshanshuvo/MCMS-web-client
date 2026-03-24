@@ -120,7 +120,7 @@ const Footer = () => {
       className="bg-gradient-to-br from-[#495E57] via-[#495E57]/90 to-[#45474B] text-white mt-16"
       aria-label="Site footer"
     >
-      <div className="container mx-auto px-4 py-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-10">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-10">
         {/* Brand Info */}
         <div className="space-y-4 lg:pr-4">
           <CareCampLogo variant="light" />

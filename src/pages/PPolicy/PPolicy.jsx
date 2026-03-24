@@ -288,11 +288,10 @@ const PPolicy = () => {
             <li key={id}>
               <button
                 onClick={() => scrollToSection(id)}
-                className={`flex items-center gap-3 w-full text-left p-2 rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#495E57] focus:ring-offset-2 ${
-                  activeSection === id
+                className={`flex items-center gap-3 w-full text-left p-2 rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#495E57] focus:ring-offset-2 ${activeSection === id
                     ? "bg-[#495E57]/10 text-[#495E57]"
                     : "hover:bg-[#495E57]/5 text-[#45474B]"
-                }`}
+                  }`}
                 aria-current={activeSection === id ? "location" : undefined}
               >
                 <span className="text-[#495E57]">{icon}</span>
@@ -403,11 +402,11 @@ const PPolicy = () => {
 
   return (
     <div
-      className="min-h-screen bg-gradient-to-b from-[#F5F7F8] to-white py-12 px-4 sm:px-6 lg:px-8"
+      className="min-h-screen bg-gradient-to-b from-[#F5F7F8] to-white py-12"
       role="main"
       aria-label="Privacy Policy"
     >
-      <div className="max-w-6xl mx-auto">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {HeaderSection}
 
         <div className="flex flex-col lg:flex-row gap-8">

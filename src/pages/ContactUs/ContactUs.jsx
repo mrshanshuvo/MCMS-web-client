@@ -240,11 +240,10 @@ const ContactUs = () => {
             <button
               type="submit"
               disabled={loading}
-              className={`w-full flex items-center justify-center px-6 py-3 rounded-xl font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#495E57] focus:ring-offset-2 ${
-                loading
+              className={`w-full flex items-center justify-center px-6 py-3 rounded-xl font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#495E57] focus:ring-offset-2 ${loading
                   ? "bg-[#495E57]/50 text-white cursor-not-allowed"
                   : "bg-gradient-to-r from-[#495E57] to-[#495E57]/90 text-white hover:shadow-lg"
-              }`}
+                }`}
               aria-label={loading ? "Sending message..." : "Send message"}
             >
               {loading ? (
@@ -280,9 +279,8 @@ const ContactUs = () => {
         {CONTACT_INFO.map((info, index) => (
           <div
             key={index}
-            className={`bg-white p-6 rounded-2xl shadow-sm border border-[#495E57]/10 hover:shadow-md transition-all duration-200 ${
-              info.fullWidth ? "sm:col-span-2" : ""
-            }`}
+            className={`bg-white p-6 rounded-2xl shadow-sm border border-[#495E57]/10 hover:shadow-md transition-all duration-200 ${info.fullWidth ? "sm:col-span-2" : ""
+              }`}
           >
             <div className="flex items-start gap-4">
               <div className={`p-3 rounded-full ${info.bgColor}`}>
@@ -369,7 +367,7 @@ const ContactUs = () => {
           ...toastStyles,
         }}
       />
-      <div className="max-w-6xl mx-auto">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {HeaderSection}
 
         <div className="grid lg:grid-cols-2 gap-8">

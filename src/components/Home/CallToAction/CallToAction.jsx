@@ -5,7 +5,7 @@ import { Link } from "react-router";
 const CallToAction = () => {
   return (
     <section className="bg-gradient-to-br from-[#495E57] via-[#495E57]/90 to-[#45474B] text-white">
-      <div className="max-w-5xl mx-auto text-center px-4 py-16">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center">
         <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm text-white px-4 py-2 rounded-full text-sm font-medium mb-4">
           <Star
             size={16}

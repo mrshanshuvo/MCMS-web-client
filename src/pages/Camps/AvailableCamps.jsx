@@ -67,7 +67,7 @@ const AvailableCamps = () => {
 
   return (
     <div className="bg-gradient-to-b from-[#F5F7F8] to-white min-h-screen py-12">
-      <div className="container mx-auto px-4 max-w-7xl">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center mb-12">
           <div className="inline-flex items-center gap-2 bg-[#495E57]/10 text-[#495E57] px-4 py-2 rounded-full text-sm font-medium mb-4">
@@ -165,11 +165,10 @@ const AvailableCamps = () => {
           </div>
         ) : isLoading || isPreviousData ? (
           <div
-            className={`grid grid-cols-1 ${
-              layout === "grid-3"
+            className={`grid grid-cols-1 ${layout === "grid-3"
                 ? "sm:grid-cols-2 lg:grid-cols-3"
                 : "sm:grid-cols-2"
-            } gap-8`}
+              } gap-8`}
           >
             {[...Array(6)].map((_, index) => (
               <div
@@ -215,11 +214,10 @@ const AvailableCamps = () => {
             ) : (
               <>
                 <div
-                  className={`grid grid-cols-1 ${
-                    layout === "grid-3"
+                  className={`grid grid-cols-1 ${layout === "grid-3"
                       ? "sm:grid-cols-2 lg:grid-cols-3"
                       : "sm:grid-cols-2"
-                  } gap-8`}
+                    } gap-8`}
                 >
                   {data.camps.map((camp) => (
                     <div
@@ -358,11 +356,10 @@ const AvailableCamps = () => {
                           <button
                             key={pageNum}
                             onClick={() => setPage(pageNum)}
-                            className={`w-10 h-10 rounded-full flex items-center justify-center transition-colors cursor-pointer ${
-                              page === pageNum
+                            className={`w-10 h-10 rounded-full flex items-center justify-center transition-colors cursor-pointer ${page === pageNum
                                 ? "bg-[#495E57] text-white"
                                 : "text-[#45474B] hover:bg-[#495E57]/10"
-                            }`}
+                              }`}
                           >
                             {pageNum}
                           </button>

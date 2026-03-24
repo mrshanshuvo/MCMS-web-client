@@ -231,7 +231,7 @@ const CampDetails = () => {
       } else {
         setJoinError(
           error.response?.data?.error ||
-            "Registration failed. Please try again."
+          "Registration failed. Please try again."
         );
       }
     } finally {
@@ -240,8 +240,8 @@ const CampDetails = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#F5F7F8] to-white py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-4xl mx-auto">
+    <div className="min-h-screen bg-gradient-to-b from-[#F5F7F8] to-white py-12">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header and participant count */}
         <div className="flex justify-between items-start mb-6">
           <div className="inline-flex items-center px-4 py-2 bg-[#495E57]/10 rounded-full text-[#495E57] font-medium mb-4">
@@ -386,13 +386,12 @@ const CampDetails = () => {
                 checkingRegistration ||
                 formSubmitting
               }
-              className={`group w-full py-4 px-6 rounded-xl font-bold text-white transition-all duration-300 ${
-                isOrganizer
-                  ? "bg-gray-400 cursor-not-allowed"
-                  : joinSuccess || isAlreadyRegistered
+              className={`group w-full py-4 px-6 rounded-xl font-bold text-white transition-all duration-300 ${isOrganizer
+                ? "bg-gray-400 cursor-not-allowed"
+                : joinSuccess || isAlreadyRegistered
                   ? "bg-green-500 shadow-lg cursor-not-allowed"
                   : "bg-gradient-to-r from-[#495E57] to-[#495E57]/90 hover:from-[#45474B] hover:to-[#45474B] shadow-lg hover:shadow-xl cursor-pointer"
-              } flex items-center justify-center`}
+                } flex items-center justify-center`}
             >
               {isOrganizer ? (
                 <>

@@ -145,8 +145,8 @@ const Blog = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#F5F7F8] to-white py-16 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-7xl mx-auto">
+    <div className="min-h-screen bg-gradient-to-b from-[#F5F7F8] to-white py-16">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center mb-12">
           <div className="inline-flex items-center px-4 py-2 bg-[#495E57]/10 rounded-full text-[#495E57] font-medium mb-4">
@@ -249,11 +249,10 @@ const Blog = () => {
               <button
                 key={category}
                 onClick={() => handleCategoryChange(category)}
-                className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#495E57] focus:ring-offset-2 ${
-                  selectedCategory === category
+                className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#495E57] focus:ring-offset-2 ${selectedCategory === category
                     ? "bg-gradient-to-r from-[#495E57] to-[#495E57]/90 text-white shadow-sm"
                     : "bg-white text-[#45474B] hover:bg-[#495E57]/5 border border-[#495E57]/20"
-                }`}
+                  }`}
                 role="tab"
                 aria-selected={selectedCategory === category}
                 aria-controls="blog-posts"
@@ -344,11 +343,10 @@ const Blog = () => {
                   <button
                     key={pageNum}
                     onClick={() => goToPage(pageNum)}
-                    className={`w-10 h-10 rounded-full flex items-center justify-center transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#495E57] focus:ring-offset-2 ${
-                      currentPage === pageNum
+                    className={`w-10 h-10 rounded-full flex items-center justify-center transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#495E57] focus:ring-offset-2 ${currentPage === pageNum
                         ? "bg-gradient-to-r from-[#495E57] to-[#495E57]/90 text-white shadow-sm"
                         : "hover:bg-[#495E57]/5 text-[#45474B]"
-                    }`}
+                      }`}
                     aria-label={`Go to page ${pageNum}`}
                     aria-current={currentPage === pageNum ? "page" : undefined}
                   >

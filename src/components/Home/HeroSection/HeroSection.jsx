@@ -39,7 +39,7 @@ const HeroSection = () => {
   );
 
   return (
-    <section className="relative bg-[#F5F7F8] overflow-hidden">
+    <section className="relative bg-[#F5F7F8] overflow-hidden min-h-[calc(100vh-68px)] flex items-center">
       {/* Background grid */}
       <div
         className="absolute inset-0 opacity-100"
@@ -56,14 +56,13 @@ const HeroSection = () => {
       />
 
       {/* Main content */}
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 py-16 sm:py-24">
+      <div className="relative container mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 w-full">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
           <div
-            className={`lg:col-span-12 space-y-8 transition-all duration-1000 ease-out ${
-              isVisible
+            className={`lg:col-span-12 space-y-8 transition-all duration-1000 ease-out ${isVisible
                 ? "translate-x-0 opacity-100"
                 : "-translate-x-12 opacity-0"
-            }`}
+              }`}
           >
             {/* Mini Badge */}
             <div className="inline-flex items-center gap-3 px-4 py-2 bg-[#495E57] rounded-full">
