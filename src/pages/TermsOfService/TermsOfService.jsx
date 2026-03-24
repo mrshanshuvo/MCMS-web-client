@@ -1,15 +1,34 @@
 import React, { useState, useMemo, useCallback } from "react";
 import {
-  ClipboardCheck,
-  CreditCard,
-  Shield,
+  AlertCircle,
   AlertTriangle,
-  RefreshCw,
-  Mail,
+  ArrowRight,
+  Bell,
+  BookOpen,
+  CheckCircle,
   ChevronDown,
   ChevronUp,
-  ArrowRight,
+  Circle,
+  ClipboardCheck,
+  ClipboardList,
+  CreditCard,
+  Database,
+  FileEdit,
+  FileText,
+  Info,
+  Key,
+  Lock,
+  LogOut,
+  Mail,
+  RefreshCw,
+  Scale,
+  Shield,
+  ShieldAlert,
   Star,
+  User,
+  UserCheck,
+  Users,
+  WifiOff,
 } from "lucide-react";
 import { Link } from "react-router";
 
@@ -27,17 +46,16 @@ const SECTIONS = [
           <h3 className="font-medium text-[#45474B] mb-2">You agree to:</h3>
           <ul className="space-y-2 text-[#45474B]/70" role="list">
             {[
-              "Provide accurate and complete information during registration",
-              "Use the platform only for lawful purposes",
-              "Not engage in any fraudulent or harmful activities",
-              "Comply with all applicable laws and regulations",
+              { text: "Provide accurate and complete information during registration", icon: <UserCheck size={14} className="text-[#495E57]" /> },
+              { text: "Use the platform only for lawful purposes", icon: <Scale size={14} className="text-[#495E57]" /> },
+              { text: "Not engage in any fraudulent or harmful activities", icon: <ShieldAlert size={14} className="text-[#495E57]" /> },
+              { text: "Comply with all applicable laws and regulations", icon: <FileText size={14} className="text-[#495E57]" /> },
             ].map((item, index) => (
-              <li key={index} className="flex items-start">
-                <span
-                  className="w-2 h-2 bg-[#F4CE14] rounded-full mt-2 mr-3 shrink-0"
-                  aria-hidden="true"
-                ></span>
-                {item}
+              <li key={index} className="flex items-start gap-3">
+                <div className="bg-[#495E57]/10 p-1 rounded mt-0.5 shrink-0">
+                  {item.icon}
+                </div>
+                {item.text}
               </li>
             ))}
           </ul>
@@ -83,11 +101,14 @@ const SECTIONS = [
               </h3>
               <ul className="space-y-1 text-[#45474B]/70 text-sm" role="list">
                 {category.items.map((item, itemIndex) => (
-                  <li key={itemIndex} className="flex items-start">
-                    <span
-                      className="w-1.5 h-1.5 bg-[#F4CE14] rounded-full mt-2 mr-3 shrink-0"
-                      aria-hidden="true"
-                    ></span>
+                  <li key={itemIndex} className="flex items-start gap-2">
+                    <div className="bg-[#495E57]/10 p-0.5 rounded mt-0.5 shrink-0">
+                      {category.title === "Registration" ? (
+                        itemIndex === 0 ? <User size={10} /> : itemIndex === 1 ? <Mail size={10} /> : <ClipboardList size={10} />
+                      ) : (
+                        itemIndex === 0 ? <CreditCard size={10} /> : itemIndex === 1 ? <AlertCircle size={10} /> : <Info size={10} />
+                      )}
+                    </div>
                     {item}
                   </li>
                 ))}
@@ -114,17 +135,16 @@ const SECTIONS = [
           </h3>
           <ul className="space-y-2 text-[#45474B]/70" role="list">
             {[
-              "Keep your password confidential",
-              "Notify us immediately of unauthorized access",
-              "Use strong authentication methods",
-              "Log out after each session on shared devices",
+              { text: "Keep your password confidential", icon: <Key size={14} className="text-[#495E57]" /> },
+              { text: "Notify us immediately of unauthorized access", icon: <Bell size={14} className="text-[#495E57]" /> },
+              { text: "Use strong authentication methods", icon: <Lock size={14} className="text-[#495E57]" /> },
+              { text: "Log out after each session on shared devices", icon: <LogOut size={14} className="text-[#495E57]" /> },
             ].map((item, index) => (
-              <li key={index} className="flex items-start">
-                <span
-                  className="w-2 h-2 bg-[#F4CE14] rounded-full mt-2 mr-3 shrink-0"
-                  aria-hidden="true"
-                ></span>
-                {item}
+              <li key={index} className="flex items-start gap-3">
+                <div className="bg-[#495E57]/10 p-1 rounded mt-0.5 shrink-0">
+                  {item.icon}
+                </div>
+                {item.text}
               </li>
             ))}
           </ul>
@@ -148,17 +168,16 @@ const SECTIONS = [
           </h3>
           <ul className="space-y-2 text-[#45474B]/70" role="list">
             {[
-              "Any indirect, incidental or consequential damages",
-              "Loss of data or profits",
-              "Service interruptions beyond our control",
-              "User-generated content or third-party services",
+              { text: "Any indirect, incidental or consequential damages", icon: <AlertTriangle size={14} className="text-[#495E57]" /> },
+              { text: "Loss of data or profits", icon: <Database size={14} className="text-[#495E57]" /> },
+              { text: "Service interruptions beyond our control", icon: <WifiOff size={14} className="text-[#495E57]" /> },
+              { text: "User-generated content or third-party services", icon: <Users size={14} className="text-[#495E57]" /> },
             ].map((item, index) => (
-              <li key={index} className="flex items-start">
-                <span
-                  className="w-2 h-2 bg-[#F4CE14] rounded-full mt-2 mr-3 shrink-0"
-                  aria-hidden="true"
-                ></span>
-                {item}
+              <li key={index} className="flex items-start gap-3">
+                <div className="bg-[#495E57]/10 p-1 rounded mt-0.5 shrink-0">
+                  {item.icon}
+                </div>
+                {item.text}
               </li>
             ))}
           </ul>
@@ -182,17 +201,16 @@ const SECTIONS = [
           </h3>
           <ul className="space-y-2 text-[#45474B]/70" role="list">
             {[
-              "We may update these terms periodically",
-              "Changes will be posted on this page",
-              "Continued use constitutes acceptance",
-              "Material changes may include additional notice",
+              { text: "We may update these terms periodically", icon: <RefreshCw size={14} className="text-[#495E57]" /> },
+              { text: "Changes will be posted on this page", icon: <FileEdit size={14} className="text-[#495E57]" /> },
+              { text: "Continued use constitutes acceptance", icon: <CheckCircle size={14} className="text-[#495E57]" /> },
+              { text: "Material changes may include additional notice", icon: <Bell size={14} className="text-[#495E57]" /> },
             ].map((item, index) => (
-              <li key={index} className="flex items-start">
-                <span
-                  className="w-2 h-2 bg-[#F4CE14] rounded-full mt-2 mr-3 shrink-0"
-                  aria-hidden="true"
-                ></span>
-                {item}
+              <li key={index} className="flex items-start gap-3">
+                <div className="bg-[#495E57]/10 p-1 rounded mt-0.5 shrink-0">
+                  {item.icon}
+                </div>
+                {item.text}
               </li>
             ))}
           </ul>
@@ -219,7 +237,7 @@ const SECTIONS = [
             <Mail className="w-5 h-5" />
             <a
               href="mailto:support@mcms.com"
-              className="hover:underline focus:outline-none focus:ring-2 focus:ring-[#495E57] focus:ring-offset-2 rounded"
+              className="hover:underline focus:outline-none rounded"
             >
               support@mcms.com
             </a>
@@ -289,10 +307,6 @@ const TermsOfService = () => {
         className="lg:sticky lg:top-24 lg:w-1/4 bg-white rounded-2xl shadow-sm border border-[#495E57]/10 p-6 h-fit"
       >
         <h2 className="text-xl font-semibold text-[#45474B] mb-4 flex items-center gap-2">
-          <span
-            className="w-2 h-2 bg-[#495E57] rounded-full"
-            aria-hidden="true"
-          ></span>
           Contents
         </h2>
         <ul className="space-y-3" role="list">
@@ -300,9 +314,9 @@ const TermsOfService = () => {
             <li key={id}>
               <button
                 onClick={() => scrollToSection(id)}
-                className={`flex items-center gap-3 w-full text-left p-2 rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#495E57] focus:ring-offset-2 ${activeSection === id
-                    ? "bg-[#495E57]/10 text-[#495E57]"
-                    : "hover:bg-[#495E57]/5 text-[#45474B]"
+                className={`flex items-center gap-3 w-full text-left p-2 rounded-lg transition-all duration-200 focus:outline-none ${activeSection === id
+                  ? "bg-[#495E57]/10 text-[#495E57]"
+                  : "hover:bg-[#495E57]/5 text-[#45474B]"
                   }`}
                 aria-current={activeSection === id ? "location" : undefined}
               >
@@ -348,7 +362,7 @@ const TermsOfService = () => {
                 >
                   <button
                     onClick={() => toggleSection(id)}
-                    className="flex justify-between items-center w-full text-left group focus:outline-none focus:ring-2 focus:ring-[#495E57] focus:ring-offset-2 rounded-lg p-2 -m-2"
+                    className="flex justify-between items-center w-full text-left group focus:outline-none rounded-lg p-2 -m-2"
                     aria-expanded={activeSection === id}
                     aria-controls={`${id}-content`}
                   >
@@ -398,25 +412,24 @@ const TermsOfService = () => {
               role="list"
             >
               {[
-                "You have read and understood these Terms of Service",
-                "You agree to be bound by these terms",
-                "You are at least 18 years old or have guardian consent",
+                { text: "You have read and understood these Terms of Service", icon: <BookOpen size={14} className="text-[#495E57]" /> },
+                { text: "You agree to be bound by these terms", icon: <CheckCircle size={14} className="text-[#495E57]" /> },
+                { text: "You are at least 18 years old or have guardian consent", icon: <UserCheck size={14} className="text-[#495E57]" /> },
               ].map((item, index) => (
-                <li key={index} className="flex items-start">
-                  <span
-                    className="w-2 h-2 bg-[#F4CE14] rounded-full mt-2 mr-3 shrink-0"
-                    aria-hidden="true"
-                  ></span>
-                  {item}
+                <li key={index} className="flex items-start gap-3">
+                  <div className="bg-[#495E57]/10 p-1 rounded mt-0.5 shrink-0">
+                    {item.icon}
+                  </div>
+                  {item.text}
                 </li>
               ))}
             </ul>
             <button
               onClick={handleAcceptTerms}
               disabled={accepted}
-              className={`inline-flex items-center px-6 py-3 rounded-xl font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#495E57] focus:ring-offset-2 group ${accepted
-                  ? "bg-green-500 text-white cursor-not-allowed"
-                  : "bg-gradient-to-r from-[#495E57] to-[#495E57]/90 text-white hover:shadow-lg"
+              className={`inline-flex items-center px-6 py-3 rounded-xl font-medium transition-all duration-200 focus:outline-none group ${accepted
+                ? "bg-green-500 text-white cursor-not-allowed"
+                : "bg-gradient-to-r from-[#495E57] to-[#495E57]/90 text-white hover:shadow-lg"
                 }`}
               aria-label={
                 accepted ? "Terms accepted" : "Accept terms of service"

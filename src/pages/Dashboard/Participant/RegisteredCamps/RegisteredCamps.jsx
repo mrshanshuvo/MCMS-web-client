@@ -7,6 +7,7 @@ import {
   ChevronLeft,
   ChevronRight,
   ArrowRight,
+  Activity,
 } from "lucide-react";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
@@ -168,7 +169,7 @@ const RegisteredCamps = () => {
         {/* Header */}
         <div className="text-center mb-8">
           <div className="inline-flex items-center px-4 py-2 bg-blue-100 rounded-full text-blue-800 font-medium mb-4">
-            <div className="w-2 h-2 bg-blue-600 rounded-full mr-2 animate-pulse"></div>
+            <Activity size={16} className="mr-2 text-blue-600 animate-pulse" />
             Participant Dashboard
           </div>
           <h2 className="text-3xl font-bold text-gray-900 mb-2">

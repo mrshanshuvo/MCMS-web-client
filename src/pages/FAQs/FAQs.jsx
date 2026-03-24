@@ -164,7 +164,7 @@ const FAQs = () => {
           </p>
           <button
             onClick={() => window.location.reload()}
-            className="bg-[#495E57]/10 text-[#495E57] px-4 py-2 rounded-lg font-medium hover:bg-[#495E57]/20 transition-colors focus:outline-none focus:ring-2 focus:ring-[#495E57] focus:ring-offset-2"
+            className="bg-[#495E57]/10 text-[#495E57] px-4 py-2 rounded-lg font-medium hover:bg-[#495E57]/20 transition-colors focus:outline-none"
           >
             Retry
           </button>
@@ -205,7 +205,7 @@ const FAQs = () => {
               <button
                 key={category}
                 onClick={() => handleCategoryChange(category)}
-                className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#495E57] focus:ring-offset-2 ${isActive
+                className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 focus:outline-none ${isActive
                     ? "bg-gradient-to-r from-[#495E57] to-[#495E57]/90 text-white shadow-sm"
                     : "bg-white text-[#45474B] hover:bg-[#495E57]/5 border border-[#495E57]/20"
                   }`}
@@ -237,7 +237,7 @@ const FAQs = () => {
                     }`}
                 >
                   <button
-                    className="w-full text-left p-6 flex justify-between items-start gap-4 focus:outline-none focus:ring-2 focus:ring-[#495E57] focus:ring-inset rounded-lg"
+                    className="w-full text-left p-6 flex justify-between items-start gap-4 focus:outline-none rounded-lg"
                     onClick={() => toggleFAQ(index)}
                     aria-expanded={isOpen}
                     aria-controls={`faq-answer-${index}`}
@@ -299,7 +299,7 @@ const FAQs = () => {
             <button
               onClick={() => goToPage(currentPage - 1)}
               disabled={currentPage === 1}
-              className="px-4 py-2 rounded-lg border border-[#495E57]/20 hover:bg-[#495E57]/5 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 flex items-center gap-1 text-[#45474B] focus:outline-none focus:ring-2 focus:ring-[#495E57] focus:ring-offset-2"
+              className="px-4 py-2 rounded-lg border border-[#495E57]/20 hover:bg-[#495E57]/5 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 flex items-center gap-1 text-[#45474B] focus:outline-none"
               aria-label="Go to previous page"
             >
               <ChevronDown className="rotate-90" size={16} aria-hidden="true" />
@@ -319,7 +319,7 @@ const FAQs = () => {
                 <button
                   key={index}
                   onClick={() => goToPage(page)}
-                  className={`w-10 h-10 rounded-full flex items-center justify-center transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#495E57] focus:ring-offset-2 ${currentPage === page
+                  className={`w-10 h-10 rounded-full flex items-center justify-center transition-all duration-200 focus:outline-none ${currentPage === page
                       ? "bg-gradient-to-r from-[#495E57] to-[#495E57]/90 text-white shadow-sm"
                       : "hover:bg-[#495E57]/5 text-[#45474B]"
                     }`}
@@ -334,7 +334,7 @@ const FAQs = () => {
             <button
               onClick={() => goToPage(currentPage + 1)}
               disabled={currentPage === totalPages}
-              className="px-4 py-2 rounded-lg border border-[#495E57]/20 hover:bg-[#495E57]/5 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 flex items-center gap-1 text-[#45474B] focus:outline-none focus:ring-2 focus:ring-[#495E57] focus:ring-offset-2"
+              className="px-4 py-2 rounded-lg border border-[#495E57]/20 hover:bg-[#495E57]/5 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 flex items-center gap-1 text-[#45474B] focus:outline-none"
               aria-label="Go to next page"
             >
               Next
@@ -377,7 +377,7 @@ const FAQs = () => {
             </p>
             <Link
               to="/contact"
-              className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-[#495E57] to-[#495E57]/90 text-white rounded-xl font-medium hover:shadow-lg transition-all duration-200 group focus:outline-none focus:ring-2 focus:ring-[#495E57] focus:ring-offset-2"
+              className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-[#495E57] to-[#495E57]/90 text-white rounded-xl font-medium hover:shadow-lg transition-all duration-200 group focus:outline-none"
               aria-label="Contact our support team"
             >
               Contact Support

@@ -4,6 +4,7 @@ import {
   ClipboardList,
   HeartPulse,
   Stethoscope,
+  Activity,
 } from "lucide-react";
 import { useNavigate } from "react-router";
 
@@ -47,7 +48,7 @@ const ParticipantDashboard = () => {
         {/* Header */}
         <div className="text-center mb-12">
           <div className="inline-flex items-center px-4 py-2 bg-blue-100 rounded-full text-blue-800 font-medium mb-4">
-            <div className="w-2 h-2 bg-blue-600 rounded-full mr-2 animate-pulse"></div>
+            <Activity size={16} className="mr-2 text-blue-600 animate-pulse" />
             Participant Portal
           </div>
           <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-3">

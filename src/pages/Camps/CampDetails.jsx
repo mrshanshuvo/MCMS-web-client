@@ -13,6 +13,7 @@ import {
   Shield,
   X,
   Star,
+  Activity,
 } from "lucide-react";
 import useAuth from "../../hooks/useAuth";
 import Swal from "sweetalert2";
@@ -245,7 +246,7 @@ const CampDetails = () => {
         {/* Header and participant count */}
         <div className="flex justify-between items-start mb-6">
           <div className="inline-flex items-center px-4 py-2 bg-[#495E57]/10 rounded-full text-[#495E57] font-medium mb-4">
-            <div className="w-2 h-2 bg-[#495E57] rounded-full mr-2 animate-pulse"></div>
+            <Activity size={18} className="text-[#495E57] mr-2 animate-pulse" />
             Medical Camp Details
           </div>
           <div className="bg-[#F4CE14]/20 text-[#45474B] px-3 py-1 rounded-full text-sm font-medium flex items-center">
@@ -386,7 +387,7 @@ const CampDetails = () => {
                 checkingRegistration ||
                 formSubmitting
               }
-              className={`group w-full py-4 px-6 rounded-xl font-bold text-white transition-all duration-300 ${isOrganizer
+              className={`group w-full py-4 px-6 rounded-xl font-bold text-white transition-all duration-300 focus:outline-none ${isOrganizer
                 ? "bg-gray-400 cursor-not-allowed"
                 : joinSuccess || isAlreadyRegistered
                   ? "bg-green-500 shadow-lg cursor-not-allowed"
@@ -448,7 +449,7 @@ const CampDetails = () => {
                 onClick={closeModal}
                 disabled={formSubmitting}
                 aria-label="Close modal"
-                className="text-[#45474B] hover:text-[#495E57] transition cursor-pointer"
+                className="text-[#45474B] hover:text-[#495E57] transition cursor-pointer focus:outline-none"
               >
                 <X size={24} />
               </button>

@@ -1,15 +1,22 @@
 import React, { useState, useMemo, useCallback } from "react";
 import {
-  Shield,
-  Lock,
-  Mail,
-  User as UserIcon,
-  CreditCard,
-  Server,
+  ArrowRight,
   ChevronDown,
   ChevronUp,
-  ArrowRight,
+  Circle,
+  CreditCard,
+  Database,
+  Globe,
+  Key,
+  Lock,
+  Mail,
+  Search,
+  Server,
+  Shield,
+  ShieldCheck,
   Star,
+  TrendingUp,
+  User as UserIcon,
 } from "lucide-react";
 import { Link } from "react-router";
 
@@ -71,30 +78,33 @@ const SECTIONS = [
         {[
           {
             title: "Service Delivery:",
+            icon: <Globe size={14} className="text-[#495E57]" />,
             description:
               "Manage your camp registrations and provide access to platform features.",
           },
           {
             title: "Communication:",
+            icon: <Mail size={14} className="text-[#495E57]" />,
             description:
               "Send important updates about your registrations and platform changes.",
           },
           {
             title: "Improvements:",
+            icon: <TrendingUp size={14} className="text-[#495E57]" />,
             description:
               "Analyze usage patterns to enhance user experience and develop new features.",
           },
           {
             title: "Security:",
+            icon: <ShieldCheck size={14} className="text-[#495E57]" />,
             description:
               "Monitor for fraudulent activity and protect our services.",
           },
         ].map((item, index) => (
-          <li key={index} className="flex items-start">
-            <span
-              className="w-2 h-2 bg-[#F4CE14] rounded-full mt-2 mr-3 shrink-0"
-              aria-hidden="true"
-            ></span>
+          <li key={index} className="flex items-start gap-3 mt-1">
+            <div className="bg-[#495E57]/10 p-1 rounded mt-0.5 shrink-0">
+              {item.icon}
+            </div>
             <div>
               <strong className="text-[#45474B]">{item.title}</strong>{" "}
               {item.description}
@@ -121,17 +131,16 @@ const SECTIONS = [
           </h3>
           <ul className="space-y-2 text-[#45474B]/70" role="list">
             {[
-              "SSL/TLS encryption for all data transmissions",
-              "Regular security vulnerability scanning",
-              "Strict access controls and authentication protocols",
-              "Secure data storage with encryption at rest",
+              { text: "SSL/TLS encryption for all data transmissions", icon: <Lock size={14} className="text-[#495E57]" /> },
+              { text: "Regular security vulnerability scanning", icon: <Search size={14} className="text-[#495E57]" /> },
+              { text: "Strict access controls and authentication protocols", icon: <Key size={14} className="text-[#495E57]" /> },
+              { text: "Secure data storage with encryption at rest", icon: <Database size={14} className="text-[#495E57]" /> },
             ].map((item, index) => (
-              <li key={index} className="flex items-start">
-                <span
-                  className="w-1.5 h-1.5 bg-[#F4CE14] rounded-full mt-2 mr-3 shrink-0"
-                  aria-hidden="true"
-                ></span>
-                {item}
+              <li key={index} className="flex items-start gap-3">
+                <div className="bg-[#495E57]/10 p-1 rounded mt-0.5 shrink-0">
+                  {item.icon}
+                </div>
+                {item.text}
               </li>
             ))}
           </ul>
@@ -207,7 +216,7 @@ const SECTIONS = [
               <Mail className="w-4 h-4 text-[#495E57]" />
               <a
                 href="mailto:support@mcms.com"
-                className="hover:underline focus:outline-none focus:ring-2 focus:ring-[#495E57] focus:ring-offset-2 rounded"
+                className="hover:underline focus:outline-none rounded"
               >
                 support@mcms.com
               </a>
@@ -216,7 +225,7 @@ const SECTIONS = [
               <ArrowRight className="w-4 h-4 text-[#495E57]" />
               <Link
                 to="/contact"
-                className="hover:underline focus:outline-none focus:ring-2 focus:ring-[#495E57] focus:ring-offset-2 rounded"
+                className="hover:underline focus:outline-none rounded"
               >
                 Contact Form
               </Link>
@@ -277,10 +286,6 @@ const PPolicy = () => {
         className="lg:sticky lg:top-24 lg:w-1/4 bg-white rounded-2xl shadow-sm border border-[#495E57]/10 p-6 h-fit"
       >
         <h2 className="text-xl font-semibold text-[#45474B] mb-4 flex items-center gap-2">
-          <span
-            className="w-2 h-2 bg-[#495E57] rounded-full"
-            aria-hidden="true"
-          ></span>
           Contents
         </h2>
         <ul className="space-y-3" role="list">
@@ -288,9 +293,9 @@ const PPolicy = () => {
             <li key={id}>
               <button
                 onClick={() => scrollToSection(id)}
-                className={`flex items-center gap-3 w-full text-left p-2 rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#495E57] focus:ring-offset-2 ${activeSection === id
-                    ? "bg-[#495E57]/10 text-[#495E57]"
-                    : "hover:bg-[#495E57]/5 text-[#45474B]"
+                className={`flex items-center gap-3 w-full text-left p-2 rounded-lg transition-all duration-200 focus:outline-none ${activeSection === id
+                  ? "bg-[#495E57]/10 text-[#495E57]"
+                  : "hover:bg-[#495E57]/5 text-[#45474B]"
                   }`}
                 aria-current={activeSection === id ? "location" : undefined}
               >
@@ -334,7 +339,7 @@ const PPolicy = () => {
               >
                 <button
                   onClick={() => toggleSection(id)}
-                  className="flex justify-between items-center w-full text-left group focus:outline-none focus:ring-2 focus:ring-[#495E57] focus:ring-offset-2 rounded-lg p-2 -m-2"
+                  className="flex justify-between items-center w-full text-left group focus:outline-none rounded-lg p-2 -m-2"
                   aria-expanded={activeSection === id}
                   aria-controls={`${id}-content`}
                 >
@@ -384,7 +389,7 @@ const PPolicy = () => {
             </p>
             <Link
               to="/contact"
-              className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-[#495E57] to-[#495E57]/90 text-white rounded-xl font-medium hover:shadow-lg transition-all duration-200 group focus:outline-none focus:ring-2 focus:ring-[#495E57] focus:ring-offset-2"
+              className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-[#495E57] to-[#495E57]/90 text-white rounded-xl font-medium hover:shadow-lg transition-all duration-200 group focus:outline-none"
               aria-label="Contact our privacy team"
             >
               Contact Our Privacy Team

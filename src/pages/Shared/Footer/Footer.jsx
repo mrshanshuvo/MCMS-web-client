@@ -1,5 +1,5 @@
 import React from "react";
-import { NavLink } from "react-router";
+import { Link } from "react-router";
 import {
   MapPin,
   Mail,
@@ -110,7 +110,7 @@ const CONTACT_INFO = [
 ];
 
 const linkBase =
-  "text-white/80 hover:text-[#F4CE14] transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-[#F4CE14] focus:ring-offset-2 focus:ring-offset-[#495E57] rounded px-1 -mx-1";
+  "text-white/80 hover:text-[#F4CE14] transition-colors duration-200 focus:outline-none rounded px-1 -mx-1";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -120,7 +120,7 @@ const Footer = () => {
       className="bg-gradient-to-br from-[#495E57] via-[#495E57]/90 to-[#45474B] text-white mt-16"
       aria-label="Site footer"
     >
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-10">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-10">
         {/* Brand Info */}
         <div className="space-y-4 lg:pr-4">
           <CareCampLogo variant="light" />
@@ -137,7 +137,7 @@ const Footer = () => {
                 <li key={social.name}>
                   <a
                     href={social.url}
-                    className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-all duration-300 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-[#F4CE14] focus:ring-offset-2 focus:ring-offset-[#495E57]"
+                    className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-all duration-300 hover:scale-110 focus:outline-none"
                     aria-label={social.ariaLabel}
                     target="_blank"
                     rel="noopener noreferrer"
@@ -160,15 +160,13 @@ const Footer = () => {
             <ul className="space-y-3">
               {section.links.map((link) => (
                 <li key={link.path}>
-                  <NavLink
+                  <Link
                     to={link.path}
-                    className={({ isActive }) =>
-                      `block ${linkBase} ${isActive ? "text-[#F4CE14] font-medium" : ""}`
-                    }
+                    className={`block ${linkBase}`}
                     aria-label={link.ariaLabel}
                   >
                     {link.name}
-                  </NavLink>
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -198,7 +196,7 @@ const Footer = () => {
                   {item.href ? (
                     <a
                       href={item.href}
-                      className="flex items-start gap-3 hover:text-[#F4CE14] transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-[#F4CE14] focus:ring-offset-2 focus:ring-offset-[#495E57] rounded"
+                      className="flex items-start gap-3 hover:text-[#F4CE14] transition-colors duration-200 focus:outline-none rounded"
                       aria-label={item.ariaLabel}
                     >
                       {content}
@@ -219,8 +217,8 @@ const Footer = () => {
       </div>
 
       {/* Bottom Footer */}
-      <div className="bg-gradient-to-r from-[#45474B] via-[#495E57]/80 to-[#45474B] py-6 border-t border-white/10">
-        <div className="container mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-4">
+      <div className="bg-gradient-to-r from-[#45474B] via-[#495E57]/80 to-[#45474B] py-3 border-t border-white/10">
+        <div className="container mx-auto px-4 flex flex-col md:flex-row justify-center items-center gap-4">
           <div
             className="text-white/80 text-sm flex items-center"
             aria-label={`Copyright ${currentYear} CareCamp. All rights reserved.`}
@@ -232,44 +230,6 @@ const Footer = () => {
               aria-hidden="true"
             />
             © {currentYear} CareCamp. All rights reserved.
-          </div>
-
-          <div
-            className="flex flex-wrap items-center gap-x-4 gap-y-2"
-            aria-label="Legal links"
-          >
-            <NavLink
-              to="/pPolicy"
-              className={({ isActive }) =>
-                `${linkBase} ${isActive ? "text-[#F4CE14] font-medium" : ""}`
-              }
-              aria-label="Read our privacy policy"
-            >
-              Privacy Policy
-            </NavLink>
-
-            <NavLink
-              to="/terms"
-              className={({ isActive }) =>
-                `${linkBase} ${isActive ? "text-[#F4CE14] font-medium" : ""}`
-              }
-              aria-label="View terms of service"
-            >
-              Terms of Service
-            </NavLink>
-
-            <div
-              className="flex items-center text-sm text-white/80"
-              aria-label="Made with love in Bangladesh"
-            >
-              Made with{" "}
-              <Heart
-                className="mx-2 text-red-400 fill-current"
-                size={14}
-                aria-hidden="true"
-              />{" "}
-              in Bangladesh
-            </div>
           </div>
         </div>
       </div>

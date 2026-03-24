@@ -12,7 +12,7 @@ import {
   Legend,
   Cell,
 } from "recharts";
-import { Calendar, Loader2, AlertCircle } from "lucide-react";
+import { Calendar, Loader2, AlertCircle, Activity, MapPin } from "lucide-react";
 import { FaBangladeshiTakaSign } from "react-icons/fa6";
 import api from "../../../api";
 
@@ -67,7 +67,7 @@ const Analytics = () => {
               <span className="font-medium">Date:</span> {data.date}
             </p>
             <p className="flex items-center text-sm">
-              <span className="mr-2 text-yellow-600">📌</span>
+              <MapPin className="mr-2 text-yellow-600" size={14} />
               <span className="font-medium">Status:</span> {data.status}
             </p>
           </div>
@@ -143,7 +143,7 @@ const Analytics = () => {
         {/* Header */}
         <div className="text-center mb-8">
           <div className="inline-flex items-center px-4 py-2 bg-blue-100 rounded-full text-blue-800 font-medium mb-3">
-            <div className="w-2 h-2 bg-blue-600 rounded-full mr-2 animate-pulse"></div>
+            <Activity size={16} className="mr-2 text-blue-600 animate-pulse" />
             Medical Camp Analytics
           </div>
           <h2 className="text-3xl font-bold text-gray-900 mb-2">

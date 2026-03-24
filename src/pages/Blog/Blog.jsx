@@ -1,7 +1,7 @@
 import React, { useState, useMemo, useCallback } from "react";
 import { useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
-import { CalendarDays, Clock, User, ArrowRight, Star } from "lucide-react";
+import { CalendarDays, Clock, User, ArrowRight, Star, Sparkles } from "lucide-react";
 import { Link, useSearchParams } from "react-router";
 
 // Constants
@@ -135,7 +135,7 @@ const Blog = () => {
           </p>
           <button
             onClick={() => window.location.reload()}
-            className="bg-[#495E57]/10 text-[#495E57] px-4 py-2 rounded-lg font-medium hover:bg-[#495E57]/20 transition-colors focus:outline-none focus:ring-2 focus:ring-[#495E57] focus:ring-offset-2"
+            className="bg-[#495E57]/10 text-[#495E57] px-4 py-2 rounded-lg font-medium hover:bg-[#495E57]/20 transition-colors focus:outline-none"
           >
             Retry
           </button>
@@ -172,7 +172,7 @@ const Blog = () => {
           selectedCategory === "All" && (
             <div className="mb-16">
               <h3 className="text-2xl font-semibold text-[#45474B] mb-8 flex items-center gap-2">
-                <span className="w-4 h-4 bg-[#495E57] rounded-full"></span>
+                <Sparkles size={20} className="text-[#495E57]" />
                 Featured Stories
               </h3>
               <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
@@ -224,7 +224,7 @@ const Blog = () => {
                         </p>
                         <Link
                           to={`/blog/${post._id}`}
-                          className="inline-flex items-center text-[#495E57] hover:text-[#45474B] font-medium text-sm group/link transition-colors focus:outline-none focus:ring-2 focus:ring-[#495E57] focus:ring-offset-2 rounded"
+                          className="inline-flex items-center text-[#495E57] hover:text-[#45474B] font-medium text-sm group/link transition-colors focus:outline-none rounded"
                           aria-label={`Read more about ${post.title}`}
                         >
                           Read More
@@ -249,7 +249,7 @@ const Blog = () => {
               <button
                 key={category}
                 onClick={() => handleCategoryChange(category)}
-                className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#495E57] focus:ring-offset-2 ${selectedCategory === category
+                className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 focus:outline-none ${selectedCategory === category
                     ? "bg-gradient-to-r from-[#495E57] to-[#495E57]/90 text-white shadow-sm"
                     : "bg-white text-[#45474B] hover:bg-[#495E57]/5 border border-[#495E57]/20"
                   }`}
@@ -312,7 +312,7 @@ const Blog = () => {
                       </p>
                       <Link
                         to={`/blog/${post._id}`}
-                        className="inline-flex items-center text-[#495E57] hover:text-[#45474B] font-medium text-sm group/link transition-colors focus:outline-none focus:ring-2 focus:ring-[#495E57] focus:ring-offset-2 rounded"
+                        className="inline-flex items-center text-[#495E57] hover:text-[#45474B] font-medium text-sm group/link transition-colors focus:outline-none rounded"
                         aria-label={`Read more about ${post.title}`}
                       >
                         Read More
@@ -333,7 +333,7 @@ const Blog = () => {
                 <button
                   onClick={() => goToPage(currentPage - 1)}
                   disabled={currentPage === 1}
-                  className="px-4 py-2 rounded-lg border border-[#495E57]/20 hover:bg-[#495E57]/5 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 flex items-center gap-1 text-[#45474B] focus:outline-none focus:ring-2 focus:ring-[#495E57] focus:ring-offset-2"
+                  className="px-4 py-2 rounded-lg border border-[#495E57]/20 hover:bg-[#495E57]/5 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 flex items-center gap-1 text-[#45474B] focus:outline-none"
                   aria-label="Go to previous page"
                 >
                   Previous
@@ -343,7 +343,7 @@ const Blog = () => {
                   <button
                     key={pageNum}
                     onClick={() => goToPage(pageNum)}
-                    className={`w-10 h-10 rounded-full flex items-center justify-center transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#495E57] focus:ring-offset-2 ${currentPage === pageNum
+                    className={`w-10 h-10 rounded-full flex items-center justify-center transition-all duration-200 focus:outline-none ${currentPage === pageNum
                         ? "bg-gradient-to-r from-[#495E57] to-[#495E57]/90 text-white shadow-sm"
                         : "hover:bg-[#495E57]/5 text-[#45474B]"
                       }`}
@@ -357,7 +357,7 @@ const Blog = () => {
                 <button
                   onClick={() => goToPage(currentPage + 1)}
                   disabled={currentPage === totalPages}
-                  className="px-4 py-2 rounded-lg border border-[#495E57]/20 hover:bg-[#495E57]/5 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 flex items-center gap-1 text-[#45474B] focus:outline-none focus:ring-2 focus:ring-[#495E57] focus:ring-offset-2"
+                  className="px-4 py-2 rounded-lg border border-[#495E57]/20 hover:bg-[#495E57]/5 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 flex items-center gap-1 text-[#45474B] focus:outline-none"
                   aria-label="Go to next page"
                 >
                   Next
@@ -394,7 +394,7 @@ const Blog = () => {
             </p>
             <button
               onClick={() => handleCategoryChange("All")}
-              className="px-4 py-2 bg-[#495E57]/10 text-[#495E57] rounded-lg font-medium hover:bg-[#495E57]/20 transition-colors focus:outline-none focus:ring-2 focus:ring-[#495E57] focus:ring-offset-2"
+              className="px-4 py-2 bg-[#495E57]/10 text-[#495E57] rounded-lg font-medium hover:bg-[#495E57]/20 transition-colors focus:outline-none"
             >
               View All Posts
             </button>
@@ -418,7 +418,7 @@ const Blog = () => {
               aria-label="Email address for newsletter subscription"
             />
             <button
-              className="px-6 py-3 bg-gradient-to-r from-[#495E57] to-[#495E57]/90 text-white rounded-lg font-medium hover:shadow-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#495E57] focus:ring-offset-2"
+              className="px-6 py-3 bg-gradient-to-r from-[#495E57] to-[#495E57]/90 text-white rounded-lg font-medium hover:shadow-lg transition-all duration-200 focus:outline-none"
               aria-label="Subscribe to newsletter"
             >
               Subscribe

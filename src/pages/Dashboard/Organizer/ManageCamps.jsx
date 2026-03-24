@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { Pencil, Trash2, Loader2 } from "lucide-react";
+import { Pencil, Trash2, Loader2, Activity } from "lucide-react";
 import Swal from "sweetalert2";
 import { toast } from "react-toastify";
 import CampFormModal from "./CampFormModal";
@@ -80,7 +80,7 @@ const ManageCamps = () => {
         {/* Header */}
         <div className="mb-8">
           <div className="inline-flex items-center px-4 py-2 bg-blue-100 rounded-full text-blue-800 font-medium mb-3">
-            <div className="w-2 h-2 bg-blue-600 rounded-full mr-2 animate-pulse"></div>
+            <Activity size={16} className="mr-2 text-blue-600 animate-pulse" />
             Organizer Dashboard
           </div>
           <h2 className="text-3xl font-bold text-gray-900 mb-2">

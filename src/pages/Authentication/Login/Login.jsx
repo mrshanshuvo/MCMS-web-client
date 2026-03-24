@@ -1,4 +1,5 @@
 import React from "react";
+import { KeyRound } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { Link, useLocation, useNavigate } from "react-router";
 import { FcGoogle } from "react-icons/fc";
@@ -96,20 +97,7 @@ const Login = () => {
       <div className="text-center">
         <div className="flex justify-center mb-4">
           <div className="bg-[#495E57]/10 p-3 rounded-full">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-10 w-10 text-blue-600"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
-              />
-            </svg>
+            <KeyRound className="h-10 w-10 text-[#495E57]" />
           </div>
         </div>
         <h1 className="text-2xl font-bold text-[#45474B]">Welcome Back</h1>
@@ -198,7 +186,7 @@ const Login = () => {
 
         <button
           type="submit"
-          className="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-gradient-to-r from-[#495E57] to-[#495E57]/90 hover:from-[#45474B] hover:to-[#45474B] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#495E57] transition-all duration-200"
+          className="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-gradient-to-r from-[#495E57] to-[#495E57]/90 hover:from-[#45474B] hover:to-[#45474B] focus:outline-none transition-all duration-200"
         >
           Sign in
         </button>
@@ -227,7 +215,7 @@ const Login = () => {
       <button
         type="button"
         onClick={handleGoogleSignIn}
-        className="w-full flex justify-center items-center gap-2 py-3 px-4 border border-[#495E57]/20 rounded-lg shadow-sm text-sm font-medium text-[#45474B] bg-white hover:bg-[#495E57]/5 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#495E57] transition-all duration-200"
+        className="w-full flex justify-center items-center gap-2 py-3 px-4 border border-[#495E57]/20 rounded-lg shadow-sm text-sm font-medium text-[#45474B] bg-white hover:bg-[#495E57]/5 focus:outline-none transition-all duration-200"
       >
         <FcGoogle className="w-5 h-5" />
         Continue with Google

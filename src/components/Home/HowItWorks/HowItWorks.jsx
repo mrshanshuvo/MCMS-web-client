@@ -62,7 +62,7 @@ const HowItWorks = () => {
                 onFocus={() => setActiveStep(index)}
                 onClick={() => setActiveStep(index)}
                 aria-pressed={isActive}
-                className={`text-left p-6 rounded-xl border-2 transition-all duration-300 group cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#F4CE14] focus:ring-offset-2 focus:ring-offset-white ${
+                className={`text-left p-6 rounded-xl border-2 transition-all duration-300 group cursor-pointer focus:outline-none ${
                   isActive
                     ? "border-[#495E57] bg-[#495E57]/5 shadow-md"
                     : "border-[#495E57]/10 bg-white hover:border-[#495E57]/30 hover:shadow-sm"

@@ -98,7 +98,7 @@ const AboutUs = () => {
             <div className="mt-10">
               <Link
                 to="/available-camps"
-                className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-[#495E57] to-[#495E57]/90 text-white rounded-xl font-medium hover:shadow-lg transition-all duration-200 group focus:outline-none focus:ring-2 focus:ring-[#495E57] focus:ring-offset-2"
+                className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-[#495E57] to-[#495E57]/90 text-white rounded-xl font-medium hover:shadow-lg transition-all duration-200 group focus:outline-none"
                 aria-label="Explore available medical camps"
               >
                 Explore Available Camps

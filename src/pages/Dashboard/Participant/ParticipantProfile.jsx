@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import useAuth from "../../../hooks/useAuth";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
-import { User, Calendar, Loader2, Edit, X, Check } from "lucide-react";
+import { User, Calendar, Loader2, Edit, X, Check, Activity } from "lucide-react";
 import { useNavigate } from "react-router";
 import Swal from "sweetalert2";
 
@@ -247,7 +247,7 @@ const ParticipantProfile = () => {
         {/* Header */}
         <div className="text-center mb-8">
           <div className="inline-flex items-center px-4 py-2 bg-blue-100 rounded-full text-blue-800 font-medium mb-3">
-            <div className="w-2 h-2 bg-blue-600 rounded-full mr-2 animate-pulse"></div>
+            <Activity size={16} className="mr-2 text-blue-600 animate-pulse" />
             Participant Dashboard
           </div>
           <h2 className="text-3xl font-bold text-gray-900 mb-2">

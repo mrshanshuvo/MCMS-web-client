@@ -245,7 +245,7 @@ const Register = () => {
         {/* Register Button */}
         <button
           type="submit"
-          className="w-full flex justify-center py-2 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+          className="w-full flex justify-center py-2 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none"
         >
           Register
         </button>
@@ -276,7 +276,7 @@ const Register = () => {
       <button
         onClick={handleGoogleSignIn}
         type="button"
-        className="w-full flex justify-center items-center gap-2 py-2 px-4 border border-blue-200 rounded-lg shadow-sm text-sm font-medium text-blue-700 bg-white hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+        className="w-full flex justify-center items-center gap-2 py-2 px-4 border border-blue-200 rounded-lg shadow-sm text-sm font-medium text-blue-700 bg-white hover:bg-blue-50 focus:outline-none"
       >
         <FcGoogle className="w-5 h-5" />
         Register with Google

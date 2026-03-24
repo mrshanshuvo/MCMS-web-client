@@ -245,7 +245,7 @@ const FeedbackPage = () => {
                 placeholder="Search by participant, camp, or feedback..."
                 value={searchTerm}
                 onChange={(e) => handleSearch(e.target.value)}
-                className="w-full pl-10 pr-4 py-3 border border-[#495E57]/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#495E57] focus:border-[#495E57] bg-white"
+                className="w-full pl-10 pr-4 py-3 border border-[#495E57]/20 rounded-lg focus:outline-none bg-white"
               />
             </div>
 
@@ -255,7 +255,7 @@ const FeedbackPage = () => {
               <select
                 value={ratingFilter}
                 onChange={(e) => handleRatingFilter(e.target.value)}
-                className="px-4 py-3 border border-[#495E57]/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#495E57] focus:border-[#495E57] bg-white"
+                className="px-4 py-3 border border-[#495E57]/20 rounded-lg focus:outline-none bg-white"
               >
                 <option value="all">All Ratings</option>
                 <option value="5">5 Stars</option>

@@ -240,7 +240,7 @@ const ContactUs = () => {
             <button
               type="submit"
               disabled={loading}
-              className={`w-full flex items-center justify-center px-6 py-3 rounded-xl font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#495E57] focus:ring-offset-2 ${loading
+              className={`w-full flex items-center justify-center px-6 py-3 rounded-xl font-medium transition-all duration-200 focus:outline-none ${loading
                   ? "bg-[#495E57]/50 text-white cursor-not-allowed"
                   : "bg-gradient-to-r from-[#495E57] to-[#495E57]/90 text-white hover:shadow-lg"
                 }`}
@@ -299,7 +299,7 @@ const ContactUs = () => {
                       ? "noopener noreferrer"
                       : undefined
                   }
-                  className="text-[#495E57] hover:text-[#45474B] hover:underline text-sm mt-2 inline-block transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-[#495E57] focus:ring-offset-2 rounded"
+                  className="text-[#495E57] hover:text-[#45474B] hover:underline text-sm mt-2 inline-block transition-colors duration-200 focus:outline-none rounded"
                 >
                   {info.actionText}
                 </a>
@@ -321,7 +321,7 @@ const ContactUs = () => {
             <a
               key={index}
               href={social.url}
-              className={`p-3 rounded-full transition-all duration-200 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-[#495E57] focus:ring-offset-2 ${social.color}`}
+              className={`p-3 rounded-full transition-all duration-200 hover:scale-110 focus:outline-none ${social.color}`}
               aria-label={social.label}
               target="_blank"
               rel="noopener noreferrer"

@@ -98,7 +98,7 @@ const AvailableCamps = () => {
               placeholder="Search camps by name, location or professional..."
               value={search}
               onChange={handleSearchChange}
-              className="w-full pl-10 pr-4 py-3 border border-[#495E57]/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#495E57] focus:border-transparent bg-white"
+              className="w-full pl-10 pr-4 py-3 border border-[#495E57]/20 rounded-lg focus:outline-none bg-white"
             />
           </div>
 
@@ -124,7 +124,7 @@ const AvailableCamps = () => {
               id="sort"
               value={sort}
               onChange={handleSortChange}
-              className="px-4 py-2 border border-[#495E57]/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#495E57] focus:border-transparent bg-white"
+              className="px-4 py-2 border border-[#495E57]/20 rounded-lg focus:outline-none bg-white"
             >
               <option value="participantCount">Most Popular</option>
               <option value="campFeesAsc">Price: Low to High</option>
@@ -333,7 +333,7 @@ const AvailableCamps = () => {
                   <button
                     onClick={() => setPage((old) => Math.max(old - 1, 1))}
                     disabled={page === 1}
-                    className="flex items-center gap-2 px-4 py-2 border border-[#495E57]/20 rounded-lg hover:bg-[#495E57]/10 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-[#45474B] cursor-pointer"
+                    className="flex items-center gap-2 px-4 py-2 border border-[#495E57]/20 rounded-lg hover:bg-[#495E57]/10 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-[#45474B] cursor-pointer focus:outline-none"
                   >
                     <ChevronLeft size={16} />
                     Previous
@@ -356,7 +356,7 @@ const AvailableCamps = () => {
                           <button
                             key={pageNum}
                             onClick={() => setPage(pageNum)}
-                            className={`w-10 h-10 rounded-full flex items-center justify-center transition-colors cursor-pointer ${page === pageNum
+                            className={`w-10 h-10 rounded-full flex items-center justify-center transition-colors cursor-pointer focus:outline-none ${page === pageNum
                                 ? "bg-[#495E57] text-white"
                                 : "text-[#45474B] hover:bg-[#495E57]/10"
                               }`}
@@ -375,7 +375,7 @@ const AvailableCamps = () => {
                       setPage((old) => (old < data.totalPages ? old + 1 : old))
                     }
                     disabled={page === data.totalPages || data.totalPages === 0}
-                    className="flex items-center gap-2 px-4 py-2 border border-[#495E57]/20 rounded-lg hover:bg-[#495E57]/10 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-[#45474B] cursor-pointer"
+                    className="flex items-center gap-2 px-4 py-2 border border-[#495E57]/20 rounded-lg hover:bg-[#495E57]/10 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-[#45474B] cursor-pointer focus:outline-none"
                   >
                     Next <ChevronRight size={16} />
                   </button>

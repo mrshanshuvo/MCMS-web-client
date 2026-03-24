@@ -1,19 +1,41 @@
 import React, { useMemo } from "react";
 import {
-  BookOpen,
-  Users,
-  ClipboardList,
-  LayoutDashboard,
-  CreditCard,
-  BarChart2,
-  Bell,
-  Smartphone,
-  Code,
-  Globe,
-  Github,
-  HelpCircle,
+  Activity,
   ArrowRight,
+  BarChart2,
+  BarChart3,
+  Bell,
+  Calendar,
+  Circle,
+  ClipboardList,
+  Code,
+  Compass,
+  CreditCard,
+  Database,
+  FileText,
+  Github,
+  Globe,
+  HelpCircle,
+  History,
+  Key,
+  Layers,
+  Layout,
+  LayoutDashboard,
+  LifeBuoy,
+  Link as LucideLink,
+  Lock,
+  MessageSquare,
+  Palette,
+  Plus,
+  RefreshCw,
+  Search,
+  Server,
+  Shield,
+  ShieldCheck,
+  Smartphone,
   Star,
+  Users,
+  Zap,
 } from "lucide-react";
 import { Link } from "react-router";
 
@@ -56,19 +78,19 @@ const LINKS = [
   {
     icon: <Globe className="w-5 h-5" />,
     title: "Live Website",
-    url: "https://mcms-auth.firebaseapp.com/",
+    url: "https://mcms-web-client.vercel.app/",
     ariaLabel: "Visit the live CareCamp website",
   },
   {
     icon: <Github className="w-5 h-5" />,
     title: "Client Repository",
-    url: "https://github.com/Programming-Hero-Web-Course4/b11a12-client-side-mrshanshuvo",
+    url: "https://github.com/mrshanshuvo/MCMS-web-client",
     ariaLabel: "View client-side source code on GitHub",
   },
   {
     icon: <Github className="w-5 h-5" />,
     title: "Server Repository",
-    url: "https://github.com/Programming-Hero-Web-Course4/b11a12-server-side-mrshanshuvo",
+    url: "https://github.com/mrshanshuvo/MCMS-backend",
     ariaLabel: "View server-side source code on GitHub",
   },
 ];
@@ -78,20 +100,20 @@ const USER_ROLES = [
     title: "Organizer",
     icon: <Users className="w-5 h-5" />,
     features: [
-      "Create, manage, and monitor medical camps",
-      "Track registrations and payment statuses",
-      "View participant analytics and feedback",
-      "Manage camp schedules and details",
+      { text: "Create, manage, and monitor medical camps", icon: <Activity size={14} className="text-[#495E57]" /> },
+      { text: "Track registrations and payment statuses", icon: <CreditCard size={14} className="text-[#495E57]" /> },
+      { text: "View participant analytics and feedback", icon: <BarChart3 size={14} className="text-[#495E57]" /> },
+      { text: "Manage camp schedules and details", icon: <Calendar size={14} className="text-[#495E57]" /> },
     ],
   },
   {
     title: "Participant",
     icon: <Users className="w-5 h-5" />,
     features: [
-      "Explore and register for medical camps",
-      "Make secure payments through Stripe",
-      "Provide feedback on attended camps",
-      "View personal registration history",
+      { text: "Explore and register for medical camps", icon: <Search size={14} className="text-[#495E57]" /> },
+      { text: "Make secure payments through Stripe", icon: <ShieldCheck size={14} className="text-[#495E57]" /> },
+      { text: "Provide feedback on attended camps", icon: <MessageSquare size={14} className="text-[#495E57]" /> },
+      { text: "View personal registration history", icon: <History size={14} className="text-[#495E57]" /> },
     ],
   },
 ];
@@ -101,24 +123,24 @@ const PROJECT_STRUCTURE = [
     title: "Client",
     icon: <Code className="w-5 h-5" />,
     technologies: [
-      "React with Vite",
-      "TailwindCSS for styling",
-      "React Router for navigation",
-      "TanStack Query for data fetching",
-      "Stripe JS for payments",
-      "React Hook Form for forms",
+      { text: "React with Vite", icon: <Zap size={14} className="text-[#495E57]" /> },
+      { text: "TailwindCSS for styling", icon: <Palette size={14} className="text-[#495E57]" /> },
+      { text: "React Router for navigation", icon: <Compass size={14} className="text-[#495E57]" /> },
+      { text: "TanStack Query for data fetching", icon: <RefreshCw size={14} className="text-[#495E57]" /> },
+      { text: "Stripe JS for payments", icon: <CreditCard size={14} className="text-[#495E57]" /> },
+      { text: "React Hook Form for forms", icon: <FileText size={14} className="text-[#495E57]" /> },
     ],
   },
   {
     title: "Server",
     icon: <Code className="w-5 h-5" />,
     technologies: [
-      "Node.js with Express",
-      "MongoDB with Mongoose",
-      "JWT for authentication",
-      "Firebase Admin SDK",
-      "Stripe for payment processing",
-      "CORS and security middleware",
+      { text: "Node.js with Express", icon: <Server size={14} className="text-[#495E57]" /> },
+      { text: "MongoDB with Mongoose", icon: <Database size={14} className="text-[#495E57]" /> },
+      { text: "JWT for authentication", icon: <Key size={14} className="text-[#495E57]" /> },
+      { text: "Firebase Admin SDK", icon: <Shield size={14} className="text-[#495E57]" /> },
+      { text: "Stripe for payment processing", icon: <CreditCard size={14} className="text-[#495E57]" /> },
+      { text: "CORS and security middleware", icon: <Lock size={14} className="text-[#495E57]" /> },
     ],
   },
 ];
@@ -150,11 +172,10 @@ const Docs = () => {
   const OverviewSection = useMemo(
     () => (
       <section className="mb-12">
-        <h2 className="text-2xl font-semibold text-[#45474B] mb-6 flex items-center">
-          <span
-            className="w-3 h-3 bg-[#495E57] rounded-full mr-3"
-            aria-hidden="true"
-          ></span>
+        <h2 className="text-2xl font-semibold text-[#45474B] mb-6 flex items-center gap-3">
+          <div className="bg-[#495E57]/10 p-2 rounded-lg text-[#495E57]">
+            <Layout size={20} />
+          </div>
           Overview
         </h2>
         <div className="prose max-w-none text-[#45474B]/70 leading-relaxed">
@@ -174,11 +195,10 @@ const Docs = () => {
   const UserRolesSection = useMemo(
     () => (
       <section className="mb-12">
-        <h2 className="text-2xl font-semibold text-[#45474B] mb-6 flex items-center">
-          <span
-            className="w-3 h-3 bg-[#495E57] rounded-full mr-3"
-            aria-hidden="true"
-          ></span>
+        <h2 className="text-2xl font-semibold text-[#45474B] mb-6 flex items-center gap-3">
+          <div className="bg-[#495E57]/10 p-2 rounded-lg text-[#495E57]">
+            <Users size={20} />
+          </div>
           User Roles
         </h2>
         <div className="grid md:grid-cols-2 gap-6">
@@ -195,12 +215,11 @@ const Docs = () => {
               </h3>
               <ul className="space-y-2 text-[#45474B]/70" role="list">
                 {role.features.map((feature, featureIndex) => (
-                  <li key={featureIndex} className="flex items-start">
-                    <span
-                      className="w-2 h-2 bg-[#F4CE14] rounded-full mt-2 mr-3 shrink-0"
-                      aria-hidden="true"
-                    ></span>
-                    <span>{feature}</span>
+                  <li key={featureIndex} className="flex items-start gap-3">
+                    <div className="bg-[#495E57]/10 p-1 rounded mt-0.5 shrink-0">
+                      {feature.icon}
+                    </div>
+                    <span>{feature.text}</span>
                   </li>
                 ))}
               </ul>
@@ -215,11 +234,10 @@ const Docs = () => {
   const FeaturesSection = useMemo(
     () => (
       <section className="mb-12">
-        <h2 className="text-2xl font-semibold text-[#45474B] mb-6 flex items-center">
-          <span
-            className="w-3 h-3 bg-[#495E57] rounded-full mr-3"
-            aria-hidden="true"
-          ></span>
+        <h2 className="text-2xl font-semibold text-[#45474B] mb-6 flex items-center gap-3">
+          <div className="bg-[#495E57]/10 p-2 rounded-lg text-[#495E57]">
+            <Zap size={20} className="fill-[#F4CE14] text-[#F4CE14]" />
+          </div>
           Key Features
         </h2>
         <div
@@ -257,11 +275,10 @@ const Docs = () => {
   const ProjectStructureSection = useMemo(
     () => (
       <section className="mb-12">
-        <h2 className="text-2xl font-semibold text-[#45474B] mb-6 flex items-center">
-          <span
-            className="w-3 h-3 bg-[#495E57] rounded-full mr-3"
-            aria-hidden="true"
-          ></span>
+        <h2 className="text-2xl font-semibold text-[#45474B] mb-6 flex items-center gap-3">
+          <div className="bg-[#495E57]/10 p-2 rounded-lg text-[#495E57]">
+            <Layers size={20} />
+          </div>
           Project Structure
         </h2>
         <div className="grid md:grid-cols-2 gap-6">
@@ -278,12 +295,11 @@ const Docs = () => {
               </h3>
               <ul className="space-y-2 text-[#45474B]/70" role="list">
                 {project.technologies.map((tech, index) => (
-                  <li key={index} className="flex items-start">
-                    <span
-                      className="w-2 h-2 bg-[#F4CE14] rounded-full mt-2 mr-3 shrink-0"
-                      aria-hidden="true"
-                    ></span>
-                    <span>{tech}</span>
+                  <li key={index} className="flex items-start gap-3">
+                    <div className="bg-[#495E57]/10 p-1 rounded mt-0.5 shrink-0">
+                      {tech.icon}
+                    </div>
+                    <span>{tech.text}</span>
                   </li>
                 ))}
               </ul>
@@ -298,11 +314,10 @@ const Docs = () => {
   const LinksSection = useMemo(
     () => (
       <section className="mb-12">
-        <h2 className="text-2xl font-semibold text-[#45474B] mb-6 flex items-center">
-          <span
-            className="w-3 h-3 bg-[#495E57] rounded-full mr-3"
-            aria-hidden="true"
-          ></span>
+        <h2 className="text-2xl font-semibold text-[#45474B] mb-6 flex items-center gap-3">
+          <div className="bg-[#495E57]/10 p-2 rounded-lg text-[#495E57]">
+            <LucideLink size={20} />
+          </div>
           Useful Links
         </h2>
         <div className="space-y-3" role="list" aria-label="Useful links">
@@ -312,7 +327,7 @@ const Docs = () => {
               href={link.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center p-4 bg-white rounded-lg border border-[#495E57]/10 hover:shadow-md transition-all duration-200 group focus:outline-none focus:ring-2 focus:ring-[#495E57] focus:ring-offset-2"
+              className="flex items-center p-4 bg-white rounded-lg border border-[#495E57]/10 hover:shadow-md transition-all duration-200 group focus:outline-none"
               aria-label={link.ariaLabel}
             >
               <div className="mr-4 text-[#495E57] group-hover:scale-110 transition-transform duration-200">
@@ -338,11 +353,10 @@ const Docs = () => {
   const SupportSection = useMemo(
     () => (
       <section>
-        <h2 className="text-2xl font-semibold text-[#45474B] mb-6 flex items-center">
-          <span
-            className="w-3 h-3 bg-[#495E57] rounded-full mr-3"
-            aria-hidden="true"
-          ></span>
+        <h2 className="text-2xl font-semibold text-[#45474B] mb-6 flex items-center gap-3">
+          <div className="bg-[#495E57]/10 p-2 rounded-lg text-[#495E57]">
+            <LifeBuoy size={20} />
+          </div>
           Need Help?
         </h2>
         <div className="bg-[#495E57]/5 p-6 rounded-xl border border-[#495E57]/10">
@@ -361,7 +375,7 @@ const Docs = () => {
               </p>
               <Link
                 to="/contact"
-                className="inline-flex items-center px-5 py-2 bg-gradient-to-r from-[#495E57] to-[#495E57]/90 text-white rounded-lg font-medium hover:shadow-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#495E57] focus:ring-offset-2 group"
+                className="inline-flex items-center px-5 py-2 bg-gradient-to-r from-[#495E57] to-[#495E57]/90 text-white rounded-lg font-medium hover:shadow-lg transition-all duration-200 group"
                 aria-label="Contact our support team"
               >
                 Contact Us
