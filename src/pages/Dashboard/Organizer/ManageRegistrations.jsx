@@ -1,15 +1,25 @@
-import { useState } from "react";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { Loader2, Trash2, Search, ChevronLeft, ChevronRight, Activity } from "lucide-react";
+import { useState, useEffect } from "react";
+import { useQuery, useMutation, useQueryClient, keepPreviousData } from "@tanstack/react-query";
+import { Loader2, Trash2, Search, ChevronLeft, ChevronRight, Activity, X } from "lucide-react";
 import Swal from "sweetalert2";
 import { toast } from "react-toastify";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 
 const ManageRegistrations = () => {
   const [currentPage, setCurrentPage] = useState(1);
+  const [searchInput, setSearchInput] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const axiosSecure = useAxiosSecure();
   const queryClient = useQueryClient();
+
+  // Debounce search input
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setSearchTerm(searchInput);
+      setCurrentPage(1); // Reset to page 1 on new search
+    }, 500);
+    return () => clearTimeout(timer);
+  }, [searchInput]);
 
   // GET registrations
   const { data: registrationsData = {}, isLoading } = useQuery({
@@ -20,6 +30,7 @@ const ManageRegistrations = () => {
       );
       return res.data;
     },
+    placeholderData: keepPreviousData,
   });
 
   const registrations = registrationsData.data || [];
@@ -84,16 +95,29 @@ const ManageRegistrations = () => {
       <div className="max-w-7xl mx-auto">
 
         {/* Search Bar */}
-        <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-4 mb-6">
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
+        <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-4 mb-6 transition-shadow hover:shadow-md">
+          <div className="relative group">
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-[#ff1e00] transition-colors pointer-events-none" size={18} />
             <input
               type="text"
-              placeholder="Search by name or email..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#ff1e00] transition-all"
+              placeholder="Search participants by name or email..."
+              value={searchInput}
+              onChange={(e) => setSearchInput(e.target.value)}
+              className="w-full pl-11 pr-11 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-4 focus:ring-[#ff1e00]/10 focus:border-[#ff1e00] transition-all bg-gray-50/50 hover:bg-white text-gray-700 placeholder:text-gray-400 text-sm sm:text-base shadow-sm"
             />
+            {searchInput && (
+              <button
+                onClick={() => {
+                  setSearchInput("");
+                  setSearchTerm("");
+                  setCurrentPage(1);
+                }}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-[#ff1e00] hover:bg-[#ff1e00]/10 p-1.5 rounded-lg transition-colors cursor-pointer flex items-center justify-center"
+                title="Clear search"
+              >
+                <X size={16} />
+              </button>
+            )}
           </div>
         </div>
 
