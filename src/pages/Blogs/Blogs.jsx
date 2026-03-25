@@ -223,7 +223,7 @@ const Blog = () => {
                           {post.summary}
                         </p>
                         <Link
-                          to={`/blog/${post._id}`}
+                          to={`/blogs/${post._id}`}
                           className="inline-flex items-center text-[#495E57] hover:text-[#45474B] font-medium text-sm group/link transition-colors focus:outline-none rounded"
                           aria-label={`Read more about ${post.title}`}
                         >
@@ -250,8 +250,8 @@ const Blog = () => {
                 key={category}
                 onClick={() => handleCategoryChange(category)}
                 className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 focus:outline-none ${selectedCategory === category
-                    ? "bg-gradient-to-r from-[#495E57] to-[#495E57]/90 text-white shadow-sm"
-                    : "bg-white text-[#45474B] hover:bg-[#495E57]/5 border border-[#495E57]/20"
+                  ? "bg-gradient-to-r from-[#495E57] to-[#495E57]/90 text-white shadow-sm"
+                  : "bg-white text-[#45474B] hover:bg-[#495E57]/5 border border-[#495E57]/20"
                   }`}
                 role="tab"
                 aria-selected={selectedCategory === category}
@@ -311,7 +311,7 @@ const Blog = () => {
                         {post.summary}
                       </p>
                       <Link
-                        to={`/blog/${post._id}`}
+                        to={`/blogs/${post._id}`}
                         className="inline-flex items-center text-[#495E57] hover:text-[#45474B] font-medium text-sm group/link transition-colors focus:outline-none rounded"
                         aria-label={`Read more about ${post.title}`}
                       >
@@ -344,8 +344,8 @@ const Blog = () => {
                     key={pageNum}
                     onClick={() => goToPage(pageNum)}
                     className={`w-10 h-10 rounded-full flex items-center justify-center transition-all duration-200 focus:outline-none ${currentPage === pageNum
-                        ? "bg-gradient-to-r from-[#495E57] to-[#495E57]/90 text-white shadow-sm"
-                        : "hover:bg-[#495E57]/5 text-[#45474B]"
+                      ? "bg-gradient-to-r from-[#495E57] to-[#495E57]/90 text-white shadow-sm"
+                      : "hover:bg-[#495E57]/5 text-[#45474B]"
                       }`}
                     aria-label={`Go to page ${pageNum}`}
                     aria-current={currentPage === pageNum ? "page" : undefined}

@@ -71,7 +71,7 @@ const FOOTER_LINKS = [
   {
     title: "Resources",
     links: [
-      { name: "Blog", path: "/blog", ariaLabel: "Read our blog" },
+      { name: "Blogs", path: "/blogs", ariaLabel: "Read our blog" },
       { name: "FAQs", path: "/faqs", ariaLabel: "Frequently asked questions" },
       { name: "Documentation", path: "/docs", ariaLabel: "View documentation" },
       {

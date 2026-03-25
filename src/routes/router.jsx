@@ -21,7 +21,7 @@ import PaymentHistory from "../pages/Dashboard/Participant/PaymentHistory";
 import OrganizerProfile from "../pages/Dashboard/Organizer/OrganizerProfile";
 import SuccessStories from "../pages/SuccessStories/SuccessStories";
 import AboutUs from "../pages/AboutUs/AboutUs";
-import Blog from "../pages/Blog/Blog";
+import BlogDetails from "../pages/Blogs/BlogDetails";
 import FAQs from "../pages/FAQs/FAQs";
 import Docs from "../pages/Docs/Docs";
 import PPolicy from "../pages/PPolicy/PPolicy";
@@ -30,6 +30,7 @@ import ContactUs from "../pages/ContactUs/ContactUs";
 import RegisteredCamps from "../pages/Dashboard/Participant/RegisteredCamps/RegisteredCamps";
 import FeedbackPage from "../pages/FeedbackPage/FeedbackPage";
 import PublicOnly from "./PublicOnly";
+import Blogs from "../pages/Blogs/Blogs";
 
 export const router = createBrowserRouter([
   {
@@ -44,7 +45,8 @@ export const router = createBrowserRouter([
       { path: "available-camps", Component: AvailableCamps },
       { path: "success-stories", Component: SuccessStories },
       { path: "about", Component: AboutUs },
-      { path: "blog", Component: Blog },
+      { path: "blogs", Component: Blogs },
+      { path: "blogs/:_id", Component: BlogDetails },
       { path: "faqs", Component: FAQs },
       { path: "docs", Component: Docs },
       { path: "pPolicy", Component: PPolicy },

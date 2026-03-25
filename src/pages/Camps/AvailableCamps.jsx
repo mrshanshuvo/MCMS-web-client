@@ -11,8 +11,6 @@ import {
   ArrowRight,
   ChevronLeft,
   ChevronRight,
-  Grid,
-  List,
   Star,
   ChevronDown,
   ChevronUp,
@@ -39,7 +37,6 @@ const AvailableCamps = () => {
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState("participantCount");
-  const [layout, setLayout] = useState("grid-3"); // 'grid-2' or 'grid-3'
 
   const { data, isLoading, isError, error, isPreviousData } = useQuery({
     queryKey: ["camps", { page, search, sort }],
@@ -52,11 +49,6 @@ const AvailableCamps = () => {
     setPage(1);
   };
 
-
-  const toggleLayout = () => {
-    setLayout(layout === "grid-3" ? "grid-2" : "grid-3");
-  };
-  
   const sortOptions = [
     { value: "participantCount", label: "Most Popular" },
     { value: "campFeesAsc", label: "Price: Low to High" },
@@ -65,7 +57,6 @@ const AvailableCamps = () => {
     { value: "dateAsc", label: "Date: Earliest" },
     { value: "dateDesc", label: "Date: Latest" },
   ];
-
 
   const {
     selectedOption,
@@ -126,61 +117,46 @@ const AvailableCamps = () => {
             </div>
 
             {/* Right Controls */}
-            <div className="flex items-center gap-3">
-              {/* Layout Toggle */}
+
+            {/* Sort ActionMenu */}
+            <div
+              className="relative"
+              ref={containerRef}
+            >
               <button
-                onClick={toggleLayout}
-                className="h-[44px] w-[44px] flex items-center justify-center rounded-lg border border-[#495E57]/20 hover:bg-[#495E57]/10 transition-colors cursor-pointer focus:outline-none"
-                aria-label="Toggle layout"
+                type="button"
+                onClick={() => setIsOpen(!isOpen)}
+                className="px-4 h-[44px] border border-[#495E57]/20 rounded-lg flex items-center gap-3 bg-white cursor-pointer hover:bg-[#495E57]/5 transition-all duration-200 focus:outline-none"
               >
-                {layout === "grid-3" ? (
-                  <Grid className="text-[#495E57]" size={20} />
+                <span className="text-sm font-medium text-[#45474B]/70 whitespace-nowrap">
+                  Sort by:
+                </span>
+                <span className="text-sm font-semibold text-[#45474B] whitespace-nowrap">
+                  {selectedOption.label}
+                </span>
+                {isOpen ? (
+                  <ChevronUp size={16} className="text-[#495E57]" />
                 ) : (
-                  <List className="text-[#495E57]" size={20} />
+                  <ChevronDown size={16} className="text-[#495E57]" />
                 )}
               </button>
-
-              {/* Sort ActionMenu */}
-              <div
-                className="relative"
-                ref={containerRef}
-              >
-                <button
-                  type="button"
-                  onClick={() => setIsOpen(!isOpen)}
-                  className="px-4 h-[44px] border border-[#495E57]/20 rounded-lg flex items-center gap-3 bg-white cursor-pointer hover:bg-[#495E57]/5 transition-all duration-200 focus:outline-none"
-                >
-                  <span className="text-sm font-medium text-[#45474B]/70 whitespace-nowrap">
-                    Sort by:
-                  </span>
-                  <span className="text-sm font-semibold text-[#45474B] whitespace-nowrap">
-                    {selectedOption.label}
-                  </span>
-                  {isOpen ? (
-                    <ChevronUp size={16} className="text-[#495E57]" />
-                  ) : (
-                    <ChevronDown size={16} className="text-[#495E57]" />
-                  )}
-                </button>
-                {isOpen && (
-                  <ul className="absolute right-0 mt-2 p-2 shadow-2xl bg-white border border-[#495E57]/10 rounded-xl w-56 z-50 animate-[slideDown_0.2s_ease-out]">
-                    {sortOptions.map((option) => (
-                      <li key={option.value}>
-                        <button
-                          onClick={() => handleSelect(option.value)}
-                          className={`w-full text-left px-4 py-2.5 rounded-lg text-sm transition-colors ${
-                            sort === option.value
-                              ? "bg-[#495E57] text-white"
-                              : "text-[#45474B] hover:bg-[#F5F7F8]"
+              {isOpen && (
+                <ul className="absolute right-0 mt-2 p-2 shadow-2xl bg-white border border-[#495E57]/10 rounded-xl w-56 z-50 animate-[slideDown_0.2s_ease-out]">
+                  {sortOptions.map((option) => (
+                    <li key={option.value}>
+                      <button
+                        onClick={() => handleSelect(option.value)}
+                        className={`w-full text-left px-4 py-2.5 rounded-lg text-sm transition-colors ${sort === option.value
+                          ? "bg-[#495E57] text-white"
+                          : "text-[#45474B] hover:bg-[#F5F7F8]"
                           }`}
-                        >
-                          {option.label}
-                        </button>
-                      </li>
-                    ))}
-                  </ul>
-                )}
-              </div>
+                      >
+                        {option.label}
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              )}
             </div>
           </div>
         </div>
@@ -213,12 +189,7 @@ const AvailableCamps = () => {
             </div>
           </div>
         ) : isLoading || isPreviousData ? (
-          <div
-            className={`grid grid-cols-1 ${layout === "grid-3"
-              ? "sm:grid-cols-2 lg:grid-cols-3"
-              : "sm:grid-cols-2"
-              } gap-8`}
-          >
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
             {[...Array(6)].map((_, index) => (
               <div
                 key={index}
@@ -262,114 +233,102 @@ const AvailableCamps = () => {
               </div>
             ) : (
               <>
-                <div
-                  className={`grid grid-cols-1 ${layout === "grid-3"
-                    ? "sm:grid-cols-2 lg:grid-cols-3"
-                    : "sm:grid-cols-2"
-                    } gap-8`}
-                >
-                  {data.camps.map((camp) => (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                  {data.camps.map((camp, index) => (
                     <div
-                      key={camp._id}
-                      className="bg-white border border-[#495E57]/10 rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all duration-300 hover:-translate-y-1 group"
+                      key={index}
+                      className="group bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl border border-[#495E57]/8 transition-all duration-300 hover:-translate-y-1.5 flex flex-col"
                     >
-                      <div className="relative h-48 bg-gradient-to-br from-[#495E57]/10 to-[#F4CE14]/10 overflow-hidden">
+                      {/* Image */}
+                      <div className="relative h-48 overflow-hidden shrink-0">
                         <img
                           src={camp.imageURL || getFallbackImage(camp.name)}
                           alt={camp.name}
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                          onError={(e) => {
-                            e.target.src = getFallbackImage(camp.name);
-                          }}
+                          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
+                          onError={(e) => { e.target.src = getFallbackImage(camp.name); }}
                         />
-                        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-[#45474B] to-transparent p-4">
-                          <h2 className="text-xl font-bold text-white">
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-black/10 to-transparent" />
+
+                        {/* Fee pill */}
+                        <div className="absolute top-3 right-3">
+                          <span className="inline-flex items-center gap-1 bg-white/90 backdrop-blur-sm text-[#45474B] text-xs font-bold px-2.5 py-1 rounded-full shadow-sm">
+                            <FaBangladeshiTakaSign size={10} className="text-[#495E57]" />
+                            {camp.fees.toFixed(0)}
+                          </span>
+                        </div>
+
+                        {/* Title */}
+                        <div className="absolute bottom-0 left-0 right-0 p-4">
+                          <h2 className="text-base font-bold text-white leading-snug line-clamp-2">
                             {camp.name}
                           </h2>
                         </div>
                       </div>
-                      <div className="p-6 space-y-4">
-                        <div className="flex items-center text-[#45474B]">
-                          <div className="flex-shrink-0 w-8 h-8 bg-[#495E57]/10 rounded-lg flex items-center justify-center mr-3">
-                            <MapPin className="text-[#495E57]" size={16} />
+
+                      {/* Body */}
+                      <div className="p-4 flex flex-col gap-3 flex-1">
+
+                        {/* Location + Date */}
+                        <div className="flex items-center justify-between gap-2">
+                          <div className="flex items-center gap-1.5 min-w-0">
+                            <MapPin size={13} className="text-[#495E57] shrink-0" />
+                            <span className="text-xs text-[#45474B] font-medium truncate">{camp.location}</span>
                           </div>
-                          <span className="text-sm font-medium">
-                            {camp.location}
-                          </span>
-                        </div>
-                        <div className="flex items-center text-[#45474B]">
-                          <div className="flex-shrink-0 w-8 h-8 bg-[#495E57]/10 rounded-lg flex items-center justify-center mr-3">
-                            <Calendar className="text-[#495E57]" size={16} />
-                          </div>
-                          <span className="text-sm">
-                            {new Date(camp.dateTime).toLocaleDateString(
-                              "en-US",
-                              {
-                                year: "numeric",
-                                month: "short",
-                                day: "numeric",
-                              }
-                            )}
-                          </span>
-                        </div>
-                        <div className="flex items-center text-[#45474B]">
-                          <div className="flex-shrink-0 w-8 h-8 bg-[#F4CE14]/20 rounded-lg flex items-center justify-center mr-3">
-                            <FaBangladeshiTakaSign
-                              className="text-[#F4CE14]"
-                              size={16}
-                            />
-                          </div>
-                          <span className="text-sm font-semibold">
-                            ${camp.fees.toFixed(2)}
-                          </span>
-                        </div>
-                        <div className="flex items-center text-[#45474B]">
-                          <div className="flex-shrink-0 w-8 h-8 bg-[#495E57]/10 rounded-lg flex items-center justify-center mr-3">
-                            <User className="text-[#495E57]" size={16} />
-                          </div>
-                          <span className="text-sm truncate">
-                            {camp.healthcareProfessional}
-                          </span>
-                        </div>
-                        <div className="flex items-center text-[#45474B]">
-                          <div className="flex-shrink-0 w-8 h-8 bg-[#495E57]/10 rounded-lg flex items-center justify-center mr-3">
-                            <Users className="text-[#495E57]" size={16} />
-                          </div>
-                          <div className="flex-1">
-                            <span className="text-sm font-medium">
-                              {camp.participantCount.toLocaleString()}{" "}
-                              participants
+                          <div className="flex items-center gap-1.5 shrink-0">
+                            <Calendar size={13} className="text-[#495E57]" />
+                            <span className="text-xs text-[#45474B]">
+                              {new Date(camp.dateTime).toLocaleDateString("en-US", {
+                                month: "short", day: "numeric", year: "numeric",
+                              })}
                             </span>
-                            {/* Progress bar */}
-                            <div className="mt-2 w-full bg-[#F5F7F8] rounded-full h-1.5">
-                              <div
-                                className="bg-[#F4CE14] h-1.5 rounded-full transition-all duration-500"
-                                style={{
-                                  width: `${Math.min(
-                                    (camp.participantCount / 500) * 100,
-                                    100
-                                  )}%`,
-                                }}
-                              />
-                            </div>
                           </div>
+                        </div>
+
+                        {/* Healthcare professional */}
+                        <div className="flex items-center gap-2">
+                          <div className="w-6 h-6 rounded-full bg-[#495E57]/10 flex items-center justify-center shrink-0">
+                            <User size={12} className="text-[#495E57]" />
+                          </div>
+                          <span className="text-xs text-[#45474B] truncate">{camp.healthcareProfessional}</span>
                         </div>
 
                         {/* Description */}
                         {camp.description && (
-                          <p className="text-[#45474B]/70 text-sm line-clamp-2">
+                          <p className="text-xs text-[#45474B]/55 line-clamp-2 leading-relaxed">
                             {camp.description}
                           </p>
                         )}
 
+                        {/* Participants + progress — pinned to bottom */}
+                        <div className="mt-auto pt-1">
+                          <div className="flex justify-between items-center mb-1.5">
+                            <div className="flex items-center gap-1.5">
+                              <Users size={13} className="text-[#495E57]" />
+                              <span className="text-xs font-semibold text-[#45474B]">
+                                {camp.participantCount.toLocaleString()} participants
+                              </span>
+                            </div>
+                            <span className="text-[10px] text-[#495E57]/50 font-medium tabular-nums">
+                              {Math.min(Math.round((camp.participantCount / 500) * 100), 100)}%
+                            </span>
+                          </div>
+                          <div className="w-full h-1 bg-[#495E57]/8 rounded-full overflow-hidden">
+                            <div
+                              className="h-full bg-gradient-to-r from-[#495E57] to-[#F4CE14] rounded-full transition-all duration-700"
+                              style={{ width: `${Math.min((camp.participantCount / 500) * 100, 100)}%` }}
+                            />
+                          </div>
+                        </div>
+
+                        {/* CTA */}
                         <Link
                           to={`/camp-details/${camp._id}`}
-                          className="mt-4 w-full bg-gradient-to-r from-[#495E57] to-[#495E57]/90 hover:from-[#45474B] hover:to-[#45474B] text-white font-semibold py-3 px-4 rounded-lg flex items-center justify-center transition-all duration-200 shadow-sm hover:shadow-md group/link cursor-pointer"
+                          className="w-full flex items-center justify-center gap-2 bg-[#495E57] hover:bg-[#3a4d47] text-white text-sm font-semibold py-2.5 rounded-xl transition-all duration-200 shadow-sm hover:shadow-md group/btn"
                         >
                           View Details
                           <ArrowRight
-                            className="ml-2 text-[#F4CE14] group-hover/link:translate-x-1 transition-transform duration-200"
-                            size={16}
+                            size={14}
+                            className="text-[#F4CE14] group-hover/btn:translate-x-1 transition-transform duration-200"
                           />
                         </Link>
                       </div>
