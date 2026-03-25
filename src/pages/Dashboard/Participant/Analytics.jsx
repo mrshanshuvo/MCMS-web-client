@@ -155,17 +155,8 @@ const Analytics = () => {
   const totalCamps = chartData.length;
 
   return (
-    <div className="min-h-screen bg-[#e8f9fd] py-12 px-4 sm:px-6 lg:px-8">
+    <div className="py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
-        {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-2">
-            Your <span className="text-[#ff1e00]">Participation Insights</span>
-          </h1>
-          <p className="text-lg text-gray-600">
-            Visualize your medical camp payments and registrations
-          </p>
-        </div>
 
         {/* Stats Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-8">

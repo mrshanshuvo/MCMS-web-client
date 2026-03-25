@@ -61,19 +61,8 @@ const ParticipantDashboard = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-[#e8f9fd] py-12 px-4 sm:px-6 lg:px-8">
+    <div className="py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
-        {/* Header Section - Clean and minimal */}
-        <div className="mb-12">
-          <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-4">
-            Welcome to Your
-            <br />
-            <span className="text-[#ff1e00]">Health Dashboard</span>
-          </h1>
-          <p className="text-lg text-gray-600 max-w-2xl">
-            Access all your medical camp information and health services in one place
-          </p>
-        </div>
 
         {/* Stats Section - Clean cards with subtle styling */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-12">
@@ -157,9 +146,9 @@ const ParticipantDashboard = () => {
             </div>
             <button
               onClick={() => navigate("/available-camps")}
-              className="mt-6 text-[#ff1e00] font-medium flex items-center gap-1 hover:gap-2 transition-all"
+              className="mt-6 text-[#ff1e00] font-medium flex items-center gap-1 hover:gap-2 transition-all cursor-pointer"
             >
-              Browse all accessories →
+              Browse all Camps →
             </button>
           </div>
 

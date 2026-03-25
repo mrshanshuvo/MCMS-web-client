@@ -233,17 +233,8 @@ const ParticipantProfile = () => {
     );
 
   return (
-    <div className="min-h-screen bg-[#e8f9fd] py-12 px-4 sm:px-6 lg:px-8">
+    <div className="py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-3xl mx-auto">
-        {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-2">
-            My <span className="text-[#ff1e00]">Medical Profile</span>
-          </h1>
-          <p className="text-lg text-gray-600">
-            View and manage your participant information
-          </p>
-        </div>
 
         {/* Profile Card */}
         <form

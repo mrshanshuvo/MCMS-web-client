@@ -115,7 +115,7 @@ const OrganizerProfile = () => {
     );
 
   return (
-    <div className="min-h-screen bg-[#e8f9fd] py-12 px-4 sm:px-6 lg:px-8">
+    <div className="py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-3xl mx-auto">
 
         {/* Profile Card */}

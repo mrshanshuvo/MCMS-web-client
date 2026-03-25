@@ -1,6 +1,6 @@
-import React, { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
-import { Pencil, Trash2, Loader2, Activity, ChevronLeft, ChevronRight } from "lucide-react";
+import React, { useState, useEffect } from "react";
+import { useQuery, keepPreviousData } from "@tanstack/react-query";
+import { Pencil, Trash2, Loader2, Activity, ChevronLeft, ChevronRight, Search, X, Tent } from "lucide-react";
 import Swal from "sweetalert2";
 import { toast } from "react-toastify";
 import CampFormModal from "./CampFormModal";
@@ -12,17 +12,29 @@ const ManageCamps = () => {
   const axiosSecure = useAxiosSecure();
   const [editingCamp, setEditingCamp] = useState(null);
   const [page, setPage] = useState(1);
+  const [searchInput, setSearchInput] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
   const limit = 5;
 
+  // Debounce search input
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setSearchTerm(searchInput);
+      setPage(1); // Reset to page 1 on new search
+    }, 500);
+    return () => clearTimeout(timer);
+  }, [searchInput]);
+
   const { data, isLoading, refetch } = useQuery({
-    queryKey: ["myCamps", user?.email, page],
+    queryKey: ["myCamps", user?.email, page, searchTerm],
     enabled: !!user?.email,
     queryFn: async () => {
       const res = await axiosSecure.get(
-        `/organizer/camps?page=${page}&limit=${limit}`
+        `/organizer/camps?page=${page}&limit=${limit}&search=${searchTerm}`
       );
       return res.data;
     },
+    placeholderData: keepPreviousData,
   });
 
   const camps = data?.camps || [];
@@ -74,11 +86,48 @@ const ManageCamps = () => {
   }
 
   return (
-    <div className="min-h-screen bg-[#e8f9fd] py-8 px-4 sm:px-6 lg:px-8">
+    <div className="py-8 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
 
-        {/* Camps Table */}
+        {/* Main Card */}
         <div className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
+          {/* Header with filters */}
+          <div className="p-6 border-b border-gray-100">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+              <div className="flex items-center gap-2">
+                <Tent size={20} className="text-[#ff1e00]" />
+                <h2 className="text-lg font-semibold text-gray-900">Manage Camps</h2>
+              </div>
+
+              <div className="flex flex-col sm:flex-row gap-3">
+                <div className="relative group">
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400 group-focus-within:text-[#ff1e00] transition-colors pointer-events-none" />
+                  <input
+                    type="text"
+                    placeholder="Search camps by name, location..."
+                    className="pl-10 pr-10 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#ff1e00] focus:border-transparent text-gray-900 w-full sm:w-64"
+                    value={searchInput}
+                    onChange={(e) => setSearchInput(e.target.value)}
+                  />
+                  {searchInput && (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setSearchInput("");
+                        setSearchTerm("");
+                        setPage(1);
+                      }}
+                      className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-[#ff1e00] hover:bg-[#ff1e00]/10 p-1 rounded-md transition-colors cursor-pointer flex items-center justify-center"
+                      title="Clear search"
+                    >
+                      <X size={14} />
+                    </button>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+
           <div className="overflow-x-auto">
             <table className="w-full min-w-[600px]">
               <thead className="bg-[#ff1e00] text-white text-sm sm:text-base">

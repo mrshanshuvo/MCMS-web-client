@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useQuery, useMutation, useQueryClient, keepPreviousData } from "@tanstack/react-query";
-import { Loader2, Trash2, Search, ChevronLeft, ChevronRight, Activity, X } from "lucide-react";
+import { Loader2, Trash2, Search, ChevronLeft, ChevronRight, Activity, X, Users } from "lucide-react";
 import Swal from "sweetalert2";
 import { toast } from "react-toastify";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
@@ -91,38 +91,48 @@ const ManageRegistrations = () => {
   }
 
   return (
-    <div className="min-h-screen bg-[#e8f9fd] py-8 px-4 sm:px-6 lg:px-8">
+    <div className="py-8 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
 
-        {/* Search Bar */}
-        <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-4 mb-6 transition-shadow hover:shadow-md">
-          <div className="relative group">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-[#ff1e00] transition-colors pointer-events-none" size={18} />
-            <input
-              type="text"
-              placeholder="Search participants by name or email..."
-              value={searchInput}
-              onChange={(e) => setSearchInput(e.target.value)}
-              className="w-full pl-11 pr-11 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-4 focus:ring-[#ff1e00]/10 focus:border-[#ff1e00] transition-all bg-gray-50/50 hover:bg-white text-gray-700 placeholder:text-gray-400 text-sm sm:text-base shadow-sm"
-            />
-            {searchInput && (
-              <button
-                onClick={() => {
-                  setSearchInput("");
-                  setSearchTerm("");
-                  setCurrentPage(1);
-                }}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-[#ff1e00] hover:bg-[#ff1e00]/10 p-1.5 rounded-lg transition-colors cursor-pointer flex items-center justify-center"
-                title="Clear search"
-              >
-                <X size={16} />
-              </button>
-            )}
-          </div>
-        </div>
-
-        {/* Table */}
+        {/* Main Card */}
         <div className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
+          {/* Header with filters */}
+          <div className="p-6 border-b border-gray-100">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+              <div className="flex items-center gap-2">
+                <Users size={20} className="text-[#ff1e00]" />
+                <h2 className="text-lg font-semibold text-gray-900">Manage Registrations</h2>
+              </div>
+
+              <div className="flex flex-col sm:flex-row gap-3">
+                <div className="relative group">
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400 group-focus-within:text-[#ff1e00] transition-colors pointer-events-none" />
+                  <input
+                    type="text"
+                    placeholder="Search participants by name or email..."
+                    value={searchInput}
+                    onChange={(e) => setSearchInput(e.target.value)}
+                    className="pl-10 pr-10 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#ff1e00] focus:border-transparent text-gray-900 w-full sm:w-64"
+                  />
+                  {searchInput && (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setSearchInput("");
+                        setSearchTerm("");
+                        setCurrentPage(1);
+                      }}
+                      className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-[#ff1e00] hover:bg-[#ff1e00]/10 p-1 rounded-md transition-colors cursor-pointer flex items-center justify-center"
+                      title="Clear search"
+                    >
+                      <X size={14} />
+                    </button>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+
           <div className="overflow-x-auto">
             <table className="min-w-full divide-y divide-gray-100">
               <thead className="bg-[#ff1e00]">
