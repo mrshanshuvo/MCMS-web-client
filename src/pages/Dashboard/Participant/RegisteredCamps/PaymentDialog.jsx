@@ -45,16 +45,16 @@ const PaymentDialog = ({
       // ✅ Handle free camp (no payment intent needed)
       if (!clientSecret) {
         await api.post(`/payments`, {
-            campId: camp._id,
-            registrationId: registration._id,
-            transactionId: `FREE_PAYMENT_${Date.now()}`,
-            amount: 0,
-            paymentMethod: "FREE",
-          }, {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          });
+          campId: camp._id,
+          registrationId: registration._id,
+          transactionId: `FREE_PAYMENT_${Date.now()}`,
+          amount: 0,
+          paymentMethod: "FREE",
+        }, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
 
         setPaymentIntent({ status: "succeeded", id: "FREE_PAYMENT" });
         onPaymentSuccess();
@@ -77,15 +77,15 @@ const PaymentDialog = ({
       if (paymentIntent.status === "succeeded") {
         setPaymentIntent(paymentIntent);
         await api.post(`/payments`, {
-            campId: camp._id,
-            registrationId: registration._id,
-            transactionId: paymentIntent.id,
-            amount: paymentIntent.amount,
-          }, {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          });
+          campId: camp._id,
+          registrationId: registration._id,
+          transactionId: paymentIntent.id,
+          amount: paymentIntent.amount,
+        }, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
         onPaymentSuccess();
       }
     } catch (err) {
@@ -101,10 +101,10 @@ const PaymentDialog = ({
     return (
       <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
         <div
-          className="absolute inset-0 bg-black bg-opacity-50 backdrop-blur-sm"
+          className="absolute inset-0 backdrop-blur-xs transition-opacity duration-300"
           onClick={onClose}
         ></div>
-        <div className="relative bg-white rounded-3xl shadow-2xl w-full max-w-md p-6">
+        <div className="relative bg-white rounded-xl shadow-2xl w-full max-w-md p-6">
           <div className="text-center">
             <CheckCircle className="mx-auto h-12 w-12 text-green-500 mb-4" />
             <h3 className="text-xl font-bold mb-2">Payment Successful!</h3>
@@ -129,10 +129,10 @@ const PaymentDialog = ({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
       <div
-        className="absolute inset-0 bg-black bg-opacity-50 backdrop-blur-sm"
+        className="absolute inset-0 bg-black/40 backdrop-blur-md transition-opacity duration-300"
         onClick={onClose}
       ></div>
-      <div className="relative bg-white rounded-3xl shadow-2xl w-full max-w-md p-6">
+      <div className="relative bg-white rounded-xl shadow-2xl w-full max-w-md p-6">
         <div className="bg-gradient-to-r from-[#1e3a8a] to-[#0f766e] p-6 text-white rounded-t-3xl -m-6 mb-6">
           <h3 className="text-xl font-bold">Pay for {camp?.name}</h3>
         </div>
@@ -179,11 +179,10 @@ const PaymentDialog = ({
             <button
               type="submit"
               disabled={!stripe || isProcessing}
-              className={`px-4 py-2 rounded-lg text-white font-medium ${
-                isProcessing
-                  ? "bg-blue-400"
-                  : "bg-gradient-to-r from-blue-600 to-purple-600"
-              }`}
+              className={`px-4 py-2 rounded-lg text-white font-medium ${isProcessing
+                ? "bg-blue-400"
+                : "bg-gradient-to-r from-blue-600 to-purple-600"
+                }`}
             >
               {isProcessing ? (
                 <span className="flex items-center justify-center">

@@ -86,7 +86,7 @@ const ParticipantDashboard = () => {
         </div>
 
         {/* Upcoming Appointments */}
-        <div className="bg-white rounded-3xl shadow-xl overflow-hidden border border-gray-100 mb-8">
+        <div className="bg-white rounded-xl shadow-xl overflow-hidden border border-gray-100 mb-8">
           <div className="bg-gradient-to-r from-[#1e3a8a] to-[#0f766e] p-6 text-white">
             <h2 className="text-xl font-bold flex items-center">
               <CalendarCheck className="mr-3" size={24} />

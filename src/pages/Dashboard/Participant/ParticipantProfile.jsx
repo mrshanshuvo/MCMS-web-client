@@ -265,7 +265,7 @@ const ParticipantProfile = () => {
         {/* Profile Card */}
         <form
           onSubmit={handleSubmit}
-          className="bg-white rounded-3xl shadow-xl overflow-hidden border border-gray-100"
+          className="bg-white rounded-xl shadow-xl overflow-hidden border border-gray-100"
           noValidate
         >
           {/* Profile Header */}
@@ -313,11 +313,10 @@ const ParticipantProfile = () => {
                         name="name"
                         value={formData.name}
                         onChange={handleInputChange}
-                        className={`w-full px-3 py-1 border rounded-md focus:outline-none focus:ring-2 ${
-                          formErrors.name
+                        className={`w-full px-3 py-1 border rounded-md focus:outline-none focus:ring-2 ${formErrors.name
                             ? "border-red-500 ring-red-500"
                             : "border-gray-300 ring-blue-500"
-                        }`}
+                          }`}
                       />
                       {formErrors.name && (
                         <p className="text-red-600 text-sm mt-1">
@@ -360,11 +359,10 @@ const ParticipantProfile = () => {
                         name="phone"
                         value={formData.phone}
                         onChange={handleInputChange}
-                        className={`w-full px-3 py-1 border rounded-md focus:outline-none focus:ring-2 ${
-                          formErrors.phone
+                        className={`w-full px-3 py-1 border rounded-md focus:outline-none focus:ring-2 ${formErrors.phone
                             ? "border-red-500 ring-red-500"
                             : "border-gray-300 ring-blue-500"
-                        }`}
+                          }`}
                         placeholder="+1234567890"
                       />
                       {formErrors.phone && (

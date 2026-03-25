@@ -122,7 +122,7 @@ const OrganizerProfile = () => {
           </p>
         </div>
 
-        <div className="bg-white rounded-3xl shadow-xl overflow-hidden border border-gray-100">
+        <div className="bg-white rounded-xl shadow-xl overflow-hidden border border-gray-100">
           <div className="bg-gradient-to-r from-blue-700 to-teal-600 p-6 text-white text-center">
             <div className="relative mx-auto w-32 h-32 rounded-full border-4 border-white/20 mb-4 overflow-hidden">
               <img

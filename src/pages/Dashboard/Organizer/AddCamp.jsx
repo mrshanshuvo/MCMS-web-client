@@ -125,7 +125,7 @@ const AddCamp = () => {
         </div>
 
         {/* Form card */}
-        <div className="bg-white rounded-3xl shadow-xl overflow-hidden border border-gray-100 p-6 sm:p-8">
+        <div className="bg-white rounded-xl shadow-xl overflow-hidden border border-gray-100 p-6 sm:p-8">
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
             {/* Camp Name */}
             <div className="space-y-2">
@@ -135,11 +135,10 @@ const AddCamp = () => {
               <input
                 type="text"
                 {...register("name", { required: "Camp Name is required" })}
-                className={`w-full px-4 py-3 rounded-xl border ${
-                  errors.name
+                className={`w-full px-4 py-3 rounded-xl border ${errors.name
                     ? "border-red-400 focus:ring-red-300"
                     : "border-gray-300 focus:ring-blue-300"
-                } focus:outline-none focus:ring-2`}
+                  } focus:outline-none focus:ring-2`}
                 placeholder="Enter camp name"
               />
               {errors.name && (
@@ -155,11 +154,10 @@ const AddCamp = () => {
               <div className="flex items-center justify-center w-full">
                 <label
                   htmlFor="dropzone-file"
-                  className={`flex flex-col items-center justify-center w-full h-32 border-2 border-dashed rounded-xl cursor-pointer ${
-                    errors.image
+                  className={`flex flex-col items-center justify-center w-full h-32 border-2 border-dashed rounded-xl cursor-pointer ${errors.image
                       ? "border-red-400 bg-red-50"
                       : "border-gray-300 hover:border-blue-500 bg-gray-50 hover:bg-blue-50"
-                  } transition-colors`}
+                    } transition-colors`}
                 >
                   <div className="flex flex-col items-center justify-center pt-5 pb-6">
                     <Upload className="mb-3 text-gray-500" size={24} />
@@ -205,11 +203,10 @@ const AddCamp = () => {
                       required: "Camp Fees is required",
                       min: { value: 0, message: "Fees must be positive" },
                     })}
-                    className={`w-full pl-10 pr-4 py-3 rounded-xl border ${
-                      errors.fees
+                    className={`w-full pl-10 pr-4 py-3 rounded-xl border ${errors.fees
                         ? "border-red-400 focus:ring-red-300"
                         : "border-gray-300 focus:ring-blue-300"
-                    } focus:outline-none focus:ring-2`}
+                      } focus:outline-none focus:ring-2`}
                     placeholder="0.00"
                   />
                 </div>
@@ -232,11 +229,10 @@ const AddCamp = () => {
                     {...register("dateTime", {
                       required: "Date & Time is required",
                     })}
-                    className={`w-full pl-10 pr-4 py-3 rounded-xl border ${
-                      errors.dateTime
+                    className={`w-full pl-10 pr-4 py-3 rounded-xl border ${errors.dateTime
                         ? "border-red-400 focus:ring-red-300"
                         : "border-gray-300 focus:ring-blue-300"
-                    } focus:outline-none focus:ring-2`}
+                      } focus:outline-none focus:ring-2`}
                   />
                 </div>
                 {errors.dateTime && (
@@ -261,11 +257,10 @@ const AddCamp = () => {
                   {...register("location", {
                     required: "Location is required",
                   })}
-                  className={`w-full pl-10 pr-4 py-3 rounded-xl border ${
-                    errors.location
+                  className={`w-full pl-10 pr-4 py-3 rounded-xl border ${errors.location
                       ? "border-red-400 focus:ring-red-300"
                       : "border-gray-300 focus:ring-blue-300"
-                  } focus:outline-none focus:ring-2`}
+                    } focus:outline-none focus:ring-2`}
                   placeholder="Enter camp location"
                 />
               </div>
@@ -290,11 +285,10 @@ const AddCamp = () => {
                   {...register("healthcareProfessional", {
                     required: "Healthcare Professional is required",
                   })}
-                  className={`w-full pl-10 pr-4 py-3 rounded-xl border ${
-                    errors.healthcareProfessional
+                  className={`w-full pl-10 pr-4 py-3 rounded-xl border ${errors.healthcareProfessional
                       ? "border-red-400 focus:ring-red-300"
                       : "border-gray-300 focus:ring-blue-300"
-                  } focus:outline-none focus:ring-2`}
+                    } focus:outline-none focus:ring-2`}
                   placeholder="Enter professional's name"
                 />
               </div>
@@ -322,11 +316,10 @@ const AddCamp = () => {
             <button
               type="submit"
               disabled={isSubmitting || imageUploading}
-              className={`w-full py-4 px-6 rounded-xl font-bold text-white transition-all duration-300 ${
-                isSubmitting || imageUploading
+              className={`w-full py-4 px-6 rounded-xl font-bold text-white transition-all duration-300 ${isSubmitting || imageUploading
                   ? "bg-blue-400"
                   : "bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 shadow-lg hover:shadow-xl cursor-pointer"
-              } flex items-center justify-center`}
+                } flex items-center justify-center`}
             >
               {isSubmitting || imageUploading ? (
                 <>

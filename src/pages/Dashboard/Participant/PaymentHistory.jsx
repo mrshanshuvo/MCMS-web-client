@@ -170,7 +170,7 @@ const PaymentHistory = () => {
   }
 
   return (
-    <div className="bg-white rounded-3xl m-8 shadow-xl border border-gray-100 overflow-hidden">
+    <div className="bg-white rounded-xl m-8 shadow-xl border border-gray-100 overflow-hidden">
       {/* Header */}
       <div className="bg-gradient-to-r from-[#1e3a8a] to-[#0f766e] p-6 text-white">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">

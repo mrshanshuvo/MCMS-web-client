@@ -96,7 +96,7 @@ const ManageCamps = () => {
         </div>
 
         {/* Camps Table */}
-        <div className="bg-white rounded-3xl shadow-xl border border-gray-100 overflow-hidden">
+        <div className="bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full min-w-[600px]">
               {" "}

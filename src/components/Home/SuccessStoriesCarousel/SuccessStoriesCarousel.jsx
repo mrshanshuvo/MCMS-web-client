@@ -90,7 +90,7 @@ const SuccessStoriesCarousel = () => {
       <section className="bg-[#F5F7F8] py-16 sm:py-24 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           <div className="h-10 w-64 bg-black/5 rounded mb-6 mx-auto" />
-          <div className="h-[520px] bg-white rounded-3xl border border-[#495E57]/10 shadow-xl" />
+          <div className="h-[520px] bg-white rounded-xl border border-[#495E57]/10 shadow-xl" />
         </div>
       </section>
     );
@@ -147,7 +147,7 @@ const SuccessStoriesCarousel = () => {
 
         <div className="relative">
           <div
-            className="relative overflow-hidden rounded-3xl bg-white shadow-xl border border-[#495E57]/10"
+            className="relative overflow-hidden rounded-xl bg-white shadow-xl border border-[#495E57]/10"
             role="region"
             aria-roledescription="carousel"
             aria-label="Success stories"

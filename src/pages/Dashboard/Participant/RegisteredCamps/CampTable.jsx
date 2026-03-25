@@ -4,7 +4,7 @@ import StatusBadge from "./StatusBadge";
 
 const CampTable = ({ camps, onPay, onCancel, onFeedback }) => {
   return (
-    <div className="bg-white rounded-3xl shadow-xl border border-gray-100 overflow-hidden">
+    <div className="bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden">
       <div className="overflow-x-auto">
         <table className="min-w-full border-collapse table-auto text-sm">
           <thead className="bg-gradient-to-r from-[#1e3a8a] to-[#0f766e] text-white">
@@ -79,11 +79,10 @@ const CampTable = ({ camps, onPay, onCancel, onFeedback }) => {
                           }
                         }}
                         disabled={camp.hasFeedback}
-                        className={`px-3 py-1 text-sm rounded text-white ${
-                          camp.hasFeedback
+                        className={`px-3 py-1 text-sm rounded text-white ${camp.hasFeedback
                             ? "bg-gray-400 cursor-not-allowed"
                             : "bg-blue-600 hover:bg-blue-700 cursor-pointer"
-                        }`}
+                          }`}
                         title={
                           camp.hasFeedback
                             ? "Feedback already submitted"

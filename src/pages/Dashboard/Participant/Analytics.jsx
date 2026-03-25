@@ -98,7 +98,7 @@ const Analytics = () => {
 
   if (isLoading) {
     return (
-      <div className="flex flex-col items-center justify-center h-64 bg-white rounded-3xl shadow-xl border border-gray-100">
+      <div className="flex flex-col items-center justify-center h-64 bg-white rounded-xl shadow-xl border border-gray-100">
         <Loader2 className="animate-spin h-12 w-12 text-blue-600 mb-4" />
         <p className="text-gray-600">Loading analytics data...</p>
       </div>
@@ -159,7 +159,7 @@ const Analytics = () => {
         </div>
 
         {/* Chart */}
-        <div className="bg-white rounded-3xl shadow-xl border border-gray-100 p-6">
+        <div className="bg-white rounded-xl shadow-xl border border-gray-100 p-6">
           <div className="h-[420px] w-full">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart

@@ -14,10 +14,13 @@ import {
   X,
   Star,
   Activity,
+  ChevronDown,
 } from "lucide-react";
 import useAuth from "../../hooks/useAuth";
+import useActionMenu from "../../hooks/useActionMenu";
 import Swal from "sweetalert2";
 import { FaBangladeshiTakaSign } from "react-icons/fa6";
+import { toast } from "react-hot-toast";
 
 const fetchCampById = async (campId) => {
   const res = await api.get(
@@ -40,11 +43,17 @@ const checkRegistrationStatus = async (campId, idToken) => {
 };
 
 const fetchUserRole = async (email) => {
-  const res = await api.get(
-    `/users/${email}/role`
-  );
+  const res = await api.get(`/users/${email}/role`);
   return res.data.role || "participant";
 };
+
+const genderOptions = [
+  { value: "", label: "Select gender" },
+  { value: "Male", label: "Male" },
+  { value: "Female", label: "Female" },
+  { value: "Other", label: "Other" },
+  { value: "Prefer not to say", label: "Prefer not to say" },
+];
 
 const CampDetails = () => {
   const { campId } = useParams();
@@ -64,6 +73,12 @@ const CampDetails = () => {
   const [formSubmitting, setFormSubmitting] = useState(false);
   const [joinSuccess, setJoinSuccess] = useState(false);
   const [joinError, setJoinError] = useState("");
+
+  const genderMenu = useActionMenu({
+    options: genderOptions,
+    initialValue: formData.gender,
+    onSelect: (val) => setFormData((f) => ({ ...f, gender: val })),
+  });
 
   // Fetch camp details
   const {
@@ -220,6 +235,7 @@ const CampDetails = () => {
       setModalOpen(false);
       await refetchRegistration();
       refetchCamp();
+      toast.success("Successfully registered for the medical camp!");
     } catch (error) {
       console.error(
         "Registration Error:",
@@ -234,6 +250,9 @@ const CampDetails = () => {
           error.response?.data?.error ||
           "Registration failed. Please try again."
         );
+        toast.error(
+          error.response?.data?.error || "Registration failed. Try again."
+        );
       }
     } finally {
       setFormSubmitting(false);
@@ -241,37 +260,10 @@ const CampDetails = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#F5F7F8] to-white py-12">
+    <div className="bg-gradient-to-b from-[#F5F7F8] to-white pt-12">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header and participant count */}
-        <div className="flex justify-between items-start mb-6">
-          <div className="inline-flex items-center px-4 py-2 bg-[#495E57]/10 rounded-full text-[#495E57] font-medium mb-4">
-            <Activity size={18} className="text-[#495E57] mr-2 animate-pulse" />
-            Medical Camp Details
-          </div>
-          <div className="bg-[#F4CE14]/20 text-[#45474B] px-3 py-1 rounded-full text-sm font-medium flex items-center">
-            <Users size={14} className="mr-1" />
-            {camp.participantCount} Participants
-          </div>
-        </div>
-
-        {/* Already Registered alert */}
-        {isAlreadyRegistered && (
-          <div className="mb-6 bg-green-50 border border-green-200 rounded-lg p-4 flex items-center">
-            <CheckCircle className="text-green-600 mr-3" size={20} />
-            <div>
-              <p className="text-green-800 font-medium">
-                You're already registered!
-              </p>
-              <p className="text-green-600 text-sm">
-                You have successfully registered for this medical camp.
-              </p>
-            </div>
-          </div>
-        )}
-
         {/* Main card */}
-        <div className="bg-white rounded-3xl shadow-xl overflow-hidden border border-[#495E57]/10">
+        <div className="bg-white rounded-xl shadow-xl overflow-hidden border border-[#495E57]/10">
           {/* Camp image */}
           <div className="relative h-64 sm:h-80 w-full bg-gradient-to-br from-[#495E57]/10 to-[#F4CE14]/10 flex items-center justify-center">
             {camp.imageURL ? (
@@ -283,6 +275,18 @@ const CampDetails = () => {
             ) : (
               <span className="text-6xl">🏥</span>
             )}
+            {/* Header and participant count */}
+            <div className="absolute top-4 left-4 right-4 flex justify-between items-center text-white">
+              <div className="inline-flex items-center px-4 py-2 bg-[#495E57]/50 rounded-full font-medium mb-4">
+                <Activity size={18} className="text-white mr-2 animate-pulse" />
+                Medical Camp Details
+              </div>
+
+              <div className="bg-[#F4CE14]/50 px-3 py-1 rounded-full text-sm font-medium flex items-center">
+                <Users size={14} className="mr-1" />
+                {camp.participantCount} Participants
+              </div>
+            </div>
             <div className="absolute bottom-4 right-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-sm font-semibold text-[#45474B] flex items-center">
               <MapPin size={16} className="mr-1 text-[#495E57]" />
               {camp.location}
@@ -291,15 +295,29 @@ const CampDetails = () => {
 
           {/* Camp info */}
           <div className="p-6 sm:p-8">
-            <h1 className="text-3xl lg:text-4xl font-bold text-[#45474B] mb-2">
-              {camp.name}
-            </h1>
-            <p className="text-xl text-[#495E57] mb-6">
-              {camp.healthcareProfessional}
-            </p>
+            <div className="flex items-center justify-between gap-2">
+              <div>
+                <h1 className="text-3xl lg:text-4xl font-bold text-[#45474B] mb-2">
+                  {camp.name}
+                </h1>
+                <p className="text-xl text-[#495E57] mb-6">
+                  {camp.healthcareProfessional}
+                </p>
+              </div>
+
+              {/* Already Registered alert */}
+              {isAlreadyRegistered && (
+                <div className="rounded-lg flex items-center mx-12">
+                  <CheckCircle className="text-green-600 mr-3" size={20} />
+                  <p className="text-green-800 font-medium">
+                    You're already registered!
+                  </p>
+                </div>
+              )}
+            </div>
 
             {/* Details grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
               <div className="bg-[#495E57]/5 p-4 rounded-xl border border-[#495E57]/10">
                 <div className="flex items-center mb-2">
                   <div className="w-8 h-8 bg-[#495E57]/10 rounded-lg flex items-center justify-center mr-3">
@@ -431,13 +449,13 @@ const CampDetails = () => {
       {/* Modal Overlay */}
       {modalOpen && (
         <div
-          className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+          className="fixed inset-0 backdrop-blur-xs flex items-center justify-center z-50 transition-opacity duration-300"
           onClick={closeModal}
           aria-modal="true"
           role="dialog"
         >
           <div
-            className="bg-white rounded-2xl max-w-md w-full p-6 relative border border-[#495E57]/10"
+            className="bg-white rounded-2xl max-w-md w-full p-6 relative border border-[#495E57]/10 shadow-2xl transform transition-all duration-300 scale-100 opacity-100"
             onClick={(e) => e.stopPropagation()} // prevent closing modal when clicking inside
           >
             {/* Modal header */}
@@ -551,26 +569,41 @@ const CampDetails = () => {
               </div>
 
               <div>
-                <label
-                  htmlFor="gender"
-                  className="block text-sm font-medium text-[#45474B]"
-                >
+                <label className="block text-sm font-medium text-[#45474B] mb-1">
                   Gender *
                 </label>
-                <select
-                  id="gender"
-                  name="gender"
-                  value={formData.gender}
-                  onChange={handleInputChange}
-                  required
-                  className="mt-1 block w-full rounded-lg border border-[#495E57]/20 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#495E57] bg-white"
-                >
-                  <option value="">Select gender</option>
-                  <option value="Male">Male</option>
-                  <option value="Female">Female</option>
-                  <option value="Other">Other</option>
-                  <option value="Prefer not to say">Prefer not to say</option>
-                </select>
+                <div className="relative" ref={genderMenu.containerRef}>
+                  <button
+                    type="button"
+                    onClick={genderMenu.toggle}
+                    className="flex items-center justify-between w-full rounded-lg border border-[#495E57]/20 px-3 py-2 bg-white text-[#45474B] focus:outline-none focus:ring-2 focus:ring-[#495E57] transition-all duration-200"
+                  >
+                    <span>{genderMenu.selectedOption.label}</span>
+                    <ChevronDown
+                      size={18}
+                      className={`text-[#495E57] transition-transform duration-200 ${genderMenu.isOpen ? "rotate-180" : ""
+                        }`}
+                    />
+                  </button>
+
+                  {genderMenu.isOpen && (
+                    <div className="absolute left-0 right-0 mt-1 bg-white border border-[#495E57]/15 rounded-xl shadow-xl z-50 overflow-hidden animate-[slideDown_0.2s_ease-out]">
+                      {genderOptions.map((opt) => (
+                        <button
+                          key={opt.value}
+                          type="button"
+                          onClick={() => genderMenu.handleSelect(opt.value)}
+                          className={`w-full px-4 py-2.5 text-sm text-left transition-colors ${genderMenu.value === opt.value
+                            ? "bg-[#495E57]/10 text-[#495E57] font-medium"
+                            : "text-[#45474B] hover:bg-[#F5F7F8]"
+                            }`}
+                        >
+                          {opt.label}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
               </div>
 
               <div>

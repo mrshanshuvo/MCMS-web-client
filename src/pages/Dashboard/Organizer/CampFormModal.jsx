@@ -103,8 +103,8 @@ const CampFormModal = ({ initialData, onClose, onUpdated }) => {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 p-4 backdrop-blur-sm">
-      <div className="bg-white rounded-3xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 backdrop-blur-xs transition-opacity duration-300">
+      <div className="bg-white rounded-xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
         {/* Header */}
         <div className="sticky top-0 bg-gradient-to-r from-[#1e3a8a] to-[#0f766e] text-white p-6 rounded-t-3xl flex justify-between items-center">
           <h3 className="text-2xl font-bold">Update Medical Camp</h3>
@@ -127,11 +127,10 @@ const CampFormModal = ({ initialData, onClose, onUpdated }) => {
             <input
               type="text"
               {...register("name", { required: "Camp Name is required" })}
-              className={`w-full px-4 py-3 rounded-xl border ${
-                errors.name
-                  ? "border-red-400 focus:ring-red-300"
-                  : "border-gray-300 focus:ring-blue-300"
-              } focus:outline-none focus:ring-2`}
+              className={`w-full px-4 py-3 rounded-xl border ${errors.name
+                ? "border-red-400 focus:ring-red-300"
+                : "border-gray-300 focus:ring-blue-300"
+                } focus:outline-none focus:ring-2`}
             />
             {errors.name && (
               <p className="text-red-500 text-sm">{errors.name.message}</p>
@@ -192,11 +191,10 @@ const CampFormModal = ({ initialData, onClose, onUpdated }) => {
                     required: "Camp Fees is required",
                     min: { value: 0, message: "Fees must be positive" },
                   })}
-                  className={`w-full pl-10 pr-4 py-3 rounded-xl border ${
-                    errors.fees
-                      ? "border-red-400 focus:ring-red-300"
-                      : "border-gray-300 focus:ring-blue-300"
-                  } focus:outline-none focus:ring-2`}
+                  className={`w-full pl-10 pr-4 py-3 rounded-xl border ${errors.fees
+                    ? "border-red-400 focus:ring-red-300"
+                    : "border-gray-300 focus:ring-blue-300"
+                    } focus:outline-none focus:ring-2`}
                 />
               </div>
               {errors.fees && (
@@ -218,11 +216,10 @@ const CampFormModal = ({ initialData, onClose, onUpdated }) => {
                   {...register("dateTime", {
                     required: "Date & Time is required",
                   })}
-                  className={`w-full pl-10 pr-4 py-3 rounded-xl border ${
-                    errors.dateTime
-                      ? "border-red-400 focus:ring-red-300"
-                      : "border-gray-300 focus:ring-blue-300"
-                  } focus:outline-none focus:ring-2`}
+                  className={`w-full pl-10 pr-4 py-3 rounded-xl border ${errors.dateTime
+                    ? "border-red-400 focus:ring-red-300"
+                    : "border-gray-300 focus:ring-blue-300"
+                    } focus:outline-none focus:ring-2`}
                 />
               </div>
               {errors.dateTime && (
@@ -245,11 +242,10 @@ const CampFormModal = ({ initialData, onClose, onUpdated }) => {
               <input
                 type="text"
                 {...register("location", { required: "Location is required" })}
-                className={`w-full pl-10 pr-4 py-3 rounded-xl border ${
-                  errors.location
-                    ? "border-red-400 focus:ring-red-300"
-                    : "border-gray-300 focus:ring-blue-300"
-                } focus:outline-none focus:ring-2`}
+                className={`w-full pl-10 pr-4 py-3 rounded-xl border ${errors.location
+                  ? "border-red-400 focus:ring-red-300"
+                  : "border-gray-300 focus:ring-blue-300"
+                  } focus:outline-none focus:ring-2`}
               />
             </div>
             {errors.location && (
@@ -271,11 +267,10 @@ const CampFormModal = ({ initialData, onClose, onUpdated }) => {
                 {...register("healthcareProfessional", {
                   required: "Healthcare Professional is required",
                 })}
-                className={`w-full pl-10 pr-4 py-3 rounded-xl border ${
-                  errors.healthcareProfessional
-                    ? "border-red-400 focus:ring-red-300"
-                    : "border-gray-300 focus:ring-blue-300"
-                } focus:outline-none focus:ring-2`}
+                className={`w-full pl-10 pr-4 py-3 rounded-xl border ${errors.healthcareProfessional
+                  ? "border-red-400 focus:ring-red-300"
+                  : "border-gray-300 focus:ring-blue-300"
+                  } focus:outline-none focus:ring-2`}
               />
             </div>
             {errors.healthcareProfessional && (
@@ -301,11 +296,10 @@ const CampFormModal = ({ initialData, onClose, onUpdated }) => {
           <button
             type="submit"
             disabled={isSubmitting || imageUploading}
-            className={`w-full py-4 px-6 rounded-xl font-bold text-white transition-all duration-300 ${
-              isSubmitting || imageUploading
-                ? "bg-blue-400"
-                : "bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 shadow-lg hover:shadow-xl"
-            } flex items-center justify-center`}
+            className={`w-full py-4 px-6 rounded-xl font-bold text-white transition-all duration-300 ${isSubmitting || imageUploading
+              ? "bg-blue-400"
+              : "bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 shadow-lg hover:shadow-xl"
+              } flex items-center justify-center`}
           >
             {(isSubmitting || imageUploading) && (
               <Loader2 className="animate-spin mr-2" size={20} />
