@@ -1,6 +1,6 @@
 import React, { useRef, useState, useMemo, useCallback } from "react";
 import emailjs from "@emailjs/browser";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import {
   Mail,
   Phone,
@@ -73,6 +73,7 @@ const SOCIAL_LINKS = [
 const ContactUs = () => {
   const form = useRef();
   const [loading, setLoading] = useState(false);
+  const [errors, setErrors] = useState({});
 
   // Environment variables with fallbacks
   const SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE_ID;
@@ -102,28 +103,40 @@ const ContactUs = () => {
     async (e) => {
       e.preventDefault();
       setLoading(true);
+      setErrors({});
 
       // Basic form validation
       const formData = new FormData(form.current);
-      const name = formData.get("user_name");
-      const email = formData.get("user_email");
+      const name = formData.get("name");
+      const email = formData.get("email");
       const message = formData.get("message");
 
-      if (!name || !email || !message) {
-        toast.error("Please fill in all required fields.", toastStyles.error);
-        setLoading(false);
-        return;
+      const newErrors = {};
+
+      if (!name || name.trim() === "") {
+        newErrors.name = "Name is required.";
       }
 
       // Email validation
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!emailRegex.test(email)) {
-        toast.error("Please enter a valid email address.", toastStyles.error);
+      if (!email) {
+        newErrors.email = "Email is required.";
+      } else if (!emailRegex.test(email)) {
+        newErrors.email = "Please enter a valid email address.";
+      }
+
+      if (!message || message.trim() === "") {
+        newErrors.message = "Message is required.";
+      }
+
+      if (Object.keys(newErrors).length > 0) {
+        setErrors(newErrors);
         setLoading(false);
         return;
       }
 
       try {
+        console.log(form.current)
         await emailjs.sendForm(
           SERVICE_ID,
           TEMPLATE_ID,
@@ -136,6 +149,7 @@ const ContactUs = () => {
           toastStyles.success,
         );
         form.current.reset();
+        setErrors({});
       } catch (error) {
         console.error("EmailJS Error:", error);
         toast.error(
@@ -196,12 +210,21 @@ const ContactUs = () => {
               <input
                 type="text"
                 id="name"
-                name="user_name"
+                name="name"
                 required
-                className="w-full px-4 py-3 border border-[#495E57]/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#495E57] focus:border-transparent bg-white transition-colors duration-200"
+                className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#495E57] focus:border-transparent bg-white transition-colors duration-200 ${errors.name
+                  ? "border-red-500"
+                  : "border-[#495E57]/20"
+                  }`}
                 placeholder="Elon Musk"
                 aria-required="true"
+                onChange={() => setErrors(prev => ({ ...prev, name: null }))}
               />
+              {errors.name && (
+                <p className="mt-1 text-sm text-red-600 animate-in fade-in slide-in-from-top-1 duration-200">
+                  {errors.name}
+                </p>
+              )}
             </div>
             <div>
               <label
@@ -213,12 +236,21 @@ const ContactUs = () => {
               <input
                 type="email"
                 id="email"
-                name="user_email"
+                name="email"
                 required
-                className="w-full px-4 py-3 border border-[#495E57]/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#495E57] focus:border-transparent bg-white transition-colors duration-200"
+                className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#495E57] focus:border-transparent bg-white transition-colors duration-200 ${errors.email
+                  ? "border-red-500"
+                  : "border-[#495E57]/20"
+                  }`}
                 placeholder="you@example.com"
                 aria-required="true"
+                onChange={() => setErrors(prev => ({ ...prev, email: null }))}
               />
+              {errors.email && (
+                <p className="mt-1 text-sm text-red-600 animate-in fade-in slide-in-from-top-1 duration-200">
+                  {errors.email}
+                </p>
+              )}
             </div>
             <div>
               <label
@@ -232,17 +264,26 @@ const ContactUs = () => {
                 name="message"
                 rows="5"
                 required
-                className="w-full px-4 py-3 border border-[#495E57]/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#495E57] focus:border-transparent bg-white transition-colors duration-200 resize-vertical"
+                className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#495E57] focus:border-transparent bg-white transition-colors duration-200 resize-vertical ${errors.message
+                  ? "border-red-500"
+                  : "border-[#495E57]/20"
+                  }`}
                 placeholder="How can we help you?"
                 aria-required="true"
+                onChange={() => setErrors(prev => ({ ...prev, message: null }))}
               ></textarea>
+              {errors.message && (
+                <p className="mt-1 text-sm text-red-600 animate-in fade-in slide-in-from-top-1 duration-200">
+                  {errors.message}
+                </p>
+              )}
             </div>
             <button
               type="submit"
               disabled={loading}
               className={`w-full flex items-center justify-center px-6 py-3 rounded-xl font-medium transition-all duration-200 focus:outline-none ${loading
-                  ? "bg-[#495E57]/50 text-white cursor-not-allowed"
-                  : "bg-gradient-to-r from-[#495E57] to-[#495E57]/90 text-white hover:shadow-lg"
+                ? "bg-[#495E57]/50 text-white cursor-not-allowed"
+                : "bg-gradient-to-r from-[#495E57] to-[#495E57]/90 text-white hover:shadow-lg"
                 }`}
               aria-label={loading ? "Sending message..." : "Send message"}
             >
@@ -270,7 +311,7 @@ const ContactUs = () => {
         </div>
       </div>
     ),
-    [loading, sendEmail],
+    [loading, sendEmail, errors],
   );
 
   const ContactInfoCards = useMemo(
@@ -360,13 +401,6 @@ const ContactUs = () => {
       role="main"
       aria-label="Contact Us"
     >
-      <Toaster
-        position="top-right"
-        toastOptions={{
-          duration: 5000,
-          ...toastStyles,
-        }}
-      />
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {HeaderSection}
 
