@@ -13,7 +13,7 @@ const AuthLayout = () => {
 
       {/* Main Content */}
       <main className="flex-grow flex items-center justify-center p-4">
-        <div className="w-full max-w-md bg-white p-8 rounded-xl shadow-sm border border-[#495E57]/10">
+        <div className="w-full max-w-xl bg-white p-8 rounded-xl shadow-sm border border-[#495E57]/10">
           <Outlet />
         </div>
       </main>

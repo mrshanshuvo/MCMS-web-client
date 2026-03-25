@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import { Calendar, MapPin, User, Upload, Loader2, Activity } from "lucide-react";
+import useImageOptimizer from "../../../hooks/useImageOptimizer";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router";
 import { FaBangladeshiTakaSign } from "react-icons/fa6";
@@ -11,6 +12,7 @@ const imgbbAPIKey = import.meta.env.VITE_IMGBB_API_KEY;
 const AddCamp = () => {
   const axiosSecure = useAxiosSecure();
   const navigate = useNavigate();
+  const { compressImage } = useImageOptimizer();
 
   const {
     register,
@@ -26,8 +28,13 @@ const AddCamp = () => {
       setImageUploading(true);
 
       // Upload image to imgbb
+      const optimizedFile = await compressImage(data.image[0], {
+        maxSizeMB: 1,
+        maxWidthOrHeight: 1920,
+      });
+
       const formData = new FormData();
-      formData.append("image", data.image[0]);
+      formData.append("image", optimizedFile);
 
       const imgbbRes = await fetch(
         `https://api.imgbb.com/1/upload?key=${imgbbAPIKey}`,
