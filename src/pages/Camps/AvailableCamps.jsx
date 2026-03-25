@@ -237,7 +237,7 @@ const AvailableCamps = () => {
                   {data.camps.map((camp, index) => (
                     <div
                       key={index}
-                      className="group bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl border border-[#495E57]/8 transition-all duration-300 hover:-translate-y-1.5 flex flex-col"
+                      className="group bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-xl border border-[#495E57]/8 transition-all duration-300 hover:-translate-y-1.5 flex flex-col"
                     >
                       {/* Image */}
                       <div className="relative h-48 overflow-hidden shrink-0">

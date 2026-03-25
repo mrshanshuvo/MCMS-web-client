@@ -112,26 +112,26 @@ const RegisteredCamps = () => {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center min-h-[300px]">
-        <Loader2 className="animate-spin h-12 w-12 text-blue-600" />
+        <Loader2 className="animate-spin h-12 w-12 text-[#ff1e00]" />
       </div>
     );
   }
 
   if (isError) {
     return (
-      <div className="bg-red-50 border-l-4 border-red-500 p-4 rounded-lg my-6 mx-4 max-w-7xl">
+      <div className="bg-[#ff1e00]/5 border-l-4 border-[#ff1e00] p-4 rounded-lg my-6 mx-4 max-w-7xl">
         <div className="flex items-center">
-          <AlertCircle className="h-5 w-5 text-red-500 mr-3" />
+          <AlertCircle className="h-5 w-5 text-[#ff1e00] mr-3" />
           <div>
-            <h3 className="text-sm font-medium text-red-800">
+            <h3 className="text-sm font-medium text-gray-900">
               Error loading registered camps
             </h3>
-            <p className="text-sm text-red-700 mt-1">
+            <p className="text-sm text-gray-600 mt-1">
               {error.message || "Please try again later"}
             </p>
             <button
               onClick={() => refetch()}
-              className="mt-2 text-sm text-red-600 hover:underline flex items-center cursor-pointer"
+              className="mt-2 text-sm text-[#ff1e00] hover:underline flex items-center cursor-pointer"
             >
               <ArrowRight className="h-3 w-3 mr-1" />
               Retry
@@ -144,17 +144,17 @@ const RegisteredCamps = () => {
 
   if (camps.length === 0) {
     return (
-      <div className="bg-gradient-to-br from-blue-50 to-purple-50 rounded-2xl p-6 md:p-8 text-center my-6 max-w-7xl mx-auto">
-        <CalendarCheck className="mx-auto h-10 w-10 md:h-12 md:w-12 text-blue-400 mb-3 md:mb-4" />
-        <h3 className="text-base md:text-lg font-medium text-gray-900 mb-1">
+      <div className="bg-[#e8f9fd] rounded-xl p-8 md:p-12 text-center my-6 max-w-7xl mx-auto border border-gray-100">
+        <CalendarCheck className="mx-auto h-12 w-12 text-[#ff1e00] mb-4" />
+        <h3 className="text-lg font-medium text-gray-900 mb-2">
           No registered camps found
         </h3>
-        <p className="text-sm md:text-base text-gray-500 mb-4">
+        <p className="text-gray-500 mb-6">
           Your registered medical camps will appear here once you sign up
         </p>
         <a
           href="/available-camps"
-          className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg font-medium hover:shadow-lg transition-all cursor-pointer"
+          className="inline-flex items-center px-6 py-2.5 bg-[#ff1e00] text-white rounded-lg font-medium hover:bg-[#ff1e00]/90 transition-all cursor-pointer"
         >
           Browse Available Camps
           <ArrowRight className="ml-2 h-4 w-4" />
@@ -164,21 +164,13 @@ const RegisteredCamps = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#f0f9ff] to-white py-8 md:py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-[#e8f9fd] py-8 md:py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <div className="text-center mb-8">
-          <div className="inline-flex items-center px-4 py-2 bg-blue-100 rounded-full text-blue-800 font-medium mb-4">
-            <Activity size={16} className="mr-2 text-blue-600 animate-pulse" />
-            Participant Dashboard
-          </div>
-          <h2 className="text-3xl font-bold text-gray-900 mb-2">
-            My
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">
-              {" "}
-              Registered Camps
-            </span>
-          </h2>
+        <div className="mb-8">
+          <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-2">
+            My <span className="text-[#ff1e00]">Registered Camps</span>
+          </h1>
           <p className="text-lg text-gray-600">
             View and manage your upcoming medical camp registrations
           </p>
@@ -189,7 +181,7 @@ const RegisteredCamps = () => {
           {camps.map((camp) => (
             <div
               key={camp._id}
-              className="bg-white rounded-xl shadow-md border border-gray-200 overflow-hidden"
+              className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden"
             >
               <CampCard
                 camp={camp}
@@ -214,7 +206,7 @@ const RegisteredCamps = () => {
 
         {/* Desktop View */}
         <div className="hidden md:block">
-          <div className="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
+          <div className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
             <CampTable
               camps={camps}
               onPay={(camp) => {
@@ -240,14 +232,14 @@ const RegisteredCamps = () => {
             <button
               onClick={() => setCurrentPage(1)}
               disabled={currentPage === 1}
-              className="px-3 py-1 rounded-md border border-gray-300 text-gray-700 hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+              className="px-3 py-1 rounded-lg border border-gray-200 text-gray-600 hover:bg-[#e8f9fd] hover:text-[#ff1e00] disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer transition-colors"
             >
               First
             </button>
             <button
               onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
               disabled={currentPage === 1}
-              className="px-3 py-1 rounded-md border border-gray-300 text-gray-700 hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed flex items-center cursor-pointer"
+              className="px-3 py-1 rounded-lg border border-gray-200 text-gray-600 hover:bg-[#e8f9fd] hover:text-[#ff1e00] disabled:opacity-50 disabled:cursor-not-allowed flex items-center cursor-pointer transition-colors"
             >
               <ChevronLeft className="h-4 w-4 mr-1" />
               Previous
@@ -257,11 +249,10 @@ const RegisteredCamps = () => {
               <button
                 key={pageNum}
                 onClick={() => setCurrentPage(pageNum)}
-                className={`w-10 h-10 rounded-full flex items-center justify-center cursor-pointer ${
-                  currentPage === pageNum
-                    ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white"
-                    : "hover:bg-gray-100"
-                }`}
+                className={`w-10 h-10 rounded-lg flex items-center justify-center cursor-pointer transition-colors ${currentPage === pageNum
+                  ? "bg-[#ff1e00] text-white"
+                  : "text-gray-600 hover:bg-[#e8f9fd] hover:text-[#ff1e00]"
+                  }`}
               >
                 {pageNum}
               </button>
@@ -270,7 +261,7 @@ const RegisteredCamps = () => {
             <button
               onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
               disabled={currentPage === totalPages}
-              className="px-3 py-1 rounded-md border border-gray-300 text-gray-700 hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed flex items-center cursor-pointer"
+              className="px-3 py-1 rounded-lg border border-gray-200 text-gray-600 hover:bg-[#e8f9fd] hover:text-[#ff1e00] disabled:opacity-50 disabled:cursor-not-allowed flex items-center cursor-pointer transition-colors"
             >
               Next
               <ChevronRight className="h-4 w-4 ml-1" />
@@ -278,7 +269,7 @@ const RegisteredCamps = () => {
             <button
               onClick={() => setCurrentPage(totalPages)}
               disabled={currentPage === totalPages}
-              className="px-3 py-1 rounded-md border border-gray-300 text-gray-700 hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+              className="px-3 py-1 rounded-lg border border-gray-200 text-gray-600 hover:bg-[#e8f9fd] hover:text-[#ff1e00] disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer transition-colors"
             >
               Last
             </button>

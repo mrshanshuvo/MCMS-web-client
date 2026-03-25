@@ -11,6 +11,7 @@ import {
   User2,
   X,
   LogOut,
+  ChevronRight,
 } from "lucide-react";
 import useUserRole from "../../hooks/useUserRole";
 import useAuth from "../../hooks/useAuth";
@@ -108,12 +109,12 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
 
       {/* Sidebar */}
       <aside
-        className={`fixed inset-y-0 left-0 lg:relative z-50 w-64 h-full bg-gradient-to-b from-[#1e3a8a] to-[#0f766e] text-white p-5 flex flex-col transition-transform duration-300 ease-in-out lg:translate-x-0 ${isOpen ? "translate-x-0" : "-translate-x-full"
+        className={`fixed inset-y-0 left-0 lg:relative z-50 w-64 h-full bg-white border-r border-gray-100 p-5 flex flex-col transition-transform duration-300 ease-in-out lg:translate-x-0 ${isOpen ? "translate-x-0" : "-translate-x-full"
           }`}
       >
         {/* Close button for mobile */}
         <button
-          className="absolute top-4 right-4 lg:hidden p-2 text-white/70 hover:text-white rounded-md hover:bg-white/10"
+          className="absolute top-4 right-4 lg:hidden p-2 text-gray-500 hover:text-[#ff1e00] rounded-md hover:bg-[#e8f9fd] transition-all duration-200"
           onClick={() => setIsOpen(false)}
         >
           <X size={20} />
@@ -123,18 +124,20 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
         <div className="mb-8 pt-2">
           <Link
             to="/"
-            className="flex items-center gap-1 group px-2 cursor-pointer"
+            className="flex items-center gap-2 group cursor-pointer"
             onClick={() => setIsOpen(false)}
           >
-            <img src={logo} className="w-14 h-14" alt="CareCamp Logo" />
-            <span className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-200 to-teal-200">
+            <div className="relative">
+              <img src={logo} className="w-12 h-12" alt="CareCamp Logo" />
+            </div>
+            <span className="text-xl font-bold text-gray-900 group-hover:text-[#ff1e00] transition-colors">
               CareCamp
             </span>
           </Link>
         </div>
 
         {/* Navigation links */}
-        <nav className="space-y-2 flex-1 overflow-y-auto pr-1">
+        <nav className="space-y-1 flex-1 overflow-y-auto pr-1">
           {links.map((link) => (
             <NavLink
               key={link.to}
@@ -142,27 +145,23 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
               end={link.end}
               onClick={() => setIsOpen(false)}
               className={({ isActive }) =>
-                `flex items-center px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300 group cursor-pointer ${isActive
-                  ? isOrganizer
-                    ? "bg-blue-500/10 backdrop-blur-sm border border-blue-400/20 shadow-lg"
-                    : "bg-teal-500/10 backdrop-blur-sm border border-teal-400/20 shadow-lg"
-                  : "hover:bg-white/5 hover:border-white/10"
+                `flex items-center justify-between px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 group cursor-pointer ${isActive
+                  ? "bg-[#ff1e00] text-white shadow-sm"
+                  : "text-gray-600 hover:bg-[#e8f9fd] hover:text-[#ff1e00]"
                 }`
               }
             >
               {({ isActive }) => (
                 <>
-                  <span
-                    className={`mr-3 ${isActive
-                      ? isOrganizer
-                        ? "text-blue-300"
-                        : "text-teal-300"
-                      : "text-gray-300 group-hover:text-white"
-                      }`}
-                  >
-                    {link.icon}
-                  </span>
-                  <span className={`truncate ${!isActive && "text-gray-200 group-hover:text-white"}`}>{link.label}</span>
+                  <div className="flex items-center gap-3">
+                    <span className={isActive ? "text-white" : "text-gray-400 group-hover:text-[#ff1e00]"}>
+                      {link.icon}
+                    </span>
+                    <span className="truncate">{link.label}</span>
+                  </div>
+                  {isActive && (
+                    <ChevronRight size={14} className="text-white/80" />
+                  )}
                 </>
               )}
             </NavLink>
@@ -170,26 +169,25 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
         </nav>
 
         {/* Logout Button */}
-        <div className="mt-2 pr-1">
+        <div className="mt-2 pt-4 border-t border-gray-100">
           <button
             onClick={() => {
               setIsOpen(false);
               handleLogOut();
             }}
-            className="w-full flex items-center px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300 group hover:bg-red-500/10 border border-transparent hover:border-red-400/20 text-gray-300 hover:text-red-400 cursor-pointer"
+            className="w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 group cursor-pointer text-gray-600 hover:bg-[#e8f9fd] hover:text-[#ff1e00]"
           >
-            <span className="mr-3 text-red-400/80 group-hover:text-red-400 transition-colors">
-              <LogOut size={18} />
-            </span>
-            <span className="truncate transition-colors">Sign Out</span>
+            <div className="flex items-center gap-3">
+              <span className="text-gray-400 group-hover:text-[#ff1e00] transition-colors">
+                <LogOut size={18} />
+              </span>
+              <span className="truncate">Sign Out</span>
+            </div>
           </button>
         </div>
 
         {/* Footer */}
-        <div
-          className={`mt-6 pt-4 border-t ${isOrganizer ? "border-blue-400/20" : "border-teal-400/20"
-            } text-xs text-blue-100/60`}
-        >
+        <div className="mt-6 pt-4 border-t border-gray-100 text-xs text-gray-400">
           <p>© {new Date().getFullYear()} CareCamp</p>
           <p className="mt-1">All rights reserved.</p>
         </div>

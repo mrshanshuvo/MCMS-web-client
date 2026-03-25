@@ -14,6 +14,7 @@ import {
   Loader2,
   Phone,
   MapPin,
+  Activity,
 } from "lucide-react";
 
 const OrganizerProfile = () => {
@@ -68,7 +69,7 @@ const OrganizerProfile = () => {
         title: "Success!",
         text: "Profile updated successfully",
         icon: "success",
-        confirmButtonColor: "#0f766e",
+        confirmButtonColor: "#ff1e00",
       });
       queryClient.invalidateQueries(["organizerProfile", authUser.email]);
       setEditing(false);
@@ -78,7 +79,7 @@ const OrganizerProfile = () => {
         title: "Error!",
         text: error.response?.data?.message || "Failed to update profile",
         icon: "error",
-        confirmButtonColor: "#ef4444",
+        confirmButtonColor: "#ff1e00",
       });
     },
   });
@@ -87,44 +88,41 @@ const OrganizerProfile = () => {
 
   if (isLoading || isSubmitting)
     return (
-      <div className="flex items-center justify-center min-h-screen bg-white">
-        <Loader2 className="animate-spin h-12 w-12 text-blue-600" />
+      <div className="flex flex-col items-center justify-center min-h-screen bg-[#e8f9fd]">
+        <Loader2 className="animate-spin h-8 w-8 text-[#ff1e00]" />
+        <p className="text-gray-500 mt-3">Loading profile...</p>
       </div>
     );
 
   if (isError)
     return (
-      <div className="text-center p-6 bg-white rounded-xl shadow-lg max-w-md mx-auto">
-        <h3 className="text-xl font-semibold text-red-600 mb-2">
-          Failed to load profile
-        </h3>
-        <p className="text-gray-600 mb-4">
-          {error.message || "Unknown error occurred"}
-        </p>
-        <button
-          onClick={() => window.location.reload()}
-          className="bg-blue-100 text-blue-600 px-4 py-2 rounded-lg font-medium hover:bg-blue-200 transition-colors cursor-pointer"
-        >
-          Try Again
-        </button>
+      <div className="flex items-center justify-center min-h-screen bg-[#e8f9fd]">
+        <div className="text-center p-8 bg-white rounded-xl shadow-sm max-w-md mx-4 border border-gray-100">
+          <h3 className="text-xl font-semibold text-[#ff1e00] mb-2">
+            Failed to load profile
+          </h3>
+          <p className="text-gray-600 mb-4">
+            {error.message || "Unknown error occurred"}
+          </p>
+          <button
+            onClick={() => window.location.reload()}
+            className="bg-[#e8f9fd] text-[#ff1e00] px-4 py-2 rounded-lg font-medium hover:bg-[#e8f9fd]/80 transition-colors cursor-pointer"
+          >
+            Try Again
+          </button>
+        </div>
       </div>
     );
 
   return (
-    <div className="min-h-screen bg-white py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-[#e8f9fd] py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-3xl mx-auto">
-        <div className="text-center mb-8">
-          <h2 className="text-3xl font-bold text-gray-900 mb-2">
-            Organizer <span className="text-blue-600">Profile</span>
-          </h2>
-          <p className="text-lg text-gray-600">
-            {editing ? "Edit your profile" : "View your profile"}
-          </p>
-        </div>
 
-        <div className="bg-white rounded-xl shadow-xl overflow-hidden border border-gray-100">
-          <div className="bg-gradient-to-r from-blue-700 to-teal-600 p-6 text-white text-center">
-            <div className="relative mx-auto w-32 h-32 rounded-full border-4 border-white/20 mb-4 overflow-hidden">
+        {/* Profile Card */}
+        <div className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
+          {/* Profile Header */}
+          <div className="bg-[#ff1e00] p-8 text-white text-center">
+            <div className="relative mx-auto w-28 h-28 rounded-full border-4 border-white/30 mb-4 overflow-hidden bg-white">
               <img
                 src={
                   profile.photoURL || "https://i.ibb.co/5h7FQs6N/unnamed.jpg"
@@ -136,10 +134,11 @@ const OrganizerProfile = () => {
                 }
               />
             </div>
-            <h3 className="text-2xl font-bold">{profile.name || "N/A"}</h3>
-            <p className="text-blue-200">{profile.email}</p>
+            <h3 className="text-2xl font-bold text-white mb-1">{profile.name || "N/A"}</h3>
+            <p className="text-white/80">{profile.email}</p>
           </div>
 
+          {/* Profile Details */}
           <div className="p-6 sm:p-8">
             {!editing ? (
               <>
@@ -147,40 +146,40 @@ const OrganizerProfile = () => {
                   <ProfileField
                     label="Full Name"
                     value={profile.name}
-                    icon={<User />}
+                    icon={<User size={16} />}
                   />
                   <ProfileField
                     label="Email"
                     value={profile.email}
-                    icon={<Mail />}
+                    icon={<Mail size={16} />}
                   />
                   <ProfileField
                     label="Phone"
-                    value={profile.phone || "N/A"}
-                    icon={<Phone />}
+                    value={profile.phone || "Not provided"}
+                    icon={<Phone size={16} />}
                   />
                   <ProfileField
                     label="Address"
-                    value={profile.address || "N/A"}
-                    icon={<MapPin />}
+                    value={profile.address || "Not provided"}
+                    icon={<MapPin size={16} />}
                   />
                   <ProfileField
                     label="Role"
-                    value={profile.role || "N/A"}
-                    icon={<Briefcase />}
+                    value={profile.role || "Organizer"}
+                    icon={<Briefcase size={16} />}
                   />
                 </div>
 
                 <button
                   onClick={() => setEditing(true)}
-                  className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-3 px-6 rounded-xl font-medium hover:shadow-lg transition-all flex items-center justify-center gap-2 cursor-pointer"
+                  className="w-full bg-[#ff1e00] text-white py-3 px-6 rounded-xl font-medium hover:bg-[#ff1e00]/90 transition-all flex items-center justify-center gap-2 cursor-pointer"
                 >
                   <Edit size={18} />
                   Update Profile
                 </button>
               </>
             ) : (
-              <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+              <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
                 <div className="space-y-4">
                   <InputField
                     label="Full Name"
@@ -202,20 +201,22 @@ const OrganizerProfile = () => {
                     register={register}
                     errors={errors}
                     type="tel"
+                    placeholder="+1234567890"
                   />
                   <InputField
                     label="Address"
                     name="address"
                     register={register}
                     errors={errors}
+                    placeholder="Your address"
                   />
                 </div>
 
-                <div className="flex flex-col sm:flex-row gap-3">
+                <div className="flex flex-col sm:flex-row gap-3 pt-2">
                   <button
                     type="submit"
                     disabled={isSubmitting || updateMutation.isLoading}
-                    className="flex-1 bg-green-600 text-white py-3 px-6 rounded-xl font-medium hover:bg-green-700 transition-all flex items-center justify-center gap-2 cursor-pointer"
+                    className="flex-1 bg-[#ff1e00] text-white py-3 px-6 rounded-xl font-medium hover:bg-[#ff1e00]/90 transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
                   >
                     {isSubmitting || updateMutation.isLoading ? (
                       <>
@@ -225,7 +226,7 @@ const OrganizerProfile = () => {
                     ) : (
                       <>
                         <Save size={18} />
-                        Save
+                        Save Changes
                       </>
                     )}
                   </button>
@@ -235,7 +236,7 @@ const OrganizerProfile = () => {
                       reset(profile);
                       setEditing(false);
                     }}
-                    className="flex-1 bg-gray-100 text-gray-800 py-3 px-6 rounded-xl font-medium hover:bg-gray-200 transition-colors flex items-center justify-center gap-2 cursor-pointer"
+                    className="flex-1 bg-white border border-gray-200 text-gray-700 py-3 px-6 rounded-xl font-medium hover:bg-[#e8f9fd] transition-colors flex items-center justify-center gap-2 cursor-pointer"
                   >
                     <X size={18} />
                     Cancel
@@ -252,11 +253,12 @@ const OrganizerProfile = () => {
 
 // Reusable field display
 const ProfileField = ({ label, value, icon }) => (
-  <div>
-    <p className="text-sm text-gray-500 flex items-center gap-1 mb-1">
-      {icon} {label}
+  <div className="bg-[#e8f9fd] rounded-xl p-4">
+    <p className="text-sm text-gray-500 flex items-center gap-1.5 mb-2">
+      {icon}
+      <span className="text-gray-500">{label}</span>
     </p>
-    <p className="font-medium">{value || "N/A"}</p>
+    <p className="font-medium text-gray-900">{value || "N/A"}</p>
   </div>
 );
 
@@ -271,17 +273,20 @@ const InputField = ({
   placeholder,
 }) => (
   <div>
-    <label className="block text-sm font-medium text-gray-700 mb-1">
-      {label} {required && "*"}
+    <label className="block text-sm font-medium text-gray-700 mb-1.5">
+      {label} {required && <span className="text-[#ff1e00]">*</span>}
     </label>
     <input
       {...register(name, required ? { required: `${label} is required` } : {})}
       type={type}
-      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+      className={`w-full px-4 py-2.5 border rounded-xl focus:outline-none focus:ring-2 focus:ring-[#ff1e00] transition-all ${errors[name]
+        ? "border-[#ff1e00]"
+        : "border-gray-200"
+        }`}
       placeholder={placeholder}
     />
     {errors[name] && (
-      <p className="mt-1 text-sm text-red-600">{errors[name].message}</p>
+      <p className="mt-1 text-sm text-[#ff1e00]">{errors[name].message}</p>
     )}
   </div>
 );

@@ -60,8 +60,8 @@ const HeroSection = () => {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
           <div
             className={`lg:col-span-12 space-y-8 transition-all duration-1000 ease-out ${isVisible
-                ? "translate-x-0 opacity-100"
-                : "-translate-x-12 opacity-0"
+              ? "translate-x-0 opacity-100"
+              : "-translate-x-12 opacity-0"
               }`}
           >
             {/* Mini Badge */}
@@ -186,7 +186,7 @@ const HeroSection = () => {
           aria-modal="true"
           aria-label="CareCamp demo video"
         >
-          <div className="bg-white rounded-2xl w-full max-w-3xl shadow-2xl relative overflow-hidden animate-[fadeIn_0.2s_ease-out]">
+          <div className="bg-white rounded-xl w-full max-w-3xl shadow-2xl relative overflow-hidden animate-[fadeIn_0.2s_ease-out]">
             <button
               type="button"
               onClick={() => setShowDemo(false)}

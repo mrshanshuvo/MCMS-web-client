@@ -5,6 +5,9 @@ import {
   HeartPulse,
   Stethoscope,
   Activity,
+  ArrowRight,
+  TrendingUp,
+  Star,
 } from "lucide-react";
 import { useNavigate } from "react-router";
 
@@ -15,145 +18,189 @@ const ParticipantDashboard = () => {
     {
       title: "Available Camps",
       description: "Browse and register for upcoming medical camps",
-      icon: <Stethoscope className="text-blue-600" size={24} />,
+      icon: <Stethoscope size={24} />,
       action: () => navigate("/available-camps"),
-      color: "from-blue-100 to-blue-50",
+      price: "Free",
     },
     {
       title: "My Registrations",
       description: "View your registered camps and appointments",
-      icon: <CalendarCheck className="text-purple-600" size={24} />,
+      icon: <CalendarCheck size={24} />,
       action: () => navigate("/dashboard/registered-camps"),
-      color: "from-purple-100 to-purple-50",
+      stats: "3 Active",
     },
     {
       title: "Medical History",
       description: "Access your medical records and history",
-      icon: <HeartPulse className="text-teal-600" size={24} />,
+      icon: <HeartPulse size={24} />,
       action: () => navigate("/dashboard/medical-history"),
-      color: "from-teal-100 to-teal-50",
+      stats: "Complete",
     },
     {
       title: "Feedback",
       description: "Share your experience with our services",
-      icon: <ClipboardList className="text-indigo-600" size={24} />,
+      icon: <ClipboardList size={24} />,
       action: () => navigate("/dashboard/feedback"),
-      color: "from-indigo-100 to-indigo-50",
+      rating: "4.8 ★",
+    },
+  ];
+
+  const featuredCamps = [
+    {
+      name: "Free Health Camp",
+      location: "Community Center",
+      date: "March 28, 2026",
+      price: "Free",
+    },
+    {
+      name: "Dental Checkup",
+      location: "City Hospital",
+      date: "April 5, 2026",
+      price: "$25.00",
     },
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#f0f9ff] to-white py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-[#e8f9fd] py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
-        {/* Header */}
-        <div className="text-center mb-12">
-          <div className="inline-flex items-center px-4 py-2 bg-blue-100 rounded-full text-blue-800 font-medium mb-4">
-            <Activity size={16} className="mr-2 text-blue-600 animate-pulse" />
-            Participant Portal
-          </div>
-          <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-3">
+        {/* Header Section - Clean and minimal */}
+        <div className="mb-12">
+          <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-4">
             Welcome to Your
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">
-              {" "}
-              Health Dashboard
-            </span>
+            <br />
+            <span className="text-[#ff1e00]">Health Dashboard</span>
           </h1>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Access all your medical camp information and health services in one
-            place
+          <p className="text-lg text-gray-600 max-w-2xl">
+            Access all your medical camp information and health services in one place
           </p>
         </div>
 
-        {/* Quick Actions */}
+        {/* Stats Section - Clean cards with subtle styling */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-12">
+          <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-3xl font-bold text-gray-900">20K+</span>
+              <TrendingUp size={20} className="text-[#59ce8f]" />
+            </div>
+            <p className="text-gray-600">Happy Participants</p>
+          </div>
+
+          <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-3xl font-bold text-gray-900">6K</span>
+              <Star size={20} className="text-[#ff1e00]" />
+            </div>
+            <p className="text-gray-600">Positive Reviews</p>
+          </div>
+
+          <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-3xl font-bold text-gray-900">50+</span>
+              <Activity size={20} className="text-[#59ce8f]" />
+            </div>
+            <p className="text-gray-600">Active Camps</p>
+          </div>
+        </div>
+
+        {/* Quick Actions Section - Inspired by the product cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
           {quickActions.map((action, index) => (
             <div
               key={index}
               onClick={action.action}
-              className={`bg-gradient-to-br ${action.color} border border-gray-200 rounded-2xl p-6 cursor-pointer hover:shadow-lg transition-all duration-300 hover:-translate-y-1`}
+              className="bg-white rounded-xl p-6 cursor-pointer hover:shadow-lg transition-all duration-300 group border border-gray-100"
             >
-              <div className="flex items-center mb-4">
-                <div className="p-3 rounded-xl bg-white shadow-sm mr-4">
+              <div className="flex items-start justify-between mb-4">
+                <div className="p-3 rounded-xl bg-[#e8f9fd] text-[#ff1e00] group-hover:bg-[#ff1e00] group-hover:text-white transition-all duration-300">
                   {action.icon}
                 </div>
-                <h3 className="text-lg font-semibold text-gray-800">
-                  {action.title}
-                </h3>
+                {action.price && (
+                  <span className="text-xl font-bold text-[#ff1e00]">{action.price}</span>
+                )}
+                {action.stats && (
+                  <span className="text-sm font-medium text-[#59ce8f]">{action.stats}</span>
+                )}
+                {action.rating && (
+                  <span className="text-sm font-medium text-[#ff1e00]">{action.rating}</span>
+                )}
               </div>
-              <p className="text-gray-600">{action.description}</p>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                {action.title}
+              </h3>
+              <p className="text-gray-500 text-sm mb-4">{action.description}</p>
+              <div className="flex items-center text-[#ff1e00] text-sm font-medium group-hover:gap-2 transition-all">
+                Get Started <ArrowRight size={16} className="ml-1" />
+              </div>
             </div>
           ))}
         </div>
 
-        {/* Upcoming Appointments */}
-        <div className="bg-white rounded-xl shadow-xl overflow-hidden border border-gray-100 mb-8">
-          <div className="bg-gradient-to-r from-[#1e3a8a] to-[#0f766e] p-6 text-white">
-            <h2 className="text-xl font-bold flex items-center">
-              <CalendarCheck className="mr-3" size={24} />
-              Upcoming Medical Camps
-            </h2>
-          </div>
-          <div className="p-6">
-            <div className="text-center py-8 text-gray-500">
-              <p>You don't have any upcoming camp registrations</p>
-              <button
-                onClick={() => navigate("/available-camps")}
-                className="mt-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-2 rounded-lg font-medium hover:shadow-lg transition-all"
-              >
-                Browse Available Camps
-              </button>
+        {/* Featured Camps Section - Similar to product listing style */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+          <div className="bg-white rounded-xl p-8 shadow-sm border border-gray-100">
+            <h2 className="text-2xl font-bold text-gray-900 mb-6">Featured Camps</h2>
+            <div className="space-y-6">
+              {featuredCamps.map((camp, idx) => (
+                <div key={idx} className="flex items-center justify-between py-4 border-b border-gray-100 last:border-0">
+                  <div>
+                    <h3 className="font-semibold text-gray-900 mb-1">{camp.name}</h3>
+                    <p className="text-sm text-gray-500">{camp.location} • {camp.date}</p>
+                  </div>
+                  <div className="flex items-center gap-4">
+                    <span className="text-xl font-bold text-[#ff1e00]">{camp.price}</span>
+                    <button className="px-4 py-2 bg-[#ff1e00] text-white rounded-lg text-sm font-medium hover:bg-[#ff1e00]/90 transition-colors">
+                      Register
+                    </button>
+                  </div>
+                </div>
+              ))}
             </div>
-          </div>
-        </div>
-
-        {/* Health Summary */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <div className="bg-white rounded-2xl shadow-md border border-gray-100 p-6">
-            <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center">
-              <HeartPulse className="text-red-500 mr-3" size={20} />
-              Health Summary
-            </h3>
-            <div className="space-y-3 text-gray-600">
-              <p>Last checkup: Not available</p>
-              <p>Blood type: Not specified</p>
-              <p>Allergies: None recorded</p>
-            </div>
+            <button
+              onClick={() => navigate("/available-camps")}
+              className="mt-6 text-[#ff1e00] font-medium flex items-center gap-1 hover:gap-2 transition-all"
+            >
+              Browse all accessories →
+            </button>
           </div>
 
-          <div className="bg-white rounded-2xl shadow-md border border-gray-100 p-6">
-            <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center">
-              <ClipboardList className="text-green-500 mr-3" size={20} />
-              Recent Activities
-            </h3>
-            <div className="space-y-3 text-gray-600">
-              <p>No recent activities</p>
-            </div>
-          </div>
-
-          <div className="bg-white rounded-2xl shadow-md border border-gray-100 p-6">
-            <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center">
-              <Stethoscope className="text-blue-500 mr-3" size={20} />
-              Quick Links
-            </h3>
-            <div className="space-y-2">
+          <div className="bg-white rounded-xl p-8 shadow-sm border border-gray-100">
+            <h2 className="text-2xl font-bold text-gray-900 mb-6">Quick Links</h2>
+            <div className="space-y-3">
               <button
                 onClick={() => navigate("/dashboard/medical-history")}
-                className="w-full text-left px-3 py-2 rounded-lg hover:bg-gray-50 transition-colors"
+                className="w-full text-left px-4 py-3 rounded-xl hover:bg-[#e8f9fd] transition-colors flex items-center justify-between group"
               >
-                View Full Medical History
+                <span className="text-gray-700 group-hover:text-[#ff1e00]">Medical History</span>
+                <ArrowRight size={16} className="text-gray-400 group-hover:text-[#ff1e00]" />
+              </button>
+              <button
+                onClick={() => navigate("/dashboard/registered-camps")}
+                className="w-full text-left px-4 py-3 rounded-xl hover:bg-[#e8f9fd] transition-colors flex items-center justify-between group"
+              >
+                <span className="text-gray-700 group-hover:text-[#59ce8f]">My Registrations</span>
+                <ArrowRight size={16} className="text-gray-400 group-hover:text-[#59ce8f]" />
               </button>
               <button
                 onClick={() => navigate("/dashboard/feedback")}
-                className="w-full text-left px-3 py-2 rounded-lg hover:bg-gray-50 transition-colors"
+                className="w-full text-left px-4 py-3 rounded-xl hover:bg-[#e8f9fd] transition-colors flex items-center justify-between group"
               >
-                Provide Feedback
+                <span className="text-gray-700 group-hover:text-[#ff1e00]">Write a Review</span>
+                <ArrowRight size={16} className="text-gray-400 group-hover:text-[#ff1e00]" />
               </button>
               <button
                 onClick={() => navigate("/profile")}
-                className="w-full text-left px-3 py-2 rounded-lg hover:bg-gray-50 transition-colors"
+                className="w-full text-left px-4 py-3 rounded-xl hover:bg-[#e8f9fd] transition-colors flex items-center justify-between group"
               >
-                Update Profile Information
+                <span className="text-gray-700 group-hover:text-[#ff1e00]">Update Profile</span>
+                <ArrowRight size={16} className="text-gray-400 group-hover:text-[#ff1e00]" />
               </button>
+            </div>
+
+            <div className="mt-8 pt-6 border-t border-gray-100">
+              <div className="bg-[#e8f9fd] rounded-xl p-4">
+                <p className="text-sm text-gray-600 mb-2">Need assistance?</p>
+                <p className="text-[#ff1e00] font-semibold">Contact Support</p>
+              </div>
             </div>
           </div>
         </div>

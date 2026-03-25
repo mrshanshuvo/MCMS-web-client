@@ -184,7 +184,7 @@ const Register = () => {
       <div>
         {/* Header */}
         <div className="text-center">
-          <div className="inline-flex items-center justify-center p-2 bg-gradient-to-r from-[#495E57] to-[#2C3E38] rounded-2xl mb-2">
+          <div className="inline-flex items-center justify-center p-2 bg-gradient-to-r from-[#495E57] to-[#2C3E38] rounded-xl mb-2">
             <UserPlus className="w-10 h-10 text-white" />
           </div>
           <h1 className="text-2xl font-bold text-[#2C3E38] mb-1">Create an Account</h1>
@@ -192,7 +192,7 @@ const Register = () => {
         </div>
 
         {/* Main Card */}
-        <div className="bg-white rounded-2xl p-4">
+        <div className="bg-white rounded-xl p-4">
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-2">
             {/* Profile Image Upload */}
             <div>

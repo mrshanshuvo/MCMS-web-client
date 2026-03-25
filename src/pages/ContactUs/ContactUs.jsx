@@ -189,7 +189,7 @@ const ContactUs = () => {
 
   const ContactForm = useMemo(
     () => (
-      <div className="bg-white rounded-2xl shadow-sm overflow-hidden border border-[#495E57]/10">
+      <div className="bg-white rounded-xl shadow-sm overflow-hidden border border-[#495E57]/10">
         <div className="p-8 sm:p-10">
           <h2 className="text-2xl font-semibold text-[#45474B] mb-6">
             Send us a message
@@ -320,7 +320,7 @@ const ContactUs = () => {
         {CONTACT_INFO.map((info, index) => (
           <div
             key={index}
-            className={`bg-white p-6 rounded-2xl shadow-sm border border-[#495E57]/10 hover:shadow-md transition-all duration-200 ${info.fullWidth ? "sm:col-span-2" : ""
+            className={`bg-white p-6 rounded-xl shadow-sm border border-[#495E57]/10 hover:shadow-md transition-all duration-200 ${info.fullWidth ? "sm:col-span-2" : ""
               }`}
           >
             <div className="flex items-start gap-4">
@@ -355,7 +355,7 @@ const ContactUs = () => {
 
   const SocialLinks = useMemo(
     () => (
-      <div className="bg-white p-6 rounded-2xl shadow-sm border border-[#495E57]/10">
+      <div className="bg-white p-6 rounded-xl shadow-sm border border-[#495E57]/10">
         <h3 className="font-semibold text-[#45474B] mb-4">Connect with us</h3>
         <div className="flex gap-3" role="list" aria-label="Social media links">
           {SOCIAL_LINKS.map((social, index) => (
@@ -378,7 +378,7 @@ const ContactUs = () => {
 
   const MapSection = useMemo(
     () => (
-      <div className="bg-white rounded-2xl shadow-sm border border-[#495E57]/10 overflow-hidden h-64 sm:h-80">
+      <div className="bg-white rounded-xl shadow-sm border border-[#495E57]/10 overflow-hidden h-64 sm:h-80">
         <iframe
           title="CareCamp Location - Dhaka, Bangladesh"
           src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3648.787582899769!2d90.40729131488687!3d23.872331284528456!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3755c4b4c4f34b8d%3A0xe1e88f437e6f4033!2sDhaka!5e0!3m2!1sen!2sbd!4v1650000000000"

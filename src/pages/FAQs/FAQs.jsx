@@ -206,8 +206,8 @@ const FAQs = () => {
                 key={category}
                 onClick={() => handleCategoryChange(category)}
                 className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 focus:outline-none ${isActive
-                    ? "bg-gradient-to-r from-[#495E57] to-[#495E57]/90 text-white shadow-sm"
-                    : "bg-white text-[#45474B] hover:bg-[#495E57]/5 border border-[#495E57]/20"
+                  ? "bg-gradient-to-r from-[#495E57] to-[#495E57]/90 text-white shadow-sm"
+                  : "bg-white text-[#45474B] hover:bg-[#495E57]/5 border border-[#495E57]/20"
                   }`}
                 role="tab"
                 aria-selected={isActive}
@@ -222,7 +222,7 @@ const FAQs = () => {
         {/* FAQ List */}
         <div
           id="faq-content"
-          className="bg-white rounded-2xl shadow-sm overflow-hidden border border-[#495E57]/10 divide-y divide-[#495E57]/10"
+          className="bg-white rounded-xl shadow-sm overflow-hidden border border-[#495E57]/10 divide-y divide-[#495E57]/10"
           role="tabpanel"
         >
           {paginatedFAQs.length > 0 ? (
@@ -320,8 +320,8 @@ const FAQs = () => {
                   key={index}
                   onClick={() => goToPage(page)}
                   className={`w-10 h-10 rounded-full flex items-center justify-center transition-all duration-200 focus:outline-none ${currentPage === page
-                      ? "bg-gradient-to-r from-[#495E57] to-[#495E57]/90 text-white shadow-sm"
-                      : "hover:bg-[#495E57]/5 text-[#45474B]"
+                    ? "bg-gradient-to-r from-[#495E57] to-[#495E57]/90 text-white shadow-sm"
+                    : "hover:bg-[#495E57]/5 text-[#45474B]"
                     }`}
                   aria-label={`Go to page ${page}`}
                   aria-current={currentPage === page ? "page" : undefined}
@@ -367,7 +367,7 @@ const FAQs = () => {
 
         {/* Contact CTA */}
         <div className="mt-12 text-center">
-          <div className="bg-gradient-to-r from-[#495E57]/5 to-[#F4CE14]/5 rounded-2xl p-8 border border-[#495E57]/10">
+          <div className="bg-gradient-to-r from-[#495E57]/5 to-[#F4CE14]/5 rounded-xl p-8 border border-[#495E57]/10">
             <h3 className="text-2xl font-semibold text-[#45474B] mb-3">
               Still need help?
             </h3>

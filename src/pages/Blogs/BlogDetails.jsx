@@ -43,7 +43,7 @@ const BlogDetails = () => {
   if (isError || !post) {
     return (
       <div className="min-h-screen bg-[#F5F7F8] flex items-center justify-center p-4">
-        <div className="text-center bg-white p-8 rounded-2xl shadow-sm border border-[#495E57]/10 max-w-md">
+        <div className="text-center bg-white p-8 rounded-xl shadow-sm border border-[#495E57]/10 max-w-md">
           <h2 className="text-2xl font-bold text-red-600 mb-2">Post Not Found</h2>
           <p className="text-[#45474B]/70 mb-6">
             {error?.message || "The blog post you're looking for doesn't exist."}
@@ -99,7 +99,7 @@ const BlogDetails = () => {
       {/* Content Section */}
       <div className="container mx-auto px-4 -mt-12 relative z-10">
         <div className="max-w-4xl mx-auto">
-          <div className="bg-white rounded-2xl shadow-xl overflow-hidden border border-[#495E57]/5">
+          <div className="bg-white rounded-xl shadow-xl overflow-hidden border border-[#495E57]/5">
             {/* Meta Info Bar */}
             <div className="flex flex-wrap items-center justify-between gap-4 p-6 border-b border-[#495E57]/10 bg-white/50 backdrop-blur-sm">
               <div className="flex items-center gap-4">

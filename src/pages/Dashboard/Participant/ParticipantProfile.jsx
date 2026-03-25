@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import useAuth from "../../../hooks/useAuth";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
-import { User, Calendar, Loader2, Edit, X, Check, Activity } from "lucide-react";
+import { User, Calendar, Loader2, Edit, X, Check, Activity, Phone, MapPin, Mail } from "lucide-react";
 import { useNavigate } from "react-router";
 import Swal from "sweetalert2";
 
@@ -20,7 +20,7 @@ const ParticipantProfile = () => {
     phone: "",
     address: "",
   });
-  const [originalData, setOriginalData] = useState({}); // Store original data
+  const [originalData, setOriginalData] = useState({});
   const [formErrors, setFormErrors] = useState({});
 
   // Validation function
@@ -37,24 +37,19 @@ const ParticipantProfile = () => {
   const getCleanUpdates = (currentData, originalData) => {
     const updates = {};
 
-    // Only include fields that have changed AND are not empty
     Object.keys(currentData).forEach((key) => {
       const currentValue = currentData[key]?.trim() || "";
       const originalValue = originalData[key]?.trim() || "";
 
-      // Include field if:
-      // 1. It has changed AND
-      // 2. It's not empty (or if it's address which can be explicitly cleared)
       if (currentValue !== originalValue && currentValue !== "") {
         updates[key] = currentValue;
       }
-      // Special case: if address is explicitly cleared (user removes existing address)
       else if (
         key === "address" &&
         currentValue === "" &&
         originalValue !== ""
       ) {
-        updates[key] = ""; // Allow clearing address
+        updates[key] = "";
       }
     });
 
@@ -82,7 +77,7 @@ const ParticipantProfile = () => {
         address: data.address || "",
       };
       setFormData(initialData);
-      setOriginalData(initialData); // Store original data for comparison
+      setOriginalData(initialData);
       setFormErrors({});
     },
   });
@@ -90,10 +85,8 @@ const ParticipantProfile = () => {
   // Mutation to update user
   const updateUserMutation = useMutation({
     mutationFn: async ({ email, updates }) => {
-      // Filter out empty fields before sending
       const cleanUpdates = getCleanUpdates(updates, originalData);
 
-      // Don't send request if nothing changed
       if (Object.keys(cleanUpdates).length === 0) {
         throw new Error("No changes detected");
       }
@@ -105,7 +98,6 @@ const ParticipantProfile = () => {
       queryClient.setQueryData(["user", email], updatedUser);
       setIsEditing(false);
 
-      // Update original data with new values
       const newOriginalData = {
         name: updatedUser.name || "",
         photoURL: updatedUser.photoURL || "",
@@ -119,7 +111,7 @@ const ParticipantProfile = () => {
         icon: "success",
         title: "Updated!",
         text: "Profile updated successfully.",
-        confirmButtonColor: "#16a34a",
+        confirmButtonColor: "#ff1e00",
       });
     },
     onError: async (err) => {
@@ -128,7 +120,7 @@ const ParticipantProfile = () => {
           icon: "info",
           title: "No changes",
           text: "No changes were made to the profile.",
-          confirmButtonColor: "#3b82f6",
+          confirmButtonColor: "#ff1e00",
         });
         setIsEditing(false);
       } else {
@@ -139,7 +131,7 @@ const ParticipantProfile = () => {
             err.response?.data?.message ||
             err.message ||
             "Something went wrong.",
-          confirmButtonColor: "#d33",
+          confirmButtonColor: "#ff1e00",
         });
       }
     },
@@ -161,14 +153,13 @@ const ParticipantProfile = () => {
       return;
     }
 
-    // Check if there are any changes
     const updates = getCleanUpdates(formData, originalData);
     if (Object.keys(updates).length === 0) {
       await Swal.fire({
         icon: "info",
         title: "No changes",
         text: "No changes were made to the profile.",
-        confirmButtonColor: "#3b82f6",
+        confirmButtonColor: "#ff1e00",
       });
       setIsEditing(false);
       return;
@@ -181,8 +172,8 @@ const ParticipantProfile = () => {
       showCancelButton: true,
       confirmButtonText: "Yes, update",
       cancelButtonText: "Cancel",
-      confirmButtonColor: "#16a34a",
-      cancelButtonColor: "#d33",
+      confirmButtonColor: "#59ce8f",
+      cancelButtonColor: "#ff1e00",
     });
 
     if (result.isConfirmed) {
@@ -193,20 +184,20 @@ const ParticipantProfile = () => {
   // Cancel editing and reset form
   const handleCancelEdit = () => {
     setIsEditing(false);
-    setFormData(originalData); // Reset to original data
+    setFormData(originalData);
     setFormErrors({});
   };
 
   if (!email)
     return (
-      <div className="flex items-center justify-center min-h-screen bg-gradient-to-b from-[#f0f9ff] to-white">
-        <div className="text-center p-6 bg-white rounded-xl shadow-lg max-w-md mx-4">
-          <h3 className="text-xl font-semibold text-gray-800 mb-2">
+      <div className="flex items-center justify-center min-h-screen bg-[#e8f9fd]">
+        <div className="text-center p-8 bg-white rounded-xl shadow-sm max-w-md mx-4 border border-gray-100">
+          <h3 className="text-xl font-semibold text-gray-900 mb-2">
             Please log in to see your profile
           </h3>
           <button
             onClick={() => navigate("/login")}
-            className="mt-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-2 rounded-lg font-medium hover:shadow-lg transition-all"
+            className="mt-4 bg-[#ff1e00] text-white px-6 py-2 rounded-lg font-medium hover:bg-[#ff1e00]/90 transition-colors"
           >
             Go to Login
           </button>
@@ -216,16 +207,16 @@ const ParticipantProfile = () => {
 
   if (isLoading)
     return (
-      <div className="flex items-center justify-center min-h-screen bg-gradient-to-b from-[#f0f9ff] to-white">
-        <Loader2 className="animate-spin h-12 w-12 text-blue-600" />
+      <div className="flex items-center justify-center min-h-screen bg-[#e8f9fd]">
+        <Loader2 className="animate-spin h-12 w-12 text-[#ff1e00]" />
       </div>
     );
 
   if (isError)
     return (
-      <div className="flex items-center justify-center min-h-screen bg-gradient-to-b from-[#f0f9ff] to-white">
-        <div className="text-center p-6 bg-white rounded-xl shadow-lg max-w-md mx-4">
-          <h3 className="text-xl font-semibold text-red-600 mb-2">
+      <div className="flex items-center justify-center min-h-screen bg-[#e8f9fd]">
+        <div className="text-center p-8 bg-white rounded-xl shadow-sm max-w-md mx-4 border border-gray-100">
+          <h3 className="text-xl font-semibold text-[#ff1e00] mb-2">
             Failed to load profile
           </h3>
           <p className="text-gray-600 mb-4">
@@ -233,7 +224,7 @@ const ParticipantProfile = () => {
           </p>
           <button
             onClick={() => window.location.reload()}
-            className="bg-blue-100 text-blue-600 px-4 py-2 rounded-lg font-medium hover:bg-blue-200 transition-colors"
+            className="bg-[#e8f9fd] text-[#ff1e00] px-4 py-2 rounded-lg font-medium hover:bg-[#e8f9fd]/80 transition-colors"
           >
             Try Again
           </button>
@@ -242,21 +233,13 @@ const ParticipantProfile = () => {
     );
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#f0f9ff] to-white py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-[#e8f9fd] py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-3xl mx-auto">
         {/* Header */}
-        <div className="text-center mb-8">
-          <div className="inline-flex items-center px-4 py-2 bg-blue-100 rounded-full text-blue-800 font-medium mb-3">
-            <Activity size={16} className="mr-2 text-blue-600 animate-pulse" />
-            Participant Dashboard
-          </div>
-          <h2 className="text-3xl font-bold text-gray-900 mb-2">
-            My
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">
-              {" "}
-              Medical Profile
-            </span>
-          </h2>
+        <div className="mb-8">
+          <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-2">
+            My <span className="text-[#ff1e00]">Medical Profile</span>
+          </h1>
           <p className="text-lg text-gray-600">
             View and manage your participant information
           </p>
@@ -265,12 +248,12 @@ const ParticipantProfile = () => {
         {/* Profile Card */}
         <form
           onSubmit={handleSubmit}
-          className="bg-white rounded-xl shadow-xl overflow-hidden border border-gray-100"
+          className="bg-white rounded-xl overflow-hidden border border-gray-100 shadow-sm"
           noValidate
         >
           {/* Profile Header */}
-          <div className="bg-gradient-to-r from-[#1e3a8a] to-[#0f766e] p-6 text-white text-center">
-            <div className="relative mx-auto w-32 h-32 rounded-full border-4 border-white/20 mb-4 overflow-hidden">
+          <div className="bg-[#ff1e00] p-8 text-white text-center">
+            <div className="relative mx-auto w-28 h-28 rounded-full border-4 border-white/30 mb-4 overflow-hidden bg-white">
               <img
                 src={user?.photoURL || "https://i.ibb.co/5h7FQs6N/unnamed.jpg"}
                 alt={user?.name || "user"}
@@ -280,187 +263,186 @@ const ParticipantProfile = () => {
                 }}
               />
             </div>
-            <>
-              <h3 className="text-2xl font-bold">
-                {user.name || "Participant"}
-              </h3>
-              <p className="text-blue-200">{user.email}</p>
-            </>
+            <h3 className="text-2xl font-bold text-white mb-1">
+              {user.name || "Participant"}
+            </h3>
+            <p className="text-white/80">{user.email}</p>
           </div>
 
           {/* Profile Details */}
           <div className="p-6 sm:p-8 space-y-6">
             {/* Personal Info */}
-            <section className="bg-blue-50/50 p-5 rounded-xl border border-blue-100">
-              <h4 className="text-lg font-semibold text-gray-800 mb-4 flex items-center">
-                <User className="text-blue-600 mr-2" size={20} />
+            <div className="bg-[#e8f9fd] p-6 rounded-xl border border-gray-100">
+              <h4 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+                <User size={20} className="text-[#ff1e00]" />
                 Personal Information
               </h4>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                 {/* Name */}
                 <div>
-                  <label
-                    htmlFor="name"
-                    className="text-sm text-gray-500 block mb-1"
-                  >
-                    Full Name <span className="text-red-500">*</span>
+                  <label className="text-sm text-gray-500 block mb-1">
+                    Full Name <span className="text-[#ff1e00]">*</span>
                   </label>
                   {isEditing ? (
                     <>
                       <input
-                        id="name"
                         type="text"
                         name="name"
                         value={formData.name}
                         onChange={handleInputChange}
-                        className={`w-full px-3 py-1 border rounded-md focus:outline-none focus:ring-2 ${formErrors.name
-                            ? "border-red-500 ring-red-500"
-                            : "border-gray-300 ring-blue-500"
+                        className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#ff1e00] transition-all ${formErrors.name
+                          ? "border-[#ff1e00]"
+                          : "border-gray-200"
                           }`}
                       />
                       {formErrors.name && (
-                        <p className="text-red-600 text-sm mt-1">
+                        <p className="text-[#ff1e00] text-sm mt-1">
                           {formErrors.name}
                         </p>
                       )}
                     </>
                   ) : (
-                    <p className="font-medium">{user.name || "N/A"}</p>
+                    <p className="font-medium text-gray-900">{user.name || "N/A"}</p>
                   )}
                 </div>
 
-                {/* Email (readonly) */}
+                {/* Email */}
                 <div>
-                  <p className="text-sm text-gray-500">Email</p>
-                  <p className="font-medium">{user.email}</p>
+                  <label className="text-sm text-gray-500 block mb-1">
+                    Email
+                  </label>
+                  <div className="flex items-center gap-2">
+                    <Mail size={14} className="text-gray-400" />
+                    <p className="font-medium text-gray-900">{user.email}</p>
+                  </div>
                 </div>
 
-                {/* Account Type (readonly) */}
+                {/* Account Type */}
                 <div>
-                  <p className="text-sm text-gray-500">Account Type</p>
-                  <p className="font-medium capitalize">
+                  <label className="text-sm text-gray-500 block mb-1">
+                    Account Type
+                  </label>
+                  <p className="font-medium text-gray-900 capitalize">
                     {user.role || "participant"}
                   </p>
                 </div>
 
                 {/* Phone */}
                 <div>
-                  <label
-                    htmlFor="phone"
-                    className="text-sm text-gray-500 block mb-1"
-                  >
-                    Phone <span className="text-red-500">*</span>
+                  <label className="text-sm text-gray-500 block mb-1">
+                    Phone <span className="text-[#ff1e00]">*</span>
                   </label>
                   {isEditing ? (
                     <>
                       <input
-                        id="phone"
                         type="tel"
                         name="phone"
                         value={formData.phone}
                         onChange={handleInputChange}
-                        className={`w-full px-3 py-1 border rounded-md focus:outline-none focus:ring-2 ${formErrors.phone
-                            ? "border-red-500 ring-red-500"
-                            : "border-gray-300 ring-blue-500"
+                        className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#ff1e00] transition-all ${formErrors.phone
+                          ? "border-[#ff1e00]"
+                          : "border-gray-200"
                           }`}
                         placeholder="+1234567890"
                       />
                       {formErrors.phone && (
-                        <p className="text-red-600 text-sm mt-1">
+                        <p className="text-[#ff1e00] text-sm mt-1">
                           {formErrors.phone}
                         </p>
                       )}
                     </>
                   ) : (
-                    <p className="font-medium">{user.phone || "N/A"}</p>
+                    <div className="flex items-center gap-2">
+                      <Phone size={14} className="text-gray-400" />
+                      <p className="font-medium text-gray-900">{user.phone || "N/A"}</p>
+                    </div>
                   )}
                 </div>
 
                 {/* Address */}
-                <div>
-                  <label
-                    htmlFor="address"
-                    className="text-sm text-gray-500 block mb-1"
-                  >
+                <div className="sm:col-span-2">
+                  <label className="text-sm text-gray-500 block mb-1">
                     Address
                   </label>
                   {isEditing ? (
                     <textarea
-                      id="address"
                       name="address"
                       value={formData.address}
                       onChange={handleInputChange}
-                      rows={3}
-                      className="w-full px-3 py-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+                      rows={2}
+                      className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#ff1e00] transition-all resize-none"
                       placeholder="Your address"
                     />
                   ) : (
-                    <p className="font-medium">{user.address || "N/A"}</p>
+                    <div className="flex items-start gap-2">
+                      <MapPin size={14} className="text-gray-400 mt-0.5" />
+                      <p className="font-medium text-gray-900">{user.address || "N/A"}</p>
+                    </div>
                   )}
                 </div>
 
                 {/* Profile Image URL */}
                 {isEditing && (
-                  <div>
-                    <label
-                      htmlFor="photoURL"
-                      className="text-sm text-gray-500 block mb-1"
-                    >
+                  <div className="sm:col-span-2">
+                    <label className="text-sm text-gray-500 block mb-1">
                       Profile Image URL
                     </label>
                     <input
-                      id="photoURL"
                       type="url"
                       name="photoURL"
                       value={formData.photoURL}
                       onChange={handleInputChange}
-                      className="w-full px-3 py-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#ff1e00] transition-all"
                       placeholder="https://example.com/photo.jpg"
                     />
                   </div>
                 )}
               </div>
-            </section>
+            </div>
 
             {/* Account Info */}
-            <section className="bg-blue-50/50 p-5 rounded-xl border border-blue-100">
-              <h4 className="text-lg font-semibold text-gray-800 mb-4 flex items-center">
-                <Calendar className="text-blue-600 mr-2" size={20} />
+            <div className="bg-[#e8f9fd] p-6 rounded-xl border border-gray-100">
+              <h4 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+                <Calendar size={20} className="text-[#ff1e00]" />
                 Account Information
               </h4>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                 <div>
-                  <p className="text-sm text-gray-500">Member Since</p>
-                  <p className="font-medium">
+                  <label className="text-sm text-gray-500 block mb-1">
+                    Member Since
+                  </label>
+                  <p className="font-medium text-gray-900">
                     {user.created_at
                       ? new Date(user.created_at).toLocaleDateString()
                       : "N/A"}
                   </p>
                 </div>
                 <div>
-                  <p className="text-sm text-gray-500">Last Login</p>
-                  <p className="font-medium">
+                  <label className="text-sm text-gray-500 block mb-1">
+                    Last Login
+                  </label>
+                  <p className="font-medium text-gray-900">
                     {user.last_login
                       ? new Date(user.last_login).toLocaleString()
                       : "N/A"}
                   </p>
                 </div>
               </div>
-            </section>
+            </div>
 
             {/* Actions */}
-            <div className="flex flex-col sm:flex-row gap-3 pt-4">
+            <div className="flex flex-col sm:flex-row gap-3 pt-2">
               {isEditing ? (
                 <>
                   <button
                     type="submit"
                     disabled={updateUserMutation.isLoading}
-                    className="flex-1 bg-gradient-to-r from-green-600 to-blue-600 text-white py-3 px-6 rounded-xl font-medium hover:shadow-lg transition-all flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed"
+                    className="flex-1 bg-[#ff1e00] text-white py-3 px-6 rounded-xl font-medium hover:bg-[#ff1e00]/90 transition-all flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed"
                   >
                     {updateUserMutation.isLoading ? (
                       <Loader2 className="animate-spin h-5 w-5" />
                     ) : (
-                      <Check size={20} />
+                      <Check size={18} />
                     )}
                     Save Changes
                   </button>
@@ -468,9 +450,9 @@ const ParticipantProfile = () => {
                     type="button"
                     onClick={handleCancelEdit}
                     disabled={updateUserMutation.isLoading}
-                    className="flex-1 bg-white border border-gray-300 text-gray-700 py-3 px-6 rounded-xl font-medium hover:bg-gray-50 transition-colors flex items-center justify-center gap-2"
+                    className="flex-1 bg-white border border-gray-200 text-gray-700 py-3 px-6 rounded-xl font-medium hover:bg-gray-50 transition-colors flex items-center justify-center gap-2"
                   >
-                    <X size={20} />
+                    <X size={18} />
                     Cancel
                   </button>
                 </>
@@ -479,15 +461,15 @@ const ParticipantProfile = () => {
                   <button
                     type="button"
                     onClick={() => setIsEditing(true)}
-                    className="flex-1 bg-gradient-to-r from-blue-600 to-purple-600 text-white py-3 px-6 rounded-xl font-medium hover:shadow-lg transition-all flex items-center justify-center gap-2"
+                    className="flex-1 bg-[#ff1e00] text-white py-3 px-6 rounded-xl font-medium hover:bg-[#ff1e00]/90 transition-all flex items-center justify-center gap-2"
                   >
-                    <Edit size={20} />
+                    <Edit size={18} />
                     Edit Profile
                   </button>
                   <button
                     type="button"
-                    onClick={() => navigate("/medical-history")}
-                    className="flex-1 bg-white border border-gray-300 text-gray-700 py-3 px-6 rounded-xl font-medium hover:bg-gray-50 transition-colors"
+                    onClick={() => navigate("/dashboard/medical-history")}
+                    className="flex-1 bg-white border border-gray-200 text-gray-700 py-3 px-6 rounded-xl font-medium hover:bg-gray-50 transition-colors"
                   >
                     View Medical History
                   </button>

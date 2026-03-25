@@ -304,7 +304,7 @@ const TermsOfService = () => {
     () => (
       <nav
         aria-label="Table of contents"
-        className="lg:sticky lg:top-24 lg:w-1/4 bg-white rounded-2xl shadow-sm border border-[#495E57]/10 p-6 h-fit"
+        className="lg:sticky lg:top-24 lg:w-1/4 bg-white rounded-xl shadow-sm border border-[#495E57]/10 p-6 h-fit"
       >
         <h2 className="text-xl font-semibold text-[#45474B] mb-4 flex items-center gap-2">
           Contents
@@ -334,7 +334,7 @@ const TermsOfService = () => {
   const TermsContent = useMemo(
     () => (
       <article
-        className="lg:w-3/4 bg-white rounded-2xl shadow-sm border border-[#495E57]/10 overflow-hidden"
+        className="lg:w-3/4 bg-white rounded-xl shadow-sm border border-[#495E57]/10 overflow-hidden"
         itemScope
         itemType="https://schema.org/TermsOfService"
       >

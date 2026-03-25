@@ -19,7 +19,7 @@ const ratingOptions = [
   { value: "4", label: "4 Stars", icon: <Star className="h-4 w-4 fill-[#F4CE14] text-[#F4CE14]" /> },
   { value: "3", label: "3 Stars", icon: <Star className="h-4 w-4 fill-[#F4CE14] text-[#F4CE14]" /> },
   { value: "2", label: "2 Stars", icon: <Star className="h-4 w-4 fill-[#F4CE14] text-[#F4CE14]" /> },
-  { value: "1", label: "1 Star",  icon: <Star className="h-4 w-4 fill-[#F4CE14] text-[#F4CE14]" /> },
+  { value: "1", label: "1 Star", icon: <Star className="h-4 w-4 fill-[#F4CE14] text-[#F4CE14]" /> },
 ];
 
 const FeedbackPage = () => {
@@ -217,9 +217,8 @@ const FeedbackPage = () => {
                 </span>
                 <ChevronDown
                   size={16}
-                  className={`text-[#495E57] transition-transform duration-200 ${
-                    ratingMenu.isOpen ? "rotate-180" : ""
-                  }`}
+                  className={`text-[#495E57] transition-transform duration-200 ${ratingMenu.isOpen ? "rotate-180" : ""
+                    }`}
                 />
               </button>
 
@@ -229,11 +228,10 @@ const FeedbackPage = () => {
                     <button
                       key={opt.value}
                       onClick={() => ratingMenu.handleSelect(opt.value)}
-                      className={`flex items-center gap-2 w-full px-4 py-2.5 text-sm text-left transition-colors ${
-                        ratingMenu.value === opt.value
+                      className={`flex items-center gap-2 w-full px-4 py-2.5 text-sm text-left transition-colors ${ratingMenu.value === opt.value
                           ? "bg-[#495E57]/10 text-[#495E57] font-medium"
                           : "text-[#45474B] hover:bg-[#495E57]/5"
-                      }`}
+                        }`}
                     >
                       {opt.icon && opt.icon}
                       {opt.label}
@@ -246,7 +244,7 @@ const FeedbackPage = () => {
         </div>
 
         {/* Statistics Card */}
-        <div className="bg-white rounded-2xl shadow-sm border border-[#495E57]/10 py-4 px-8 mb-8">
+        <div className="bg-white rounded-xl shadow-sm border border-[#495E57]/10 py-4 px-8 mb-8">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {/* Average Rating */}
             <div className="flex flex-col items-center justify-center text-center h-full">

@@ -123,7 +123,7 @@ const PopularCampsSection = () => {
               {popularCamps.slice(0, 4).map((camp, index) => (
                 <div
                   key={camp._id}
-                  className="group relative bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-400 border border-[#495E57]/8 hover:-translate-y-2"
+                  className="group relative bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-400 border border-[#495E57]/8 hover:-translate-y-2"
                   style={{ animationDelay: `${index * 80}ms` }}
                 >
                   {/* Image Block */}

@@ -70,7 +70,7 @@ const AboutUs = () => {
 
   const MainContent = useMemo(
     () => (
-      <div className="bg-white rounded-2xl shadow-sm overflow-hidden border border-[#495E57]/10">
+      <div className="bg-white rounded-xl shadow-sm overflow-hidden border border-[#495E57]/10">
         <div className="grid md:grid-cols-2">
           {/* Text Content */}
           <div className="p-8 sm:p-10 lg:p-12">

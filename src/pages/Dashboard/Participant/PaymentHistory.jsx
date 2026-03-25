@@ -12,27 +12,24 @@ import {
   ChevronRight,
   ArrowRight,
   Search,
-  Filter,
-  Download,
+  Activity,
 } from "lucide-react";
 import api from "../../../api";
 import useAuth from "../../../hooks/useAuth";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 
 const statusStyles = {
-  completed: "bg-green-100 text-green-800",
-  pending: "bg-yellow-100 text-yellow-800",
-  failed: "bg-red-100 text-red-800",
-  refunded: "bg-blue-100 text-blue-800",
+  completed: "bg-[#59ce8f]/10 text-[#59ce8f]",
+  pending: "bg-[#ff1e00]/10 text-[#ff1e00]",
+  failed: "bg-gray-100 text-gray-600",
+  refunded: "bg-[#e8f9fd] text-[#ff1e00]",
 };
 
 const CampInfo = ({ campId }) => {
   const { data: camp, isLoading } = useQuery({
     queryKey: ["camp", campId],
     queryFn: async () => {
-      const res = await api.get(
-        `/camps/${campId}`
-      );
+      const res = await api.get(`/camps/${campId}`);
       return res.data.camp.camp;
     },
     enabled: !!campId,
@@ -54,7 +51,7 @@ const CampInfo = ({ campId }) => {
 
   return (
     <div className="flex items-center space-x-3">
-      <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-white shadow-sm">
+      <div className="w-12 h-12 rounded-full overflow-hidden border border-gray-100 shadow-sm bg-white">
         <img
           src={camp.imageURL || "/default-camp.png"}
           alt={camp.name}
@@ -96,7 +93,7 @@ const PaymentHistory = () => {
 
   const handleSearch = (e) => {
     e.preventDefault();
-    setPage(1); // Reset to first page on new search
+    setPage(1);
   };
 
   const getStatusBadge = (status) => {
@@ -117,27 +114,27 @@ const PaymentHistory = () => {
   if (isLoading) {
     return (
       <div className="flex flex-col items-center justify-center py-12">
-        <Loader2 className="animate-spin h-12 w-12 text-blue-600 mb-4" />
-        <p className="text-gray-600">Loading payment history...</p>
+        <Loader2 className="animate-spin h-12 w-12 text-[#ff1e00] mb-4" />
+        <p className="text-gray-500">Loading payment history...</p>
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="bg-red-50 border-l-4 border-red-500 p-4 rounded-lg my-6">
+      <div className="bg-[#ff1e00]/5 border-l-4 border-[#ff1e00] p-4 rounded-lg my-6">
         <div className="flex items-center">
-          <AlertCircle className="h-5 w-5 text-red-500 mr-3" />
+          <AlertCircle className="h-5 w-5 text-[#ff1e00] mr-3" />
           <div>
-            <h3 className="text-sm font-medium text-red-800">
+            <h3 className="text-sm font-medium text-gray-900">
               Error loading payment history
             </h3>
-            <p className="text-sm text-red-700 mt-1">
+            <p className="text-sm text-gray-600 mt-1">
               {error.message || "Please try again later"}
             </p>
             <button
               onClick={() => window.location.reload()}
-              className="mt-2 text-sm text-red-600 hover:underline cursor-pointer"
+              className="mt-2 text-sm text-[#ff1e00] hover:underline cursor-pointer"
             >
               Refresh page
             </button>
@@ -149,18 +146,17 @@ const PaymentHistory = () => {
 
   if (payments.length === 0) {
     return (
-      <div className="bg-gradient-to-br from-blue-50 to-purple-50 rounded-2xl p-8 text-center my-8">
-        <CreditCard className="mx-auto h-12 w-12 text-blue-400 mb-4" />
+      <div className="bg-[#e8f9fd] rounded-xl p-8 text-center my-8 border border-gray-100">
+        <CreditCard className="mx-auto h-12 w-12 text-[#ff1e00] mb-4" />
         <h3 className="text-lg font-medium text-gray-900 mb-1">
           No payment history found
         </h3>
         <p className="text-gray-500 mb-4">
-          Your payment records will appear here once you register for a medical
-          camp
+          Your payment records will appear here once you register for a medical camp
         </p>
         <a
           href="/available-camps"
-          className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg font-medium hover:shadow-lg transition-all cursor-pointer"
+          className="inline-flex items-center px-4 py-2 bg-[#ff1e00] text-white rounded-lg font-medium hover:bg-[#ff1e00]/90 transition-all cursor-pointer"
         >
           Browse Available Camps
           <ArrowRight className="ml-2 h-4 w-4" />
@@ -170,180 +166,169 @@ const PaymentHistory = () => {
   }
 
   return (
-    <div className="bg-white rounded-xl m-8 shadow-xl border border-gray-100 overflow-hidden">
-      {/* Header */}
-      <div className="bg-gradient-to-r from-[#1e3a8a] to-[#0f766e] p-6 text-white">
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
-          <h2 className="text-xl font-bold flex items-center mb-4 sm:mb-0">
-            <CreditCard className="mr-3" size={24} />
-            Payment History
-          </h2>
+    <div className="min-h-screen bg-[#e8f9fd] py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto">
+        {/* Header */}
+        <div className="mb-8">
+          <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-2">
+            Your <span className="text-[#ff1e00]">Transactions</span>
+          </h1>
+          <p className="text-lg text-gray-600">
+            View and manage your payment records
+          </p>
+        </div>
 
-          <div className="flex flex-col sm:flex-row gap-3">
-            <form onSubmit={handleSearch} className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
-              <input
-                type="text"
-                placeholder="Search transactions..."
-                className="pl-10 pr-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-              />
-            </form>
+        {/* Main Card */}
+        <div className="bg-white rounded-xl border border-gray-100 overflow-hidden shadow-sm">
+          {/* Header with filters */}
+          <div className="p-6 border-b border-gray-100">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+              <div className="flex items-center gap-2">
+                <CreditCard size={20} className="text-[#ff1e00]" />
+                <h2 className="text-lg font-semibold text-gray-900">Payment Records</h2>
+              </div>
 
-            <select
-              value={statusFilter}
-              onChange={(e) => {
-                setStatusFilter(e.target.value);
-                setPage(1);
-              }}
-              className="px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white text-gray-900"
-            >
-              <option value="all">All Statuses</option>
-              <option value="completed">Completed</option>
-              <option value="pending">Pending</option>
-              <option value="failed">Failed</option>
-              <option value="refunded">Refunded</option>
-            </select>
+              <div className="flex flex-col sm:flex-row gap-3">
+                <form onSubmit={handleSearch} className="relative">
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+                  <input
+                    type="text"
+                    placeholder="Search transactions..."
+                    className="pl-10 pr-4 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#ff1e00] focus:border-transparent text-gray-900 w-full sm:w-64"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                  />
+                </form>
+
+                <select
+                  value={statusFilter}
+                  onChange={(e) => {
+                    setStatusFilter(e.target.value);
+                    setPage(1);
+                  }}
+                  className="px-4 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#ff1e00] focus:border-transparent bg-white text-gray-900"
+                >
+                  <option value="all">All Statuses</option>
+                  <option value="completed">Completed</option>
+                  <option value="pending">Pending</option>
+                  <option value="failed">Failed</option>
+                  <option value="refunded">Refunded</option>
+                </select>
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
 
-      {/* Table */}
-      <div className="overflow-x-auto">
-        <table className="min-w-full divide-y divide-gray-200">
-          <thead className="bg-gray-50">
-            <tr>
-              <th
-                scope="col"
-                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-              >
-                Camp
-              </th>
-              <th
-                scope="col"
-                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-              >
-                Payment Date
-              </th>
-              <th
-                scope="col"
-                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-              >
-                Amount
-              </th>
-              <th
-                scope="col"
-                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-              >
-                Method
-              </th>
-              <th
-                scope="col"
-                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-              >
-                Transaction ID
-              </th>
-              <th
-                scope="col"
-                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-              >
-                Status
-              </th>
-            </tr>
-          </thead>
-          <tbody className="bg-white divide-y divide-gray-200">
-            {payments.map((payment) => (
-              <tr key={payment._id} className="hover:bg-gray-50">
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <CampInfo campId={payment.campId} />
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  {payment.paymentDate ? (
-                    <div className="flex items-center">
-                      <Calendar className="mr-2 h-4 w-4 text-gray-400" />
-                      <div>
-                        <div>
-                          {format(new Date(payment.paymentDate), "MMM d, yyyy")}
+          {/* Table */}
+          <div className="overflow-x-auto">
+            <table className="min-w-full divide-y divide-gray-100">
+              <thead className="bg-[#e8f9fd]">
+                <tr>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Camp
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Payment Date
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Amount
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Method
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Transaction ID
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Status
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="bg-white divide-y divide-gray-100">
+                {payments.map((payment) => (
+                  <tr key={payment._id} className="hover:bg-[#e8f9fd]/50 transition-colors">
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <CampInfo campId={payment.campId} />
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      {payment.paymentDate ? (
+                        <div className="flex items-center">
+                          <Calendar className="mr-2 h-4 w-4 text-gray-400" />
+                          <div>
+                            <div className="text-sm text-gray-900">
+                              {format(new Date(payment.paymentDate), "MMM d, yyyy")}
+                            </div>
+                            <div className="text-xs text-gray-500">
+                              {format(new Date(payment.paymentDate), "h:mm a")}
+                            </div>
+                          </div>
                         </div>
-                        <div className="text-xs text-gray-500">
-                          {format(new Date(payment.paymentDate), "h:mm a")}
-                        </div>
-                      </div>
-                    </div>
-                  ) : (
-                    "N/A"
-                  )}
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap font-medium">
-                  ${(payment.amount || 0).toFixed(2)}
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <span className="capitalize">
-                    {payment.paymentMethod || "stripe"}
-                  </span>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 font-mono">
-                  {payment.transactionId?.slice(0, 6)}...
-                  {payment.transactionId?.slice(-4)}
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  {getStatusBadge(payment.status)}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+                      ) : (
+                        "N/A"
+                      )}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap font-medium text-[#ff1e00]">
+                      ${(payment.amount || 0).toFixed(2)}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600 capitalize">
+                      {payment.paymentMethod || "stripe"}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 font-mono">
+                      {payment.transactionId?.slice(0, 6)}...
+                      {payment.transactionId?.slice(-4)}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      {getStatusBadge(payment.status)}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
 
-      {/* Pagination and Actions */}
-      <div className="bg-gray-50 px-6 py-4 flex flex-col sm:flex-row sm:items-center sm:justify-between border-t border-gray-200">
-        <div className="flex items-center mb-4 sm:mb-0">
-          <button
-            onClick={() => setPage(1)}
-            disabled={page === 1}
-            className="px-3 py-1 rounded-md border border-gray-300 text-gray-700 hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed mr-2 cursor-pointer"
-          >
-            First
-          </button>
-          <button
-            onClick={() => setPage((p) => Math.max(p - 1, 1))}
-            disabled={page === 1}
-            className="px-3 py-1 rounded-md border border-gray-300 text-gray-700 hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed flex items-center cursor-pointer"
-          >
-            <ChevronLeft className="h-4 w-4 mr-1" />
-            Previous
-          </button>
-          <span className="mx-4 text-sm text-gray-700">
-            Page {pagination.page} of {pagination.totalPages}
-          </span>
-          <button
-            onClick={() =>
-              setPage((p) => Math.min(p + 1, pagination.totalPages))
-            }
-            disabled={page === pagination.totalPages}
-            className="px-3 py-1 rounded-md border border-gray-300 text-gray-700 hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed flex items-center cursor-pointer"
-          >
-            Next
-            <ChevronRight className="h-4 w-4 ml-1" />
-          </button>
-          <button
-            onClick={() => setPage(pagination.totalPages)}
-            disabled={page === pagination.totalPages}
-            className="px-3 py-1 rounded-md border border-gray-300 text-gray-700 hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed ml-2 cursor-pointer"
-          >
-            Last
-          </button>
-        </div>
+          {/* Pagination */}
+          <div className="bg-white px-6 py-4 flex flex-col sm:flex-row sm:items-center sm:justify-between border-t border-gray-100 gap-4">
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => setPage(1)}
+                disabled={page === 1}
+                className="px-3 py-1 rounded-md border border-gray-200 text-gray-600 hover:bg-[#e8f9fd] disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer transition-colors"
+              >
+                First
+              </button>
+              <button
+                onClick={() => setPage((p) => Math.max(p - 1, 1))}
+                disabled={page === 1}
+                className="px-3 py-1 rounded-md border border-gray-200 text-gray-600 hover:bg-[#e8f9fd] disabled:opacity-50 disabled:cursor-not-allowed flex items-center cursor-pointer transition-colors"
+              >
+                <ChevronLeft className="h-4 w-4 mr-1" />
+                Previous
+              </button>
+              <span className="mx-2 text-sm text-gray-600">
+                Page {pagination.page} of {pagination.totalPages}
+              </span>
+              <button
+                onClick={() =>
+                  setPage((p) => Math.min(p + 1, pagination.totalPages))
+                }
+                disabled={page === pagination.totalPages}
+                className="px-3 py-1 rounded-md border border-gray-200 text-gray-600 hover:bg-[#e8f9fd] disabled:opacity-50 disabled:cursor-not-allowed flex items-center cursor-pointer transition-colors"
+              >
+                Next
+                <ChevronRight className="h-4 w-4 ml-1" />
+              </button>
+              <button
+                onClick={() => setPage(pagination.totalPages)}
+                disabled={page === pagination.totalPages}
+                className="px-3 py-1 rounded-md border border-gray-200 text-gray-600 hover:bg-[#e8f9fd] disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer transition-colors"
+              >
+                Last
+              </button>
+            </div>
 
-        <div className="flex items-center space-x-3">
-          <span className="text-sm text-gray-500">
-            {pagination.totalItems} transactions total
-          </span>
-          <button className="flex items-center text-sm text-blue-600 hover:text-blue-800 cursor-pointer">
-            <Download className="h-4 w-4 mr-1" />
-            Export
-          </button>
+            <div className="text-sm text-gray-500">
+              {pagination.totalItems} transactions total
+            </div>
+          </div>
         </div>
       </div>
     </div>

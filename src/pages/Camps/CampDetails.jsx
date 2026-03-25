@@ -455,7 +455,7 @@ const CampDetails = () => {
           role="dialog"
         >
           <div
-            className="bg-white rounded-2xl max-w-md w-full p-6 relative border border-[#495E57]/10 shadow-2xl transform transition-all duration-300 scale-100 opacity-100"
+            className="bg-white rounded-xl max-w-md w-full p-6 relative border border-[#495E57]/10 shadow-2xl transform transition-all duration-300 scale-100 opacity-100"
             onClick={(e) => e.stopPropagation()} // prevent closing modal when clicking inside
           >
             {/* Modal header */}

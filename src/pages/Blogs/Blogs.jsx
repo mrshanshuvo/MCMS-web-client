@@ -181,7 +181,7 @@ const Blog = () => {
                   return (
                     <article
                       key={post._id}
-                      className="bg-white rounded-2xl shadow-sm overflow-hidden hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 border border-[#495E57]/10 group"
+                      className="bg-white rounded-xl shadow-sm overflow-hidden hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 border border-[#495E57]/10 group"
                     >
                       <div className="relative">
                         <img
@@ -276,7 +276,7 @@ const Blog = () => {
                 return (
                   <article
                     key={post._id}
-                    className="bg-white rounded-2xl shadow-sm overflow-hidden hover:shadow-md transition-all duration-300 transform hover:-translate-y-1 border border-[#495E57]/10 group"
+                    className="bg-white rounded-xl shadow-sm overflow-hidden hover:shadow-md transition-all duration-300 transform hover:-translate-y-1 border border-[#495E57]/10 group"
                   >
                     <img
                       src={post.image}
@@ -388,7 +388,7 @@ const Blog = () => {
             </div>
           </>
         ) : (
-          <div className="text-center py-12 bg-white rounded-2xl shadow-sm border border-[#495E57]/10">
+          <div className="text-center py-12 bg-white rounded-xl shadow-sm border border-[#495E57]/10">
             <p className="text-[#45474B]/70 text-lg mb-4">
               No posts found in this category.
             </p>
@@ -402,7 +402,7 @@ const Blog = () => {
         )}
 
         {/* Newsletter CTA */}
-        <div className="mt-16 bg-gradient-to-r from-[#495E57]/5 to-[#F4CE14]/5 rounded-2xl p-8 sm:p-10 text-center border border-[#495E57]/10">
+        <div className="mt-16 bg-gradient-to-r from-[#495E57]/5 to-[#F4CE14]/5 rounded-xl p-8 sm:p-10 text-center border border-[#495E57]/10">
           <h3 className="text-2xl font-semibold text-[#45474B] mb-3">
             Stay Updated
           </h3>

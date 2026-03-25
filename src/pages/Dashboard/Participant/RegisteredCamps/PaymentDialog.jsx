@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
-import { Loader2, AlertCircle, CheckCircle } from "lucide-react";
+import { Loader2, AlertCircle, CheckCircle, X } from "lucide-react";
 import useAuth from "../../../../hooks/useAuth";
 import api from "../../../../api";
 
@@ -42,7 +42,6 @@ const PaymentDialog = ({
 
       const { clientSecret } = response.data;
 
-      // ✅ Handle free camp (no payment intent needed)
       if (!clientSecret) {
         await api.post(`/payments`, {
           campId: camp._id,
@@ -101,22 +100,22 @@ const PaymentDialog = ({
     return (
       <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
         <div
-          className="absolute inset-0 backdrop-blur-xs transition-opacity duration-300"
+          className="absolute inset-0 bg-black/40 backdrop-blur-sm transition-opacity duration-300"
           onClick={onClose}
         ></div>
-        <div className="relative bg-white rounded-xl shadow-2xl w-full max-w-md p-6">
+        <div className="relative bg-white rounded-xl shadow-xl w-full max-w-md p-6 border border-gray-100">
           <div className="text-center">
-            <CheckCircle className="mx-auto h-12 w-12 text-green-500 mb-4" />
-            <h3 className="text-xl font-bold mb-2">Payment Successful!</h3>
-            <p className="mb-4">Thank you for your payment.</p>
-            <div className="bg-gray-100 p-4 rounded-lg mb-4">
-              <p className="font-mono text-sm break-all">
+            <CheckCircle className="mx-auto h-12 w-12 text-[#59ce8f] mb-4" />
+            <h3 className="text-xl font-bold text-gray-900 mb-2">Payment Successful!</h3>
+            <p className="text-gray-600 mb-4">Thank you for your payment.</p>
+            <div className="bg-[#e8f9fd] p-4 rounded-xl mb-4">
+              <p className="font-mono text-sm break-all text-gray-600">
                 Transaction ID: {paymentIntent.id}
               </p>
             </div>
             <button
               onClick={onClose}
-              className="px-4 py-2 bg-blue-600 text-white rounded-lg"
+              className="px-4 py-2 bg-[#ff1e00] text-white rounded-lg hover:bg-[#ff1e00]/90 transition-colors"
             >
               Close
             </button>
@@ -129,72 +128,79 @@ const PaymentDialog = ({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
       <div
-        className="absolute inset-0 bg-black/40 backdrop-blur-md transition-opacity duration-300"
+        className="absolute inset-0 bg-black/40 backdrop-blur-sm transition-opacity duration-300"
         onClick={onClose}
       ></div>
-      <div className="relative bg-white rounded-xl shadow-2xl w-full max-w-md p-6">
-        <div className="bg-gradient-to-r from-[#1e3a8a] to-[#0f766e] p-6 text-white rounded-t-3xl -m-6 mb-6">
-          <h3 className="text-xl font-bold">Pay for {camp?.name}</h3>
-        </div>
-
-        <div className="flex items-center justify-between mb-6">
-          <span className="text-gray-600">Amount Due:</span>
-          <span className="text-2xl font-bold">${camp?.fees}</span>
-        </div>
-
-        {error && (
-          <div className="bg-red-50 border-l-4 border-red-500 p-4 rounded-lg mb-6">
-            <div className="flex items-center">
-              <AlertCircle className="h-5 w-5 text-red-500 mr-3" />
-              <p className="text-red-700">{error}</p>
-            </div>
+      <div className="relative bg-white rounded-xl shadow-xl w-full max-w-md border border-gray-100">
+        <div className="bg-[#ff1e00] p-6 text-white rounded-t-2xl">
+          <div className="flex justify-between items-center">
+            <h3 className="text-xl font-bold">Pay for {camp?.name}</h3>
+            <button
+              onClick={onClose}
+              className="text-white/80 hover:text-white transition-colors"
+            >
+              <X size={20} />
+            </button>
           </div>
-        )}
+        </div>
 
-        <form onSubmit={handleSubmit}>
-          <div className="border border-gray-200 rounded-xl p-4 mb-6">
-            <CardElement
-              options={{
-                style: {
-                  base: {
-                    fontSize: "16px",
-                    color: "#424770",
-                    "::placeholder": {
-                      color: "#aab7c4",
+        <div className="p-6">
+          <div className="flex items-center justify-between mb-6 pb-4 border-b border-gray-100">
+            <span className="text-gray-600">Amount Due:</span>
+            <span className="text-2xl font-bold text-[#ff1e00]">${camp?.fees}</span>
+          </div>
+
+          {error && (
+            <div className="bg-[#ff1e00]/5 border-l-4 border-[#ff1e00] p-4 rounded-lg mb-6">
+              <div className="flex items-center">
+                <AlertCircle className="h-5 w-5 text-[#ff1e00] mr-3" />
+                <p className="text-gray-700">{error}</p>
+              </div>
+            </div>
+          )}
+
+          <form onSubmit={handleSubmit}>
+            <div className="border border-gray-200 rounded-xl p-4 mb-6 bg-[#e8f9fd]/30">
+              <CardElement
+                options={{
+                  style: {
+                    base: {
+                      fontSize: "16px",
+                      color: "#1f2937",
+                      "::placeholder": {
+                        color: "#9ca3af",
+                      },
                     },
                   },
-                },
-              }}
-            />
-          </div>
+                }}
+              />
+            </div>
 
-          <div className="flex justify-end space-x-3">
-            <button
-              type="button"
-              onClick={onClose}
-              className="px-4 py-2 border rounded-lg"
-            >
-              Cancel
-            </button>
-            <button
-              type="submit"
-              disabled={!stripe || isProcessing}
-              className={`px-4 py-2 rounded-lg text-white font-medium ${isProcessing
-                ? "bg-blue-400"
-                : "bg-gradient-to-r from-blue-600 to-purple-600"
-                }`}
-            >
-              {isProcessing ? (
-                <span className="flex items-center justify-center">
-                  <Loader2 className="animate-spin mr-2" size={18} />
-                  Processing...
-                </span>
-              ) : (
-                `Pay $${camp?.fees}`
-              )}
-            </button>
-          </div>
-        </form>
+            <div className="flex justify-end gap-3">
+              <button
+                type="button"
+                onClick={onClose}
+                className="px-4 py-2 border border-gray-200 rounded-lg text-gray-600 hover:bg-[#e8f9fd] transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                disabled={!stripe || isProcessing}
+                className="px-4 py-2 rounded-lg text-white font-medium bg-[#ff1e00] hover:bg-[#ff1e00]/90 disabled:opacity-50 transition-colors"
+              >
+                {isProcessing ? (
+                  <span className="flex items-center justify-center">
+                    <Loader2 className="animate-spin mr-2" size={18} />
+                    Processing...
+                  </span>
+                ) : (
+                  `Pay $${camp?.fees}`
+                )}
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   );

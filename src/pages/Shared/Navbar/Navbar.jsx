@@ -149,7 +149,7 @@ const Navbar = () => {
                   <div
                     id="user-menu"
                     role="menu"
-                    className="absolute right-0 mt-3 w-64 bg-white shadow-2xl rounded-2xl overflow-hidden border border-[#495E57]/10 animate-[slideDown_0.2s_ease-out]"
+                    className="absolute right-0 mt-3 w-64 bg-white shadow-2xl rounded-xl overflow-hidden border border-[#495E57]/10 animate-[slideDown_0.2s_ease-out]"
                   >
                     <div className="px-5 py-4 border-b border-[#495E57]/10 bg-gradient-to-br from-[#F5F7F8] to-white">
                       <p className="font-semibold text-[#45474B] truncate">

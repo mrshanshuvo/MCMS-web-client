@@ -18,7 +18,6 @@ const AddCamp = () => {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-    // reset,
   } = useForm();
 
   const [imageUploading, setImageUploading] = useState(false);
@@ -62,33 +61,43 @@ const AddCamp = () => {
       };
 
       const response = await axiosSecure.post("/camps", campData);
-      // console.log("Response from server:", response.data);
+
       if (response.data.campId) {
-        // reset();
         Swal.fire({
           icon: "success",
           title: "Medical Camp Created!",
           html: `
-          <p>Your camp was submitted successfully.</p>
-          <button id="goDashboard" style="
-            margin-top: 12px;
-            background-color: #3085d6;
-            color: white;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 5px;
-            cursor: pointer;
-          ">
-            Go to Manage Camps
-          </button>
-        `,
+            <p class="text-gray-600">Your camp was submitted successfully.</p>
+            <button id="goDashboard" style="
+              margin-top: 16px;
+              background-color: #ff1e00;
+              color: white;
+              border: none;
+              padding: 10px 20px;
+              border-radius: 12px;
+              cursor: pointer;
+              font-weight: 500;
+              transition: all 0.2s;
+            ">
+              Go to Manage Camps
+            </button>
+          `,
           showConfirmButton: false,
-          showCloseButton: true, // shows the "X" button
+          showCloseButton: true,
+          customClass: {
+            popup: "rounded-xl",
+          },
           didOpen: () => {
             const btn = Swal.getPopup().querySelector("#goDashboard");
             btn.addEventListener("click", () => {
               Swal.close();
               navigate("/dashboard/manage-camps");
+            });
+            btn.addEventListener("mouseenter", () => {
+              btn.style.backgroundColor = "#ff1e00dd";
+            });
+            btn.addEventListener("mouseleave", () => {
+              btn.style.backgroundColor = "#ff1e00";
             });
           },
         });
@@ -99,73 +108,56 @@ const AddCamp = () => {
         icon: "error",
         title: "Oops...",
         text: "Something went wrong!",
+        confirmButtonColor: "#ff1e00",
       });
     }
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#f0f9ff] to-white py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-[#e8f9fd] py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-3xl mx-auto">
-        {/* Header with medical badge */}
-        <div className="text-center mb-8">
-          <div className="inline-flex items-center px-4 py-2 bg-blue-100 rounded-full text-blue-800 font-medium mb-4">
-            <Activity size={16} className="mr-2 text-blue-600 animate-pulse" />
-            Create New Medical Camp
-          </div>
-          <h2 className="text-3xl font-bold text-gray-900 mb-2">
-            Organize a
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">
-              {" "}
-              Healthcare Camp
-            </span>
-          </h2>
-          <p className="text-lg text-gray-600">
-            Fill out the form below to add a new medical camp to our system
-          </p>
-        </div>
 
         {/* Form card */}
-        <div className="bg-white rounded-xl shadow-xl overflow-hidden border border-gray-100 p-6 sm:p-8">
+        <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-6 sm:p-8">
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
             {/* Camp Name */}
             <div className="space-y-2">
-              <label className="block text-lg font-semibold text-gray-800">
-                Camp Name*
+              <label className="block text-sm font-semibold text-gray-700">
+                Camp Name <span className="text-[#ff1e00]">*</span>
               </label>
               <input
                 type="text"
                 {...register("name", { required: "Camp Name is required" })}
                 className={`w-full px-4 py-3 rounded-xl border ${errors.name
-                    ? "border-red-400 focus:ring-red-300"
-                    : "border-gray-300 focus:ring-blue-300"
-                  } focus:outline-none focus:ring-2`}
+                  ? "border-[#ff1e00] focus:ring-[#ff1e00]"
+                  : "border-gray-200 focus:ring-[#ff1e00]"
+                  } focus:outline-none focus:ring-2 transition-all`}
                 placeholder="Enter camp name"
               />
               {errors.name && (
-                <p className="text-red-500 text-sm">{errors.name.message}</p>
+                <p className="text-[#ff1e00] text-sm">{errors.name.message}</p>
               )}
             </div>
 
             {/* Camp Image */}
             <div className="space-y-2">
-              <label className="block text-lg font-semibold text-gray-800">
-                Camp Image*
+              <label className="block text-sm font-semibold text-gray-700">
+                Camp Image <span className="text-[#ff1e00]">*</span>
               </label>
               <div className="flex items-center justify-center w-full">
                 <label
                   htmlFor="dropzone-file"
-                  className={`flex flex-col items-center justify-center w-full h-32 border-2 border-dashed rounded-xl cursor-pointer ${errors.image
-                      ? "border-red-400 bg-red-50"
-                      : "border-gray-300 hover:border-blue-500 bg-gray-50 hover:bg-blue-50"
-                    } transition-colors`}
+                  className={`flex flex-col items-center justify-center w-full h-32 border-2 border-dashed rounded-xl cursor-pointer transition-all ${errors.image
+                    ? "border-[#ff1e00] bg-[#ff1e00]/5"
+                    : "border-gray-200 hover:border-[#ff1e00] bg-[#e8f9fd]/30 hover:bg-[#e8f9fd]"
+                    }`}
                 >
                   <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                    <Upload className="mb-3 text-gray-500" size={24} />
-                    <p className="mb-2 text-sm text-gray-500">
-                      <span className="font-semibold">Click to upload</span> or
-                      drag and drop
+                    <Upload className="mb-2 text-gray-400" size={20} />
+                    <p className="mb-1 text-sm text-gray-500">
+                      <span className="font-semibold text-[#ff1e00]">Click to upload</span> or drag and drop
                     </p>
-                    <p className="text-xs text-gray-500">PNG, JPG (MAX. 5MB)</p>
+                    <p className="text-xs text-gray-400">PNG, JPG (MAX. 5MB)</p>
                   </div>
                   <input
                     id="dropzone-file"
@@ -179,22 +171,19 @@ const AddCamp = () => {
                 </label>
               </div>
               {errors.image && (
-                <p className="text-red-500 text-sm">{errors.image.message}</p>
+                <p className="text-[#ff1e00] text-sm">{errors.image.message}</p>
               )}
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Camp Fees */}
               <div className="space-y-2">
-                <label className="block text-lg font-semibold text-gray-800">
-                  Camp Fees (USD)*
+                <label className="block text-sm font-semibold text-gray-700">
+                  Camp Fees (USD) <span className="text-[#ff1e00]">*</span>
                 </label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                    <FaBangladeshiTakaSign
-                      className="text-gray-500"
-                      size={18}
-                    />
+                    <FaBangladeshiTakaSign className="text-gray-400" size={16} />
                   </div>
                   <input
                     type="number"
@@ -204,25 +193,25 @@ const AddCamp = () => {
                       min: { value: 0, message: "Fees must be positive" },
                     })}
                     className={`w-full pl-10 pr-4 py-3 rounded-xl border ${errors.fees
-                        ? "border-red-400 focus:ring-red-300"
-                        : "border-gray-300 focus:ring-blue-300"
-                      } focus:outline-none focus:ring-2`}
+                      ? "border-[#ff1e00] focus:ring-[#ff1e00]"
+                      : "border-gray-200 focus:ring-[#ff1e00]"
+                      } focus:outline-none focus:ring-2 transition-all`}
                     placeholder="0.00"
                   />
                 </div>
                 {errors.fees && (
-                  <p className="text-red-500 text-sm">{errors.fees.message}</p>
+                  <p className="text-[#ff1e00] text-sm">{errors.fees.message}</p>
                 )}
               </div>
 
               {/* Date and Time */}
               <div className="space-y-2">
-                <label className="block text-lg font-semibold text-gray-800">
-                  Date & Time*
+                <label className="block text-sm font-semibold text-gray-700">
+                  Date & Time <span className="text-[#ff1e00]">*</span>
                 </label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                    <Calendar className="text-gray-500" size={18} />
+                    <Calendar className="text-gray-400" size={16} />
                   </div>
                   <input
                     type="datetime-local"
@@ -230,13 +219,13 @@ const AddCamp = () => {
                       required: "Date & Time is required",
                     })}
                     className={`w-full pl-10 pr-4 py-3 rounded-xl border ${errors.dateTime
-                        ? "border-red-400 focus:ring-red-300"
-                        : "border-gray-300 focus:ring-blue-300"
-                      } focus:outline-none focus:ring-2`}
+                      ? "border-[#ff1e00] focus:ring-[#ff1e00]"
+                      : "border-gray-200 focus:ring-[#ff1e00]"
+                      } focus:outline-none focus:ring-2 transition-all`}
                   />
                 </div>
                 {errors.dateTime && (
-                  <p className="text-red-500 text-sm">
+                  <p className="text-[#ff1e00] text-sm">
                     {errors.dateTime.message}
                   </p>
                 )}
@@ -245,12 +234,12 @@ const AddCamp = () => {
 
             {/* Location */}
             <div className="space-y-2">
-              <label className="block text-lg font-semibold text-gray-800">
-                Location*
+              <label className="block text-sm font-semibold text-gray-700">
+                Location <span className="text-[#ff1e00]">*</span>
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                  <MapPin className="text-gray-500" size={18} />
+                  <MapPin className="text-gray-400" size={16} />
                 </div>
                 <input
                   type="text"
@@ -258,14 +247,14 @@ const AddCamp = () => {
                     required: "Location is required",
                   })}
                   className={`w-full pl-10 pr-4 py-3 rounded-xl border ${errors.location
-                      ? "border-red-400 focus:ring-red-300"
-                      : "border-gray-300 focus:ring-blue-300"
-                    } focus:outline-none focus:ring-2`}
+                    ? "border-[#ff1e00] focus:ring-[#ff1e00]"
+                    : "border-gray-200 focus:ring-[#ff1e00]"
+                    } focus:outline-none focus:ring-2 transition-all`}
                   placeholder="Enter camp location"
                 />
               </div>
               {errors.location && (
-                <p className="text-red-500 text-sm">
+                <p className="text-[#ff1e00] text-sm">
                   {errors.location.message}
                 </p>
               )}
@@ -273,12 +262,12 @@ const AddCamp = () => {
 
             {/* Healthcare Professional */}
             <div className="space-y-2">
-              <label className="block text-lg font-semibold text-gray-800">
-                Healthcare Professional*
+              <label className="block text-sm font-semibold text-gray-700">
+                Healthcare Professional <span className="text-[#ff1e00]">*</span>
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                  <User className="text-gray-500" size={18} />
+                  <User className="text-gray-400" size={16} />
                 </div>
                 <input
                   type="text"
@@ -286,14 +275,14 @@ const AddCamp = () => {
                     required: "Healthcare Professional is required",
                   })}
                   className={`w-full pl-10 pr-4 py-3 rounded-xl border ${errors.healthcareProfessional
-                      ? "border-red-400 focus:ring-red-300"
-                      : "border-gray-300 focus:ring-blue-300"
-                    } focus:outline-none focus:ring-2`}
+                    ? "border-[#ff1e00] focus:ring-[#ff1e00]"
+                    : "border-gray-200 focus:ring-[#ff1e00]"
+                    } focus:outline-none focus:ring-2 transition-all`}
                   placeholder="Enter professional's name"
                 />
               </div>
               {errors.healthcareProfessional && (
-                <p className="text-red-500 text-sm">
+                <p className="text-[#ff1e00] text-sm">
                   {errors.healthcareProfessional.message}
                 </p>
               )}
@@ -301,13 +290,13 @@ const AddCamp = () => {
 
             {/* Description */}
             <div className="space-y-2">
-              <label className="block text-lg font-semibold text-gray-800">
+              <label className="block text-sm font-semibold text-gray-700">
                 Description (optional)
               </label>
               <textarea
                 {...register("description")}
                 rows={4}
-                className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-300 resize-none"
+                className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#ff1e00] transition-all resize-none"
                 placeholder="Enter camp description..."
               />
             </div>
@@ -316,14 +305,14 @@ const AddCamp = () => {
             <button
               type="submit"
               disabled={isSubmitting || imageUploading}
-              className={`w-full py-4 px-6 rounded-xl font-bold text-white transition-all duration-300 ${isSubmitting || imageUploading
-                  ? "bg-blue-400"
-                  : "bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 shadow-lg hover:shadow-xl cursor-pointer"
+              className={`w-full py-4 px-6 rounded-xl font-semibold text-white transition-all duration-300 ${isSubmitting || imageUploading
+                ? "bg-[#ff1e00]/50 cursor-not-allowed"
+                : "bg-[#ff1e00] hover:bg-[#ff1e00]/90 shadow-sm hover:shadow-md cursor-pointer"
                 } flex items-center justify-center`}
             >
               {isSubmitting || imageUploading ? (
                 <>
-                  <Loader2 className="animate-spin mr-2" size={20} />
+                  <Loader2 className="animate-spin mr-2" size={18} />
                   Processing...
                 </>
               ) : (

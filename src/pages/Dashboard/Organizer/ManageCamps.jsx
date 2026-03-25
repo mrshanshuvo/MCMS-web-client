@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { Pencil, Trash2, Loader2, Activity } from "lucide-react";
+import { Pencil, Trash2, Loader2, Activity, ChevronLeft, ChevronRight } from "lucide-react";
 import Swal from "sweetalert2";
 import { toast } from "react-toastify";
 import CampFormModal from "./CampFormModal";
@@ -34,11 +34,9 @@ const ManageCamps = () => {
       text: "This camp will be deleted permanently.",
       icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: "#d33",
-      cancelButtonColor: "#3085d6",
+      confirmButtonColor: "#ff1e00",
+      cancelButtonColor: "#6b7280",
       confirmButtonText: "Yes, delete it!",
-      background: "#1e3a8a",
-      color: "#ffffff",
     });
 
     if (confirm.isConfirmed) {
@@ -68,99 +66,80 @@ const ManageCamps = () => {
 
   if (isLoading) {
     return (
-      <div className="flex justify-center items-center h-64">
-        <Loader2 className="animate-spin h-12 w-12 text-blue-600" />
+      <div className="flex flex-col items-center justify-center h-64">
+        <Loader2 className="animate-spin h-8 w-8 text-[#ff1e00]" />
+        <p className="text-gray-500 mt-3">Loading camps...</p>
       </div>
     );
   }
 
   return (
-    <div className="p-6 bg-gradient-to-b from-[#f0f9ff] to-white min-h-screen">
+    <div className="min-h-screen bg-[#e8f9fd] py-8 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
-        {/* Header */}
-        <div className="mb-8">
-          <div className="inline-flex items-center px-4 py-2 bg-blue-100 rounded-full text-blue-800 font-medium mb-3">
-            <Activity size={16} className="mr-2 text-blue-600 animate-pulse" />
-            Organizer Dashboard
-          </div>
-          <h2 className="text-3xl font-bold text-gray-900 mb-2">
-            Manage Your
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">
-              {" "}
-              Medical Camps
-            </span>
-          </h2>
-          <p className="text-lg text-gray-600">
-            View, edit, and manage all your organized medical camps
-          </p>
-        </div>
 
         {/* Camps Table */}
-        <div className="bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden">
+        <div className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full min-w-[600px]">
-              {" "}
-              {/* add min width for horizontal scroll */}
-              <thead className="bg-gradient-to-r from-[#1e3a8a] to-[#0f766e] text-white text-sm sm:text-base">
+              <thead className="bg-[#ff1e00] text-white text-sm sm:text-base">
                 <tr>
                   <th className="px-3 sm:px-6 py-3 text-left">#</th>
                   <th className="px-3 sm:px-6 py-3 text-left">Camp Name</th>
                   <th className="px-3 sm:px-6 py-3 text-left">Date & Time</th>
                   <th className="px-3 sm:px-6 py-3 text-left hidden sm:table-cell">
                     Location
-                  </th>{" "}
-                  {/* hide on xs */}
+                  </th>
                   <th className="px-3 sm:px-6 py-3 text-left hidden md:table-cell">
                     Fees
-                  </th>{" "}
-                  {/* hide on small */}
+                  </th>
                   <th className="px-3 sm:px-6 py-3 text-left hidden lg:table-cell">
                     Participants
-                  </th>{" "}
-                  {/* show only lg+ */}
+                  </th>
                   <th className="px-3 sm:px-6 py-3 text-left">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-200 text-sm sm:text-base">
+              <tbody className="divide-y divide-gray-100 text-sm sm:text-base">
                 {camps.length > 0 ? (
                   camps.map((camp, idx) => (
                     <tr
                       key={camp._id}
-                      className="hover:bg-gray-50 transition-colors"
+                      className="hover:bg-[#e8f9fd]/30 transition-colors"
                     >
-                      <td className="px-3 sm:px-6 py-3">
+                      <td className="px-3 sm:px-6 py-3 text-gray-500">
                         {(page - 1) * limit + idx + 1}
                       </td>
-                      <td className="px-3 sm:px-6 py-3 font-medium">
+                      <td className="px-3 sm:px-6 py-3 font-semibold text-gray-900">
                         {camp.name}
                       </td>
-                      <td className="px-3 sm:px-6 py-3">
+                      <td className="px-3 sm:px-6 py-3 text-gray-600">
                         {new Date(camp.dateTime).toLocaleString()}
                       </td>
-                      <td className="px-3 sm:px-6 py-3 hidden sm:table-cell">
+                      <td className="px-3 sm:px-6 py-3 text-gray-600 hidden sm:table-cell">
                         {camp.location}
                       </td>
-                      <td className="px-3 sm:px-6 py-3 hidden md:table-cell">
-                        ${camp.fees.toFixed(2)}
+                      <td className="px-3 sm:px-6 py-3 font-medium hidden md:table-cell">
+                        <span className="text-[#ff1e00]">${camp.fees.toFixed(2)}</span>
                       </td>
-                      <td className="px-3 sm:px-6 py-3 hidden lg:table-cell">
-                        {camp.participantCount || 0}
+                      <td className="px-3 sm:px-6 py-3 text-gray-600 hidden lg:table-cell">
+                        <span className="inline-flex items-center px-2 py-1 rounded-full bg-[#e8f9fd] text-[#ff1e00] text-xs font-medium">
+                          {camp.participantCount || 0}
+                        </span>
                       </td>
                       <td className="px-3 sm:px-6 py-3">
                         <div className="flex gap-2 sm:gap-3">
                           <button
                             onClick={() => handleEdit(camp)}
-                            className="p-2 rounded-lg bg-blue-50 text-blue-600 hover:bg-blue-100 transition-colors cursor-pointer"
+                            className="p-2 rounded-lg bg-white border border-gray-200 text-gray-600 hover:bg-[#ff1e00] hover:text-white hover:border-[#ff1e00] transition-all cursor-pointer"
                             title="Edit"
                           >
-                            <Pencil size={18} />
+                            <Pencil size={16} />
                           </button>
                           <button
                             onClick={() => handleDelete(camp._id)}
-                            className="p-2 rounded-lg bg-red-50 text-red-600 hover:bg-red-100 transition-colors cursor-pointer"
+                            className="p-2 rounded-lg bg-white border border-gray-200 text-gray-600 hover:bg-[#ff1e00] hover:text-white hover:border-[#ff1e00] transition-all cursor-pointer"
                             title="Delete"
                           >
-                            <Trash2 size={18} />
+                            <Trash2 size={16} />
                           </button>
                         </div>
                       </td>
@@ -170,9 +149,13 @@ const ManageCamps = () => {
                   <tr>
                     <td
                       colSpan="7"
-                      className="px-6 py-8 text-center text-gray-500"
+                      className="px-6 py-12 text-center"
                     >
-                      No camps found. Create your first medical camp!
+                      <div className="flex flex-col items-center">
+                        <Activity size={48} className="text-gray-300 mb-3" />
+                        <h3 className="text-lg font-medium text-gray-900 mb-1">No camps found</h3>
+                        <p className="text-gray-500">Create your first medical camp to get started</p>
+                      </div>
                     </td>
                   </tr>
                 )}
@@ -182,25 +165,29 @@ const ManageCamps = () => {
         </div>
 
         {/* Pagination Controls */}
-        <div className="flex justify-center mt-6 gap-4">
-          <button
-            onClick={handlePrevious}
-            disabled={page === 1}
-            className="px-4 py-2 rounded-md bg-blue-100 text-blue-700 hover:bg-blue-200 disabled:opacity-50 cursor-pointer"
-          >
-            Previous
-          </button>
-          <span className="text-gray-700 font-medium self-center">
-            Page {page} of {totalPages}
-          </span>
-          <button
-            onClick={handleNext}
-            disabled={page === totalPages}
-            className="px-4 py-2 rounded-md bg-blue-100 text-blue-700 hover:bg-blue-200 disabled:opacity-50 cursor-pointer"
-          >
-            Next
-          </button>
-        </div>
+        {camps.length > 0 && (
+          <div className="flex items-center justify-center gap-4 mt-6">
+            <button
+              onClick={handlePrevious}
+              disabled={page === 1}
+              className="inline-flex items-center gap-1 px-4 py-2 rounded-lg border border-gray-200 text-gray-600 hover:bg-[#e8f9fd] hover:text-[#ff1e00] disabled:opacity-50 disabled:cursor-not-allowed transition-all cursor-pointer"
+            >
+              <ChevronLeft size={16} />
+              Previous
+            </button>
+            <span className="text-gray-600 text-sm">
+              Page <span className="font-semibold text-[#ff1e00]">{page}</span> of {totalPages}
+            </span>
+            <button
+              onClick={handleNext}
+              disabled={page === totalPages}
+              className="inline-flex items-center gap-1 px-4 py-2 rounded-lg border border-gray-200 text-gray-600 hover:bg-[#e8f9fd] hover:text-[#ff1e00] disabled:opacity-50 disabled:cursor-not-allowed transition-all cursor-pointer"
+            >
+              Next
+              <ChevronRight size={16} />
+            </button>
+          </div>
+        )}
       </div>
 
       {editingCamp && (

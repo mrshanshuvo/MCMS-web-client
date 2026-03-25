@@ -404,7 +404,7 @@ const Docs = () => {
 
         {/* Documentation Content */}
         <div
-          className="bg-white rounded-2xl shadow-sm overflow-hidden border border-[#495E57]/10"
+          className="bg-white rounded-xl shadow-sm overflow-hidden border border-[#495E57]/10"
           itemScope
           itemType="https://schema.org/TechArticle"
         >

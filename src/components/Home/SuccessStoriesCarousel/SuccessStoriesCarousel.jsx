@@ -181,7 +181,7 @@ const SuccessStoriesCarousel = () => {
                         />
                       </div>
                       <div className="absolute bottom-16 left-8 right-8">
-                        <div className="bg-white/10 backdrop-blur-md rounded-2xl p-4 border border-white/20">
+                        <div className="bg-white/10 backdrop-blur-md rounded-xl p-4 border border-white/20">
                           <h3 className="text-2xl font-bold text-white">
                             {story.name}
                           </h3>
@@ -201,7 +201,7 @@ const SuccessStoriesCarousel = () => {
                         <span className="relative z-10">{story.quote}</span>
                       </blockquote>
 
-                      <div className="mb-8 p-5 bg-gradient-to-br from-[#F4CE14]/10 to-transparent rounded-2xl border-l-4 border-[#F4CE14]">
+                      <div className="mb-8 p-5 bg-gradient-to-br from-[#F4CE14]/10 to-transparent rounded-xl border-l-4 border-[#F4CE14]">
                         <div className="flex items-center gap-2 mb-2">
                           <div className="w-8 h-8 bg-[#F4CE14] rounded-lg flex items-center justify-center">
                             <Star
@@ -223,7 +223,7 @@ const SuccessStoriesCarousel = () => {
                         {(story.stats || []).map((stat, i) => (
                           <div
                             key={`${stat.label}-${i}`}
-                            className="bg-gradient-to-br from-[#F5F7F8] to-white rounded-2xl p-4 text-center border border-[#495E57]/10 hover:border-[#F4CE14]/30 hover:shadow-md transition-all duration-300 group"
+                            className="bg-gradient-to-br from-[#F5F7F8] to-white rounded-xl p-4 text-center border border-[#495E57]/10 hover:border-[#F4CE14]/30 hover:shadow-md transition-all duration-300 group"
                           >
                             <div className="w-10 h-10 bg-[#495E57]/10 rounded-xl flex items-center justify-center mx-auto mb-3 text-[#495E57] group-hover:bg-[#495E57] group-hover:text-[#F4CE14] transition-all duration-300">
                               {iconMap[stat.icon]?.({

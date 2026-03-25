@@ -50,7 +50,7 @@ const FeedbackModal = ({ open, onClose, feedback }) => {
       <div className="absolute inset-0 bg-black/40" />
 
       {/* modal */}
-      <div className="relative w-full max-w-lg bg-white rounded-2xl shadow-xl border border-[#495E57]/10 overflow-hidden">
+      <div className="relative w-full max-w-lg bg-white rounded-xl shadow-xl border border-[#495E57]/10 overflow-hidden">
         <div className="flex items-center justify-between p-4 border-b border-[#495E57]/10">
           <div className="flex items-center gap-2">
             <MessageSquare
@@ -238,7 +238,7 @@ const FeedbackRatings = () => {
           </div>
 
           {/* Rating Summary */}
-          <div className="bg-white rounded-2xl shadow-sm overflow-hidden border border-[#495E57]/10 py-6 px-8 mb-12">
+          <div className="bg-white rounded-xl shadow-sm overflow-hidden border border-[#495E57]/10 py-6 px-8 mb-12">
             <div className="flex flex-col md:flex-row items-center justify-between gap-8">
               {/* Average Rating */}
               <div className="text-center">
