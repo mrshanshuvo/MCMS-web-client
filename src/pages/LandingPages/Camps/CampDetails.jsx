@@ -369,11 +369,11 @@ const CampDetails = () => {
                     <Users className="text-[#495E57]" size={16} />
                   </div>
                   <span className="font-semibold text-[#45474B]">
-                    Available Slots
+                    Total Enrolled
                   </span>
                 </div>
                 <p className="text-[#45474B]">
-                  {camp.participantCount} remaining
+                  {camp.participantCount} participants
                 </p>
               </div>
             </div>

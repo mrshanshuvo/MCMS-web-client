@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, keepPreviousData } from "@tanstack/react-query";
 import api from "../../../api";
 import { Link } from "react-router";
 import {
@@ -38,10 +38,10 @@ const AvailableCamps = () => {
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState("participantCount");
 
-  const { data, isLoading, isError, error, isPreviousData } = useQuery({
+  const { data, isLoading, isError, error, isPlaceholderData } = useQuery({
     queryKey: ["camps", { page, search, sort }],
     queryFn: fetchCamps,
-    keepPreviousData: true,
+    placeholderData: keepPreviousData,
   });
 
   const handleSearchChange = (e) => {
@@ -188,7 +188,7 @@ const AvailableCamps = () => {
               </div>
             </div>
           </div>
-        ) : isLoading || isPreviousData ? (
+        ) : isLoading || isPlaceholderData ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
             {[...Array(6)].map((_, index) => (
               <div

@@ -1,18 +1,52 @@
-import React from "react";
+import { useQuery } from "@tanstack/react-query";
 import {
   CalendarCheck,
-  ClipboardList,
-  HeartPulse,
-  Stethoscope,
   Activity,
   ArrowRight,
   TrendingUp,
   Star,
+  DollarSign,
+  Stethoscope,
 } from "lucide-react";
 import { useNavigate } from "react-router";
+import useAuth from "../../../hooks/useAuth";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
+import api from "../../../api";
+import Loader from "../../../components/Shared/Loader";
 
 const ParticipantDashboard = () => {
   const navigate = useNavigate();
+  const { user } = useAuth();
+  const axiosSecure = useAxiosSecure();
+
+  // Fetch participant analytics (camps attended, fees paid)
+  const { data: analyticsData, isLoading: analyticsLoading } = useQuery({
+    queryKey: ["analytics", user?.uid],
+    enabled: !!user?.uid,
+    queryFn: async () => {
+      const res = await axiosSecure.get(`/analytics/${user.uid}`);
+      return res.data.data || [];
+    },
+  });
+
+  // Fetch popular camps for the featured section
+  const { data: campsData, isLoading: campsLoading } = useQuery({
+    queryKey: ["popularCampsDashboard"],
+    queryFn: async () => {
+      const res = await api.get("/camps?limit=3&sort=participantCount");
+      return res.data.camps || [];
+    },
+  });
+
+  const isLoading = analyticsLoading || campsLoading;
+
+  if (isLoading) return <Loader fullHeight={false} className="h-64" message="Loading your dashboard..." />;
+
+  const analytics = analyticsData || [];
+  const totalCampsAttended = analytics.length;
+  const totalSpent = analytics.reduce((sum, c) => sum + (c.fees || 0), 0);
+  const confirmedCamps = analytics.filter((c) => c.status === "Confirmed").length;
+  const featuredCamps = campsData || [];
 
   const quickActions = [
     {
@@ -20,43 +54,28 @@ const ParticipantDashboard = () => {
       description: "Browse and register for upcoming medical camps",
       icon: <Stethoscope size={24} />,
       action: () => navigate("/available-camps"),
-      price: "Free",
+      badge: "Explore",
     },
     {
       title: "My Registrations",
       description: "View your registered camps and appointments",
       icon: <CalendarCheck size={24} />,
       action: () => navigate("/dashboard/registered-camps"),
-      stats: "3 Active",
+      badge: `${totalCampsAttended} Camps`,
     },
     {
-      title: "Medical History",
-      description: "Access your medical records and history",
-      icon: <HeartPulse size={24} />,
-      action: () => navigate("/dashboard/medical-history"),
-      stats: "Complete",
+      title: "Payment History",
+      description: "View your transaction and payment records",
+      icon: <DollarSign size={24} />,
+      action: () => navigate("/dashboard/payment-history"),
+      badge: `$${totalSpent.toFixed(0)} Spent`,
     },
     {
-      title: "Feedback",
-      description: "Share your experience with our services",
-      icon: <ClipboardList size={24} />,
-      action: () => navigate("/dashboard/feedback"),
-      rating: "4.8 ★",
-    },
-  ];
-
-  const featuredCamps = [
-    {
-      name: "Free Health Camp",
-      location: "Community Center",
-      date: "March 28, 2026",
-      price: "Free",
-    },
-    {
-      name: "Dental Checkup",
-      location: "City Hospital",
-      date: "April 5, 2026",
-      price: "$25.00",
+      title: "Analytics",
+      description: "View your medical camp participation analytics",
+      icon: <Activity size={24} />,
+      action: () => navigate("/dashboard/analytics"),
+      badge: `${confirmedCamps} Confirmed`,
     },
   ];
 
@@ -64,34 +83,34 @@ const ParticipantDashboard = () => {
     <div className="py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
 
-        {/* Stats Section - Clean cards with subtle styling */}
+        {/* Stats Section */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-12">
           <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
             <div className="flex items-center justify-between mb-2">
-              <span className="text-3xl font-bold text-gray-900">20K+</span>
+              <span className="text-3xl font-bold text-gray-900">{totalCampsAttended}</span>
               <TrendingUp size={20} className="text-[#59ce8f]" />
             </div>
-            <p className="text-gray-600">Happy Participants</p>
+            <p className="text-gray-600">Camps Attended</p>
           </div>
 
           <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
             <div className="flex items-center justify-between mb-2">
-              <span className="text-3xl font-bold text-gray-900">6K</span>
+              <span className="text-3xl font-bold text-gray-900">${totalSpent.toFixed(2)}</span>
               <Star size={20} className="text-[#ff1e00]" />
             </div>
-            <p className="text-gray-600">Positive Reviews</p>
+            <p className="text-gray-600">Total Invested</p>
           </div>
 
           <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
             <div className="flex items-center justify-between mb-2">
-              <span className="text-3xl font-bold text-gray-900">50+</span>
+              <span className="text-3xl font-bold text-gray-900">{confirmedCamps}</span>
               <Activity size={20} className="text-[#59ce8f]" />
             </div>
-            <p className="text-gray-600">Active Camps</p>
+            <p className="text-gray-600">Confirmed Camps</p>
           </div>
         </div>
 
-        {/* Quick Actions Section - Inspired by the product cards */}
+        {/* Quick Actions */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
           {quickActions.map((action, index) => (
             <div
@@ -103,19 +122,11 @@ const ParticipantDashboard = () => {
                 <div className="p-3 rounded-xl bg-[#e8f9fd] text-[#ff1e00] group-hover:bg-[#ff1e00] group-hover:text-white transition-all duration-300">
                   {action.icon}
                 </div>
-                {action.price && (
-                  <span className="text-xl font-bold text-[#ff1e00]">{action.price}</span>
-                )}
-                {action.stats && (
-                  <span className="text-sm font-medium text-[#59ce8f]">{action.stats}</span>
-                )}
-                {action.rating && (
-                  <span className="text-sm font-medium text-[#ff1e00]">{action.rating}</span>
-                )}
+                <span className="text-xs font-semibold text-[#ff1e00] bg-[#ff1e00]/10 px-2 py-1 rounded-full whitespace-nowrap">
+                  {action.badge}
+                </span>
               </div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                {action.title}
-              </h3>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">{action.title}</h3>
               <p className="text-gray-500 text-sm mb-4">{action.description}</p>
               <div className="flex items-center text-[#ff1e00] text-sm font-medium group-hover:gap-2 transition-all">
                 Get Started <ArrowRight size={16} className="ml-1" />
@@ -124,26 +135,48 @@ const ParticipantDashboard = () => {
           ))}
         </div>
 
-        {/* Featured Camps Section - Similar to product listing style */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+        {/* Popular Camps + Quick Links */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           <div className="bg-white rounded-xl p-8 shadow-sm border border-gray-100">
-            <h2 className="text-2xl font-bold text-gray-900 mb-6">Featured Camps</h2>
-            <div className="space-y-6">
-              {featuredCamps.map((camp, idx) => (
-                <div key={idx} className="flex items-center justify-between py-4 border-b border-gray-100 last:border-0">
-                  <div>
-                    <h3 className="font-semibold text-gray-900 mb-1">{camp.name}</h3>
-                    <p className="text-sm text-gray-500">{camp.location} • {camp.date}</p>
+            <h2 className="text-2xl font-bold text-gray-900 mb-6">Popular Camps</h2>
+            {featuredCamps.length > 0 ? (
+              <div className="space-y-4">
+                {featuredCamps.map((camp, idx) => (
+                  <div
+                    key={idx}
+                    className="flex items-center justify-between py-4 border-b border-gray-100 last:border-0"
+                  >
+                    <div>
+                      <h3 className="font-semibold text-gray-900 mb-1">{camp.name}</h3>
+                      <p className="text-sm text-gray-500">
+                        {camp.location} •{" "}
+                        {new Date(camp.dateTime).toLocaleDateString("en-US", {
+                          month: "short",
+                          day: "numeric",
+                          year: "numeric",
+                        })}
+                      </p>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <span className="text-lg font-bold text-[#ff1e00]">
+                        ${camp.fees?.toFixed(2)}
+                      </span>
+                      <button
+                        onClick={() => navigate(`/camp-details/${camp._id}`)}
+                        className="px-3 py-1.5 bg-[#ff1e00] text-white rounded-lg text-sm font-medium hover:bg-[#ff1e00]/90 transition-colors"
+                      >
+                        View
+                      </button>
+                    </div>
                   </div>
-                  <div className="flex items-center gap-4">
-                    <span className="text-xl font-bold text-[#ff1e00]">{camp.price}</span>
-                    <button className="px-4 py-2 bg-[#ff1e00] text-white rounded-lg text-sm font-medium hover:bg-[#ff1e00]/90 transition-colors">
-                      Register
-                    </button>
-                  </div>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+            ) : (
+              <div className="text-center py-8 text-gray-400">
+                <Activity size={32} className="mx-auto mb-2 opacity-30" />
+                <p className="text-sm">No camps available right now</p>
+              </div>
+            )}
             <button
               onClick={() => navigate("/available-camps")}
               className="mt-6 text-[#ff1e00] font-medium flex items-center gap-1 hover:gap-2 transition-all cursor-pointer"
@@ -156,13 +189,6 @@ const ParticipantDashboard = () => {
             <h2 className="text-2xl font-bold text-gray-900 mb-6">Quick Links</h2>
             <div className="space-y-3">
               <button
-                onClick={() => navigate("/dashboard/medical-history")}
-                className="w-full text-left px-4 py-3 rounded-xl hover:bg-[#e8f9fd] transition-colors flex items-center justify-between group"
-              >
-                <span className="text-gray-700 group-hover:text-[#ff1e00]">Medical History</span>
-                <ArrowRight size={16} className="text-gray-400 group-hover:text-[#ff1e00]" />
-              </button>
-              <button
                 onClick={() => navigate("/dashboard/registered-camps")}
                 className="w-full text-left px-4 py-3 rounded-xl hover:bg-[#e8f9fd] transition-colors flex items-center justify-between group"
               >
@@ -170,14 +196,21 @@ const ParticipantDashboard = () => {
                 <ArrowRight size={16} className="text-gray-400 group-hover:text-[#59ce8f]" />
               </button>
               <button
-                onClick={() => navigate("/dashboard/feedback")}
+                onClick={() => navigate("/dashboard/payment-history")}
                 className="w-full text-left px-4 py-3 rounded-xl hover:bg-[#e8f9fd] transition-colors flex items-center justify-between group"
               >
-                <span className="text-gray-700 group-hover:text-[#ff1e00]">Write a Review</span>
+                <span className="text-gray-700 group-hover:text-[#ff1e00]">Payment History</span>
                 <ArrowRight size={16} className="text-gray-400 group-hover:text-[#ff1e00]" />
               </button>
               <button
-                onClick={() => navigate("/profile")}
+                onClick={() => navigate("/dashboard/analytics")}
+                className="w-full text-left px-4 py-3 rounded-xl hover:bg-[#e8f9fd] transition-colors flex items-center justify-between group"
+              >
+                <span className="text-gray-700 group-hover:text-[#ff1e00]">Analytics</span>
+                <ArrowRight size={16} className="text-gray-400 group-hover:text-[#ff1e00]" />
+              </button>
+              <button
+                onClick={() => navigate("/dashboard/profile")}
                 className="w-full text-left px-4 py-3 rounded-xl hover:bg-[#e8f9fd] transition-colors flex items-center justify-between group"
               >
                 <span className="text-gray-700 group-hover:text-[#ff1e00]">Update Profile</span>
@@ -188,7 +221,12 @@ const ParticipantDashboard = () => {
             <div className="mt-8 pt-6 border-t border-gray-100">
               <div className="bg-[#e8f9fd] rounded-xl p-4">
                 <p className="text-sm text-gray-600 mb-2">Need assistance?</p>
-                <p className="text-[#ff1e00] font-semibold">Contact Support</p>
+                <button
+                  onClick={() => navigate("/contact-us")}
+                  className="text-[#ff1e00] font-semibold hover:underline cursor-pointer"
+                >
+                  Contact Support →
+                </button>
               </div>
             </div>
           </div>
