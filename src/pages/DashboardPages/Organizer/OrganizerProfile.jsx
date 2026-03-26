@@ -73,7 +73,7 @@ const OrganizerProfile = () => {
           confirmButton: "rounded-xl px-6 py-2",
         },
       });
-      queryClient.invalidateQueries(["organizerProfile", authUser.email]);
+      queryClient.invalidateQueries({ queryKey: ["organizerProfile", authUser.email] });
       setEditing(false);
     },
     onError: (error) => {
@@ -105,7 +105,7 @@ const OrganizerProfile = () => {
           <h3 className="text-xl font-bold text-gray-900 mb-2">Failed to load profile</h3>
           <p className="text-gray-600 mb-6">{error.message || "Unknown error occurred"}</p>
           <button
-            onClick={() => queryClient.invalidateQueries(["organizerProfile"])}
+            onClick={() => queryClient.invalidateQueries({ queryKey: ["organizerProfile"] })}
             className="w-full bg-[#ff1e00] text-white px-6 py-3 rounded-xl font-semibold hover:bg-[#ff1e00]/90 transition-all cursor-pointer shadow-lg shadow-red-200"
           >
             Try Again

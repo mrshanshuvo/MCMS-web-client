@@ -58,12 +58,6 @@ const OrganizerDashboard = () => {
   const feedbackCount = Array.isArray(feedbackData) ? feedbackData.length : 0;
   const avgPerCamp = totalCamps > 0 ? Math.round(totalParticipants / totalCamps) : 0;
 
-  console.log("totalCamps", totalCamps);
-  console.log("recentCamps", recentCamps);
-  console.log("totalParticipants", totalParticipants);
-  console.log("feedbackCount", feedbackCount);
-  console.log("avgPerCamp", avgPerCamp);
-
   const stats = [
     {
       name: "Total Camps",

@@ -406,14 +406,6 @@ const ParticipantProfile = () => {
                   <>
                     <button
                       type="button"
-                      onClick={() => navigate("/dashboard/medical-history")}
-                      className="flex-1 bg-gray-900 text-white py-3 px-6 rounded-xl font-bold hover:bg-black transition-all flex items-center justify-center gap-2 cursor-pointer shadow-lg shadow-gray-200"
-                    >
-                      <History size={18} />
-                      Medical History
-                    </button>
-                    <button
-                      type="button"
                       onClick={() => setIsEditing(true)}
                       className="flex-1 bg-[#ff1e00] text-white py-3 px-6 rounded-xl font-bold hover:bg-[#ff1e00]/90 transition-all flex items-center justify-center gap-2 cursor-pointer shadow-lg shadow-red-100"
                     >

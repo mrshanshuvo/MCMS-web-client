@@ -222,7 +222,7 @@ const ParticipantDashboard = () => {
               <div className="bg-[#e8f9fd] rounded-xl p-4">
                 <p className="text-sm text-gray-600 mb-2">Need assistance?</p>
                 <button
-                  onClick={() => navigate("/contact-us")}
+                  onClick={() => navigate("/contact")}
                   className="text-[#ff1e00] font-semibold hover:underline cursor-pointer"
                 >
                   Contact Support →
