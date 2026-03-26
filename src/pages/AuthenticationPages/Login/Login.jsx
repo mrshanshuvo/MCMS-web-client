@@ -20,12 +20,13 @@ const Login = () => {
   const from = location.state?.from || "/";
   const axiosInstance = useAxios();
 
-  const updateLastLogin = async (email) => {
-    if (!email) return;
+  const updateLastLogin = async (email, idToken) => {
+    if (!email || !idToken) return;
     try {
-      await axiosInstance.patch(`/users/${email}`, {
-        last_login: new Date().toISOString(),
-      });
+      await axiosInstance.patch(`/users/${email}`,
+        { last_login: new Date().toISOString() },
+        { headers: { Authorization: `Bearer ${idToken}` } }
+      );
     } catch (error) {
       console.error("Error updating last_login:", error);
     }
@@ -39,7 +40,8 @@ const Login = () => {
       toast.success(
         `Welcome to CareCamp, ${user.displayName || "participant"}!`,
       );
-      await updateLastLogin(user?.email);
+      const idToken = await user.getIdToken();
+      await updateLastLogin(user?.email, idToken);
 
       navigate(from, { replace: true });
     } catch (error) {
@@ -76,8 +78,8 @@ const Login = () => {
       } catch (err) {
         // ✅ if already exists, just update last_login
         const status = err?.response?.status;
-        if (status === 409 || status === 400) {
-          await updateLastLogin(user?.email);
+        if (status === 409 || status === 400 || status === 401) {
+          await updateLastLogin(user?.email, idToken);
         } else {
           console.error("Error saving user:", err);
           toast.error("Error saving user info: " + (err.message || "Unknown"));

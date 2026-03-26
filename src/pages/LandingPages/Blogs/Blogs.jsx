@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useCallback } from "react";
 import { useQuery } from "@tanstack/react-query";
-import useAxiosSecure from "../../hooks/useAxiosSecure";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import { CalendarDays, Clock, User, ArrowRight, Star, Sparkles } from "lucide-react";
 import { Link, useSearchParams } from "react-router";
 

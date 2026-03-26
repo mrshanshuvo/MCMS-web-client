@@ -8,7 +8,7 @@ import {
   ChevronLeft,
   ChevronRight,
 } from "lucide-react";
-import useAxiosSecure from "../../hooks/useAxiosSecure";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import { useQuery } from "@tanstack/react-query";
 
 const iconMap = {
@@ -94,8 +94,8 @@ const SuccessStories = () => {
                       <Star
                         key={i}
                         className={`${i < story.rating
-                            ? "text-[#F4CE14] fill-[#F4CE14]"
-                            : "text-[#495E57]/30"
+                          ? "text-[#F4CE14] fill-[#F4CE14]"
+                          : "text-[#495E57]/30"
                           } ml-1`}
                         size={16}
                       />
@@ -169,8 +169,8 @@ const SuccessStories = () => {
                     key={pageNum}
                     onClick={() => goToPage(pageNum)}
                     className={`w-10 cursor-pointer h-10 rounded-full flex items-center justify-center ${currentPage === pageNum
-                        ? "bg-[#495E57] text-[#F5F7F8]"
-                        : "hover:bg-[#495E57]/10 text-[#45474B]"
+                      ? "bg-[#495E57] text-[#F5F7F8]"
+                      : "hover:bg-[#495E57]/10 text-[#45474B]"
                       }`}
                   >
                     {pageNum}

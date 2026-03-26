@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { Outlet } from "react-router";
-import Sidebar from "../pages/Dashboard/Sidebar";
-import TopBar from "../pages/Dashboard/TopBar";
 import ScrollToTop from "../components/ScrollToTop";
+import Sidebar from "../pages/DashboardPages/Sidebar";
+import TopBar from "../pages/DashboardPages/TopBar";
 
 const DashboardLayout = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);

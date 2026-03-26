@@ -10,8 +10,8 @@ import {
 import { useQuery } from "@tanstack/react-query";
 import { Link, useSearchParams } from "react-router";
 import { useState, useMemo } from "react";
-import api from "../../api";
-import useActionMenu from "../../hooks/useActionMenu";
+import api from "../../../api";
+import useActionMenu from "../../../hooks/useActionMenu";
 
 const ratingOptions = [
   { value: "all", label: "All Ratings" },
@@ -229,8 +229,8 @@ const FeedbackPage = () => {
                       key={opt.value}
                       onClick={() => ratingMenu.handleSelect(opt.value)}
                       className={`flex items-center gap-2 w-full px-4 py-2.5 text-sm text-left transition-colors ${ratingMenu.value === opt.value
-                          ? "bg-[#495E57]/10 text-[#495E57] font-medium"
-                          : "text-[#45474B] hover:bg-[#495E57]/5"
+                        ? "bg-[#495E57]/10 text-[#495E57] font-medium"
+                        : "text-[#45474B] hover:bg-[#495E57]/5"
                         }`}
                     >
                       {opt.icon && opt.icon}

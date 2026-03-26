@@ -7,7 +7,7 @@ import {
   Star,
 } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
-import useAxiosSecure from "../../hooks/useAxiosSecure";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import { Link, useSearchParams } from "react-router";
 
 // Constants

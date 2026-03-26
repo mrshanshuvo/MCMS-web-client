@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { useParams } from "react-router";
+import { useParams, useLocation, useNavigate } from "react-router";
 import { useQuery } from "@tanstack/react-query";
-import api from "../../api";
+import api from "../../../api";
 import {
   MapPin,
   Calendar,
@@ -16,8 +16,8 @@ import {
   Activity,
   ChevronDown,
 } from "lucide-react";
-import useAuth from "../../hooks/useAuth";
-import useActionMenu from "../../hooks/useActionMenu";
+import useAuth from "../../../hooks/useAuth";
+import useActionMenu from "../../../hooks/useActionMenu";
 import Swal from "sweetalert2";
 import { FaBangladeshiTakaSign } from "react-icons/fa6";
 import { toast } from "react-hot-toast";
@@ -58,6 +58,8 @@ const genderOptions = [
 const CampDetails = () => {
   const { campId } = useParams();
   const { user } = useAuth();
+  const location = useLocation();
+  const navigate = useNavigate();
 
   // modal open state
   const [modalOpen, setModalOpen] = useState(false);
@@ -160,8 +162,8 @@ const CampDetails = () => {
         cancelButtonColor: "#E53E3E",
       }).then((result) => {
         if (result.isConfirmed) {
-          // Redirect to login page
-          window.location.href = "/login"; // replace with your login route
+          // Redirect to login page with return state
+          navigate("/login", { state: { from: location.pathname } });
         }
       });
       return;

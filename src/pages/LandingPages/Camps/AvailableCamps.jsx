@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import api from "../../api";
+import api from "../../../api";
 import { Link } from "react-router";
 import {
   MapPin,
@@ -18,7 +18,7 @@ import {
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import { FaBangladeshiTakaSign } from "react-icons/fa6";
-import useActionMenu from "../../hooks/useActionMenu";
+import useActionMenu from "../../../hooks/useActionMenu";
 
 const fetchCamps = async ({ queryKey }) => {
   const [_key, { page, search, sort }] = queryKey;
