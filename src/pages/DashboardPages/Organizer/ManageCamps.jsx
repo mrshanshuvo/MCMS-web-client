@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useQuery, keepPreviousData } from "@tanstack/react-query";
-import { Pencil, Trash2, Loader2, Activity, ChevronLeft, ChevronRight, Search, X, Tent } from "lucide-react";
+import { Pencil, Trash2, Activity, ChevronLeft, ChevronRight, Search, X, Tent } from "lucide-react";
+import Loader from "../../../components/Shared/Loader";
+
 import Swal from "sweetalert2";
 import { toast } from "react-toastify";
 import CampFormModal from "./CampFormModal";
@@ -78,10 +80,11 @@ const ManageCamps = () => {
 
   if (isLoading) {
     return (
-      <div className="flex flex-col items-center justify-center h-64">
-        <Loader2 className="animate-spin h-8 w-8 text-[#ff1e00]" />
-        <p className="text-gray-500 mt-3">Loading camps...</p>
-      </div>
+      <Loader
+        fullHeight={false}
+        className="h-64"
+        message="Loading camps..."
+      />
     );
   }
 

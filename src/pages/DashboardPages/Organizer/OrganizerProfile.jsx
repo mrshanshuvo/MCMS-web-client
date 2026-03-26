@@ -4,6 +4,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import api from "../../../api";
 import Swal from "sweetalert2";
 import useAuth from "../../../hooks/useAuth";
+import Loader from "../../../components/Shared/Loader";
 import {
   User,
   Mail,
@@ -11,7 +12,6 @@ import {
   Edit,
   Save,
   X,
-  Loader2,
   Phone,
   MapPin,
   Camera,
@@ -92,12 +92,7 @@ const OrganizerProfile = () => {
   const onSubmit = (data) => updateMutation.mutate(data);
 
   if (isLoading || isSubmitting) {
-    return (
-      <div className="flex flex-col items-center justify-center min-h-[60vh]">
-        <Loader2 className="animate-spin h-10 w-10 text-[#ff1e00]" />
-        <p className="text-gray-500 mt-4 font-medium">Loading your profile...</p>
-      </div>
-    );
+    return <Loader fullHeight message="Loading your profile..." />;
   }
 
   if (isError) {
@@ -237,7 +232,7 @@ const OrganizerProfile = () => {
                       className="flex-1 bg-[#ff1e00] text-white py-3 px-6 rounded-xl font-bold hover:bg-[#ff1e00]/90 transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 shadow-lg shadow-red-100"
                     >
                       {isSubmitting || updateMutation.isLoading ? (
-                        <Loader2 className="animate-spin h-5 w-5" />
+                        <Loader inline size="xs" variant="spinner" />
                       ) : (
                         <Save size={18} />
                       )}

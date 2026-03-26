@@ -9,13 +9,13 @@ import {
   User,
   ChevronRight,
   CheckCircle,
-  Loader2,
   Shield,
   X,
   Star,
   Activity,
   ChevronDown,
 } from "lucide-react";
+import Loader from "../../../components/Shared/Loader";
 import useAuth from "../../../hooks/useAuth";
 import useActionMenu from "../../../hooks/useActionMenu";
 import Swal from "sweetalert2";
@@ -124,11 +124,7 @@ const CampDetails = () => {
   });
 
   if (isLoading || roleLoading) {
-    return (
-      <div className="flex items-center justify-center min-h-screen bg-gradient-to-b from-[#F5F7F8] to-white">
-        <Loader2 className="animate-spin h-12 w-12 text-[#495E57]" />
-      </div>
-    );
+    return <Loader fullHeight message="Loading camp details..." />;
   }
 
   if (isError) {
@@ -420,20 +416,14 @@ const CampDetails = () => {
                   You are an Organizer
                 </>
               ) : checkingRegistration ? (
-                <>
-                  <Loader2 className="animate-spin mr-2" size={20} />
-                  Checking Registration...
-                </>
+                <Loader inline size="sm" variant="spinner" message="Checking Registration..." />
               ) : joinSuccess || isAlreadyRegistered ? (
                 <>
                   <CheckCircle className="mr-2" size={20} />
                   Already Registered
                 </>
               ) : formSubmitting ? (
-                <>
-                  <Loader2 className="animate-spin mr-2" size={20} />
-                  Processing...
-                </>
+                <Loader inline size="sm" variant="spinner" message="Processing..." />
               ) : (
                 <>
                   Register Now
@@ -638,10 +628,7 @@ const CampDetails = () => {
                 className="w-full bg-gradient-to-r from-[#495E57] to-[#495E57]/90 hover:from-[#45474B] hover:to-[#45474B] text-white py-3 rounded-xl font-bold transition-all duration-200 disabled:opacity-50 flex items-center justify-center"
               >
                 {formSubmitting ? (
-                  <>
-                    <Loader2 className="animate-spin mr-2" size={16} />
-                    Registering...
-                  </>
+                  <Loader inline size="xs" variant="spinner" message="Registering..." />
                 ) : (
                   "Submit Registration"
                 )}

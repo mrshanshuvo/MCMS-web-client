@@ -3,12 +3,12 @@ import {
   ChevronDown,
   ChevronUp,
   HelpCircle,
-  Loader2,
   Star,
 } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import { Link, useSearchParams } from "react-router";
+import Loader from "../../../components/Shared/Loader";
 
 // Constants
 const FAQS_PER_PAGE = 5;
@@ -46,7 +46,7 @@ const FAQs = () => {
     cacheTime: 15 * 60 * 1000, // 15 minutes
   });
 
-  const faqs = faqsRes.data || [];
+  const faqs = useMemo(() => faqsRes.data || [], [faqsRes.data]);
 
   // Memoized computations
   const categories = useMemo(
@@ -141,14 +141,7 @@ const FAQs = () => {
 
   // Loading state
   if (isLoading) {
-    return (
-      <div className="min-h-screen bg-gradient-to-b from-[#F5F7F8] to-white flex items-center justify-center">
-        <div className="text-center">
-          <Loader2 className="animate-spin h-12 w-12 text-[#495E57] mx-auto mb-4" />
-          <p className="text-[#45474B] text-lg">Loading FAQs...</p>
-        </div>
-      </div>
-    );
+    return <Loader fullHeight message="Loading FAQs..." />;
   }
 
   // Error state

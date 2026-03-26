@@ -1,3 +1,4 @@
+import Loader from "../components/Shared/Loader";
 import useUserRole from "../hooks/useUserRole";
 import OrganizerDashboard from "../pages/DashboardPages/Organizer/OrganizerDashboard";
 import ParticipantDashboard from "../pages/DashboardPages/Participant/ParticipantDashboard";
@@ -6,7 +7,7 @@ const DashboardRouter = () => {
   const { role, roleLoading: loading } = useUserRole();
 
   if (loading) {
-    return <p>Loading your dashboard...</p>;
+    return <Loader />;
   }
 
   if (role === "organizer") {

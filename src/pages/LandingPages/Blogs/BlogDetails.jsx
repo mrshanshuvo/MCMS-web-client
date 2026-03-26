@@ -11,6 +11,7 @@ import {
   Bookmark,
   MessageSquare,
 } from "lucide-react";
+import Loader from "../../../components/Shared/Loader";
 
 /**
  * BlogDetails - A premium dynamic page to display the full context of a blog post.
@@ -33,11 +34,7 @@ const BlogDetails = () => {
   });
 
   if (isLoading) {
-    return (
-      <div className="min-h-screen bg-[#F5F7F8] flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#495E57]"></div>
-      </div>
-    );
+    return <Loader fullHeight message="Loading blog details..." />;
   }
 
   if (isError || !post) {

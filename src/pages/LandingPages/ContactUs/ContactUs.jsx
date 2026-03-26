@@ -6,13 +6,13 @@ import {
   Phone,
   MapPin,
   Send,
-  Loader2,
   Facebook,
   Twitter,
   Instagram,
   Linkedin,
   Star,
 } from "lucide-react";
+import Loader from "../../../components/Shared/Loader";
 
 // Constants
 const CONTACT_INFO = [
@@ -288,14 +288,7 @@ const ContactUs = () => {
               aria-label={loading ? "Sending message..." : "Send message"}
             >
               {loading ? (
-                <>
-                  <Loader2
-                    className="animate-spin mr-2"
-                    size={18}
-                    aria-hidden="true"
-                  />
-                  Sending...
-                </>
+                <Loader inline size="sm" variant="spinner" message="Sending..." />
               ) : (
                 <>
                   <Send

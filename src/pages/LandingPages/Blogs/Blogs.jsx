@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import { CalendarDays, Clock, User, ArrowRight, Star, Sparkles } from "lucide-react";
 import { Link, useSearchParams } from "react-router";
+import Loader from "../../../components/Shared/Loader";
 
 // Constants
 const POSTS_PER_PAGE = 6;
@@ -112,14 +113,7 @@ const Blog = () => {
 
   // Loading state
   if (isLoading) {
-    return (
-      <div className="min-h-screen bg-gradient-to-b from-[#F5F7F8] to-white flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#495E57] mx-auto mb-4"></div>
-          <p className="text-[#45474B] text-lg">Loading blog posts...</p>
-        </div>
-      </div>
-    );
+    return <Loader fullHeight message="Loading blog posts..." />;
   }
 
   // Error state

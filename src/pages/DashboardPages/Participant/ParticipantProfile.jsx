@@ -5,7 +5,6 @@ import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import {
   User,
   Calendar,
-  Loader2,
   Edit,
   X,
   Check as CheckIcon,
@@ -18,6 +17,7 @@ import {
 } from "lucide-react";
 import { useNavigate } from "react-router";
 import Swal from "sweetalert2";
+import Loader from "../../../components/Shared/Loader";
 
 const ParticipantProfile = () => {
   const { user: authUser } = useAuth();
@@ -202,12 +202,7 @@ const ParticipantProfile = () => {
   }
 
   if (isLoading) {
-    return (
-      <div className="flex flex-col items-center justify-center min-h-[60vh]">
-        <Loader2 className="animate-spin h-10 w-10 text-[#ff1e00]" />
-        <p className="text-gray-500 mt-4 font-medium">Loading profile...</p>
-      </div>
-    );
+    return <Loader fullHeight message="Loading profile..." />;
   }
 
   if (isError) {
@@ -391,7 +386,7 @@ const ParticipantProfile = () => {
                       className="flex-1 bg-[#ff1e00] text-white py-3 px-6 rounded-xl font-bold hover:bg-[#ff1e00]/90 transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 shadow-lg shadow-red-100"
                     >
                       {updateUserMutation.isLoading ? (
-                        <Loader2 className="animate-spin h-5 w-5" />
+                        <Loader inline size="xs" variant="spinner" />
                       ) : (
                         <CheckIcon size={18} />
                       )}

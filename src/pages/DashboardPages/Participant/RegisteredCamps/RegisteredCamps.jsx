@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router";
 import { useQuery, useMutation, useQueryClient, keepPreviousData } from "@tanstack/react-query";
 import {
-  Loader2,
   CalendarCheck,
   AlertCircle,
   ChevronLeft,
@@ -23,6 +22,8 @@ import FeedbackModal from "./FeedbackModal";
 import useAuth from "../../../../hooks/useAuth";
 import useAxiosSecure from "../../../../hooks/useAxiosSecure";
 import useActionMenu from "../../../../hooks/useActionMenu";
+import Loader from "../../../../components/Shared/Loader";
+
 
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PK);
 
@@ -135,15 +136,8 @@ const RegisteredCamps = () => {
     setPaymentRegistration(null);
   };
 
-
-
   if (isLoading) {
-    return (
-      <div className="flex flex-col items-center justify-center py-12">
-        <Loader2 className="animate-spin h-12 w-12 text-[#ff1e00] mb-4" />
-        <p className="text-gray-500">Loading registered camps...</p>
-      </div>
-    );
+    return <Loader message="Loading registered camps..." />;
   }
 
   if (isError) {

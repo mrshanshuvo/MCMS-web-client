@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
-import { Loader2, AlertCircle, CheckCircle, X } from "lucide-react";
+import { AlertCircle, CheckCircle, X } from "lucide-react";
 import useAuth from "../../../../hooks/useAuth";
 import api from "../../../../api";
+import Loader from "../../../../components/Shared/Loader"
 
 const PaymentDialog = ({
   open,
@@ -190,10 +191,7 @@ const PaymentDialog = ({
                 className="px-4 py-2 rounded-lg text-white font-medium bg-[#ff1e00] hover:bg-[#ff1e00]/90 disabled:opacity-50 transition-colors"
               >
                 {isProcessing ? (
-                  <span className="flex items-center justify-center">
-                    <Loader2 className="animate-spin mr-2" size={18} />
-                    Processing...
-                  </span>
+                  <Loader inline size="sm" variant="spinner" message="Processing..." />
                 ) : (
                   `Pay $${camp?.fees}`
                 )}

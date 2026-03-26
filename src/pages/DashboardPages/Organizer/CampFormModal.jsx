@@ -2,8 +2,9 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import Swal from "sweetalert2";
-import { Loader2, Calendar, MapPin, User, Upload, X } from "lucide-react";
+import { Calendar, MapPin, User, Upload, X } from "lucide-react";
 import useImageOptimizer from "../../../hooks/useImageOptimizer";
+import Loader from "../../../components/Shared/Loader";
 import { FaBangladeshiTakaSign } from "react-icons/fa6";
 
 const imgbbAPIKey = import.meta.env.VITE_IMGBB_API_KEY;
@@ -309,10 +310,11 @@ const CampFormModal = ({ initialData, onClose, onUpdated }) => {
               : "bg-[#ff1e00] hover:bg-[#ff1e00]/90 shadow-sm hover:shadow-md cursor-pointer"
               } flex items-center justify-center`}
           >
-            {(isSubmitting || imageUploading) && (
-              <Loader2 className="animate-spin mr-2" size={18} />
+            {isSubmitting || imageUploading ? (
+              <Loader inline size="sm" variant="spinner" message="Updating..." />
+            ) : (
+              "Update Camp"
             )}
-            Update Camp
           </button>
         </form>
       </div>

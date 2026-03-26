@@ -8,7 +8,6 @@ import {
   CheckCircle,
   Clock,
   AlertCircle,
-  Loader2,
   ChevronLeft,
   ChevronRight,
   ArrowRight,
@@ -20,6 +19,7 @@ import {
 import useAuth from "../../../hooks/useAuth";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import useActionMenu from "../../../hooks/useActionMenu";
+import Loader from "../../../components/Shared/Loader";
 
 const statusStyles = {
   completed: "bg-[#59ce8f]/10 text-[#59ce8f]",
@@ -103,12 +103,7 @@ const PaymentHistory = () => {
   };
 
   if (isLoading) {
-    return (
-      <div className="flex flex-col items-center justify-center py-12">
-        <Loader2 className="animate-spin h-12 w-12 text-[#ff1e00] mb-4" />
-        <p className="text-gray-500">Loading payment history...</p>
-      </div>
-    );
+    return <Loader fullHeight message="Loading payment history..." />;
   }
 
   if (error) {

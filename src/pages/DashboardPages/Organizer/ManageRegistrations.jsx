@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { useQuery, useMutation, useQueryClient, keepPreviousData } from "@tanstack/react-query";
-import { Loader2, Trash2, Search, ChevronLeft, ChevronRight, Activity, X, Users } from "lucide-react";
+import { Trash2, Search, ChevronLeft, ChevronRight, Activity, X, Users } from "lucide-react";
+import Loader from "../../../components/Shared/Loader";
+
 import Swal from "sweetalert2";
 import { toast } from "react-toastify";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
@@ -83,10 +85,11 @@ const ManageRegistrations = () => {
 
   if (isLoading) {
     return (
-      <div className="flex flex-col items-center justify-center py-16">
-        <Loader2 className="animate-spin h-8 w-8 text-[#ff1e00]" />
-        <p className="text-gray-500 mt-3">Loading registrations...</p>
-      </div>
+      <Loader
+        fullHeight={false}
+        className="py-16"
+        message="Loading registrations..."
+      />
     );
   }
 

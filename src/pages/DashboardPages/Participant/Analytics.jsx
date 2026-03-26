@@ -13,13 +13,14 @@ import {
 } from "recharts";
 import {
   Calendar,
-  Loader2,
   AlertCircle,
   Activity,
   TrendingUp,
   ChevronRight,
   Info
 } from "lucide-react";
+import Loader from "../../../components/Shared/Loader";
+
 import { FaBangladeshiTakaSign } from "react-icons/fa6";
 import api from "../../../api";
 
@@ -103,12 +104,7 @@ const Analytics = () => {
   };
 
   if (isLoading) {
-    return (
-      <div className="flex flex-col items-center justify-center min-h-[60vh]">
-        <Loader2 className="animate-spin h-10 w-10 text-[#ff1e00]" />
-        <p className="text-gray-500 mt-4 font-medium animate-pulse">Loading your analytics...</p>
-      </div>
-    );
+    return <Loader message="Loading your analytics..." />;
   }
 
   if (isError) {

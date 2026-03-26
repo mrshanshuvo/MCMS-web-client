@@ -6,7 +6,6 @@ import {
   MapPin,
   User,
   Upload,
-  Loader2,
   Info,
   DollarSign,
   FileText,
@@ -16,6 +15,8 @@ import {
 import useImageOptimizer from "../../../hooks/useImageOptimizer";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router";
+import Loader from "../../../components/Shared/Loader";
+
 
 const imgbbAPIKey = import.meta.env.VITE_IMGBB_API_KEY;
 
@@ -374,14 +375,9 @@ const AddCamp = () => {
                     } flex items-center justify-center gap-2`}
                 >
                   {isSubmitting || imageUploading ? (
-                    <>
-                      <Loader2 className="animate-spin" size={20} />
-                      <span>Creating Session...</span>
-                    </>
+                    <Loader inline size="sm" variant="spinner" message="Creating Session..." />
                   ) : (
-                    <>
-                      <span>Create Medical Camp</span>
-                    </>
+                    <span>Create Medical Camp</span>
                   )}
                 </button>
                 <button

@@ -2,6 +2,7 @@ import React, { Children } from "react";
 import useAuth from "../hooks/useAuth";
 import useUserRole from "../hooks/useUserRole";
 import { Navigate, useLocation } from "react-router";
+import Loader from "../components/Shared/Loader";
 
 const OrganizerRoute = ({ children }) => {
   const { user, loading } = useAuth();
@@ -9,11 +10,7 @@ const OrganizerRoute = ({ children }) => {
   const location = useLocation();
 
   if (loading || roleLoading) {
-    return (
-      <div className="flex justify-center items-center h-screen">
-        <span className="loading loading-infinity loading-xl"></span>
-      </div>
-    );
+    return <Loader />;
   }
 
   if (!user || role !== "organizer") {

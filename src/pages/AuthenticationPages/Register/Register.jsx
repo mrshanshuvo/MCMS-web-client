@@ -7,8 +7,9 @@ import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 import { useState } from "react";
 import useAxios from "../../../hooks/useAxios";
-import { User, Mail, Lock, Camera, ArrowRight, UserPlus, Loader2 } from "lucide-react";
+import { User, Mail, Lock, Camera, ArrowRight, UserPlus } from "lucide-react";
 import useImageOptimizer from "../../../hooks/useImageOptimizer";
+import Loader from "../../../components/Shared/Loader";
 
 const Register = () => {
   const {
@@ -323,7 +324,7 @@ const Register = () => {
               className="w-full flex justify-center items-center gap-2 py-3 px-4 border border-transparent rounded-xl text-sm font-semibold text-white bg-gradient-to-r from-[#495E57] to-[#2C3E38] hover:from-[#2C3E38] hover:to-[#1F2E29] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#495E57] transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loading ? (
-                <Loader2 className="animate-spin h-5 w-5 text-white" />
+                <Loader inline size="xs" variant="spinner" />
               ) : (
                 <>
                   Create Account
