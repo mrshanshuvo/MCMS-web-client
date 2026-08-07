@@ -1,11 +1,11 @@
-import React, { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
-import { Pencil, Trash2, Loader2 } from "lucide-react";
-import Swal from "sweetalert2";
-import { toast } from "react-toastify";
-import CampFormModal from "./CampFormModal";
-import useAuth from "../../../hooks/useAuth";
-import useAxiosSecure from "../../../hooks/useAxiosSecure";
+import React, { useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { Pencil, Trash2, Loader2 } from 'lucide-react';
+import Swal from 'sweetalert2';
+import { toast } from 'react-toastify';
+import CampFormModal from './CampFormModal';
+import useAuth from '../../../hooks/useAuth';
+import useAxiosSecure from '../../../hooks/useAxiosSecure';
 
 const ManageCamps = () => {
   const { user } = useAuth();
@@ -15,12 +15,10 @@ const ManageCamps = () => {
   const limit = 5;
 
   const { data, isLoading, refetch } = useQuery({
-    queryKey: ["myCamps", user?.email, page],
+    queryKey: ['myCamps', user?.email, page],
     enabled: !!user?.email,
     queryFn: async () => {
-      const res = await axiosSecure.get(
-        `/organizer/camps?page=${page}&limit=${limit}`
-      );
+      const res = await axiosSecure.get(`/organizer/camps?page=${page}&limit=${limit}`);
       return res.data;
     },
   });
@@ -30,26 +28,26 @@ const ManageCamps = () => {
 
   const handleDelete = async (id) => {
     const confirm = await Swal.fire({
-      title: "Are you sure?",
-      text: "This camp will be deleted permanently.",
-      icon: "warning",
+      title: 'Are you sure?',
+      text: 'This camp will be deleted permanently.',
+      icon: 'warning',
       showCancelButton: true,
-      confirmButtonColor: "#d33",
-      cancelButtonColor: "#3085d6",
-      confirmButtonText: "Yes, delete it!",
-      background: "#1e3a8a",
-      color: "#ffffff",
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Yes, delete it!',
+      background: '#1e3a8a',
+      color: '#ffffff',
     });
 
     if (confirm.isConfirmed) {
       try {
         const res = await axiosSecure.delete(`/delete-camp/${id}`);
         if (res.data.deletedCount > 0) {
-          toast.success("Camp deleted successfully");
+          toast.success('Camp deleted successfully');
           refetch();
         }
       } catch {
-        toast.error("Failed to delete camp");
+        toast.error('Failed to delete camp');
       }
     }
   };
@@ -86,7 +84,7 @@ const ManageCamps = () => {
           <h2 className="text-3xl font-bold text-gray-900 mb-2">
             Manage Your
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">
-              {" "}
+              {' '}
               Medical Camps
             </span>
           </h2>
@@ -99,7 +97,7 @@ const ManageCamps = () => {
         <div className="bg-white rounded-3xl shadow-xl border border-gray-100 overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full min-w-[600px]">
-              {" "}
+              {' '}
               {/* add min width for horizontal scroll */}
               <thead className="bg-gradient-to-r from-[#1e3a8a] to-[#0f766e] text-white text-sm sm:text-base">
                 <tr>
@@ -108,15 +106,13 @@ const ManageCamps = () => {
                   <th className="px-3 sm:px-6 py-3 text-left">Date & Time</th>
                   <th className="px-3 sm:px-6 py-3 text-left hidden sm:table-cell">
                     Location
-                  </th>{" "}
+                  </th>{' '}
                   {/* hide on xs */}
-                  <th className="px-3 sm:px-6 py-3 text-left hidden md:table-cell">
-                    Fees
-                  </th>{" "}
+                  <th className="px-3 sm:px-6 py-3 text-left hidden md:table-cell">Fees</th>{' '}
                   {/* hide on small */}
                   <th className="px-3 sm:px-6 py-3 text-left hidden lg:table-cell">
                     Participants
-                  </th>{" "}
+                  </th>{' '}
                   {/* show only lg+ */}
                   <th className="px-3 sm:px-6 py-3 text-left">Actions</th>
                 </tr>
@@ -124,22 +120,13 @@ const ManageCamps = () => {
               <tbody className="divide-y divide-gray-200 text-sm sm:text-base">
                 {camps.length > 0 ? (
                   camps.map((camp, idx) => (
-                    <tr
-                      key={camp._id}
-                      className="hover:bg-gray-50 transition-colors"
-                    >
-                      <td className="px-3 sm:px-6 py-3">
-                        {(page - 1) * limit + idx + 1}
-                      </td>
-                      <td className="px-3 sm:px-6 py-3 font-medium">
-                        {camp.name}
-                      </td>
+                    <tr key={camp._id} className="hover:bg-gray-50 transition-colors">
+                      <td className="px-3 sm:px-6 py-3">{(page - 1) * limit + idx + 1}</td>
+                      <td className="px-3 sm:px-6 py-3 font-medium">{camp.name}</td>
                       <td className="px-3 sm:px-6 py-3">
                         {new Date(camp.dateTime).toLocaleString()}
                       </td>
-                      <td className="px-3 sm:px-6 py-3 hidden sm:table-cell">
-                        {camp.location}
-                      </td>
+                      <td className="px-3 sm:px-6 py-3 hidden sm:table-cell">{camp.location}</td>
                       <td className="px-3 sm:px-6 py-3 hidden md:table-cell">
                         ${camp.fees.toFixed(2)}
                       </td>
@@ -168,10 +155,7 @@ const ManageCamps = () => {
                   ))
                 ) : (
                   <tr>
-                    <td
-                      colSpan="7"
-                      className="px-6 py-8 text-center text-gray-500"
-                    >
+                    <td colSpan="7" className="px-6 py-8 text-center text-gray-500">
                       No camps found. Create your first medical camp!
                     </td>
                   </tr>

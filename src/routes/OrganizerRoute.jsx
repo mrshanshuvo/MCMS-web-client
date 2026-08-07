@@ -1,7 +1,7 @@
-import React, { Children } from "react";
-import useAuth from "../hooks/useAuth";
-import useUserRole from "../hooks/useUserRole";
-import { Navigate, useLocation } from "react-router";
+import React, { Children } from 'react';
+import useAuth from '../hooks/useAuth';
+import useUserRole from '../hooks/useUserRole';
+import { Navigate, useLocation } from 'react-router';
 
 const OrganizerRoute = ({ children }) => {
   const { user, loading } = useAuth();
@@ -16,10 +16,8 @@ const OrganizerRoute = ({ children }) => {
     );
   }
 
-  if (!user || role !== "organizer") {
-    return (
-      <Navigate state={{ from: location.pathname }} to="/forbidden" replace />
-    );
+  if (!user || role !== 'organizer') {
+    return <Navigate state={{ from: location.pathname }} to="/forbidden" replace />;
   }
 
   return children;

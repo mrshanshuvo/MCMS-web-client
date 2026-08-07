@@ -1,7 +1,7 @@
-import React, { useState } from "react";
-import { useParams } from "react-router";
-import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
+import React, { useState } from 'react';
+import { useParams } from 'react-router';
+import { useQuery } from '@tanstack/react-query';
+import axios from 'axios';
 import {
   MapPin,
   Calendar,
@@ -13,36 +13,29 @@ import {
   Shield,
   X,
   Star,
-} from "lucide-react";
-import useAuth from "../../hooks/useAuth";
-import Swal from "sweetalert2";
-import { FaBangladeshiTakaSign } from "react-icons/fa6";
+} from 'lucide-react';
+import useAuth from '../../hooks/useAuth';
+import Swal from 'sweetalert2';
+import { FaBangladeshiTakaSign } from 'react-icons/fa6';
 
 const fetchCampById = async (campId) => {
-  const res = await axios.get(
-    `https://mcms-server-red.vercel.app/camps/${campId}`
-  );
+  const res = await axios.get(`https://mcms-server-red.vercel.app/camps/${campId}`);
   return res.data.camp;
 };
 
 const checkRegistrationStatus = async (campId, idToken) => {
-  const res = await axios.get(
-    `https://mcms-server-red.vercel.app/registrations/check`,
-    {
-      params: { campId },
-      headers: {
-        Authorization: `Bearer ${idToken}`,
-      },
-    }
-  );
+  const res = await axios.get(`https://mcms-server-red.vercel.app/registrations/check`, {
+    params: { campId },
+    headers: {
+      Authorization: `Bearer ${idToken}`,
+    },
+  });
   return res.data.registered;
 };
 
 const fetchUserRole = async (email) => {
-  const res = await axios.get(
-    `https://mcms-server-red.vercel.app/users/${email}/role`
-  );
-  return res.data.role || "participant";
+  const res = await axios.get(`https://mcms-server-red.vercel.app/users/${email}/role`);
+  return res.data.role || 'participant';
 };
 
 const CampDetails = () => {
@@ -53,16 +46,16 @@ const CampDetails = () => {
   const [modalOpen, setModalOpen] = useState(false);
   // form states
   const [formData, setFormData] = useState({
-    participantName: user?.displayName || "",
-    participantEmail: user?.email || "",
-    age: "",
-    phoneNumber: "",
-    gender: "",
-    emergencyContact: "",
+    participantName: user?.displayName || '',
+    participantEmail: user?.email || '',
+    age: '',
+    phoneNumber: '',
+    gender: '',
+    emergencyContact: '',
   });
   const [formSubmitting, setFormSubmitting] = useState(false);
   const [joinSuccess, setJoinSuccess] = useState(false);
-  const [joinError, setJoinError] = useState("");
+  const [joinError, setJoinError] = useState('');
 
   // Fetch camp details
   const {
@@ -72,7 +65,7 @@ const CampDetails = () => {
     error,
     refetch: refetchCamp,
   } = useQuery({
-    queryKey: ["camp", campId],
+    queryKey: ['camp', campId],
     queryFn: () => fetchCampById(campId),
     staleTime: 5 * 60 * 1000,
     enabled: !!campId,
@@ -80,11 +73,11 @@ const CampDetails = () => {
 
   // Fetch user role
   const {
-    data: role = "participant",
+    data: role = 'participant',
     isLoading: roleLoading,
     isError: roleError,
   } = useQuery({
-    queryKey: ["userRole", user?.email],
+    queryKey: ['userRole', user?.email],
     queryFn: () => fetchUserRole(user.email),
     enabled: !!user?.email,
     staleTime: 5 * 60 * 1000,
@@ -96,7 +89,7 @@ const CampDetails = () => {
     isLoading: checkingRegistration,
     refetch: refetchRegistration,
   } = useQuery({
-    queryKey: ["registrationStatus", campId, user?.email],
+    queryKey: ['registrationStatus', campId, user?.email],
     queryFn: async () => {
       const idToken = await user.getIdToken();
       return await checkRegistrationStatus(campId, idToken);
@@ -116,7 +109,7 @@ const CampDetails = () => {
   if (isError) {
     return (
       <div className="container mx-auto p-8 text-center text-red-600 bg-white rounded-xl shadow-lg max-w-4xl">
-        <p>{error.message || "Failed to load camp details."}</p>
+        <p>{error.message || 'Failed to load camp details.'}</p>
       </div>
     );
   }
@@ -129,29 +122,29 @@ const CampDetails = () => {
     );
   }
 
-  const isOrganizer = role === "organizer";
+  const isOrganizer = role === 'organizer';
 
   const openModal = () => {
     if (!user) {
       Swal.fire({
-        icon: "warning",
-        title: "You must be logged in!",
-        text: "Please log in to register for the camp.",
+        icon: 'warning',
+        title: 'You must be logged in!',
+        text: 'Please log in to register for the camp.',
         showCancelButton: true,
-        confirmButtonText: "Login",
-        cancelButtonText: "Cancel",
-        confirmButtonColor: "#495E57",
-        cancelButtonColor: "#E53E3E",
+        confirmButtonText: 'Login',
+        cancelButtonText: 'Cancel',
+        confirmButtonColor: '#495E57',
+        cancelButtonColor: '#E53E3E',
       }).then((result) => {
         if (result.isConfirmed) {
           // Redirect to login page
-          window.location.href = "/login"; // replace with your login route
+          window.location.href = '/login'; // replace with your login route
         }
       });
       return;
     }
 
-    setJoinError("");
+    setJoinError('');
     setModalOpen(true);
   };
 
@@ -169,25 +162,20 @@ const CampDetails = () => {
     e.preventDefault();
 
     // Validate required fields
-    if (
-      !formData.age ||
-      !formData.phoneNumber ||
-      !formData.gender ||
-      !formData.emergencyContact
-    ) {
-      setJoinError("Please fill all required fields.");
+    if (!formData.age || !formData.phoneNumber || !formData.gender || !formData.emergencyContact) {
+      setJoinError('Please fill all required fields.');
       return;
     }
 
     setFormSubmitting(true);
-    setJoinError("");
+    setJoinError('');
 
     try {
       const idToken = await user.getIdToken();
 
       // 1. Register the participant
       await axios.post(
-        "https://mcms-server-red.vercel.app/registrations",
+        'https://mcms-server-red.vercel.app/registrations',
         {
           campId,
           participantName: formData.participantName,
@@ -220,19 +208,13 @@ const CampDetails = () => {
       await refetchRegistration();
       refetchCamp();
     } catch (error) {
-      console.error(
-        "Registration Error:",
-        error.response?.data || error.message
-      );
+      console.error('Registration Error:', error.response?.data || error.message);
 
       // Handle specific errors
       if (error.response?.status === 404) {
-        setJoinError("Camp not found - please refresh and try again");
+        setJoinError('Camp not found - please refresh and try again');
       } else {
-        setJoinError(
-          error.response?.data?.error ||
-            "Registration failed. Please try again."
-        );
+        setJoinError(error.response?.data?.error || 'Registration failed. Please try again.');
       }
     } finally {
       setFormSubmitting(false);
@@ -259,9 +241,7 @@ const CampDetails = () => {
           <div className="mb-6 bg-green-50 border border-green-200 rounded-lg p-4 flex items-center">
             <CheckCircle className="text-green-600 mr-3" size={20} />
             <div>
-              <p className="text-green-800 font-medium">
-                You're already registered!
-              </p>
+              <p className="text-green-800 font-medium">You're already registered!</p>
               <p className="text-green-600 text-sm">
                 You have successfully registered for this medical camp.
               </p>
@@ -274,11 +254,7 @@ const CampDetails = () => {
           {/* Camp image */}
           <div className="relative h-64 sm:h-80 w-full bg-gradient-to-br from-[#495E57]/10 to-[#F4CE14]/10 flex items-center justify-center">
             {camp.imageURL ? (
-              <img
-                src={camp.imageURL}
-                alt={camp.name}
-                className="w-full h-full object-cover"
-              />
+              <img src={camp.imageURL} alt={camp.name} className="w-full h-full object-cover" />
             ) : (
               <span className="text-6xl">🏥</span>
             )}
@@ -290,12 +266,8 @@ const CampDetails = () => {
 
           {/* Camp info */}
           <div className="p-6 sm:p-8">
-            <h1 className="text-3xl lg:text-4xl font-bold text-[#45474B] mb-2">
-              {camp.name}
-            </h1>
-            <p className="text-xl text-[#495E57] mb-6">
-              {camp.healthcareProfessional}
-            </p>
+            <h1 className="text-3xl lg:text-4xl font-bold text-[#45474B] mb-2">{camp.name}</h1>
+            <p className="text-xl text-[#495E57] mb-6">{camp.healthcareProfessional}</p>
 
             {/* Details grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
@@ -304,17 +276,15 @@ const CampDetails = () => {
                   <div className="w-8 h-8 bg-[#495E57]/10 rounded-lg flex items-center justify-center mr-3">
                     <Calendar className="text-[#495E57]" size={16} />
                   </div>
-                  <span className="font-semibold text-[#45474B]">
-                    Date & Time
-                  </span>
+                  <span className="font-semibold text-[#45474B]">Date & Time</span>
                 </div>
                 <p className="text-[#45474B]">
                   {new Date(camp.dateTime).toLocaleString(undefined, {
-                    year: "numeric",
-                    month: "long",
-                    day: "numeric",
-                    hour: "2-digit",
-                    minute: "2-digit",
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit',
                   })}
                 </p>
               </div>
@@ -322,14 +292,9 @@ const CampDetails = () => {
               <div className="bg-[#495E57]/5 p-4 rounded-xl border border-[#495E57]/10">
                 <div className="flex items-center mb-2">
                   <div className="w-8 h-8 bg-[#F4CE14]/20 rounded-lg flex items-center justify-center mr-3">
-                    <FaBangladeshiTakaSign
-                      className="text-[#F4CE14]"
-                      size={16}
-                    />
+                    <FaBangladeshiTakaSign className="text-[#F4CE14]" size={16} />
                   </div>
-                  <span className="font-semibold text-[#45474B]">
-                    Registration Fee
-                  </span>
+                  <span className="font-semibold text-[#45474B]">Registration Fee</span>
                 </div>
                 <p className="text-[#45474B]">${camp.fees.toFixed(2)}</p>
               </div>
@@ -339,9 +304,7 @@ const CampDetails = () => {
                   <div className="w-8 h-8 bg-[#495E57]/10 rounded-lg flex items-center justify-center mr-3">
                     <User className="text-[#495E57]" size={16} />
                   </div>
-                  <span className="font-semibold text-[#45474B]">
-                    Lead Doctor
-                  </span>
+                  <span className="font-semibold text-[#45474B]">Lead Doctor</span>
                 </div>
                 <p className="text-[#45474B]">{camp.healthcareProfessional}</p>
               </div>
@@ -351,13 +314,9 @@ const CampDetails = () => {
                   <div className="w-8 h-8 bg-[#495E57]/10 rounded-lg flex items-center justify-center mr-3">
                     <Users className="text-[#495E57]" size={16} />
                   </div>
-                  <span className="font-semibold text-[#45474B]">
-                    Available Slots
-                  </span>
+                  <span className="font-semibold text-[#45474B]">Available Slots</span>
                 </div>
-                <p className="text-[#45474B]">
-                  {camp.participantCount} remaining
-                </p>
+                <p className="text-[#45474B]">{camp.participantCount} remaining</p>
               </div>
             </div>
 
@@ -369,9 +328,7 @@ const CampDetails = () => {
                   Camp Overview
                 </h2>
                 <div className="prose max-w-none">
-                  <p className="text-[#45474B] leading-relaxed">
-                    {camp.description}
-                  </p>
+                  <p className="text-[#45474B] leading-relaxed">{camp.description}</p>
                 </div>
               </div>
             )}
@@ -388,10 +345,10 @@ const CampDetails = () => {
               }
               className={`group w-full py-4 px-6 rounded-xl font-bold text-white transition-all duration-300 ${
                 isOrganizer
-                  ? "bg-gray-400 cursor-not-allowed"
+                  ? 'bg-gray-400 cursor-not-allowed'
                   : joinSuccess || isAlreadyRegistered
-                  ? "bg-green-500 shadow-lg cursor-not-allowed"
-                  : "bg-gradient-to-r from-[#495E57] to-[#495E57]/90 hover:from-[#45474B] hover:to-[#45474B] shadow-lg hover:shadow-xl"
+                    ? 'bg-green-500 shadow-lg cursor-not-allowed'
+                    : 'bg-gradient-to-r from-[#495E57] to-[#495E57]/90 hover:from-[#45474B] hover:to-[#45474B] shadow-lg hover:shadow-xl'
               } flex items-center justify-center`}
             >
               {isOrganizer ? (
@@ -442,9 +399,7 @@ const CampDetails = () => {
           >
             {/* Modal header */}
             <div className="flex justify-between items-center mb-6">
-              <h3 className="text-xl font-semibold text-[#45474B]">
-                Join Camp Registration
-              </h3>
+              <h3 className="text-xl font-semibold text-[#45474B]">Join Camp Registration</h3>
               <button
                 onClick={closeModal}
                 disabled={formSubmitting}
@@ -467,8 +422,7 @@ const CampDetails = () => {
                 <strong>Location:</strong> {camp.location}
               </p>
               <p>
-                <strong>Healthcare Professional:</strong>{" "}
-                {camp.healthcareProfessional}
+                <strong>Healthcare Professional:</strong> {camp.healthcareProfessional}
               </p>
             </div>
 
@@ -511,10 +465,7 @@ const CampDetails = () => {
               </div>
 
               <div>
-                <label
-                  htmlFor="age"
-                  className="block text-sm font-medium text-[#45474B]"
-                >
+                <label htmlFor="age" className="block text-sm font-medium text-[#45474B]">
                   Age *
                 </label>
                 <input
@@ -531,10 +482,7 @@ const CampDetails = () => {
               </div>
 
               <div>
-                <label
-                  htmlFor="phoneNumber"
-                  className="block text-sm font-medium text-[#45474B]"
-                >
+                <label htmlFor="phoneNumber" className="block text-sm font-medium text-[#45474B]">
                   Phone Number *
                 </label>
                 <input
@@ -551,10 +499,7 @@ const CampDetails = () => {
               </div>
 
               <div>
-                <label
-                  htmlFor="gender"
-                  className="block text-sm font-medium text-[#45474B]"
-                >
+                <label htmlFor="gender" className="block text-sm font-medium text-[#45474B]">
                   Gender *
                 </label>
                 <select
@@ -593,9 +538,7 @@ const CampDetails = () => {
                 />
               </div>
 
-              {joinError && (
-                <p className="text-red-600 text-sm font-medium">{joinError}</p>
-              )}
+              {joinError && <p className="text-red-600 text-sm font-medium">{joinError}</p>}
 
               <button
                 type="submit"
@@ -608,7 +551,7 @@ const CampDetails = () => {
                     Registering...
                   </>
                 ) : (
-                  "Submit Registration"
+                  'Submit Registration'
                 )}
               </button>
             </form>

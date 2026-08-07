@@ -1,6 +1,6 @@
-import React, { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
-import { format } from "date-fns";
+import React, { useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { format } from 'date-fns';
 import {
   Calendar,
   CreditCard,
@@ -14,25 +14,23 @@ import {
   Search,
   Filter,
   Download,
-} from "lucide-react";
-import axios from "axios";
-import useAuth from "../../../hooks/useAuth";
-import useAxiosSecure from "../../../hooks/useAxiosSecure";
+} from 'lucide-react';
+import axios from 'axios';
+import useAuth from '../../../hooks/useAuth';
+import useAxiosSecure from '../../../hooks/useAxiosSecure';
 
 const statusStyles = {
-  completed: "bg-green-100 text-green-800",
-  pending: "bg-yellow-100 text-yellow-800",
-  failed: "bg-red-100 text-red-800",
-  refunded: "bg-blue-100 text-blue-800",
+  completed: 'bg-green-100 text-green-800',
+  pending: 'bg-yellow-100 text-yellow-800',
+  failed: 'bg-red-100 text-red-800',
+  refunded: 'bg-blue-100 text-blue-800',
 };
 
 const CampInfo = ({ campId }) => {
   const { data: camp, isLoading } = useQuery({
-    queryKey: ["camp", campId],
+    queryKey: ['camp', campId],
     queryFn: async () => {
-      const res = await axios.get(
-        `https://mcms-server-red.vercel.app/camps/${campId}`
-      );
+      const res = await axios.get(`https://mcms-server-red.vercel.app/camps/${campId}`);
       return res.data.camp.camp;
     },
     enabled: !!campId,
@@ -56,11 +54,11 @@ const CampInfo = ({ campId }) => {
     <div className="flex items-center space-x-3">
       <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-white shadow-sm">
         <img
-          src={camp.imageURL || "/default-camp.png"}
+          src={camp.imageURL || '/default-camp.png'}
           alt={camp.name}
           className="w-full h-full object-cover"
           onError={(e) => {
-            e.target.src = "/default-camp.png";
+            e.target.src = '/default-camp.png';
           }}
         />
       </div>
@@ -76,12 +74,12 @@ const PaymentHistory = () => {
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
   const [page, setPage] = useState(1);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [statusFilter, setStatusFilter] = useState("all");
+  const [searchTerm, setSearchTerm] = useState('');
+  const [statusFilter, setStatusFilter] = useState('all');
   const limit = 5;
 
   const { data, isLoading, error } = useQuery({
-    queryKey: ["payments", user?.email, page, searchTerm, statusFilter],
+    queryKey: ['payments', user?.email, page, searchTerm, statusFilter],
     queryFn: async () => {
       const res = await axiosSecure.get(
         `/payments?page=${page}&limit=${limit}&search=${searchTerm}&status=${statusFilter}`
@@ -100,16 +98,16 @@ const PaymentHistory = () => {
   };
 
   const getStatusBadge = (status) => {
-    const statusKey = status?.toLowerCase() || "unknown";
+    const statusKey = status?.toLowerCase() || 'unknown';
     return (
       <span
         className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-          statusStyles[statusKey] || "bg-gray-100 text-gray-800"
+          statusStyles[statusKey] || 'bg-gray-100 text-gray-800'
         }`}
       >
-        {statusKey === "completed" && <CheckCircle className="mr-1 h-3 w-3" />}
-        {statusKey === "pending" && <Clock className="mr-1 h-3 w-3" />}
-        {statusKey === "failed" && <AlertCircle className="mr-1 h-3 w-3" />}
+        {statusKey === 'completed' && <CheckCircle className="mr-1 h-3 w-3" />}
+        {statusKey === 'pending' && <Clock className="mr-1 h-3 w-3" />}
+        {statusKey === 'failed' && <AlertCircle className="mr-1 h-3 w-3" />}
         {status}
       </span>
     );
@@ -130,12 +128,8 @@ const PaymentHistory = () => {
         <div className="flex items-center">
           <AlertCircle className="h-5 w-5 text-red-500 mr-3" />
           <div>
-            <h3 className="text-sm font-medium text-red-800">
-              Error loading payment history
-            </h3>
-            <p className="text-sm text-red-700 mt-1">
-              {error.message || "Please try again later"}
-            </p>
+            <h3 className="text-sm font-medium text-red-800">Error loading payment history</h3>
+            <p className="text-sm text-red-700 mt-1">{error.message || 'Please try again later'}</p>
             <button
               onClick={() => window.location.reload()}
               className="mt-2 text-sm text-red-600 hover:underline"
@@ -152,12 +146,9 @@ const PaymentHistory = () => {
     return (
       <div className="bg-gradient-to-br from-blue-50 to-purple-50 rounded-2xl p-8 text-center my-8">
         <CreditCard className="mx-auto h-12 w-12 text-blue-400 mb-4" />
-        <h3 className="text-lg font-medium text-gray-900 mb-1">
-          No payment history found
-        </h3>
+        <h3 className="text-lg font-medium text-gray-900 mb-1">No payment history found</h3>
         <p className="text-gray-500 mb-4">
-          Your payment records will appear here once you register for a medical
-          camp
+          Your payment records will appear here once you register for a medical camp
         </p>
         <a
           href="/available-camps"
@@ -264,33 +255,27 @@ const PaymentHistory = () => {
                     <div className="flex items-center">
                       <Calendar className="mr-2 h-4 w-4 text-gray-400" />
                       <div>
-                        <div>
-                          {format(new Date(payment.paymentDate), "MMM d, yyyy")}
-                        </div>
+                        <div>{format(new Date(payment.paymentDate), 'MMM d, yyyy')}</div>
                         <div className="text-xs text-gray-500">
-                          {format(new Date(payment.paymentDate), "h:mm a")}
+                          {format(new Date(payment.paymentDate), 'h:mm a')}
                         </div>
                       </div>
                     </div>
                   ) : (
-                    "N/A"
+                    'N/A'
                   )}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap font-medium">
                   ${(payment.amount || 0).toFixed(2)}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  <span className="capitalize">
-                    {payment.paymentMethod || "stripe"}
-                  </span>
+                  <span className="capitalize">{payment.paymentMethod || 'stripe'}</span>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 font-mono">
                   {payment.transactionId?.slice(0, 6)}...
                   {payment.transactionId?.slice(-4)}
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  {getStatusBadge(payment.status)}
-                </td>
+                <td className="px-6 py-4 whitespace-nowrap">{getStatusBadge(payment.status)}</td>
               </tr>
             ))}
           </tbody>
@@ -319,9 +304,7 @@ const PaymentHistory = () => {
             Page {pagination.page} of {pagination.totalPages}
           </span>
           <button
-            onClick={() =>
-              setPage((p) => Math.min(p + 1, pagination.totalPages))
-            }
+            onClick={() => setPage((p) => Math.min(p + 1, pagination.totalPages))}
             disabled={page === pagination.totalPages}
             className="px-3 py-1 rounded-md border border-gray-300 text-gray-700 hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed flex items-center"
           >
@@ -338,9 +321,7 @@ const PaymentHistory = () => {
         </div>
 
         <div className="flex items-center space-x-3">
-          <span className="text-sm text-gray-500">
-            {pagination.totalItems} transactions total
-          </span>
+          <span className="text-sm text-gray-500">{pagination.totalItems} transactions total</span>
           <button className="flex items-center text-sm text-blue-600 hover:text-blue-800">
             <Download className="h-4 w-4 mr-1" />
             Export

@@ -1,6 +1,6 @@
-import React, { useRef, useState, useMemo, useCallback } from "react";
-import emailjs from "@emailjs/browser";
-import toast, { Toaster } from "react-hot-toast";
+import React, { useRef, useState, useMemo, useCallback } from 'react';
+import emailjs from '@emailjs/browser';
+import toast, { Toaster } from 'react-hot-toast';
 import {
   Mail,
   Phone,
@@ -12,33 +12,33 @@ import {
   Instagram,
   Linkedin,
   Star,
-} from "lucide-react";
+} from 'lucide-react';
 
 // Constants
 const CONTACT_INFO = [
   {
     icon: <Mail className="text-[#495E57]" size={20} />,
-    title: "Email",
-    value: "support@CareCamp.com",
-    action: "mailto:support@CareCamp.com",
-    actionText: "Send us an email",
-    bgColor: "bg-[#495E57]/10",
+    title: 'Email',
+    value: 'support@CareCamp.com',
+    action: 'mailto:support@CareCamp.com',
+    actionText: 'Send us an email',
+    bgColor: 'bg-[#495E57]/10',
   },
   {
     icon: <Phone className="text-[#495E57]" size={20} />,
-    title: "Phone",
-    value: "+880-1234-567890",
-    action: "tel:+8801234567890",
-    actionText: "Call us now",
-    bgColor: "bg-[#495E57]/10",
+    title: 'Phone',
+    value: '+880-1234-567890',
+    action: 'tel:+8801234567890',
+    actionText: 'Call us now',
+    bgColor: 'bg-[#495E57]/10',
   },
   {
     icon: <MapPin className="text-[#495E57]" size={20} />,
-    title: "Address",
-    value: "123 Health St, Dhaka, Bangladesh",
-    action: "https://maps.google.com",
-    actionText: "View on map",
-    bgColor: "bg-[#495E57]/10",
+    title: 'Address',
+    value: '123 Health St, Dhaka, Bangladesh',
+    action: 'https://maps.google.com',
+    actionText: 'View on map',
+    bgColor: 'bg-[#495E57]/10',
     fullWidth: true,
   },
 ];
@@ -46,27 +46,27 @@ const CONTACT_INFO = [
 const SOCIAL_LINKS = [
   {
     icon: <Facebook size={20} />,
-    label: "Facebook",
-    url: "#",
-    color: "bg-[#495E57]/10 text-[#495E57] hover:bg-[#495E57]/20",
+    label: 'Facebook',
+    url: '#',
+    color: 'bg-[#495E57]/10 text-[#495E57] hover:bg-[#495E57]/20',
   },
   {
     icon: <Twitter size={20} />,
-    label: "Twitter",
-    url: "#",
-    color: "bg-[#495E57]/10 text-[#495E57] hover:bg-[#495E57]/20",
+    label: 'Twitter',
+    url: '#',
+    color: 'bg-[#495E57]/10 text-[#495E57] hover:bg-[#495E57]/20',
   },
   {
     icon: <Instagram size={20} />,
-    label: "Instagram",
-    url: "#",
-    color: "bg-[#495E57]/10 text-[#495E57] hover:bg-[#495E57]/20",
+    label: 'Instagram',
+    url: '#',
+    color: 'bg-[#495E57]/10 text-[#495E57] hover:bg-[#495E57]/20',
   },
   {
     icon: <Linkedin size={20} />,
-    label: "LinkedIn",
-    url: "#",
-    color: "bg-[#495E57]/10 text-[#495E57] hover:bg-[#495E57]/20",
+    label: 'LinkedIn',
+    url: '#',
+    color: 'bg-[#495E57]/10 text-[#495E57] hover:bg-[#495E57]/20',
   },
 ];
 
@@ -84,18 +84,18 @@ const ContactUs = () => {
     () => ({
       success: {
         style: {
-          background: "#10B981",
-          color: "#fff",
+          background: '#10B981',
+          color: '#fff',
         },
       },
       error: {
         style: {
-          background: "#EF4444",
-          color: "#fff",
+          background: '#EF4444',
+          color: '#fff',
         },
       },
     }),
-    [],
+    []
   );
 
   const sendEmail = useCallback(
@@ -105,12 +105,12 @@ const ContactUs = () => {
 
       // Basic form validation
       const formData = new FormData(form.current);
-      const name = formData.get("user_name");
-      const email = formData.get("user_email");
-      const message = formData.get("message");
+      const name = formData.get('user_name');
+      const email = formData.get('user_email');
+      const message = formData.get('message');
 
       if (!name || !email || !message) {
-        toast.error("Please fill in all required fields.", toastStyles.error);
+        toast.error('Please fill in all required fields.', toastStyles.error);
         setLoading(false);
         return;
       }
@@ -118,35 +118,30 @@ const ContactUs = () => {
       // Email validation
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!emailRegex.test(email)) {
-        toast.error("Please enter a valid email address.", toastStyles.error);
+        toast.error('Please enter a valid email address.', toastStyles.error);
         setLoading(false);
         return;
       }
 
       try {
-        await emailjs.sendForm(
-          SERVICE_ID,
-          TEMPLATE_ID,
-          form.current,
-          PUBLIC_KEY,
-        );
+        await emailjs.sendForm(SERVICE_ID, TEMPLATE_ID, form.current, PUBLIC_KEY);
 
         toast.success(
           "Message sent successfully! We'll get back to you soon.",
-          toastStyles.success,
+          toastStyles.success
         );
         form.current.reset();
       } catch (error) {
-        console.error("EmailJS Error:", error);
+        console.error('EmailJS Error:', error);
         toast.error(
-          "Failed to send message. Please try again or contact us directly.",
-          toastStyles.error,
+          'Failed to send message. Please try again or contact us directly.',
+          toastStyles.error
         );
       } finally {
         setLoading(false);
       }
     },
-    [SERVICE_ID, TEMPLATE_ID, PUBLIC_KEY, toastStyles],
+    [SERVICE_ID, TEMPLATE_ID, PUBLIC_KEY, toastStyles]
   );
 
   // Memoized components
@@ -160,37 +155,26 @@ const ContactUs = () => {
         <h1 className="text-4xl font-bold text-[#45474B] mb-4">
           Get in
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#495E57] to-[#F4CE14]">
-            {" "}
+            {' '}
             Touch
           </span>
         </h1>
         <p className="text-xl text-[#45474B]/70 max-w-3xl mx-auto leading-relaxed">
-          Have questions or feedback? We're here to help and would love to hear
-          from you.
+          Have questions or feedback? We're here to help and would love to hear from you.
         </p>
       </div>
     ),
-    [],
+    []
   );
 
   const ContactForm = useMemo(
     () => (
       <div className="bg-white rounded-2xl shadow-sm overflow-hidden border border-[#495E57]/10">
         <div className="p-8 sm:p-10">
-          <h2 className="text-2xl font-semibold text-[#45474B] mb-6">
-            Send us a message
-          </h2>
-          <form
-            ref={form}
-            onSubmit={sendEmail}
-            className="space-y-5"
-            noValidate
-          >
+          <h2 className="text-2xl font-semibold text-[#45474B] mb-6">Send us a message</h2>
+          <form ref={form} onSubmit={sendEmail} className="space-y-5" noValidate>
             <div>
-              <label
-                htmlFor="name"
-                className="block text-sm font-medium text-[#45474B] mb-1"
-              >
+              <label htmlFor="name" className="block text-sm font-medium text-[#45474B] mb-1">
                 Your Name *
               </label>
               <input
@@ -204,10 +188,7 @@ const ContactUs = () => {
               />
             </div>
             <div>
-              <label
-                htmlFor="email"
-                className="block text-sm font-medium text-[#45474B] mb-1"
-              >
+              <label htmlFor="email" className="block text-sm font-medium text-[#45474B] mb-1">
                 Email Address *
               </label>
               <input
@@ -221,10 +202,7 @@ const ContactUs = () => {
               />
             </div>
             <div>
-              <label
-                htmlFor="message"
-                className="block text-sm font-medium text-[#45474B] mb-1"
-              >
+              <label htmlFor="message" className="block text-sm font-medium text-[#45474B] mb-1">
                 Your Message *
               </label>
               <textarea
@@ -242,27 +220,19 @@ const ContactUs = () => {
               disabled={loading}
               className={`w-full flex items-center justify-center px-6 py-3 rounded-xl font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#495E57] focus:ring-offset-2 ${
                 loading
-                  ? "bg-[#495E57]/50 text-white cursor-not-allowed"
-                  : "bg-gradient-to-r from-[#495E57] to-[#495E57]/90 text-white hover:shadow-lg"
+                  ? 'bg-[#495E57]/50 text-white cursor-not-allowed'
+                  : 'bg-gradient-to-r from-[#495E57] to-[#495E57]/90 text-white hover:shadow-lg'
               }`}
-              aria-label={loading ? "Sending message..." : "Send message"}
+              aria-label={loading ? 'Sending message...' : 'Send message'}
             >
               {loading ? (
                 <>
-                  <Loader2
-                    className="animate-spin mr-2"
-                    size={18}
-                    aria-hidden="true"
-                  />
+                  <Loader2 className="animate-spin mr-2" size={18} aria-hidden="true" />
                   Sending...
                 </>
               ) : (
                 <>
-                  <Send
-                    className="mr-2 text-[#F4CE14]"
-                    size={18}
-                    aria-hidden="true"
-                  />
+                  <Send className="mr-2 text-[#F4CE14]" size={18} aria-hidden="true" />
                   Send Message
                 </>
               )}
@@ -271,7 +241,7 @@ const ContactUs = () => {
         </div>
       </div>
     ),
-    [loading, sendEmail],
+    [loading, sendEmail]
   );
 
   const ContactInfoCards = useMemo(
@@ -281,26 +251,18 @@ const ContactUs = () => {
           <div
             key={index}
             className={`bg-white p-6 rounded-2xl shadow-sm border border-[#495E57]/10 hover:shadow-md transition-all duration-200 ${
-              info.fullWidth ? "sm:col-span-2" : ""
+              info.fullWidth ? 'sm:col-span-2' : ''
             }`}
           >
             <div className="flex items-start gap-4">
-              <div className={`p-3 rounded-full ${info.bgColor}`}>
-                {info.icon}
-              </div>
+              <div className={`p-3 rounded-full ${info.bgColor}`}>{info.icon}</div>
               <div className="flex-1">
-                <h3 className="font-semibold text-[#45474B] mb-1">
-                  {info.title}
-                </h3>
+                <h3 className="font-semibold text-[#45474B] mb-1">{info.title}</h3>
                 <p className="text-[#45474B]/70">{info.value}</p>
                 <a
                   href={info.action}
-                  target={info.action.startsWith("http") ? "_blank" : undefined}
-                  rel={
-                    info.action.startsWith("http")
-                      ? "noopener noreferrer"
-                      : undefined
-                  }
+                  target={info.action.startsWith('http') ? '_blank' : undefined}
+                  rel={info.action.startsWith('http') ? 'noopener noreferrer' : undefined}
                   className="text-[#495E57] hover:text-[#45474B] hover:underline text-sm mt-2 inline-block transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-[#495E57] focus:ring-offset-2 rounded"
                 >
                   {info.actionText}
@@ -311,7 +273,7 @@ const ContactUs = () => {
         ))}
       </div>
     ),
-    [],
+    []
   );
 
   const SocialLinks = useMemo(
@@ -334,7 +296,7 @@ const ContactUs = () => {
         </div>
       </div>
     ),
-    [],
+    []
   );
 
   const MapSection = useMemo(
@@ -353,7 +315,7 @@ const ContactUs = () => {
         ></iframe>
       </div>
     ),
-    [],
+    []
   );
 
   return (

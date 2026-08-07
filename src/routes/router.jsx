@@ -1,39 +1,39 @@
-import { createBrowserRouter } from "react-router";
-import RootLayout from "../layouts/RootLayout";
-import Home from "../pages/Home/Home";
-import AuthLayout from "../layouts/AuthLayout";
-import Login from "../pages/Authentication/Login/Login";
-import Register from "../pages/Authentication/Register/Register";
-import AvailableCamps from "../pages/Camps/AvailableCamps";
-import CampDetails from "../pages/Camps/CampDetails";
-import NotFound from "../pages/NotFound/NotFound";
-import DashboardLayout from "../layouts/DashboardLayout";
-import AddCamp from "../pages/Dashboard/Organizer/AddCamp";
-import ManageCamps from "../pages/Dashboard/Organizer/ManageCamps";
-import ManageRegistrations from "../pages/Dashboard/Organizer/ManageRegistrations";
-import OrganizerRoute from "./OrganizerRoute";
-import PrivateRoute from "./PrivateRoute";
-import ParticipantRoute from "./ParticipantRoute";
-import DashboardRouter from "./DashboardRouter";
-import Analytics from "../pages/Dashboard/Participant/Analytics";
-import ParticipantProfile from "../pages/Dashboard/Participant/ParticipantProfile";
-import PaymentHistory from "../pages/Dashboard/Participant/PaymentHistory";
-import OrganizerProfile from "../pages/Dashboard/Organizer/OrganizerProfile";
-import SuccessStories from "../pages/SuccessStories/SuccessStories";
-import AboutUs from "../pages/AboutUs/AboutUs";
-import Blog from "../pages/Blog/Blog";
-import FAQs from "../pages/FAQs/FAQs";
-import Docs from "../pages/Docs/Docs";
-import PPolicy from "../pages/PPolicy/PPolicy";
-import TermsOfService from "../pages/TermsOfService/TermsOfService";
-import ContactUs from "../pages/ContactUs/ContactUs";
-import RegisteredCamps from "../pages/Dashboard/Participant/RegisteredCamps/RegisteredCamps";
-import FeedbackPage from "../pages/FeedbackPage/FeedbackPage";
-import PublicOnly from "./PublicOnly";
+import { createBrowserRouter } from 'react-router';
+import RootLayout from '../layouts/RootLayout';
+import Home from '../pages/Home/Home';
+import AuthLayout from '../layouts/AuthLayout';
+import Login from '../pages/Authentication/Login/Login';
+import Register from '../pages/Authentication/Register/Register';
+import AvailableCamps from '../pages/Camps/AvailableCamps';
+import CampDetails from '../pages/Camps/CampDetails';
+import NotFound from '../pages/NotFound/NotFound';
+import DashboardLayout from '../layouts/DashboardLayout';
+import AddCamp from '../pages/Dashboard/Organizer/AddCamp';
+import ManageCamps from '../pages/Dashboard/Organizer/ManageCamps';
+import ManageRegistrations from '../pages/Dashboard/Organizer/ManageRegistrations';
+import OrganizerRoute from './OrganizerRoute';
+import PrivateRoute from './PrivateRoute';
+import ParticipantRoute from './ParticipantRoute';
+import DashboardRouter from './DashboardRouter';
+import Analytics from '../pages/Dashboard/Participant/Analytics';
+import ParticipantProfile from '../pages/Dashboard/Participant/ParticipantProfile';
+import PaymentHistory from '../pages/Dashboard/Participant/PaymentHistory';
+import OrganizerProfile from '../pages/Dashboard/Organizer/OrganizerProfile';
+import SuccessStories from '../pages/SuccessStories/SuccessStories';
+import AboutUs from '../pages/AboutUs/AboutUs';
+import Blog from '../pages/Blog/Blog';
+import FAQs from '../pages/FAQs/FAQs';
+import Docs from '../pages/Docs/Docs';
+import PPolicy from '../pages/PPolicy/PPolicy';
+import TermsOfService from '../pages/TermsOfService/TermsOfService';
+import ContactUs from '../pages/ContactUs/ContactUs';
+import RegisteredCamps from '../pages/Dashboard/Participant/RegisteredCamps/RegisteredCamps';
+import FeedbackPage from '../pages/FeedbackPage/FeedbackPage';
+import PublicOnly from './PublicOnly';
 
 export const router = createBrowserRouter([
   {
-    path: "/",
+    path: '/',
     element: <RootLayout />,
     errorElement: <NotFound />,
     children: [
@@ -41,21 +41,21 @@ export const router = createBrowserRouter([
         index: true,
         Component: Home,
       },
-      { path: "available-camps", Component: AvailableCamps },
-      { path: "success-stories", Component: SuccessStories },
-      { path: "about", Component: AboutUs },
-      { path: "blog", Component: Blog },
-      { path: "faqs", Component: FAQs },
-      { path: "docs", Component: Docs },
-      { path: "pPolicy", Component: PPolicy },
-      { path: "terms", Component: TermsOfService },
-      { path: "contact", Component: ContactUs },
-      { path: "camp-details/:campId", Component: CampDetails },
-      { path: "feedback", Component: FeedbackPage },
+      { path: 'available-camps', Component: AvailableCamps },
+      { path: 'success-stories', Component: SuccessStories },
+      { path: 'about', Component: AboutUs },
+      { path: 'blog', Component: Blog },
+      { path: 'faqs', Component: FAQs },
+      { path: 'docs', Component: Docs },
+      { path: 'pPolicy', Component: PPolicy },
+      { path: 'terms', Component: TermsOfService },
+      { path: 'contact', Component: ContactUs },
+      { path: 'camp-details/:campId', Component: CampDetails },
+      { path: 'feedback', Component: FeedbackPage },
     ],
   },
   {
-    path: "/",
+    path: '/',
     element: (
       <PublicOnly>
         <AuthLayout />
@@ -63,12 +63,12 @@ export const router = createBrowserRouter([
     ),
     errorElement: <NotFound />,
     children: [
-      { path: "login", Component: Login },
-      { path: "register", Component: Register },
+      { path: 'login', Component: Login },
+      { path: 'register', Component: Register },
     ],
   },
   {
-    path: "/dashboard",
+    path: '/dashboard',
     element: (
       <PrivateRoute>
         <DashboardLayout />
@@ -76,11 +76,11 @@ export const router = createBrowserRouter([
     ),
     children: [
       {
-        path: "",
+        path: '',
         element: <DashboardRouter />,
       },
       {
-        path: "organizer-profile",
+        path: 'organizer-profile',
         element: (
           <OrganizerRoute>
             <OrganizerProfile />
@@ -88,7 +88,7 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: "add-camp",
+        path: 'add-camp',
         element: (
           <OrganizerRoute>
             <AddCamp />
@@ -96,7 +96,7 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: "manage-camps",
+        path: 'manage-camps',
         element: (
           <OrganizerRoute>
             <ManageCamps />
@@ -104,7 +104,7 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: "manage-registrations",
+        path: 'manage-registrations',
         element: (
           <OrganizerRoute>
             <ManageRegistrations />
@@ -112,7 +112,7 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: "analytics",
+        path: 'analytics',
         element: (
           <ParticipantRoute>
             <Analytics />
@@ -120,7 +120,7 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: "profile",
+        path: 'profile',
         element: (
           <ParticipantRoute>
             <ParticipantProfile />
@@ -128,7 +128,7 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: "registered-camps",
+        path: 'registered-camps',
         element: (
           <ParticipantRoute>
             <RegisteredCamps />
@@ -136,7 +136,7 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: "payment-history",
+        path: 'payment-history',
         element: (
           <ParticipantRoute>
             <PaymentHistory />

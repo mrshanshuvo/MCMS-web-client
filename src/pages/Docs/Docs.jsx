@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useMemo } from 'react';
 import {
   BookOpen,
   Users,
@@ -14,111 +14,110 @@ import {
   HelpCircle,
   ArrowRight,
   Star,
-} from "lucide-react";
-import { Link } from "react-router";
+} from 'lucide-react';
+import { Link } from 'react-router';
 
 // Constants for better maintainability
 const FEATURES = [
   {
     icon: <ClipboardList className="w-6 h-6" />,
-    title: "Camp Management",
-    description:
-      "Create, edit, and manage medical camps with comprehensive tools",
+    title: 'Camp Management',
+    description: 'Create, edit, and manage medical camps with comprehensive tools',
   },
   {
     icon: <CreditCard className="w-6 h-6" />,
-    title: "Secure Payments",
-    description: "Stripe integration for safe and reliable transactions",
+    title: 'Secure Payments',
+    description: 'Stripe integration for safe and reliable transactions',
   },
   {
     icon: <BarChart2 className="w-6 h-6" />,
-    title: "Participant Analytics",
-    description: "Dynamic charts and insights for better decision making",
+    title: 'Participant Analytics',
+    description: 'Dynamic charts and insights for better decision making',
   },
   {
     icon: <Bell className="w-6 h-6" />,
-    title: "Real-time Updates",
-    description: "Instant notifications for all critical actions",
+    title: 'Real-time Updates',
+    description: 'Instant notifications for all critical actions',
   },
   {
     icon: <Smartphone className="w-6 h-6" />,
-    title: "Responsive Design",
-    description: "Optimized for all devices from mobile to desktop",
+    title: 'Responsive Design',
+    description: 'Optimized for all devices from mobile to desktop',
   },
   {
     icon: <LayoutDashboard className="w-6 h-6" />,
-    title: "Role-based Dashboards",
-    description: "Custom interfaces for organizers and participants",
+    title: 'Role-based Dashboards',
+    description: 'Custom interfaces for organizers and participants',
   },
 ];
 
 const LINKS = [
   {
     icon: <Globe className="w-5 h-5" />,
-    title: "Live Website",
-    url: "https://mcms-auth.firebaseapp.com/",
-    ariaLabel: "Visit the live CareCamp website",
+    title: 'Live Website',
+    url: 'https://mcms-auth.firebaseapp.com/',
+    ariaLabel: 'Visit the live CareCamp website',
   },
   {
     icon: <Github className="w-5 h-5" />,
-    title: "Client Repository",
-    url: "https://github.com/Programming-Hero-Web-Course4/b11a12-client-side-mrshanshuvo",
-    ariaLabel: "View client-side source code on GitHub",
+    title: 'Client Repository',
+    url: 'https://github.com/Programming-Hero-Web-Course4/b11a12-client-side-mrshanshuvo',
+    ariaLabel: 'View client-side source code on GitHub',
   },
   {
     icon: <Github className="w-5 h-5" />,
-    title: "Server Repository",
-    url: "https://github.com/Programming-Hero-Web-Course4/b11a12-server-side-mrshanshuvo",
-    ariaLabel: "View server-side source code on GitHub",
+    title: 'Server Repository',
+    url: 'https://github.com/Programming-Hero-Web-Course4/b11a12-server-side-mrshanshuvo',
+    ariaLabel: 'View server-side source code on GitHub',
   },
 ];
 
 const USER_ROLES = [
   {
-    title: "Organizer",
+    title: 'Organizer',
     icon: <Users className="w-5 h-5" />,
     features: [
-      "Create, manage, and monitor medical camps",
-      "Track registrations and payment statuses",
-      "View participant analytics and feedback",
-      "Manage camp schedules and details",
+      'Create, manage, and monitor medical camps',
+      'Track registrations and payment statuses',
+      'View participant analytics and feedback',
+      'Manage camp schedules and details',
     ],
   },
   {
-    title: "Participant",
+    title: 'Participant',
     icon: <Users className="w-5 h-5" />,
     features: [
-      "Explore and register for medical camps",
-      "Make secure payments through Stripe",
-      "Provide feedback on attended camps",
-      "View personal registration history",
+      'Explore and register for medical camps',
+      'Make secure payments through Stripe',
+      'Provide feedback on attended camps',
+      'View personal registration history',
     ],
   },
 ];
 
 const PROJECT_STRUCTURE = [
   {
-    title: "Client",
+    title: 'Client',
     icon: <Code className="w-5 h-5" />,
     technologies: [
-      "React with Vite",
-      "TailwindCSS for styling",
-      "React Router for navigation",
-      "TanStack Query for data fetching",
-      "Stripe JS for payments",
-      "React Hook Form for forms",
+      'React with Vite',
+      'TailwindCSS for styling',
+      'React Router for navigation',
+      'TanStack Query for data fetching',
+      'Stripe JS for payments',
+      'React Hook Form for forms',
     ],
   },
   {
-    title: "Server",
+    title: 'Server',
     icon: <Code className="w-5 h-5" />,
     technologies: [
-      "Node.js with Express",
-      "MongoDB with Mongoose",
-      "JWT for authentication",
-      "Firebase Admin SDK",
-      "Stripe for payment processing",
-      "CORS and security middleware",
+      'Node.js with Express',
+      'MongoDB with Mongoose',
+      'JWT for authentication',
+      'Firebase Admin SDK',
+      'Stripe for payment processing',
+      'CORS and security middleware',
     ],
   },
 ];
@@ -135,7 +134,7 @@ const Docs = () => {
         <h1 className="text-4xl font-bold text-[#45474B] mb-4">
           CareCamp
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#495E57] to-[#F4CE14]">
-            {" "}
+            {' '}
             Documentation
           </span>
         </h1>
@@ -144,41 +143,34 @@ const Docs = () => {
         </p>
       </div>
     ),
-    [],
+    []
   );
 
   const OverviewSection = useMemo(
     () => (
       <section className="mb-12">
         <h2 className="text-2xl font-semibold text-[#45474B] mb-6 flex items-center">
-          <span
-            className="w-3 h-3 bg-[#495E57] rounded-full mr-3"
-            aria-hidden="true"
-          ></span>
+          <span className="w-3 h-3 bg-[#495E57] rounded-full mr-3" aria-hidden="true"></span>
           Overview
         </h2>
         <div className="prose max-w-none text-[#45474B]/70 leading-relaxed">
           <p>
-            CareCamp (Medical Camp Management System) is a full-featured MERN
-            stack platform that simplifies the organization and participation of
-            medical camps. It provides role-based dashboards, real-time updates,
-            secure payments, and a user-centric interface for both organizers
-            and participants.
+            CareCamp (Medical Camp Management System) is a full-featured MERN stack platform that
+            simplifies the organization and participation of medical camps. It provides role-based
+            dashboards, real-time updates, secure payments, and a user-centric interface for both
+            organizers and participants.
           </p>
         </div>
       </section>
     ),
-    [],
+    []
   );
 
   const UserRolesSection = useMemo(
     () => (
       <section className="mb-12">
         <h2 className="text-2xl font-semibold text-[#45474B] mb-6 flex items-center">
-          <span
-            className="w-3 h-3 bg-[#495E57] rounded-full mr-3"
-            aria-hidden="true"
-          ></span>
+          <span className="w-3 h-3 bg-[#495E57] rounded-full mr-3" aria-hidden="true"></span>
           User Roles
         </h2>
         <div className="grid md:grid-cols-2 gap-6">
@@ -209,17 +201,14 @@ const Docs = () => {
         </div>
       </section>
     ),
-    [],
+    []
   );
 
   const FeaturesSection = useMemo(
     () => (
       <section className="mb-12">
         <h2 className="text-2xl font-semibold text-[#45474B] mb-6 flex items-center">
-          <span
-            className="w-3 h-3 bg-[#495E57] rounded-full mr-3"
-            aria-hidden="true"
-          ></span>
+          <span className="w-3 h-3 bg-[#495E57] rounded-full mr-3" aria-hidden="true"></span>
           Key Features
         </h2>
         <div
@@ -238,12 +227,8 @@ const Docs = () => {
                   {feature.icon}
                 </div>
                 <div className="flex-1 min-w-0">
-                  <h3 className="font-semibold text-[#45474B] mb-2">
-                    {feature.title}
-                  </h3>
-                  <p className="text-[#45474B]/70 text-sm leading-relaxed">
-                    {feature.description}
-                  </p>
+                  <h3 className="font-semibold text-[#45474B] mb-2">{feature.title}</h3>
+                  <p className="text-[#45474B]/70 text-sm leading-relaxed">{feature.description}</p>
                 </div>
               </div>
             </div>
@@ -251,17 +236,14 @@ const Docs = () => {
         </div>
       </section>
     ),
-    [],
+    []
   );
 
   const ProjectStructureSection = useMemo(
     () => (
       <section className="mb-12">
         <h2 className="text-2xl font-semibold text-[#45474B] mb-6 flex items-center">
-          <span
-            className="w-3 h-3 bg-[#495E57] rounded-full mr-3"
-            aria-hidden="true"
-          ></span>
+          <span className="w-3 h-3 bg-[#495E57] rounded-full mr-3" aria-hidden="true"></span>
           Project Structure
         </h2>
         <div className="grid md:grid-cols-2 gap-6">
@@ -292,17 +274,14 @@ const Docs = () => {
         </div>
       </section>
     ),
-    [],
+    []
   );
 
   const LinksSection = useMemo(
     () => (
       <section className="mb-12">
         <h2 className="text-2xl font-semibold text-[#45474B] mb-6 flex items-center">
-          <span
-            className="w-3 h-3 bg-[#495E57] rounded-full mr-3"
-            aria-hidden="true"
-          ></span>
+          <span className="w-3 h-3 bg-[#495E57] rounded-full mr-3" aria-hidden="true"></span>
           Useful Links
         </h2>
         <div className="space-y-3" role="list" aria-label="Useful links">
@@ -332,17 +311,14 @@ const Docs = () => {
         </div>
       </section>
     ),
-    [],
+    []
   );
 
   const SupportSection = useMemo(
     () => (
       <section>
         <h2 className="text-2xl font-semibold text-[#45474B] mb-6 flex items-center">
-          <span
-            className="w-3 h-3 bg-[#495E57] rounded-full mr-3"
-            aria-hidden="true"
-          ></span>
+          <span className="w-3 h-3 bg-[#495E57] rounded-full mr-3" aria-hidden="true"></span>
           Need Help?
         </h2>
         <div className="bg-[#495E57]/5 p-6 rounded-xl border border-[#495E57]/10">
@@ -351,13 +327,10 @@ const Docs = () => {
               <HelpCircle size={24} aria-hidden="true" />
             </div>
             <div className="flex-1">
-              <h3 className="font-semibold text-lg text-[#45474B] mb-2">
-                Contact Support
-              </h3>
+              <h3 className="font-semibold text-lg text-[#45474B] mb-2">Contact Support</h3>
               <p className="text-[#45474B]/70 mb-4 leading-relaxed">
-                If you encounter issues or have questions about the platform,
-                feel free to reach out through our contact form or open an issue
-                on GitHub.
+                If you encounter issues or have questions about the platform, feel free to reach out
+                through our contact form or open an issue on GitHub.
               </p>
               <Link
                 to="/contact"
@@ -376,7 +349,7 @@ const Docs = () => {
         </div>
       </section>
     ),
-    [],
+    []
   );
 
   return (

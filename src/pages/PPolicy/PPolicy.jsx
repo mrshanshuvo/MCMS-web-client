@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useCallback } from "react";
+import React, { useState, useMemo, useCallback } from 'react';
 import {
   Shield,
   Lock,
@@ -10,16 +10,16 @@ import {
   ChevronUp,
   ArrowRight,
   Star,
-} from "lucide-react";
-import { Link } from "react-router";
+} from 'lucide-react';
+import { Link } from 'react-router';
 
 // Constants
-const LAST_UPDATED = "July 30, 2025";
+const LAST_UPDATED = 'July 30, 2025';
 
 const SECTIONS = [
   {
-    id: "info-collection",
-    title: "Information We Collect",
+    id: 'info-collection',
+    title: 'Information We Collect',
     icon: <UserIcon className="w-5 h-5" />,
     content: (
       <div className="space-y-4">
@@ -30,8 +30,7 @@ const SECTIONS = [
           <div>
             <h3 className="font-medium text-[#45474B]">Personal Information</h3>
             <p className="text-[#45474B]/70">
-              Name, email address, phone number, profile image, and other
-              contact details.
+              Name, email address, phone number, profile image, and other contact details.
             </p>
           </div>
         </div>
@@ -42,8 +41,7 @@ const SECTIONS = [
           <div>
             <h3 className="font-medium text-[#45474B]">Registration Data</h3>
             <p className="text-[#45474B]/70">
-              Medical camp registration details, payment information, and
-              participation history.
+              Medical camp registration details, payment information, and participation history.
             </p>
           </div>
         </div>
@@ -54,8 +52,7 @@ const SECTIONS = [
           <div>
             <h3 className="font-medium text-[#45474B]">Usage Data</h3>
             <p className="text-[#45474B]/70">
-              Browser type, IP address, pages visited, and other analytics to
-              improve our services.
+              Browser type, IP address, pages visited, and other analytics to improve our services.
             </p>
           </div>
         </div>
@@ -63,31 +60,28 @@ const SECTIONS = [
     ),
   },
   {
-    id: "info-use",
-    title: "How We Use Your Information",
+    id: 'info-use',
+    title: 'How We Use Your Information',
     icon: <Shield className="w-5 h-5" />,
     content: (
       <ul className="space-y-3 text-[#45474B]/70" role="list">
         {[
           {
-            title: "Service Delivery:",
-            description:
-              "Manage your camp registrations and provide access to platform features.",
+            title: 'Service Delivery:',
+            description: 'Manage your camp registrations and provide access to platform features.',
           },
           {
-            title: "Communication:",
-            description:
-              "Send important updates about your registrations and platform changes.",
+            title: 'Communication:',
+            description: 'Send important updates about your registrations and platform changes.',
           },
           {
-            title: "Improvements:",
+            title: 'Improvements:',
             description:
-              "Analyze usage patterns to enhance user experience and develop new features.",
+              'Analyze usage patterns to enhance user experience and develop new features.',
           },
           {
-            title: "Security:",
-            description:
-              "Monitor for fraudulent activity and protect our services.",
+            title: 'Security:',
+            description: 'Monitor for fraudulent activity and protect our services.',
           },
         ].map((item, index) => (
           <li key={index} className="flex items-start">
@@ -96,8 +90,7 @@ const SECTIONS = [
               aria-hidden="true"
             ></span>
             <div>
-              <strong className="text-[#45474B]">{item.title}</strong>{" "}
-              {item.description}
+              <strong className="text-[#45474B]">{item.title}</strong> {item.description}
             </div>
           </li>
         ))}
@@ -105,26 +98,23 @@ const SECTIONS = [
     ),
   },
   {
-    id: "data-protection",
-    title: "Data Protection",
+    id: 'data-protection',
+    title: 'Data Protection',
     icon: <Lock className="w-5 h-5" />,
     content: (
       <div className="space-y-4">
         <p className="text-[#45474B]/70">
-          We implement industry-standard security measures including encryption,
-          access controls, and regular security audits to protect your
-          information.
+          We implement industry-standard security measures including encryption, access controls,
+          and regular security audits to protect your information.
         </p>
         <div className="bg-[#495E57]/5 p-4 rounded-lg border border-[#495E57]/10">
-          <h3 className="font-medium text-[#45474B] mb-2">
-            Security Measures:
-          </h3>
+          <h3 className="font-medium text-[#45474B] mb-2">Security Measures:</h3>
           <ul className="space-y-2 text-[#45474B]/70" role="list">
             {[
-              "SSL/TLS encryption for all data transmissions",
-              "Regular security vulnerability scanning",
-              "Strict access controls and authentication protocols",
-              "Secure data storage with encryption at rest",
+              'SSL/TLS encryption for all data transmissions',
+              'Regular security vulnerability scanning',
+              'Strict access controls and authentication protocols',
+              'Secure data storage with encryption at rest',
             ].map((item, index) => (
               <li key={index} className="flex items-start">
                 <span
@@ -137,48 +127,38 @@ const SECTIONS = [
           </ul>
         </div>
         <p className="text-[#45474B]/50 text-sm">
-          While we strive to protect your personal information, no method of
-          transmission over the Internet or electronic storage is 100% secure.
+          While we strive to protect your personal information, no method of transmission over the
+          Internet or electronic storage is 100% secure.
         </p>
       </div>
     ),
   },
   {
-    id: "third-party",
-    title: "Third-Party Services",
+    id: 'third-party',
+    title: 'Third-Party Services',
     icon: <Server className="w-5 h-5" />,
     content: (
       <div className="space-y-4">
         <p className="text-[#45474B]/70">
-          We may share your information with trusted third-party services that
-          help us operate our platform:
+          We may share your information with trusted third-party services that help us operate our
+          platform:
         </p>
         <div className="grid sm:grid-cols-2 gap-4">
           {[
             {
-              name: "Stripe",
-              logo: "https://cdn.worldvectorlogo.com/logos/stripe-4.svg",
-              description:
-                "Payment processing services with PCI-DSS compliance.",
+              name: 'Stripe',
+              logo: 'https://cdn.worldvectorlogo.com/logos/stripe-4.svg',
+              description: 'Payment processing services with PCI-DSS compliance.',
             },
             {
-              name: "Firebase",
-              logo: "https://cdn.worldvectorlogo.com/logos/firebase-1.svg",
-              description:
-                "Authentication services with secure identity verification.",
+              name: 'Firebase',
+              logo: 'https://cdn.worldvectorlogo.com/logos/firebase-1.svg',
+              description: 'Authentication services with secure identity verification.',
             },
           ].map((service, index) => (
-            <div
-              key={index}
-              className="bg-white p-4 rounded-lg border border-[#495E57]/10"
-            >
+            <div key={index} className="bg-white p-4 rounded-lg border border-[#495E57]/10">
               <h3 className="font-medium text-[#45474B] mb-2 flex items-center gap-2">
-                <img
-                  src={service.logo}
-                  alt={service.name}
-                  className="h-5"
-                  loading="lazy"
-                />
+                <img src={service.logo} alt={service.name} className="h-5" loading="lazy" />
                 {service.name}
               </h3>
               <p className="text-[#45474B]/70 text-sm">{service.description}</p>
@@ -189,19 +169,17 @@ const SECTIONS = [
     ),
   },
   {
-    id: "contact",
-    title: "Contact Us",
+    id: 'contact',
+    title: 'Contact Us',
     icon: <Mail className="w-5 h-5" />,
     content: (
       <div className="space-y-4">
         <p className="text-[#45474B]/70">
-          If you have any questions about this Privacy Policy or our data
-          practices, please contact our Data Protection Officer:
+          If you have any questions about this Privacy Policy or our data practices, please contact
+          our Data Protection Officer:
         </p>
         <div className="bg-[#495E57]/5 p-4 rounded-lg border border-[#495E57]/10">
-          <h3 className="font-medium text-[#45474B] mb-2">
-            CareCamp Support Team
-          </h3>
+          <h3 className="font-medium text-[#45474B] mb-2">CareCamp Support Team</h3>
           <ul className="space-y-2 text-[#45474B]/70">
             <li className="flex items-center gap-2">
               <Mail className="w-4 h-4 text-[#495E57]" />
@@ -236,13 +214,13 @@ const PPolicy = () => {
     (id) => {
       setActiveSection(activeSection === id ? null : id);
     },
-    [activeSection],
+    [activeSection]
   );
 
   const scrollToSection = useCallback((id) => {
     const el = document.getElementById(id);
     if (el) {
-      el.scrollIntoView({ behavior: "smooth" });
+      el.scrollIntoView({ behavior: 'smooth' });
       setActiveSection(id);
     }
   }, []);
@@ -258,16 +236,14 @@ const PPolicy = () => {
         <h1 className="text-4xl font-bold text-[#45474B] mb-4">
           CareCamp
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#495E57] to-[#F4CE14]">
-            {" "}
+            {' '}
             Privacy Policy
           </span>
         </h1>
-        <p className="text-xl text-[#45474B]/70 max-w-3xl mx-auto">
-          Last updated: {LAST_UPDATED}
-        </p>
+        <p className="text-xl text-[#45474B]/70 max-w-3xl mx-auto">Last updated: {LAST_UPDATED}</p>
       </div>
     ),
-    [],
+    []
   );
 
   const TableOfContents = useMemo(
@@ -277,10 +253,7 @@ const PPolicy = () => {
         className="lg:sticky lg:top-24 lg:w-1/4 bg-white rounded-2xl shadow-sm border border-[#495E57]/10 p-6 h-fit"
       >
         <h2 className="text-xl font-semibold text-[#45474B] mb-4 flex items-center gap-2">
-          <span
-            className="w-2 h-2 bg-[#495E57] rounded-full"
-            aria-hidden="true"
-          ></span>
+          <span className="w-2 h-2 bg-[#495E57] rounded-full" aria-hidden="true"></span>
           Contents
         </h2>
         <ul className="space-y-3" role="list">
@@ -290,10 +263,10 @@ const PPolicy = () => {
                 onClick={() => scrollToSection(id)}
                 className={`flex items-center gap-3 w-full text-left p-2 rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#495E57] focus:ring-offset-2 ${
                   activeSection === id
-                    ? "bg-[#495E57]/10 text-[#495E57]"
-                    : "hover:bg-[#495E57]/5 text-[#45474B]"
+                    ? 'bg-[#495E57]/10 text-[#495E57]'
+                    : 'hover:bg-[#495E57]/5 text-[#45474B]'
                 }`}
-                aria-current={activeSection === id ? "location" : undefined}
+                aria-current={activeSection === id ? 'location' : undefined}
               >
                 <span className="text-[#495E57]">{icon}</span>
                 <span className="font-medium">{title}</span>
@@ -303,7 +276,7 @@ const PPolicy = () => {
         </ul>
       </nav>
     ),
-    [activeSection, scrollToSection],
+    [activeSection, scrollToSection]
   );
 
   const PolicyContent = useMemo(
@@ -318,9 +291,9 @@ const PPolicy = () => {
           <meta itemProp="dateModified" content="2025-07-30" />
 
           <p className="text-[#45474B]/70 mb-8 leading-relaxed">
-            Your privacy is important to us at CareCamp (Medical Camp Management
-            System). This Privacy Policy explains how we collect, use, and
-            protect your personal information when you use our platform.
+            Your privacy is important to us at CareCamp (Medical Camp Management System). This
+            Privacy Policy explains how we collect, use, and protect your personal information when
+            you use our platform.
           </p>
 
           <div className="space-y-6">
@@ -380,8 +353,7 @@ const PPolicy = () => {
               Still have questions about your privacy?
             </h3>
             <p className="text-[#45474B]/70 mb-6 leading-relaxed">
-              Our support team is here to help you understand how we protect
-              your data.
+              Our support team is here to help you understand how we protect your data.
             </p>
             <Link
               to="/contact"
@@ -398,7 +370,7 @@ const PPolicy = () => {
         </div>
       </article>
     ),
-    [activeSection, toggleSection],
+    [activeSection, toggleSection]
   );
 
   return (

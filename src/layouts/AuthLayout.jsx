@@ -1,5 +1,5 @@
-import { Outlet } from "react-router";
-import CareCampLogo from "../pages/Shared/CareCampLogo/CareCampLogo";
+import { Outlet } from 'react-router';
+import CareCampLogo from '../pages/Shared/CareCampLogo/CareCampLogo';
 
 const AuthLayout = () => {
   return (

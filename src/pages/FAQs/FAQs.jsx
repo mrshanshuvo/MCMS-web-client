@@ -1,25 +1,19 @@
-import React, { useState, useMemo, useCallback } from "react";
-import {
-  ChevronDown,
-  ChevronUp,
-  HelpCircle,
-  Loader2,
-  Star,
-} from "lucide-react";
-import { useQuery } from "@tanstack/react-query";
-import useAxiosSecure from "../../hooks/useAxiosSecure";
-import { Link, useSearchParams } from "react-router";
+import React, { useState, useMemo, useCallback } from 'react';
+import { ChevronDown, ChevronUp, HelpCircle, Loader2, Star } from 'lucide-react';
+import { useQuery } from '@tanstack/react-query';
+import useAxiosSecure from '../../hooks/useAxiosSecure';
+import { Link, useSearchParams } from 'react-router';
 
 // Constants
 const FAQS_PER_PAGE = 5;
 const CATEGORY_COLORS = {
-  General: { bg: "bg-[#495E57]/10", text: "text-[#495E57]" },
-  Registration: { bg: "bg-[#495E57]/10", text: "text-[#495E57]" },
-  Payments: { bg: "bg-[#495E57]/10", text: "text-[#495E57]" },
-  Organizers: { bg: "bg-[#495E57]/10", text: "text-[#495E57]" },
-  Eligibility: { bg: "bg-[#495E57]/10", text: "text-[#495E57]" },
-  Feedback: { bg: "bg-[#495E57]/10", text: "text-[#495E57]" },
-  default: { bg: "bg-[#495E57]/10", text: "text-[#495E57]" },
+  General: { bg: 'bg-[#495E57]/10', text: 'text-[#495E57]' },
+  Registration: { bg: 'bg-[#495E57]/10', text: 'text-[#495E57]' },
+  Payments: { bg: 'bg-[#495E57]/10', text: 'text-[#495E57]' },
+  Organizers: { bg: 'bg-[#495E57]/10', text: 'text-[#495E57]' },
+  Eligibility: { bg: 'bg-[#495E57]/10', text: 'text-[#495E57]' },
+  Feedback: { bg: 'bg-[#495E57]/10', text: 'text-[#495E57]' },
+  default: { bg: 'bg-[#495E57]/10', text: 'text-[#495E57]' },
 };
 
 const FAQs = () => {
@@ -29,7 +23,7 @@ const FAQs = () => {
   const axiosSecure = useAxiosSecure();
 
   // Get initial state from URL params
-  const activeCategory = searchParams.get("category") || "All";
+  const activeCategory = searchParams.get('category') || 'All';
 
   const {
     data: faqsRes = { data: [] },
@@ -37,9 +31,9 @@ const FAQs = () => {
     isError,
     error,
   } = useQuery({
-    queryKey: ["faqs"],
+    queryKey: ['faqs'],
     queryFn: async () => {
-      const res = await axiosSecure.get("/faqs");
+      const res = await axiosSecure.get('/faqs');
       return res.data;
     },
     staleTime: 10 * 60 * 1000, // 10 minutes
@@ -49,31 +43,21 @@ const FAQs = () => {
   const faqs = faqsRes.data || [];
 
   // Memoized computations
-  const categories = useMemo(
-    () => ["All", ...new Set(faqs.map((faq) => faq.category))],
-    [faqs],
-  );
+  const categories = useMemo(() => ['All', ...new Set(faqs.map((faq) => faq.category))], [faqs]);
 
   const filteredFAQs = useMemo(
-    () =>
-      activeCategory === "All"
-        ? faqs
-        : faqs.filter((faq) => faq.category === activeCategory),
-    [faqs, activeCategory],
+    () => (activeCategory === 'All' ? faqs : faqs.filter((faq) => faq.category === activeCategory)),
+    [faqs, activeCategory]
   );
 
   const totalPages = useMemo(
     () => Math.ceil(filteredFAQs.length / FAQS_PER_PAGE),
-    [filteredFAQs.length],
+    [filteredFAQs.length]
   );
 
   const paginatedFAQs = useMemo(
-    () =>
-      filteredFAQs.slice(
-        (currentPage - 1) * FAQS_PER_PAGE,
-        currentPage * FAQS_PER_PAGE,
-      ),
-    [filteredFAQs, currentPage],
+    () => filteredFAQs.slice((currentPage - 1) * FAQS_PER_PAGE, currentPage * FAQS_PER_PAGE),
+    [filteredFAQs, currentPage]
   );
 
   // Event handlers
@@ -81,22 +65,22 @@ const FAQs = () => {
     (index) => {
       setOpenIndex(index === openIndex ? null : index);
     },
-    [openIndex],
+    [openIndex]
   );
 
   const handleCategoryChange = useCallback(
     (category) => {
       const newParams = new URLSearchParams(searchParams);
-      if (category === "All") {
-        newParams.delete("category");
+      if (category === 'All') {
+        newParams.delete('category');
       } else {
-        newParams.set("category", category);
+        newParams.set('category', category);
       }
       setSearchParams(newParams);
       setCurrentPage(1);
       setOpenIndex(null);
     },
-    [searchParams, setSearchParams],
+    [searchParams, setSearchParams]
   );
 
   const goToPage = useCallback(
@@ -104,9 +88,9 @@ const FAQs = () => {
       if (page < 1 || page > totalPages) return;
       setCurrentPage(page);
       setOpenIndex(null);
-      window.scrollTo({ top: 0, behavior: "smooth" });
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     },
-    [totalPages],
+    [totalPages]
   );
 
   const getPaginationRange = useCallback(() => {
@@ -122,13 +106,13 @@ const FAQs = () => {
       const rightBound = Math.min(totalPages, currentPage + 2);
 
       if (leftBound > 1) range.push(1);
-      if (leftBound > 2) range.push("...");
+      if (leftBound > 2) range.push('...');
 
       for (let i = leftBound; i <= rightBound; i++) {
         range.push(i);
       }
 
-      if (rightBound < totalPages - 1) range.push("...");
+      if (rightBound < totalPages - 1) range.push('...');
       if (rightBound < totalPages) range.push(totalPages);
     }
 
@@ -156,12 +140,8 @@ const FAQs = () => {
     return (
       <div className="min-h-screen bg-gradient-to-b from-[#F5F7F8] to-white flex items-center justify-center">
         <div className="text-center p-6 bg-white rounded-xl shadow-sm border border-[#495E57]/10 max-w-md mx-4">
-          <h3 className="text-xl font-semibold text-red-600 mb-2">
-            Failed to load FAQs
-          </h3>
-          <p className="text-[#45474B]/70 mb-4">
-            {error?.message || "Please try again later"}
-          </p>
+          <h3 className="text-xl font-semibold text-red-600 mb-2">Failed to load FAQs</h3>
+          <p className="text-[#45474B]/70 mb-4">{error?.message || 'Please try again later'}</p>
           <button
             onClick={() => window.location.reload()}
             className="bg-[#495E57]/10 text-[#495E57] px-4 py-2 rounded-lg font-medium hover:bg-[#495E57]/20 transition-colors focus:outline-none focus:ring-2 focus:ring-[#495E57] focus:ring-offset-2"
@@ -183,7 +163,7 @@ const FAQs = () => {
             Need Help?
           </div>
           <h2 className="text-4xl font-bold text-[#45474B] mb-4">
-            Frequently Asked{" "}
+            Frequently Asked{' '}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#495E57] to-[#F4CE14]">
               Questions
             </span>
@@ -207,8 +187,8 @@ const FAQs = () => {
                 onClick={() => handleCategoryChange(category)}
                 className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#495E57] focus:ring-offset-2 ${
                   isActive
-                    ? "bg-gradient-to-r from-[#495E57] to-[#495E57]/90 text-white shadow-sm"
-                    : "bg-white text-[#45474B] hover:bg-[#495E57]/5 border border-[#495E57]/20"
+                    ? 'bg-gradient-to-r from-[#495E57] to-[#495E57]/90 text-white shadow-sm'
+                    : 'bg-white text-[#45474B] hover:bg-[#495E57]/5 border border-[#495E57]/20'
                 }`}
                 role="tab"
                 aria-selected={isActive}
@@ -235,7 +215,7 @@ const FAQs = () => {
                 <div
                   key={faq._id || index}
                   className={`transition-colors duration-200 ${
-                    isOpen ? "bg-[#495E57]/5" : "hover:bg-[#495E57]/3"
+                    isOpen ? 'bg-[#495E57]/5' : 'hover:bg-[#495E57]/3'
                   }`}
                 >
                   <button
@@ -266,11 +246,7 @@ const FAQs = () => {
                       className="text-[#495E57] shrink-0 mt-1 transition-transform duration-200"
                       aria-hidden="true"
                     >
-                      {isOpen ? (
-                        <ChevronUp size={20} />
-                      ) : (
-                        <ChevronDown size={20} />
-                      )}
+                      {isOpen ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
                     </span>
                   </button>
                   {isOpen && (
@@ -294,10 +270,7 @@ const FAQs = () => {
 
         {/* Pagination */}
         {totalPages > 1 && (
-          <div
-            className="flex justify-center items-center gap-2 mt-8"
-            aria-label="Pagination"
-          >
+          <div className="flex justify-center items-center gap-2 mt-8" aria-label="Pagination">
             <button
               onClick={() => goToPage(currentPage - 1)}
               disabled={currentPage === 1}
@@ -309,12 +282,8 @@ const FAQs = () => {
             </button>
 
             {getPaginationRange().map((page, index) =>
-              page === "..." ? (
-                <span
-                  key={index}
-                  className="px-2 py-1 text-[#45474B]/50"
-                  aria-hidden="true"
-                >
+              page === '...' ? (
+                <span key={index} className="px-2 py-1 text-[#45474B]/50" aria-hidden="true">
                   ...
                 </span>
               ) : (
@@ -323,15 +292,15 @@ const FAQs = () => {
                   onClick={() => goToPage(page)}
                   className={`w-10 h-10 rounded-full flex items-center justify-center transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#495E57] focus:ring-offset-2 ${
                     currentPage === page
-                      ? "bg-gradient-to-r from-[#495E57] to-[#495E57]/90 text-white shadow-sm"
-                      : "hover:bg-[#495E57]/5 text-[#45474B]"
+                      ? 'bg-gradient-to-r from-[#495E57] to-[#495E57]/90 text-white shadow-sm'
+                      : 'hover:bg-[#495E57]/5 text-[#45474B]'
                   }`}
                   aria-label={`Go to page ${page}`}
-                  aria-current={currentPage === page ? "page" : undefined}
+                  aria-current={currentPage === page ? 'page' : undefined}
                 >
                   {page}
                 </button>
-              ),
+              )
             )}
 
             <button
@@ -341,11 +310,7 @@ const FAQs = () => {
               aria-label="Go to next page"
             >
               Next
-              <ChevronDown
-                className="-rotate-90"
-                size={16}
-                aria-hidden="true"
-              />
+              <ChevronDown className="-rotate-90" size={16} aria-hidden="true" />
             </button>
           </div>
         )}
@@ -357,26 +322,20 @@ const FAQs = () => {
             aria-live="polite"
             aria-atomic="true"
           >
-            Showing{" "}
-            {Math.min(
-              (currentPage - 1) * FAQS_PER_PAGE + 1,
-              filteredFAQs.length,
-            )}{" "}
-            - {Math.min(currentPage * FAQS_PER_PAGE, filteredFAQs.length)} of{" "}
-            {filteredFAQs.length} questions
-            {activeCategory !== "All" && ` in "${activeCategory}"`}
+            Showing {Math.min((currentPage - 1) * FAQS_PER_PAGE + 1, filteredFAQs.length)} -{' '}
+            {Math.min(currentPage * FAQS_PER_PAGE, filteredFAQs.length)} of {filteredFAQs.length}{' '}
+            questions
+            {activeCategory !== 'All' && ` in "${activeCategory}"`}
           </div>
         )}
 
         {/* Contact CTA */}
         <div className="mt-12 text-center">
           <div className="bg-gradient-to-r from-[#495E57]/5 to-[#F4CE14]/5 rounded-2xl p-8 border border-[#495E57]/10">
-            <h3 className="text-2xl font-semibold text-[#45474B] mb-3">
-              Still need help?
-            </h3>
+            <h3 className="text-2xl font-semibold text-[#45474B] mb-3">Still need help?</h3>
             <p className="text-[#45474B]/70 mb-6 max-w-2xl mx-auto leading-relaxed">
-              Can't find what you're looking for? Our support team is ready to
-              assist you with any questions.
+              Can't find what you're looking for? Our support team is ready to assist you with any
+              questions.
             </p>
             <Link
               to="/contact"

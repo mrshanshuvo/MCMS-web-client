@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useCallback } from "react";
+import React, { useState, useMemo, useCallback } from 'react';
 import {
   ClipboardCheck,
   CreditCard,
@@ -10,16 +10,16 @@ import {
   ChevronUp,
   ArrowRight,
   Star,
-} from "lucide-react";
-import { Link } from "react-router";
+} from 'lucide-react';
+import { Link } from 'react-router';
 
 // Constants
-const LAST_UPDATED = "July 30, 2025";
+const LAST_UPDATED = 'July 30, 2025';
 
 const SECTIONS = [
   {
-    id: "user-responsibilities",
-    title: "User Responsibilities",
+    id: 'user-responsibilities',
+    title: 'User Responsibilities',
     icon: <ClipboardCheck className="w-5 h-5" />,
     content: (
       <div className="space-y-4">
@@ -27,10 +27,10 @@ const SECTIONS = [
           <h3 className="font-medium text-[#45474B] mb-2">You agree to:</h3>
           <ul className="space-y-2 text-[#45474B]/70" role="list">
             {[
-              "Provide accurate and complete information during registration",
-              "Use the platform only for lawful purposes",
-              "Not engage in any fraudulent or harmful activities",
-              "Comply with all applicable laws and regulations",
+              'Provide accurate and complete information during registration',
+              'Use the platform only for lawful purposes',
+              'Not engage in any fraudulent or harmful activities',
+              'Comply with all applicable laws and regulations',
             ].map((item, index) => (
               <li key={index} className="flex items-start">
                 <span
@@ -43,44 +43,38 @@ const SECTIONS = [
           </ul>
         </div>
         <p className="text-[#45474B]/50 text-sm">
-          Violation of these responsibilities may result in account suspension
-          or termination.
+          Violation of these responsibilities may result in account suspension or termination.
         </p>
       </div>
     ),
   },
   {
-    id: "registration-payment",
-    title: "Registration & Payment",
+    id: 'registration-payment',
+    title: 'Registration & Payment',
     icon: <CreditCard className="w-5 h-5" />,
     content: (
       <div className="space-y-4">
         <div className="grid md:grid-cols-2 gap-4">
           {[
             {
-              title: "Registration",
+              title: 'Registration',
               items: [
-                "Must be 18+ or have guardian consent",
-                "Valid email required for verification",
-                "Complete profile for camp participation",
+                'Must be 18+ or have guardian consent',
+                'Valid email required for verification',
+                'Complete profile for camp participation',
               ],
             },
             {
-              title: "Payments",
+              title: 'Payments',
               items: [
-                "Processed securely via Stripe",
-                "Fees typically non-refundable",
-                "Taxes may apply",
+                'Processed securely via Stripe',
+                'Fees typically non-refundable',
+                'Taxes may apply',
               ],
             },
           ].map((category, index) => (
-            <div
-              key={index}
-              className="bg-white p-4 rounded-lg border border-[#495E57]/10"
-            >
-              <h3 className="font-medium text-[#45474B] mb-2">
-                {category.title}
-              </h3>
+            <div key={index} className="bg-white p-4 rounded-lg border border-[#495E57]/10">
+              <h3 className="font-medium text-[#45474B] mb-2">{category.title}</h3>
               <ul className="space-y-1 text-[#45474B]/70 text-sm" role="list">
                 {category.items.map((item, itemIndex) => (
                   <li key={itemIndex} className="flex items-start">
@@ -96,28 +90,25 @@ const SECTIONS = [
           ))}
         </div>
         <p className="text-[#45474B]/50 text-sm">
-          Some camps may have specific eligibility requirements or refund
-          policies.
+          Some camps may have specific eligibility requirements or refund policies.
         </p>
       </div>
     ),
   },
   {
-    id: "account-security",
-    title: "Account Security",
+    id: 'account-security',
+    title: 'Account Security',
     icon: <Shield className="w-5 h-5" />,
     content: (
       <div className="space-y-4">
         <div className="bg-[#495E57]/5 p-4 rounded-lg border border-[#495E57]/10">
-          <h3 className="font-medium text-[#45474B] mb-2">
-            Your Responsibilities:
-          </h3>
+          <h3 className="font-medium text-[#45474B] mb-2">Your Responsibilities:</h3>
           <ul className="space-y-2 text-[#45474B]/70" role="list">
             {[
-              "Keep your password confidential",
-              "Notify us immediately of unauthorized access",
-              "Use strong authentication methods",
-              "Log out after each session on shared devices",
+              'Keep your password confidential',
+              'Notify us immediately of unauthorized access',
+              'Use strong authentication methods',
+              'Log out after each session on shared devices',
             ].map((item, index) => (
               <li key={index} className="flex items-start">
                 <span
@@ -130,28 +121,26 @@ const SECTIONS = [
           </ul>
         </div>
         <p className="text-[#45474B]/70">
-          While we implement security measures, you are responsible for all
-          activities under your account.
+          While we implement security measures, you are responsible for all activities under your
+          account.
         </p>
       </div>
     ),
   },
   {
-    id: "limitation-liability",
-    title: "Limitation of Liability",
+    id: 'limitation-liability',
+    title: 'Limitation of Liability',
     icon: <AlertTriangle className="w-5 h-5" />,
     content: (
       <div className="space-y-4">
         <div className="bg-[#495E57]/5 p-4 rounded-lg border border-[#495E57]/10">
-          <h3 className="font-medium text-[#45474B] mb-2">
-            CareCamp is not liable for:
-          </h3>
+          <h3 className="font-medium text-[#45474B] mb-2">CareCamp is not liable for:</h3>
           <ul className="space-y-2 text-[#45474B]/70" role="list">
             {[
-              "Any indirect, incidental or consequential damages",
-              "Loss of data or profits",
-              "Service interruptions beyond our control",
-              "User-generated content or third-party services",
+              'Any indirect, incidental or consequential damages',
+              'Loss of data or profits',
+              'Service interruptions beyond our control',
+              'User-generated content or third-party services',
             ].map((item, index) => (
               <li key={index} className="flex items-start">
                 <span
@@ -164,28 +153,26 @@ const SECTIONS = [
           </ul>
         </div>
         <p className="text-[#45474B]/50 text-sm">
-          Some jurisdictions don't allow limitation of liability, so these
-          restrictions may not apply to you.
+          Some jurisdictions don't allow limitation of liability, so these restrictions may not
+          apply to you.
         </p>
       </div>
     ),
   },
   {
-    id: "changes-terms",
-    title: "Changes to Terms",
+    id: 'changes-terms',
+    title: 'Changes to Terms',
     icon: <RefreshCw className="w-5 h-5" />,
     content: (
       <div className="space-y-4">
         <div className="bg-[#495E57]/5 p-4 rounded-lg border border-[#495E57]/10">
-          <h3 className="font-medium text-[#45474B] mb-2">
-            Modification Process:
-          </h3>
+          <h3 className="font-medium text-[#45474B] mb-2">Modification Process:</h3>
           <ul className="space-y-2 text-[#45474B]/70" role="list">
             {[
-              "We may update these terms periodically",
-              "Changes will be posted on this page",
-              "Continued use constitutes acceptance",
-              "Material changes may include additional notice",
+              'We may update these terms periodically',
+              'Changes will be posted on this page',
+              'Continued use constitutes acceptance',
+              'Material changes may include additional notice',
             ].map((item, index) => (
               <li key={index} className="flex items-start">
                 <span
@@ -198,15 +185,14 @@ const SECTIONS = [
           </ul>
         </div>
         <p className="text-[#45474B]/70">
-          We recommend reviewing these terms regularly to stay informed of
-          updates.
+          We recommend reviewing these terms regularly to stay informed of updates.
         </p>
       </div>
     ),
   },
   {
-    id: "contact",
-    title: "Contact Us",
+    id: 'contact',
+    title: 'Contact Us',
     icon: <Mail className="w-5 h-5" />,
     content: (
       <div className="space-y-4">
@@ -242,13 +228,13 @@ const TermsOfService = () => {
     (id) => {
       setActiveSection(activeSection === id ? null : id);
     },
-    [activeSection],
+    [activeSection]
   );
 
   const scrollToSection = useCallback((id) => {
     const el = document.getElementById(id);
     if (el) {
-      el.scrollIntoView({ behavior: "smooth" });
+      el.scrollIntoView({ behavior: 'smooth' });
       setActiveSection(id);
     }
   }, []);
@@ -256,7 +242,7 @@ const TermsOfService = () => {
   const handleAcceptTerms = useCallback(() => {
     setAccepted(true);
     // In a real application, you would save this to local storage or send to backend
-    localStorage.setItem("termsAccepted", "true");
+    localStorage.setItem('termsAccepted', 'true');
   }, []);
 
   // Memoized components
@@ -270,16 +256,14 @@ const TermsOfService = () => {
         <h1 className="text-4xl font-bold text-[#45474B] mb-4">
           CareCamp
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#495E57] to-[#F4CE14]">
-            {" "}
+            {' '}
             Terms of Service
           </span>
         </h1>
-        <p className="text-xl text-[#45474B]/70 max-w-3xl mx-auto">
-          Last updated: {LAST_UPDATED}
-        </p>
+        <p className="text-xl text-[#45474B]/70 max-w-3xl mx-auto">Last updated: {LAST_UPDATED}</p>
       </div>
     ),
-    [],
+    []
   );
 
   const TableOfContents = useMemo(
@@ -289,10 +273,7 @@ const TermsOfService = () => {
         className="lg:sticky lg:top-24 lg:w-1/4 bg-white rounded-2xl shadow-sm border border-[#495E57]/10 p-6 h-fit"
       >
         <h2 className="text-xl font-semibold text-[#45474B] mb-4 flex items-center gap-2">
-          <span
-            className="w-2 h-2 bg-[#495E57] rounded-full"
-            aria-hidden="true"
-          ></span>
+          <span className="w-2 h-2 bg-[#495E57] rounded-full" aria-hidden="true"></span>
           Contents
         </h2>
         <ul className="space-y-3" role="list">
@@ -302,10 +283,10 @@ const TermsOfService = () => {
                 onClick={() => scrollToSection(id)}
                 className={`flex items-center gap-3 w-full text-left p-2 rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#495E57] focus:ring-offset-2 ${
                   activeSection === id
-                    ? "bg-[#495E57]/10 text-[#495E57]"
-                    : "hover:bg-[#495E57]/5 text-[#45474B]"
+                    ? 'bg-[#495E57]/10 text-[#495E57]'
+                    : 'hover:bg-[#495E57]/5 text-[#45474B]'
                 }`}
-                aria-current={activeSection === id ? "location" : undefined}
+                aria-current={activeSection === id ? 'location' : undefined}
               >
                 <span className="text-[#495E57]">{icon}</span>
                 <span className="font-medium">{title}</span>
@@ -315,7 +296,7 @@ const TermsOfService = () => {
         </ul>
       </nav>
     ),
-    [activeSection, scrollToSection],
+    [activeSection, scrollToSection]
   );
 
   const TermsContent = useMemo(
@@ -331,10 +312,9 @@ const TermsOfService = () => {
 
           <div className="prose max-w-none">
             <p className="text-[#45474B]/70 mb-8 leading-relaxed">
-              Welcome to CareCamp (Medical Camp Management System). By accessing
-              or using our platform, you agree to comply with and be bound by
-              these Terms of Service. Please read them carefully before using
-              our services.
+              Welcome to CareCamp (Medical Camp Management System). By accessing or using our
+              platform, you agree to comply with and be bound by these Terms of Service. Please read
+              them carefully before using our services.
             </p>
 
             <div className="space-y-8">
@@ -394,14 +374,11 @@ const TermsOfService = () => {
             <h3 className="text-xl font-semibold text-[#45474B] mb-3">
               By using CareCamp, you acknowledge that:
             </h3>
-            <ul
-              className="space-y-2 text-[#45474B]/70 text-left mb-6"
-              role="list"
-            >
+            <ul className="space-y-2 text-[#45474B]/70 text-left mb-6" role="list">
               {[
-                "You have read and understood these Terms of Service",
-                "You agree to be bound by these terms",
-                "You are at least 18 years old or have guardian consent",
+                'You have read and understood these Terms of Service',
+                'You agree to be bound by these terms',
+                'You are at least 18 years old or have guardian consent',
               ].map((item, index) => (
                 <li key={index} className="flex items-start">
                   <span
@@ -417,14 +394,12 @@ const TermsOfService = () => {
               disabled={accepted}
               className={`inline-flex items-center px-6 py-3 rounded-xl font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#495E57] focus:ring-offset-2 group ${
                 accepted
-                  ? "bg-green-500 text-white cursor-not-allowed"
-                  : "bg-gradient-to-r from-[#495E57] to-[#495E57]/90 text-white hover:shadow-lg"
+                  ? 'bg-green-500 text-white cursor-not-allowed'
+                  : 'bg-gradient-to-r from-[#495E57] to-[#495E57]/90 text-white hover:shadow-lg'
               }`}
-              aria-label={
-                accepted ? "Terms accepted" : "Accept terms of service"
-              }
+              aria-label={accepted ? 'Terms accepted' : 'Accept terms of service'}
             >
-              {accepted ? "Terms Accepted" : "I Accept These Terms"}
+              {accepted ? 'Terms Accepted' : 'I Accept These Terms'}
               {!accepted && (
                 <ArrowRight
                   className="ml-2 text-[#F4CE14] group-hover:translate-x-1 transition-transform duration-200"
@@ -441,7 +416,7 @@ const TermsOfService = () => {
         </div>
       </article>
     ),
-    [activeSection, toggleSection, accepted, handleAcceptTerms],
+    [activeSection, toggleSection, accepted, handleAcceptTerms]
   );
 
   return (

@@ -1,25 +1,21 @@
-import React, { useMemo, useState } from "react";
-import { Star, User, MessageSquare, ChevronRight, X } from "lucide-react";
-import { useQuery } from "@tanstack/react-query";
-import { Link } from "react-router";
-import useAxios from "../../../hooks/useAxios";
+import React, { useMemo, useState } from 'react';
+import { Star, User, MessageSquare, ChevronRight, X } from 'lucide-react';
+import { useQuery } from '@tanstack/react-query';
+import { Link } from 'react-router';
+import useAxios from '../../../hooks/useAxios';
 
 const FEEDBACK_PREVIEW_CHARS = 140; // ✅ adjust as you want
 
 const clamp = (n, min, max) => Math.min(max, Math.max(min, n));
 
-const normalizeText = (text = "") =>
-  String(text)
-    .replace(/\s+/g, " ")
-    .replace(/[“”]/g, '"')
-    .replace(/[‘’]/g, "'")
-    .trim();
+const normalizeText = (text = '') =>
+  String(text).replace(/\s+/g, ' ').replace(/[“”]/g, '"').replace(/[‘’]/g, "'").trim();
 
 const truncateChars = (text, maxChars) => {
   const t = normalizeText(text);
-  if (!t) return "";
+  if (!t) return '';
   if (t.length <= maxChars) return t;
-  return t.slice(0, maxChars).trimEnd() + "…";
+  return t.slice(0, maxChars).trimEnd() + '…';
 };
 
 const FeedbackModal = ({ open, onClose, feedback }) => {
@@ -28,12 +24,12 @@ const FeedbackModal = ({ open, onClose, feedback }) => {
   const rating = clamp(Number(feedback?.rating) || 0, 1, 5);
   const dateText =
     feedback?.date && !Number.isNaN(new Date(feedback.date).getTime())
-      ? new Date(feedback.date).toLocaleDateString("en-US", {
-          year: "numeric",
-          month: "long",
-          day: "numeric",
+      ? new Date(feedback.date).toLocaleDateString('en-US', {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
         })
-      : "";
+      : '';
 
   return (
     <div
@@ -53,10 +49,7 @@ const FeedbackModal = ({ open, onClose, feedback }) => {
       <div className="relative w-full max-w-lg bg-white rounded-2xl shadow-xl border border-[#495E57]/10 overflow-hidden">
         <div className="flex items-center justify-between p-4 border-b border-[#495E57]/10">
           <div className="flex items-center gap-2">
-            <MessageSquare
-              className="h-5 w-5 text-[#495E57]"
-              aria-hidden="true"
-            />
+            <MessageSquare className="h-5 w-5 text-[#495E57]" aria-hidden="true" />
             <h3 className="font-semibold text-[#45474B]">Full Review</h3>
           </div>
 
@@ -77,7 +70,7 @@ const FeedbackModal = ({ open, onClose, feedback }) => {
               {feedback?.participantPhotoURL ? (
                 <img
                   src={feedback.participantPhotoURL}
-                  alt={`${feedback.participantName || "Participant"} photo`}
+                  alt={`${feedback.participantName || 'Participant'} photo`}
                   className="h-7 w-7 rounded-full object-cover"
                   loading="lazy"
                 />
@@ -88,7 +81,7 @@ const FeedbackModal = ({ open, onClose, feedback }) => {
 
             <div>
               <h4 className="font-semibold text-[#45474B]">
-                {feedback?.participantName || "Anonymous"}
+                {feedback?.participantName || 'Anonymous'}
               </h4>
               <p className="text-xs text-[#495E57]">{feedback?.campName}</p>
             </div>
@@ -102,9 +95,7 @@ const FeedbackModal = ({ open, onClose, feedback }) => {
                 key={star}
                 aria-hidden="true"
                 className={`h-5 w-5 ${
-                  star <= rating
-                    ? "fill-[#F4CE14] text-[#F4CE14]"
-                    : "text-[#495E57]/30"
+                  star <= rating ? 'fill-[#F4CE14] text-[#F4CE14]' : 'text-[#495E57]/30'
                 }`}
               />
             ))}
@@ -117,17 +108,15 @@ const FeedbackModal = ({ open, onClose, feedback }) => {
             </p>
           )}
 
-          {dateText && (
-            <p className="mt-4 text-xs text-[#45474B]/50">{dateText}</p>
-          )}
+          {dateText && <p className="mt-4 text-xs text-[#45474B]/50">{dateText}</p>}
         </div>
       </div>
 
       {/* ESC close */}
       <span className="sr-only">
         {(() => {
-          const onKeyDown = (e) => e.key === "Escape" && onClose();
-          window.addEventListener("keydown", onKeyDown, { once: true });
+          const onKeyDown = (e) => e.key === 'Escape' && onClose();
+          window.addEventListener('keydown', onKeyDown, { once: true });
           return null;
         })()}
       </span>
@@ -146,9 +135,9 @@ const FeedbackRatings = () => {
     isLoading,
     isError,
   } = useQuery({
-    queryKey: ["homeFeedback"],
+    queryKey: ['homeFeedback'],
     queryFn: async () => {
-      const res = await axios.get("/feedback", { params: { limit: 6 } });
+      const res = await axios.get('/feedback', { params: { limit: 6 } });
       return res.data || [];
     },
     staleTime: 60_000,
@@ -213,7 +202,7 @@ const FeedbackRatings = () => {
             <h2 className="text-4xl font-bold text-[#45474B] mb-4">
               What Our
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#495E57] to-[#F4CE14]">
-                {" "}
+                {' '}
                 Participants Say
               </span>
             </h2>
@@ -228,7 +217,7 @@ const FeedbackRatings = () => {
               {/* Average Rating */}
               <div className="text-center">
                 <div className="text-5xl font-bold text-[#45474B] mb-2">
-                  {isLoading ? "..." : averageRating.toFixed(1)}
+                  {isLoading ? '...' : averageRating.toFixed(1)}
                   <span className="text-2xl text-[#45474B]/60">/5</span>
                 </div>
 
@@ -236,26 +225,22 @@ const FeedbackRatings = () => {
                   className="flex justify-center mb-2"
                   aria-label={`${averageRating.toFixed(1)} out of 5 stars`}
                 >
-                  <span className="sr-only">
-                    {averageRating.toFixed(1)} out of 5 stars
-                  </span>
+                  <span className="sr-only">{averageRating.toFixed(1)} out of 5 stars</span>
                   {[1, 2, 3, 4, 5].map((star) => (
                     <Star
                       key={star}
                       aria-hidden="true"
                       className={`h-6 w-6 ${
                         star <= Math.round(averageRating)
-                          ? "fill-[#F4CE14] text-[#F4CE14]"
-                          : "text-[#495E57]/30"
+                          ? 'fill-[#F4CE14] text-[#F4CE14]'
+                          : 'text-[#495E57]/30'
                       }`}
                     />
                   ))}
                 </div>
 
                 <p className="text-[#45474B]/70">
-                  {isLoading
-                    ? "Loading reviews..."
-                    : `Based on ${feedbacks.length} reviews`}
+                  {isLoading ? 'Loading reviews...' : `Based on ${feedbacks.length} reviews`}
                 </p>
               </div>
 
@@ -277,9 +262,7 @@ const FeedbackRatings = () => {
                           className="h-full bg-[#F4CE14]"
                           style={{
                             width: `${
-                              (ratingDistribution[rating - 1] /
-                                feedbacks.length) *
-                                100 || 0
+                              (ratingDistribution[rating - 1] / feedbacks.length) * 100 || 0
                             }%`,
                           }}
                         />
@@ -287,7 +270,7 @@ const FeedbackRatings = () => {
                     </div>
 
                     <span className="text-sm text-[#45474B]/60 w-8 text-right">
-                      {isLoading ? "-" : ratingDistribution[rating - 1]}
+                      {isLoading ? '-' : ratingDistribution[rating - 1]}
                     </span>
                   </div>
                 ))}
@@ -298,35 +281,26 @@ const FeedbackRatings = () => {
           {/* Feedback Cards */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
             {isLoading
-              ? Array.from({ length: 6 }).map((_, i) => (
-                  <LoadingSkeleton key={i} />
-                ))
+              ? Array.from({ length: 6 }).map((_, i) => <LoadingSkeleton key={i} />)
               : feedbacks.map((feedback) => {
                   const rating = clamp(Number(feedback?.rating) || 0, 1, 5);
 
                   const dateText =
-                    feedback?.date &&
-                    !Number.isNaN(new Date(feedback.date).getTime())
-                      ? new Date(feedback.date).toLocaleDateString("en-US", {
-                          year: "numeric",
-                          month: "long",
-                          day: "numeric",
+                    feedback?.date && !Number.isNaN(new Date(feedback.date).getTime())
+                      ? new Date(feedback.date).toLocaleDateString('en-US', {
+                          year: 'numeric',
+                          month: 'long',
+                          day: 'numeric',
                         })
-                      : "";
+                      : '';
 
-                  const fullText = normalizeText(feedback?.feedback || "");
-                  const previewText = truncateChars(
-                    fullText,
-                    FEEDBACK_PREVIEW_CHARS,
-                  );
+                  const fullText = normalizeText(feedback?.feedback || '');
+                  const previewText = truncateChars(fullText, FEEDBACK_PREVIEW_CHARS);
                   const isTruncated = fullText.length > previewText.length;
 
                   return (
                     <div
-                      key={
-                        feedback?._id ||
-                        `${feedback?.participantName}-${feedback?.campName}`
-                      }
+                      key={feedback?._id || `${feedback?.participantName}-${feedback?.campName}`}
                       className="bg-white rounded-xl shadow-sm border border-[#495E57]/10 overflow-hidden hover:shadow-md hover:-translate-y-1 transition-all duration-300 group flex flex-col"
                     >
                       <div className="p-6 flex flex-col h-full">
@@ -335,45 +309,33 @@ const FeedbackRatings = () => {
                             {feedback?.participantPhotoURL ? (
                               <img
                                 src={feedback.participantPhotoURL}
-                                alt={`${
-                                  feedback.participantName || "Participant"
-                                } photo`}
+                                alt={`${feedback.participantName || 'Participant'} photo`}
                                 className="h-6 w-6 rounded-full object-cover"
                                 loading="lazy"
                               />
                             ) : (
-                              <User
-                                className="h-5 w-5 text-[#495E57]"
-                                aria-hidden="true"
-                              />
+                              <User className="h-5 w-5 text-[#495E57]" aria-hidden="true" />
                             )}
                           </div>
 
                           <div>
                             <h3 className="font-semibold text-[#45474B]">
-                              {feedback?.participantName || "Anonymous"}
+                              {feedback?.participantName || 'Anonymous'}
                             </h3>
-                            <p className="text-xs text-[#495E57]">
-                              {feedback?.campName}
-                            </p>
+                            <p className="text-xs text-[#495E57]">{feedback?.campName}</p>
                           </div>
                         </div>
 
-                        <div
-                          className="flex mb-3"
-                          aria-label={`${rating} out of 5 stars`}
-                        >
-                          <span className="sr-only">
-                            {rating} out of 5 stars
-                          </span>
+                        <div className="flex mb-3" aria-label={`${rating} out of 5 stars`}>
+                          <span className="sr-only">{rating} out of 5 stars</span>
                           {[1, 2, 3, 4, 5].map((star) => (
                             <Star
                               key={star}
                               aria-hidden="true"
                               className={`h-5 w-5 ${
                                 star <= rating
-                                  ? "fill-[#F4CE14] text-[#F4CE14]"
-                                  : "text-[#495E57]/30"
+                                  ? 'fill-[#F4CE14] text-[#F4CE14]'
+                                  : 'text-[#495E57]/30'
                               }`}
                             />
                           ))}
@@ -389,9 +351,7 @@ const FeedbackRatings = () => {
                         {/* footer row */}
                         <div className="mt-auto flex items-center justify-between gap-3">
                           {dateText ? (
-                            <p className="text-xs text-[#45474B]/50">
-                              {dateText}
-                            </p>
+                            <p className="text-xs text-[#45474B]/50">{dateText}</p>
                           ) : (
                             <span />
                           )}
@@ -404,10 +364,7 @@ const FeedbackRatings = () => {
                               className="text-sm font-medium text-[#495E57] hover:text-[#45474B] inline-flex items-center gap-1 transition-colors cursor-pointer"
                             >
                               View more
-                              <ChevronRight
-                                className="h-4 w-4 text-[#F4CE14]"
-                                aria-hidden="true"
-                              />
+                              <ChevronRight className="h-4 w-4 text-[#F4CE14]" aria-hidden="true" />
                             </button>
                           )}
                         </div>

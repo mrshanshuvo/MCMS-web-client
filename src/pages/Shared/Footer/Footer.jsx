@@ -1,5 +1,5 @@
-import React from "react";
-import { NavLink } from "react-router";
+import React from 'react';
+import { NavLink } from 'react-router';
 import {
   MapPin,
   Mail,
@@ -11,74 +11,74 @@ import {
   Twitter,
   Linkedin,
   Youtube,
-} from "lucide-react";
-import CareCampLogo from "../CareCampLogo/CareCampLogo";
+} from 'lucide-react';
+import CareCampLogo from '../CareCampLogo/CareCampLogo';
 
 const SOCIAL_LINKS = [
   {
-    name: "Facebook",
+    name: 'Facebook',
     icon: Facebook,
-    url: "https://facebook.com/carecamp",
-    ariaLabel: "Visit CareCamp on Facebook",
+    url: 'https://facebook.com/carecamp',
+    ariaLabel: 'Visit CareCamp on Facebook',
   },
   {
-    name: "Twitter",
+    name: 'Twitter',
     icon: Twitter,
-    url: "https://twitter.com/carecamp",
-    ariaLabel: "Visit CareCamp on Twitter",
+    url: 'https://twitter.com/carecamp',
+    ariaLabel: 'Visit CareCamp on Twitter',
   },
   {
-    name: "LinkedIn",
+    name: 'LinkedIn',
     icon: Linkedin,
-    url: "https://linkedin.com/company/carecamp",
-    ariaLabel: "Visit CareCamp on LinkedIn",
+    url: 'https://linkedin.com/company/carecamp',
+    ariaLabel: 'Visit CareCamp on LinkedIn',
   },
   {
-    name: "YouTube",
+    name: 'YouTube',
     icon: Youtube,
-    url: "https://youtube.com/@carecamp",
-    ariaLabel: "Visit CareCamp on YouTube",
+    url: 'https://youtube.com/@carecamp',
+    ariaLabel: 'Visit CareCamp on YouTube',
   },
 ];
 
 const FOOTER_LINKS = [
   {
-    title: "Quick Links",
+    title: 'Quick Links',
     links: [
-      { name: "Home", path: "/", ariaLabel: "Go to homepage" },
+      { name: 'Home', path: '/', ariaLabel: 'Go to homepage' },
       {
-        name: "Available Camps",
-        path: "/available-camps",
-        ariaLabel: "Browse available medical camps",
+        name: 'Available Camps',
+        path: '/available-camps',
+        ariaLabel: 'Browse available medical camps',
       },
-      { name: "Join Us", path: "/login", ariaLabel: "Login to your account" },
+      { name: 'Join Us', path: '/login', ariaLabel: 'Login to your account' },
       {
-        name: "Dashboard",
-        path: "/dashboard",
-        ariaLabel: "Access your dashboard",
+        name: 'Dashboard',
+        path: '/dashboard',
+        ariaLabel: 'Access your dashboard',
       },
       {
-        name: "Feedback",
-        path: "/feedback",
-        ariaLabel: "View participant feedback",
+        name: 'Feedback',
+        path: '/feedback',
+        ariaLabel: 'View participant feedback',
       },
     ],
   },
   {
-    title: "Resources",
+    title: 'Resources',
     links: [
-      { name: "Blog", path: "/blog", ariaLabel: "Read our blog" },
-      { name: "FAQs", path: "/faqs", ariaLabel: "Frequently asked questions" },
-      { name: "Documentation", path: "/docs", ariaLabel: "View documentation" },
+      { name: 'Blog', path: '/blog', ariaLabel: 'Read our blog' },
+      { name: 'FAQs', path: '/faqs', ariaLabel: 'Frequently asked questions' },
+      { name: 'Documentation', path: '/docs', ariaLabel: 'View documentation' },
       {
-        name: "Privacy Policy",
-        path: "/pPolicy",
-        ariaLabel: "Read privacy policy",
+        name: 'Privacy Policy',
+        path: '/pPolicy',
+        ariaLabel: 'Read privacy policy',
       },
       {
-        name: "Terms of Service",
-        path: "/terms",
-        ariaLabel: "View terms of service",
+        name: 'Terms of Service',
+        path: '/terms',
+        ariaLabel: 'View terms of service',
       },
     ],
   },
@@ -87,30 +87,30 @@ const FOOTER_LINKS = [
 const CONTACT_INFO = [
   {
     icon: MapPin,
-    text: "Green Road, Dhaka, Bangladesh",
-    ariaLabel: "Our location: Green Road, Dhaka, Bangladesh",
+    text: 'Green Road, Dhaka, Bangladesh',
+    ariaLabel: 'Our location: Green Road, Dhaka, Bangladesh',
   },
   {
     icon: Mail,
-    text: "support@carecamp.com",
-    ariaLabel: "Email us at support@carecamp.com",
-    href: "mailto:support@carecamp.com",
+    text: 'support@carecamp.com',
+    ariaLabel: 'Email us at support@carecamp.com',
+    href: 'mailto:support@carecamp.com',
   },
   {
     icon: Phone,
-    text: "+880 1234-567890",
-    ariaLabel: "Call us at +880 1234-567890",
-    href: "tel:+8801234567890",
+    text: '+880 1234-567890',
+    ariaLabel: 'Call us at +880 1234-567890',
+    href: 'tel:+8801234567890',
   },
   {
     icon: Clock,
-    text: "Mon-Fri: 9AM - 6PM",
-    ariaLabel: "Our working hours: Monday to Friday, 9AM to 6PM",
+    text: 'Mon-Fri: 9AM - 6PM',
+    ariaLabel: 'Our working hours: Monday to Friday, 9AM to 6PM',
   },
 ];
 
 const linkBase =
-  "text-white/80 hover:text-[#F4CE14] transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-[#F4CE14] focus:ring-offset-2 focus:ring-offset-[#495E57] rounded px-1 -mx-1";
+  'text-white/80 hover:text-[#F4CE14] transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-[#F4CE14] focus:ring-offset-2 focus:ring-offset-[#495E57] rounded px-1 -mx-1';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -125,8 +125,8 @@ const Footer = () => {
         <div className="space-y-4 lg:pr-4">
           <CareCampLogo variant="light" />
           <p className="text-white/80 leading-relaxed text-sm">
-            CareCamp helps organize and manage medical camps efficiently and
-            securely across Bangladesh.
+            CareCamp helps organize and manage medical camps efficiently and securely across
+            Bangladesh.
           </p>
 
           {/* Social Links */}
@@ -153,9 +153,7 @@ const Footer = () => {
         {/* Link Sections */}
         {FOOTER_LINKS.map((section) => (
           <div key={section.title} className="space-y-4">
-            <h3 className="text-lg font-semibold text-white/90">
-              {section.title}
-            </h3>
+            <h3 className="text-lg font-semibold text-white/90">{section.title}</h3>
 
             <ul className="space-y-3">
               {section.links.map((link) => (
@@ -163,7 +161,7 @@ const Footer = () => {
                   <NavLink
                     to={link.path}
                     className={({ isActive }) =>
-                      `block ${linkBase} ${isActive ? "text-[#F4CE14] font-medium" : ""}`
+                      `block ${linkBase} ${isActive ? 'text-[#F4CE14] font-medium' : ''}`
                     }
                     aria-label={link.ariaLabel}
                   >
@@ -204,10 +202,7 @@ const Footer = () => {
                       {content}
                     </a>
                   ) : (
-                    <div
-                      className="flex items-start gap-3"
-                      aria-label={item.ariaLabel}
-                    >
+                    <div className="flex items-start gap-3" aria-label={item.ariaLabel}>
                       {content}
                     </div>
                   )}
@@ -225,23 +220,15 @@ const Footer = () => {
             className="text-white/80 text-sm flex items-center"
             aria-label={`Copyright ${currentYear} CareCamp. All rights reserved.`}
           >
-            <Star
-              className="mr-2 text-[#F4CE14]"
-              size={14}
-              fill="#F4CE14"
-              aria-hidden="true"
-            />
-            © {currentYear} CareCamp. All rights reserved.
+            <Star className="mr-2 text-[#F4CE14]" size={14} fill="#F4CE14" aria-hidden="true" />©{' '}
+            {currentYear} CareCamp. All rights reserved.
           </div>
 
-          <div
-            className="flex flex-wrap items-center gap-x-4 gap-y-2"
-            aria-label="Legal links"
-          >
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-2" aria-label="Legal links">
             <NavLink
               to="/pPolicy"
               className={({ isActive }) =>
-                `${linkBase} ${isActive ? "text-[#F4CE14] font-medium" : ""}`
+                `${linkBase} ${isActive ? 'text-[#F4CE14] font-medium' : ''}`
               }
               aria-label="Read our privacy policy"
             >
@@ -251,7 +238,7 @@ const Footer = () => {
             <NavLink
               to="/terms"
               className={({ isActive }) =>
-                `${linkBase} ${isActive ? "text-[#F4CE14] font-medium" : ""}`
+                `${linkBase} ${isActive ? 'text-[#F4CE14] font-medium' : ''}`
               }
               aria-label="View terms of service"
             >
@@ -262,13 +249,9 @@ const Footer = () => {
               className="flex items-center text-sm text-white/80"
               aria-label="Made with love in Bangladesh"
             >
-              Made with{" "}
-              <Heart
-                className="mx-2 text-red-400 fill-current"
-                size={14}
-                aria-hidden="true"
-              />{" "}
-              in Bangladesh
+              Made with{' '}
+              <Heart className="mx-2 text-red-400 fill-current" size={14} aria-hidden="true" /> in
+              Bangladesh
             </div>
           </div>
         </div>

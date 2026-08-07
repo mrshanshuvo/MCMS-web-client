@@ -1,18 +1,13 @@
-import React from "react";
-import { ArrowRight, Play, CheckCircle, Star } from "lucide-react";
-import { Link } from "react-router";
+import React from 'react';
+import { ArrowRight, Play, CheckCircle, Star } from 'lucide-react';
+import { Link } from 'react-router';
 
 const CallToAction = () => {
   return (
     <section className="bg-gradient-to-br from-[#495E57] via-[#495E57]/90 to-[#45474B] text-white">
       <div className="max-w-5xl mx-auto text-center px-4 py-16">
         <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm text-white px-4 py-2 rounded-full text-sm font-medium mb-4">
-          <Star
-            size={16}
-            className="text-[#F4CE14]"
-            fill="#F4CE14"
-            aria-hidden="true"
-          />
+          <Star size={16} className="text-[#F4CE14]" fill="#F4CE14" aria-hidden="true" />
           Join CareCamp Today
         </div>
 
@@ -24,8 +19,7 @@ const CallToAction = () => {
         </h2>
 
         <p className="text-lg text-white/80 mb-8 max-w-2xl mx-auto leading-relaxed">
-          Join our network making healthcare accessible to underserved
-          communities.
+          Join our network making healthcare accessible to underserved communities.
         </p>
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
@@ -62,13 +56,9 @@ const CallToAction = () => {
         </div>
 
         <ul className="mt-8 flex flex-wrap justify-center gap-6 text-sm text-white/60">
-          {["No setup fees", "Free training", "24/7 support"].map((item) => (
+          {['No setup fees', 'Free training', '24/7 support'].map((item) => (
             <li key={item} className="flex items-center">
-              <CheckCircle
-                size={16}
-                className="text-[#F4CE14] mr-2"
-                aria-hidden="true"
-              />
+              <CheckCircle size={16} className="text-[#F4CE14] mr-2" aria-hidden="true" />
               {item}
             </li>
           ))}

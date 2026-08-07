@@ -1,6 +1,6 @@
-import OrganizerDashboard from "../pages/Dashboard/Organizer/OrganizerDashboard";
-import ParticipantDashboard from "../pages/Dashboard/Participant/ParticipantDashboard";
-import useUserRole from "../hooks/useUserRole";
+import OrganizerDashboard from '../pages/Dashboard/Organizer/OrganizerDashboard';
+import ParticipantDashboard from '../pages/Dashboard/Participant/ParticipantDashboard';
+import useUserRole from '../hooks/useUserRole';
 
 const DashboardRouter = () => {
   const { role, loading } = useUserRole();
@@ -9,11 +9,11 @@ const DashboardRouter = () => {
     return <p>Loading your dashboard...</p>;
   }
 
-  if (role === "organizer") {
+  if (role === 'organizer') {
     return <OrganizerDashboard />;
   }
 
-  if (role === "participant") {
+  if (role === 'participant') {
     return <ParticipantDashboard />;
   }
 

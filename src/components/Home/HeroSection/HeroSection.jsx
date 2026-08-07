@@ -1,6 +1,6 @@
-import React, { useEffect, useMemo, useState } from "react";
-import { ArrowRight, Play, Users, Heart, TrendingUp, X } from "lucide-react";
-import { Link } from "react-router";
+import React, { useEffect, useMemo, useState } from 'react';
+import { ArrowRight, Play, Users, Heart, TrendingUp, X } from 'lucide-react';
+import { Link } from 'react-router';
 
 const HeroSection = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -16,15 +16,15 @@ const HeroSection = () => {
     if (!showDemo) return;
 
     const onKeyDown = (e) => {
-      if (e.key === "Escape") setShowDemo(false);
+      if (e.key === 'Escape') setShowDemo(false);
     };
 
-    document.addEventListener("keydown", onKeyDown);
-    document.body.style.overflow = "hidden";
+    document.addEventListener('keydown', onKeyDown);
+    document.body.style.overflow = 'hidden';
 
     return () => {
-      document.removeEventListener("keydown", onKeyDown);
-      document.body.style.overflow = "";
+      document.removeEventListener('keydown', onKeyDown);
+      document.body.style.overflow = '';
     };
   }, [showDemo]);
 
@@ -33,9 +33,9 @@ const HeroSection = () => {
       encodeURIComponent(
         `<svg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
           <path d="M0 20h40M20 0v40" stroke="rgba(73, 94, 87, 0.05)" stroke-width="1"/>
-        </svg>`,
+        </svg>`
       ),
-    [],
+    []
   );
 
   return (
@@ -60,15 +60,13 @@ const HeroSection = () => {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
           <div
             className={`lg:col-span-12 space-y-8 transition-all duration-1000 ease-out ${
-              isVisible
-                ? "translate-x-0 opacity-100"
-                : "-translate-x-12 opacity-0"
+              isVisible ? 'translate-x-0 opacity-100' : '-translate-x-12 opacity-0'
             }`}
           >
             {/* Mini Badge */}
             <div className="inline-flex items-center gap-3 px-4 py-2 bg-[#495E57] rounded-full">
               <div className="flex -space-x-2" aria-hidden="true">
-                {["👨", "👩", "👨"].map((icon, i) => (
+                {['👨', '👩', '👨'].map((icon, i) => (
                   <div
                     key={i}
                     className="w-6 h-6 rounded-full bg-[#F4CE14] border-2 border-[#495E57] flex items-center justify-center text-xs"
@@ -96,9 +94,8 @@ const HeroSection = () => {
               </h1>
 
               <p className="text-xl lg:text-2xl text-[#45474B]/70 leading-relaxed max-w-2xl">
-                Connect, organize, and deliver healthcare where it matters most.
-                CareCamp brings medical camps to life with seamless coordination
-                and real impact.
+                Connect, organize, and deliver healthcare where it matters most. CareCamp brings
+                medical camps to life with seamless coordination and real impact.
               </p>
             </div>
 
@@ -107,18 +104,18 @@ const HeroSection = () => {
               {[
                 {
                   icon: <Users size={24} className="text-[#F4CE14]" />,
-                  title: "Easy Coordination",
-                  subtitle: "Unified platform",
+                  title: 'Easy Coordination',
+                  subtitle: 'Unified platform',
                 },
                 {
                   icon: <Heart size={24} className="text-[#F4CE14]" />,
-                  title: "Patient Focus",
-                  subtitle: "Care-first approach",
+                  title: 'Patient Focus',
+                  subtitle: 'Care-first approach',
                 },
                 {
                   icon: <TrendingUp size={24} className="text-[#F4CE14]" />,
-                  title: "Proven Results",
-                  subtitle: "Data-driven insights",
+                  title: 'Proven Results',
+                  subtitle: 'Data-driven insights',
                 },
               ].map((item, i) => (
                 <div key={i} className="flex items-start gap-3">
@@ -126,12 +123,8 @@ const HeroSection = () => {
                     {item.icon}
                   </div>
                   <div>
-                    <div className="font-semibold text-[#45474B]">
-                      {item.title}
-                    </div>
-                    <div className="text-sm text-[#45474B]/60">
-                      {item.subtitle}
-                    </div>
+                    <div className="font-semibold text-[#45474B]">{item.title}</div>
+                    <div className="text-sm text-[#45474B]/60">{item.subtitle}</div>
                   </div>
                 </div>
               ))}

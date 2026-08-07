@@ -1,15 +1,7 @@
-import React, { useState } from "react";
-import {
-  Users,
-  CheckCircle,
-  Activity,
-  Star,
-  Heart,
-  ChevronLeft,
-  ChevronRight,
-} from "lucide-react";
-import useAxiosSecure from "../../hooks/useAxiosSecure";
-import { useQuery } from "@tanstack/react-query";
+import React, { useState } from 'react';
+import { Users, CheckCircle, Activity, Star, Heart, ChevronLeft, ChevronRight } from 'lucide-react';
+import useAxiosSecure from '../../hooks/useAxiosSecure';
+import { useQuery } from '@tanstack/react-query';
 
 const iconMap = {
   Users: <Users className="text-[#F4CE14]" size={18} />,
@@ -27,9 +19,9 @@ const SuccessStories = () => {
 
   // fetching from the backend using tanstack query
   const { data: storiesData = { data: [] } } = useQuery({
-    queryKey: ["stories"],
+    queryKey: ['stories'],
     queryFn: async () => {
-      const res = await axiosSecure.get("/successStories");
+      const res = await axiosSecure.get('/successStories');
       return res.data;
     },
   });
@@ -40,13 +32,13 @@ const SuccessStories = () => {
 
   const paginatedStories = stories.slice(
     (currentPage - 1) * STORIES_PER_PAGE,
-    currentPage * STORIES_PER_PAGE,
+    currentPage * STORIES_PER_PAGE
   );
 
   const goToPage = (page) => {
     if (page < 1 || page > totalPages) return;
     setCurrentPage(page);
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   return (
@@ -59,8 +51,7 @@ const SuccessStories = () => {
             </span>
           </h2>
           <p className="text-lg text-[#45474B]/70 max-w-2xl mx-auto">
-            Real impact. Real results. See how CareCamp is transforming
-            healthcare delivery.
+            Real impact. Real results. See how CareCamp is transforming healthcare delivery.
           </p>
         </div>
 
@@ -84,9 +75,7 @@ const SuccessStories = () => {
               <div className="p-6">
                 <div className="flex items-start justify-between mb-3">
                   <div>
-                    <h3 className="text-xl font-bold text-[#45474B]">
-                      {story.name}
-                    </h3>
+                    <h3 className="text-xl font-bold text-[#45474B]">{story.name}</h3>
                     <p className="text-[#495E57] font-medium">{story.role}</p>
                   </div>
                   <div className="flex">
@@ -94,9 +83,7 @@ const SuccessStories = () => {
                       <Star
                         key={i}
                         className={`${
-                          i < story.rating
-                            ? "text-[#F4CE14] fill-[#F4CE14]"
-                            : "text-[#495E57]/30"
+                          i < story.rating ? 'text-[#F4CE14] fill-[#F4CE14]' : 'text-[#495E57]/30'
                         } ml-1`}
                         size={16}
                       />
@@ -113,9 +100,7 @@ const SuccessStories = () => {
                     <CheckCircle className="mr-1 text-[#495E57]" size={14} />
                     Key Achievement
                   </span>
-                  <p className="font-semibold text-[#45474B]">
-                    {story.achievement}
-                  </p>
+                  <p className="font-semibold text-[#45474B]">{story.achievement}</p>
                 </div>
 
                 <div className="grid grid-cols-3 gap-3">
@@ -127,12 +112,8 @@ const SuccessStories = () => {
                       <div className="flex items-center justify-center mb-1">
                         {iconMap[stat.icon]}
                       </div>
-                      <p className="font-bold text-[#45474B] text-center">
-                        {stat.value}
-                      </p>
-                      <p className="text-xs text-[#45474B]/60 text-center">
-                        {stat.label}
-                      </p>
+                      <p className="font-bold text-[#45474B] text-center">{stat.value}</p>
+                      <p className="text-xs text-[#45474B]/60 text-center">{stat.label}</p>
                     </div>
                   ))}
                 </div>
@@ -171,17 +152,15 @@ const SuccessStories = () => {
                     onClick={() => goToPage(pageNum)}
                     className={`w-10 cursor-pointer h-10 rounded-full flex items-center justify-center ${
                       currentPage === pageNum
-                        ? "bg-[#495E57] text-[#F5F7F8]"
-                        : "hover:bg-[#495E57]/10 text-[#45474B]"
+                        ? 'bg-[#495E57] text-[#F5F7F8]'
+                        : 'hover:bg-[#495E57]/10 text-[#45474B]'
                     }`}
                   >
                     {pageNum}
                   </button>
                 );
               })}
-              {totalPages > 5 && (
-                <span className="mx-1 text-[#45474B]">...</span>
-              )}
+              {totalPages > 5 && <span className="mx-1 text-[#45474B]">...</span>}
             </div>
 
             <button

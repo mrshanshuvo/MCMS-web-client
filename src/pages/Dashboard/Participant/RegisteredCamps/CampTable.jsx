@@ -1,6 +1,6 @@
-import React from "react";
-import { format } from "date-fns";
-import StatusBadge from "./StatusBadge";
+import React from 'react';
+import { format } from 'date-fns';
+import StatusBadge from './StatusBadge';
 
 const CampTable = ({ camps, onPay, onCancel, onFeedback }) => {
   return (
@@ -27,23 +27,16 @@ const CampTable = ({ camps, onPay, onCancel, onFeedback }) => {
                       <p className="font-semibold text-gray-800">{camp.name}</p>
                     </div>
                     <div className="text-xs text-gray-600">
-                      {format(new Date(camp.dateTime), "MMM d, yyyy h:mm a")} •{" "}
-                      {camp.location}
+                      {format(new Date(camp.dateTime), 'MMM d, yyyy h:mm a')} • {camp.location}
                     </div>
                   </td>
 
-                  <td className="px-4 py-3 font-medium text-center">
-                    ${camp.fees}
-                  </td>
+                  <td className="px-4 py-3 font-medium text-center">${camp.fees}</td>
 
                   <td className="px-4 py-3 text-left">
-                    <p>{participant?.participantName || "N/A"}</p>
+                    <p>{participant?.participantName || 'N/A'}</p>
                     <p className="text-gray-600 text-xs">
-                      Registered:{" "}
-                      {format(
-                        new Date(participant?.registrationDate),
-                        "MMM d, yyyy"
-                      )}
+                      Registered: {format(new Date(participant?.registrationDate), 'MMM d, yyyy')}
                     </p>
                   </td>
 
@@ -52,11 +45,11 @@ const CampTable = ({ camps, onPay, onCancel, onFeedback }) => {
                   </td>
 
                   <td className="px-4 py-3 text-center">
-                    {participant?.confirmationStatus || "Pending"}
+                    {participant?.confirmationStatus || 'Pending'}
                   </td>
 
                   <td className="px-4 py-3 text-center whitespace-nowrap space-x-2">
-                    {participant?.paymentStatus !== "Paid" ? (
+                    {participant?.paymentStatus !== 'Paid' ? (
                       <>
                         <button
                           onClick={() => onPay(camp)}
@@ -81,16 +74,12 @@ const CampTable = ({ camps, onPay, onCancel, onFeedback }) => {
                         disabled={camp.hasFeedback}
                         className={`px-3 py-1 text-sm rounded text-white ${
                           camp.hasFeedback
-                            ? "bg-gray-400 cursor-not-allowed"
-                            : "bg-blue-600 hover:bg-blue-700"
+                            ? 'bg-gray-400 cursor-not-allowed'
+                            : 'bg-blue-600 hover:bg-blue-700'
                         }`}
-                        title={
-                          camp.hasFeedback
-                            ? "Feedback already submitted"
-                            : "Give feedback"
-                        }
+                        title={camp.hasFeedback ? 'Feedback already submitted' : 'Give feedback'}
                       >
-                        {camp.hasFeedback ? "Feedback Submitted" : "Feedback"}
+                        {camp.hasFeedback ? 'Feedback Submitted' : 'Feedback'}
                       </button>
                     )}
                   </td>

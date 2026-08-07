@@ -1,12 +1,12 @@
-import { useForm } from "react-hook-form";
-import { Link, useLocation, useNavigate } from "react-router";
-import useAuth from "../../../hooks/useAuth";
-import { FcGoogle } from "react-icons/fc";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import axios from "axios";
-import { useState } from "react";
-import useAxios from "../../../hooks/useAxios";
+import { useForm } from 'react-hook-form';
+import { Link, useLocation, useNavigate } from 'react-router';
+import useAuth from '../../../hooks/useAuth';
+import { FcGoogle } from 'react-icons/fc';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import axios from 'axios';
+import { useState } from 'react';
+import useAxios from '../../../hooks/useAxios';
 
 const Register = () => {
   const {
@@ -20,7 +20,7 @@ const Register = () => {
   const [profilePic, setProfilePic] = useState(null);
   const axiosInstance = useAxios();
   const location = useLocation();
-  const from = location.state?.from || "/";
+  const from = location.state?.from || '/';
 
   const onSubmit = (data) => {
     createUser(data.email, data.password)
@@ -32,20 +32,20 @@ const Register = () => {
           email: data.email,
           name: data.name,
           photoURL: profilePic,
-          role: "participant",
+          role: 'participant',
           created_at: new Date().toISOString(),
           last_login: new Date().toISOString(),
         };
 
         try {
-          await axiosInstance.post("/users", userInfoDB, {
+          await axiosInstance.post('/users', userInfoDB, {
             headers: {
               Authorization: `Bearer ${idToken}`,
             },
           });
         } catch (error) {
-          toast.error("Failed to save user to CareCamp DB.");
-          console.error("Error saving user:", error);
+          toast.error('Failed to save user to MCMS DB.');
+          console.error('Error saving user:', error);
         }
 
         updateUserProfile({
@@ -53,93 +53,77 @@ const Register = () => {
           photoURL: profilePic,
         })
           .then(() => {
-            toast.success("Profile updated successfully.");
+            toast.success('Profile updated successfully.');
           })
           .catch((error) => {
-            toast.error("Failed to update Firebase profile.");
-            console.error("Update profile error:", error);
+            toast.error('Failed to update Firebase profile.');
+            console.error('Update profile error:', error);
           });
 
         navigate(from, { replace: true });
       })
       .catch((error) => {
-        toast.error("Registration failed: " + error.message);
-        console.error("Registration error:", error);
+        toast.error('Registration failed: ' + error.message);
+        console.error('Registration error:', error);
       });
   };
 
   const handleImageUpload = async (event) => {
     const file = event.target.files[0];
     if (!file) {
-      toast.error("No file selected.");
+      toast.error('No file selected.');
       return;
     }
 
     const formData = new FormData();
-    formData.append("image", file);
+    formData.append('image', file);
 
     try {
       const res = await axios.post(
-        `https://api.imgbb.com/1/upload?key=${
-          import.meta.env.VITE_IMGBB_API_KEY
-        }`,
-        formData,
+        `https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_IMGBB_API_KEY}`,
+        formData
       );
 
       if (res.data && res.data.success) {
         setProfilePic(res.data.data.url);
-        toast.success("Image uploaded successfully!");
+        toast.success('Image uploaded successfully!');
       } else {
-        toast.error("Failed to upload image.");
-        console.error("Upload response:", res.data);
+        toast.error('Failed to upload image.');
+        console.error('Upload response:', res.data);
       }
     } catch (error) {
-      toast.error("Image upload failed.");
-      console.error("Image upload error:", error);
+      toast.error('Image upload failed.');
+      console.error('Image upload error:', error);
     }
   };
 
-  const handleGoogleSignIn = async () => {
-    try {
-      const result = await signInWithGoogle();
-      const user = result.user;
+  const handleGoogleSignIn = () => {
+    signInWithGoogle()
+      .then(async (result) => {
+        const user = result.user;
 
-      const idToken = await user.getIdToken();
+        const userInfoDB = {
+          email: user.email,
+          name: user.displayName,
+          photoURL: user.photoURL,
+          role: 'participant',
+          created_at: new Date().toISOString(),
+          last_login: new Date().toISOString(),
+        };
 
-      const userInfoDB = {
-        email: user.email,
-        name: user.displayName,
-        photoURL: user.photoURL,
-        role: "participant",
-        created_at: new Date().toISOString(),
-        last_login: new Date().toISOString(),
-      };
-
-      try {
-        // ✅ create if new
-        await axiosInstance.post("/users", userInfoDB, {
-          headers: { Authorization: `Bearer ${idToken}` },
-        });
-      } catch (err) {
-        // ✅ if user already exists, just update last_login
-        const status = err?.response?.status;
-        if (status === 409 || status === 400) {
-          await axiosInstance.patch(`/users/${user.email}`, {
-            last_login: new Date().toISOString(),
-          });
-        } else {
-          throw err;
+        try {
+          await axiosInstance.post('https://mcms-server-red.vercel.app/users', userInfoDB);
+        } catch (error) {
+          toast.error('Failed to store user info to MCMS DB.');
+          console.error('DB store error:', error);
         }
-      }
 
-      toast.success(
-        `Welcome to CareCamp, ${user.displayName || "participant"}!`,
-      );
-      navigate(from, { replace: true });
-    } catch (error) {
-      toast.error("Google sign-in failed: " + error.message);
-      console.error("Google sign-in error:", error);
-    }
+        navigate('/dashboard');
+      })
+      .catch((error) => {
+        toast.error('Google sign-in failed: ' + error.message);
+        console.error('Google sign-in error:', error);
+      });
   };
 
   return (
@@ -148,16 +132,13 @@ const Register = () => {
 
       <div className="text-center">
         <h1 className="text-2xl font-bold text-blue-800">Create an Account</h1>
-        <p className="text-blue-600 mt-2">Register for CareCamp</p>
+        <p className="text-blue-600 mt-2">Register for MCMS</p>
       </div>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         {/* Profile Image Upload */}
         <div>
-          <label
-            htmlFor="image"
-            className="block text-sm font-medium text-blue-800"
-          >
+          <label htmlFor="image" className="block text-sm font-medium text-blue-800">
             Upload Profile Picture
           </label>
           <input
@@ -170,75 +151,60 @@ const Register = () => {
 
         {/* Name */}
         <div>
-          <label
-            htmlFor="name"
-            className="block text-sm font-medium text-blue-800"
-          >
+          <label htmlFor="name" className="block text-sm font-medium text-blue-800">
             Name
           </label>
           <input
             type="text"
             id="name"
-            {...register("name", {
-              required: "Name is required",
-              minLength: { value: 2, message: "At least 2 characters" },
+            {...register('name', {
+              required: 'Name is required',
+              minLength: { value: 2, message: 'At least 2 characters' },
             })}
             className="mt-1 block w-full px-3 py-2 border border-blue-200 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
             placeholder="Your full name"
           />
-          {errors.name && (
-            <p className="mt-1 text-sm text-red-600">{errors.name.message}</p>
-          )}
+          {errors.name && <p className="mt-1 text-sm text-red-600">{errors.name.message}</p>}
         </div>
 
         {/* Email */}
         <div>
-          <label
-            htmlFor="email"
-            className="block text-sm font-medium text-blue-800"
-          >
+          <label htmlFor="email" className="block text-sm font-medium text-blue-800">
             Email
           </label>
           <input
             type="email"
             id="email"
-            {...register("email", {
-              required: "Email is required",
+            {...register('email', {
+              required: 'Email is required',
               pattern: {
                 value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                message: "Invalid email address",
+                message: 'Invalid email address',
               },
             })}
             className="mt-1 block w-full px-3 py-2 border border-blue-200 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
             placeholder="you@example.com"
           />
-          {errors.email && (
-            <p className="mt-1 text-sm text-red-600">{errors.email.message}</p>
-          )}
+          {errors.email && <p className="mt-1 text-sm text-red-600">{errors.email.message}</p>}
         </div>
 
         {/* Password */}
         <div>
-          <label
-            htmlFor="password"
-            className="block text-sm font-medium text-blue-800"
-          >
+          <label htmlFor="password" className="block text-sm font-medium text-blue-800">
             Password
           </label>
           <input
             type="password"
             id="password"
-            {...register("password", {
-              required: "Password is required",
-              minLength: { value: 6, message: "Minimum 6 characters" },
+            {...register('password', {
+              required: 'Password is required',
+              minLength: { value: 6, message: 'Minimum 6 characters' },
             })}
             className="mt-1 block w-full px-3 py-2 border border-blue-200 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
             placeholder="Password"
           />
           {errors.password && (
-            <p className="mt-1 text-sm text-red-600">
-              {errors.password.message}
-            </p>
+            <p className="mt-1 text-sm text-red-600">{errors.password.message}</p>
           )}
         </div>
 
@@ -253,11 +219,8 @@ const Register = () => {
 
       {/* Already Have Account */}
       <div className="text-center text-sm text-blue-700">
-        Already have an account?{" "}
-        <Link
-          to="/login"
-          className="font-medium text-blue-600 hover:text-blue-500"
-        >
+        Already have an account?{' '}
+        <Link to="/login" className="font-medium text-blue-600 hover:text-blue-500">
           Login
         </Link>
       </div>

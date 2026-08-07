@@ -1,15 +1,9 @@
-import React, { useState } from "react";
-import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
-import { Loader2, AlertCircle, CheckCircle } from "lucide-react";
-import useAuth from "../../../../hooks/useAuth";
+import React, { useState } from 'react';
+import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
+import { Loader2, AlertCircle, CheckCircle } from 'lucide-react';
+import useAuth from '../../../../hooks/useAuth';
 
-const PaymentDialog = ({
-  open,
-  onClose,
-  camp,
-  registration,
-  onPaymentSuccess,
-}) => {
+const PaymentDialog = ({ open, onClose, camp, registration, onPaymentSuccess }) => {
   const stripe = useStripe();
   const elements = useElements();
   const [error, setError] = useState(null);
@@ -26,30 +20,27 @@ const PaymentDialog = ({
     const token = user.accessToken;
 
     try {
-      const response = await fetch(
-        `https://mcms-server-red.vercel.app/create-payment-intent`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({
-            amount: camp.fees,
-            campId: camp._id,
-          }),
-        }
-      );
+      const response = await fetch(`https://mcms-server-red.vercel.app/create-payment-intent`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          amount: camp.fees,
+          campId: camp._id,
+        }),
+      });
 
-      if (!response.ok) throw new Error("Failed to create payment intent");
+      if (!response.ok) throw new Error('Failed to create payment intent');
       const { clientSecret } = await response.json();
 
       // ✅ Handle free camp (no payment intent needed)
       if (!clientSecret) {
         await fetch(`https://mcms-server-red.vercel.app/payments`, {
-          method: "POST",
+          method: 'POST',
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify({
@@ -57,34 +48,33 @@ const PaymentDialog = ({
             registrationId: registration._id,
             transactionId: `FREE_PAYMENT_${Date.now()}`,
             amount: 0,
-            paymentMethod: "FREE",
+            paymentMethod: 'FREE',
           }),
         });
 
-        setPaymentIntent({ status: "succeeded", id: "FREE_PAYMENT" });
+        setPaymentIntent({ status: 'succeeded', id: 'FREE_PAYMENT' });
         onPaymentSuccess();
         setIsProcessing(false);
         return;
       }
 
-      const { error: stripeError, paymentIntent } =
-        await stripe.confirmCardPayment(clientSecret, {
-          payment_method: {
-            card: elements.getElement(CardElement),
-          },
-        });
+      const { error: stripeError, paymentIntent } = await stripe.confirmCardPayment(clientSecret, {
+        payment_method: {
+          card: elements.getElement(CardElement),
+        },
+      });
 
       if (stripeError) {
         setError(stripeError.message);
         return;
       }
 
-      if (paymentIntent.status === "succeeded") {
+      if (paymentIntent.status === 'succeeded') {
         setPaymentIntent(paymentIntent);
         await fetch(`https://mcms-server-red.vercel.app/payments`, {
-          method: "POST",
+          method: 'POST',
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify({
@@ -97,7 +87,7 @@ const PaymentDialog = ({
         onPaymentSuccess();
       }
     } catch (err) {
-      setError(err.message || "Payment failed. Please try again.");
+      setError(err.message || 'Payment failed. Please try again.');
     } finally {
       setIsProcessing(false);
     }
@@ -105,7 +95,7 @@ const PaymentDialog = ({
 
   if (!open) return null;
 
-  if (paymentIntent?.status === "succeeded") {
+  if (paymentIntent?.status === 'succeeded') {
     return (
       <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
         <div
@@ -118,14 +108,9 @@ const PaymentDialog = ({
             <h3 className="text-xl font-bold mb-2">Payment Successful!</h3>
             <p className="mb-4">Thank you for your payment.</p>
             <div className="bg-gray-100 p-4 rounded-lg mb-4">
-              <p className="font-mono text-sm break-all">
-                Transaction ID: {paymentIntent.id}
-              </p>
+              <p className="font-mono text-sm break-all">Transaction ID: {paymentIntent.id}</p>
             </div>
-            <button
-              onClick={onClose}
-              className="px-4 py-2 bg-blue-600 text-white rounded-lg"
-            >
+            <button onClick={onClose} className="px-4 py-2 bg-blue-600 text-white rounded-lg">
               Close
             </button>
           </div>
@@ -165,10 +150,10 @@ const PaymentDialog = ({
               options={{
                 style: {
                   base: {
-                    fontSize: "16px",
-                    color: "#424770",
-                    "::placeholder": {
-                      color: "#aab7c4",
+                    fontSize: '16px',
+                    color: '#424770',
+                    '::placeholder': {
+                      color: '#aab7c4',
                     },
                   },
                 },
@@ -177,20 +162,14 @@ const PaymentDialog = ({
           </div>
 
           <div className="flex justify-end space-x-3">
-            <button
-              type="button"
-              onClick={onClose}
-              className="px-4 py-2 border rounded-lg"
-            >
+            <button type="button" onClick={onClose} className="px-4 py-2 border rounded-lg">
               Cancel
             </button>
             <button
               type="submit"
               disabled={!stripe || isProcessing}
               className={`px-4 py-2 rounded-lg text-white font-medium ${
-                isProcessing
-                  ? "bg-blue-400"
-                  : "bg-gradient-to-r from-blue-600 to-purple-600"
+                isProcessing ? 'bg-blue-400' : 'bg-gradient-to-r from-blue-600 to-purple-600'
               }`}
             >
               {isProcessing ? (

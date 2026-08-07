@@ -1,10 +1,10 @@
-import { useState } from "react";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import useAuth from "../../../hooks/useAuth";
-import useAxiosSecure from "../../../hooks/useAxiosSecure";
-import { User, Calendar, Loader2, Edit, X, Check } from "lucide-react";
-import { useNavigate } from "react-router";
-import Swal from "sweetalert2";
+import { useState } from 'react';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import useAuth from '../../../hooks/useAuth';
+import useAxiosSecure from '../../../hooks/useAxiosSecure';
+import { User, Calendar, Loader2, Edit, X, Check } from 'lucide-react';
+import { useNavigate } from 'react-router';
+import Swal from 'sweetalert2';
 
 const ParticipantProfile = () => {
   const { user: authUser } = useAuth();
@@ -15,10 +15,10 @@ const ParticipantProfile = () => {
 
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({
-    name: "",
-    photoURL: "",
-    phone: "",
-    address: "",
+    name: '',
+    photoURL: '',
+    phone: '',
+    address: '',
   });
   const [originalData, setOriginalData] = useState({}); // Store original data
   const [formErrors, setFormErrors] = useState({});
@@ -26,10 +26,9 @@ const ParticipantProfile = () => {
   // Validation function
   const validate = () => {
     const errors = {};
-    if (!formData.name.trim()) errors.name = "Name is required";
-    if (!formData.phone.trim()) errors.phone = "Phone is required";
-    else if (!/^\+?\d{7,15}$/.test(formData.phone.trim()))
-      errors.phone = "Invalid phone number";
+    if (!formData.name.trim()) errors.name = 'Name is required';
+    if (!formData.phone.trim()) errors.phone = 'Phone is required';
+    else if (!/^\+?\d{7,15}$/.test(formData.phone.trim())) errors.phone = 'Invalid phone number';
     return errors;
   };
 
@@ -39,22 +38,18 @@ const ParticipantProfile = () => {
 
     // Only include fields that have changed AND are not empty
     Object.keys(currentData).forEach((key) => {
-      const currentValue = currentData[key]?.trim() || "";
-      const originalValue = originalData[key]?.trim() || "";
+      const currentValue = currentData[key]?.trim() || '';
+      const originalValue = originalData[key]?.trim() || '';
 
       // Include field if:
       // 1. It has changed AND
       // 2. It's not empty (or if it's address which can be explicitly cleared)
-      if (currentValue !== originalValue && currentValue !== "") {
+      if (currentValue !== originalValue && currentValue !== '') {
         updates[key] = currentValue;
       }
       // Special case: if address is explicitly cleared (user removes existing address)
-      else if (
-        key === "address" &&
-        currentValue === "" &&
-        originalValue !== ""
-      ) {
-        updates[key] = ""; // Allow clearing address
+      else if (key === 'address' && currentValue === '' && originalValue !== '') {
+        updates[key] = ''; // Allow clearing address
       }
     });
 
@@ -68,7 +63,7 @@ const ParticipantProfile = () => {
     isLoading,
     isError,
   } = useQuery({
-    queryKey: ["user", email],
+    queryKey: ['user', email],
     queryFn: async () => {
       const res = await axiosSecure.get(`/users/${email}`);
       return res.data;
@@ -76,10 +71,10 @@ const ParticipantProfile = () => {
     enabled: !!email,
     onSuccess: (data) => {
       const initialData = {
-        name: data.name || "",
-        photoURL: data.photoURL || "",
-        phone: data.phone || "",
-        address: data.address || "",
+        name: data.name || '',
+        photoURL: data.photoURL || '',
+        phone: data.phone || '',
+        address: data.address || '',
       };
       setFormData(initialData);
       setOriginalData(initialData); // Store original data for comparison
@@ -95,51 +90,48 @@ const ParticipantProfile = () => {
 
       // Don't send request if nothing changed
       if (Object.keys(cleanUpdates).length === 0) {
-        throw new Error("No changes detected");
+        throw new Error('No changes detected');
       }
 
       const res = await axiosSecure.put(`/users/${email}`, cleanUpdates);
       return res.data;
     },
     onSuccess: async (updatedUser) => {
-      queryClient.setQueryData(["user", email], updatedUser);
+      queryClient.setQueryData(['user', email], updatedUser);
       setIsEditing(false);
 
       // Update original data with new values
       const newOriginalData = {
-        name: updatedUser.name || "",
-        photoURL: updatedUser.photoURL || "",
-        phone: updatedUser.phone || "",
-        address: updatedUser.address || "",
+        name: updatedUser.name || '',
+        photoURL: updatedUser.photoURL || '',
+        phone: updatedUser.phone || '',
+        address: updatedUser.address || '',
       };
       setOriginalData(newOriginalData);
       setFormErrors({});
 
       await Swal.fire({
-        icon: "success",
-        title: "Updated!",
-        text: "Profile updated successfully.",
-        confirmButtonColor: "#16a34a",
+        icon: 'success',
+        title: 'Updated!',
+        text: 'Profile updated successfully.',
+        confirmButtonColor: '#16a34a',
       });
     },
     onError: async (err) => {
-      if (err.message === "No changes detected") {
+      if (err.message === 'No changes detected') {
         await Swal.fire({
-          icon: "info",
-          title: "No changes",
-          text: "No changes were made to the profile.",
-          confirmButtonColor: "#3b82f6",
+          icon: 'info',
+          title: 'No changes',
+          text: 'No changes were made to the profile.',
+          confirmButtonColor: '#3b82f6',
         });
         setIsEditing(false);
       } else {
         await Swal.fire({
-          icon: "error",
-          title: "Update failed",
-          text:
-            err.response?.data?.message ||
-            err.message ||
-            "Something went wrong.",
-          confirmButtonColor: "#d33",
+          icon: 'error',
+          title: 'Update failed',
+          text: err.response?.data?.message || err.message || 'Something went wrong.',
+          confirmButtonColor: '#d33',
         });
       }
     },
@@ -165,24 +157,24 @@ const ParticipantProfile = () => {
     const updates = getCleanUpdates(formData, originalData);
     if (Object.keys(updates).length === 0) {
       await Swal.fire({
-        icon: "info",
-        title: "No changes",
-        text: "No changes were made to the profile.",
-        confirmButtonColor: "#3b82f6",
+        icon: 'info',
+        title: 'No changes',
+        text: 'No changes were made to the profile.',
+        confirmButtonColor: '#3b82f6',
       });
       setIsEditing(false);
       return;
     }
 
     const result = await Swal.fire({
-      title: "Are you sure?",
-      text: "Do you want to save these changes?",
-      icon: "warning",
+      title: 'Are you sure?',
+      text: 'Do you want to save these changes?',
+      icon: 'warning',
       showCancelButton: true,
-      confirmButtonText: "Yes, update",
-      cancelButtonText: "Cancel",
-      confirmButtonColor: "#16a34a",
-      cancelButtonColor: "#d33",
+      confirmButtonText: 'Yes, update',
+      cancelButtonText: 'Cancel',
+      confirmButtonColor: '#16a34a',
+      cancelButtonColor: '#d33',
     });
 
     if (result.isConfirmed) {
@@ -205,7 +197,7 @@ const ParticipantProfile = () => {
             Please log in to see your profile
           </h3>
           <button
-            onClick={() => navigate("/login")}
+            onClick={() => navigate('/login')}
             className="mt-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-2 rounded-lg font-medium hover:shadow-lg transition-all"
           >
             Go to Login
@@ -225,12 +217,8 @@ const ParticipantProfile = () => {
     return (
       <div className="flex items-center justify-center min-h-screen bg-gradient-to-b from-[#f0f9ff] to-white">
         <div className="text-center p-6 bg-white rounded-xl shadow-lg max-w-md mx-4">
-          <h3 className="text-xl font-semibold text-red-600 mb-2">
-            Failed to load profile
-          </h3>
-          <p className="text-gray-600 mb-4">
-            {error.message || "Unknown error occurred"}
-          </p>
+          <h3 className="text-xl font-semibold text-red-600 mb-2">Failed to load profile</h3>
+          <p className="text-gray-600 mb-4">{error.message || 'Unknown error occurred'}</p>
           <button
             onClick={() => window.location.reload()}
             className="bg-blue-100 text-blue-600 px-4 py-2 rounded-lg font-medium hover:bg-blue-200 transition-colors"
@@ -253,13 +241,11 @@ const ParticipantProfile = () => {
           <h2 className="text-3xl font-bold text-gray-900 mb-2">
             My
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">
-              {" "}
+              {' '}
               Medical Profile
             </span>
           </h2>
-          <p className="text-lg text-gray-600">
-            View and manage your participant information
-          </p>
+          <p className="text-lg text-gray-600">View and manage your participant information</p>
         </div>
 
         {/* Profile Card */}
@@ -272,18 +258,16 @@ const ParticipantProfile = () => {
           <div className="bg-gradient-to-r from-[#1e3a8a] to-[#0f766e] p-6 text-white text-center">
             <div className="relative mx-auto w-32 h-32 rounded-full border-4 border-white/20 mb-4 overflow-hidden">
               <img
-                src={user?.photoURL || "https://i.ibb.co/5h7FQs6N/unnamed.jpg"}
-                alt={user?.name || "user"}
+                src={user?.photoURL || 'https://i.ibb.co/5h7FQs6N/unnamed.jpg'}
+                alt={user?.name || 'user'}
                 className="w-full h-full object-cover"
                 onError={(e) => {
-                  e.target.src = "https://i.ibb.co/5h7FQs6N/unnamed.jpg";
+                  e.target.src = 'https://i.ibb.co/5h7FQs6N/unnamed.jpg';
                 }}
               />
             </div>
             <>
-              <h3 className="text-2xl font-bold">
-                {user.name || "Participant"}
-              </h3>
+              <h3 className="text-2xl font-bold">{user.name || 'Participant'}</h3>
               <p className="text-blue-200">{user.email}</p>
             </>
           </div>
@@ -299,10 +283,7 @@ const ParticipantProfile = () => {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {/* Name */}
                 <div>
-                  <label
-                    htmlFor="name"
-                    className="text-sm text-gray-500 block mb-1"
-                  >
+                  <label htmlFor="name" className="text-sm text-gray-500 block mb-1">
                     Full Name <span className="text-red-500">*</span>
                   </label>
                   {isEditing ? (
@@ -315,18 +296,16 @@ const ParticipantProfile = () => {
                         onChange={handleInputChange}
                         className={`w-full px-3 py-1 border rounded-md focus:outline-none focus:ring-2 ${
                           formErrors.name
-                            ? "border-red-500 ring-red-500"
-                            : "border-gray-300 ring-blue-500"
+                            ? 'border-red-500 ring-red-500'
+                            : 'border-gray-300 ring-blue-500'
                         }`}
                       />
                       {formErrors.name && (
-                        <p className="text-red-600 text-sm mt-1">
-                          {formErrors.name}
-                        </p>
+                        <p className="text-red-600 text-sm mt-1">{formErrors.name}</p>
                       )}
                     </>
                   ) : (
-                    <p className="font-medium">{user.name || "N/A"}</p>
+                    <p className="font-medium">{user.name || 'N/A'}</p>
                   )}
                 </div>
 
@@ -339,17 +318,12 @@ const ParticipantProfile = () => {
                 {/* Account Type (readonly) */}
                 <div>
                   <p className="text-sm text-gray-500">Account Type</p>
-                  <p className="font-medium capitalize">
-                    {user.role || "participant"}
-                  </p>
+                  <p className="font-medium capitalize">{user.role || 'participant'}</p>
                 </div>
 
                 {/* Phone */}
                 <div>
-                  <label
-                    htmlFor="phone"
-                    className="text-sm text-gray-500 block mb-1"
-                  >
+                  <label htmlFor="phone" className="text-sm text-gray-500 block mb-1">
                     Phone <span className="text-red-500">*</span>
                   </label>
                   {isEditing ? (
@@ -362,28 +336,23 @@ const ParticipantProfile = () => {
                         onChange={handleInputChange}
                         className={`w-full px-3 py-1 border rounded-md focus:outline-none focus:ring-2 ${
                           formErrors.phone
-                            ? "border-red-500 ring-red-500"
-                            : "border-gray-300 ring-blue-500"
+                            ? 'border-red-500 ring-red-500'
+                            : 'border-gray-300 ring-blue-500'
                         }`}
                         placeholder="+1234567890"
                       />
                       {formErrors.phone && (
-                        <p className="text-red-600 text-sm mt-1">
-                          {formErrors.phone}
-                        </p>
+                        <p className="text-red-600 text-sm mt-1">{formErrors.phone}</p>
                       )}
                     </>
                   ) : (
-                    <p className="font-medium">{user.phone || "N/A"}</p>
+                    <p className="font-medium">{user.phone || 'N/A'}</p>
                   )}
                 </div>
 
                 {/* Address */}
                 <div>
-                  <label
-                    htmlFor="address"
-                    className="text-sm text-gray-500 block mb-1"
-                  >
+                  <label htmlFor="address" className="text-sm text-gray-500 block mb-1">
                     Address
                   </label>
                   {isEditing ? (
@@ -397,17 +366,14 @@ const ParticipantProfile = () => {
                       placeholder="Your address"
                     />
                   ) : (
-                    <p className="font-medium">{user.address || "N/A"}</p>
+                    <p className="font-medium">{user.address || 'N/A'}</p>
                   )}
                 </div>
 
                 {/* Profile Image URL */}
                 {isEditing && (
                   <div>
-                    <label
-                      htmlFor="photoURL"
-                      className="text-sm text-gray-500 block mb-1"
-                    >
+                    <label htmlFor="photoURL" className="text-sm text-gray-500 block mb-1">
                       Profile Image URL
                     </label>
                     <input
@@ -434,17 +400,13 @@ const ParticipantProfile = () => {
                 <div>
                   <p className="text-sm text-gray-500">Member Since</p>
                   <p className="font-medium">
-                    {user.created_at
-                      ? new Date(user.created_at).toLocaleDateString()
-                      : "N/A"}
+                    {user.created_at ? new Date(user.created_at).toLocaleDateString() : 'N/A'}
                   </p>
                 </div>
                 <div>
                   <p className="text-sm text-gray-500">Last Login</p>
                   <p className="font-medium">
-                    {user.last_login
-                      ? new Date(user.last_login).toLocaleString()
-                      : "N/A"}
+                    {user.last_login ? new Date(user.last_login).toLocaleString() : 'N/A'}
                   </p>
                 </div>
               </div>
@@ -488,7 +450,7 @@ const ParticipantProfile = () => {
                   </button>
                   <button
                     type="button"
-                    onClick={() => navigate("/medical-history")}
+                    onClick={() => navigate('/medical-history')}
                     className="flex-1 bg-white border border-gray-300 text-gray-700 py-3 px-6 rounded-xl font-medium hover:bg-gray-50 transition-colors"
                   >
                     View Medical History

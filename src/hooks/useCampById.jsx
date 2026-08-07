@@ -1,11 +1,11 @@
-import { useQuery } from "@tanstack/react-query";
-import useAxiosSecure from "./useAxiosSecure";
+import { useQuery } from '@tanstack/react-query';
+import useAxiosSecure from './useAxiosSecure';
 
 const useCampById = (campId) => {
   const axiosSecure = useAxiosSecure();
 
   return useQuery({
-    queryKey: ["camp", campId],
+    queryKey: ['camp', campId],
     queryFn: async () => {
       const res = await axiosSecure.get(`/camps/${campId}`);
       return res.data?.camp;

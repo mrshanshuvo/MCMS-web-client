@@ -1,10 +1,10 @@
-import React, { useState } from "react";
-import { useForm } from "react-hook-form";
-import useAxiosSecure from "../../../hooks/useAxiosSecure";
-import { Calendar, MapPin, User, Upload, Loader2 } from "lucide-react";
-import Swal from "sweetalert2";
-import { useNavigate } from "react-router";
-import { FaBangladeshiTakaSign } from "react-icons/fa6";
+import React, { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import useAxiosSecure from '../../../hooks/useAxiosSecure';
+import { Calendar, MapPin, User, Upload, Loader2 } from 'lucide-react';
+import Swal from 'sweetalert2';
+import { useNavigate } from 'react-router';
+import { FaBangladeshiTakaSign } from 'react-icons/fa6';
 
 const imgbbAPIKey = import.meta.env.VITE_IMGBB_API_KEY;
 
@@ -27,16 +27,16 @@ const AddCamp = () => {
 
       // Upload image to imgbb
       const formData = new FormData();
-      formData.append("image", data.image[0]);
+      formData.append('image', data.image[0]);
 
-      const imgbbRes = await fetch(
-        `https://api.imgbb.com/1/upload?key=${imgbbAPIKey}`,
-        { method: "POST", body: formData }
-      );
+      const imgbbRes = await fetch(`https://api.imgbb.com/1/upload?key=${imgbbAPIKey}`, {
+        method: 'POST',
+        body: formData,
+      });
       const imgbbData = await imgbbRes.json();
 
       if (!imgbbData.success) {
-        throw new Error("Image upload failed");
+        throw new Error('Image upload failed');
       }
 
       const imageURL = imgbbData.data.display_url;
@@ -51,16 +51,16 @@ const AddCamp = () => {
         location: data.location,
         healthcareProfessional: data.healthcareProfessional,
         participantCount: 0,
-        description: data.description || "",
+        description: data.description || '',
       };
 
-      const response = await axiosSecure.post("/camps", campData);
+      const response = await axiosSecure.post('/camps', campData);
       // console.log("Response from server:", response.data);
       if (response.data.campId) {
         // reset();
         Swal.fire({
-          icon: "success",
-          title: "Medical Camp Created!",
+          icon: 'success',
+          title: 'Medical Camp Created!',
           html: `
           <p>Your camp was submitted successfully.</p>
           <button id="goDashboard" style="
@@ -78,10 +78,10 @@ const AddCamp = () => {
           showConfirmButton: false,
           showCloseButton: true, // shows the "X" button
           didOpen: () => {
-            const btn = Swal.getPopup().querySelector("#goDashboard");
-            btn.addEventListener("click", () => {
+            const btn = Swal.getPopup().querySelector('#goDashboard');
+            btn.addEventListener('click', () => {
               Swal.close();
-              navigate("/dashboard/manage-camps");
+              navigate('/dashboard/manage-camps');
             });
           },
         });
@@ -89,9 +89,9 @@ const AddCamp = () => {
     } catch (error) {
       console.error(error);
       Swal.fire({
-        icon: "error",
-        title: "Oops...",
-        text: "Something went wrong!",
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Something went wrong!',
       });
     }
   };
@@ -108,7 +108,7 @@ const AddCamp = () => {
           <h2 className="text-3xl font-bold text-gray-900 mb-2">
             Organize a
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">
-              {" "}
+              {' '}
               Healthcare Camp
             </span>
           </h2>
@@ -122,43 +122,36 @@ const AddCamp = () => {
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
             {/* Camp Name */}
             <div className="space-y-2">
-              <label className="block text-lg font-semibold text-gray-800">
-                Camp Name*
-              </label>
+              <label className="block text-lg font-semibold text-gray-800">Camp Name*</label>
               <input
                 type="text"
-                {...register("name", { required: "Camp Name is required" })}
+                {...register('name', { required: 'Camp Name is required' })}
                 className={`w-full px-4 py-3 rounded-xl border ${
                   errors.name
-                    ? "border-red-400 focus:ring-red-300"
-                    : "border-gray-300 focus:ring-blue-300"
+                    ? 'border-red-400 focus:ring-red-300'
+                    : 'border-gray-300 focus:ring-blue-300'
                 } focus:outline-none focus:ring-2`}
                 placeholder="Enter camp name"
               />
-              {errors.name && (
-                <p className="text-red-500 text-sm">{errors.name.message}</p>
-              )}
+              {errors.name && <p className="text-red-500 text-sm">{errors.name.message}</p>}
             </div>
 
             {/* Camp Image */}
             <div className="space-y-2">
-              <label className="block text-lg font-semibold text-gray-800">
-                Camp Image*
-              </label>
+              <label className="block text-lg font-semibold text-gray-800">Camp Image*</label>
               <div className="flex items-center justify-center w-full">
                 <label
                   htmlFor="dropzone-file"
                   className={`flex flex-col items-center justify-center w-full h-32 border-2 border-dashed rounded-xl cursor-pointer ${
                     errors.image
-                      ? "border-red-400 bg-red-50"
-                      : "border-gray-300 hover:border-blue-500 bg-gray-50 hover:bg-blue-50"
+                      ? 'border-red-400 bg-red-50'
+                      : 'border-gray-300 hover:border-blue-500 bg-gray-50 hover:bg-blue-50'
                   } transition-colors`}
                 >
                   <div className="flex flex-col items-center justify-center pt-5 pb-6">
                     <Upload className="mb-3 text-gray-500" size={24} />
                     <p className="mb-2 text-sm text-gray-500">
-                      <span className="font-semibold">Click to upload</span> or
-                      drag and drop
+                      <span className="font-semibold">Click to upload</span> or drag and drop
                     </p>
                     <p className="text-xs text-gray-500">PNG, JPG (MAX. 5MB)</p>
                   </div>
@@ -167,15 +160,13 @@ const AddCamp = () => {
                     type="file"
                     accept="image/*"
                     className="hidden"
-                    {...register("image", {
-                      required: "Camp Image is required",
+                    {...register('image', {
+                      required: 'Camp Image is required',
                     })}
                   />
                 </label>
               </div>
-              {errors.image && (
-                <p className="text-red-500 text-sm">{errors.image.message}</p>
-              )}
+              {errors.image && <p className="text-red-500 text-sm">{errors.image.message}</p>}
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -186,87 +177,72 @@ const AddCamp = () => {
                 </label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                    <FaBangladeshiTakaSign
-                      className="text-gray-500"
-                      size={18}
-                    />
+                    <FaBangladeshiTakaSign className="text-gray-500" size={18} />
                   </div>
                   <input
                     type="number"
                     step="0.01"
-                    {...register("fees", {
-                      required: "Camp Fees is required",
-                      min: { value: 0, message: "Fees must be positive" },
+                    {...register('fees', {
+                      required: 'Camp Fees is required',
+                      min: { value: 0, message: 'Fees must be positive' },
                     })}
                     className={`w-full pl-10 pr-4 py-3 rounded-xl border ${
                       errors.fees
-                        ? "border-red-400 focus:ring-red-300"
-                        : "border-gray-300 focus:ring-blue-300"
+                        ? 'border-red-400 focus:ring-red-300'
+                        : 'border-gray-300 focus:ring-blue-300'
                     } focus:outline-none focus:ring-2`}
                     placeholder="0.00"
                   />
                 </div>
-                {errors.fees && (
-                  <p className="text-red-500 text-sm">{errors.fees.message}</p>
-                )}
+                {errors.fees && <p className="text-red-500 text-sm">{errors.fees.message}</p>}
               </div>
 
               {/* Date and Time */}
               <div className="space-y-2">
-                <label className="block text-lg font-semibold text-gray-800">
-                  Date & Time*
-                </label>
+                <label className="block text-lg font-semibold text-gray-800">Date & Time*</label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                     <Calendar className="text-gray-500" size={18} />
                   </div>
                   <input
                     type="datetime-local"
-                    {...register("dateTime", {
-                      required: "Date & Time is required",
+                    {...register('dateTime', {
+                      required: 'Date & Time is required',
                     })}
                     className={`w-full pl-10 pr-4 py-3 rounded-xl border ${
                       errors.dateTime
-                        ? "border-red-400 focus:ring-red-300"
-                        : "border-gray-300 focus:ring-blue-300"
+                        ? 'border-red-400 focus:ring-red-300'
+                        : 'border-gray-300 focus:ring-blue-300'
                     } focus:outline-none focus:ring-2`}
                   />
                 </div>
                 {errors.dateTime && (
-                  <p className="text-red-500 text-sm">
-                    {errors.dateTime.message}
-                  </p>
+                  <p className="text-red-500 text-sm">{errors.dateTime.message}</p>
                 )}
               </div>
             </div>
 
             {/* Location */}
             <div className="space-y-2">
-              <label className="block text-lg font-semibold text-gray-800">
-                Location*
-              </label>
+              <label className="block text-lg font-semibold text-gray-800">Location*</label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                   <MapPin className="text-gray-500" size={18} />
                 </div>
                 <input
                   type="text"
-                  {...register("location", {
-                    required: "Location is required",
+                  {...register('location', {
+                    required: 'Location is required',
                   })}
                   className={`w-full pl-10 pr-4 py-3 rounded-xl border ${
                     errors.location
-                      ? "border-red-400 focus:ring-red-300"
-                      : "border-gray-300 focus:ring-blue-300"
+                      ? 'border-red-400 focus:ring-red-300'
+                      : 'border-gray-300 focus:ring-blue-300'
                   } focus:outline-none focus:ring-2`}
                   placeholder="Enter camp location"
                 />
               </div>
-              {errors.location && (
-                <p className="text-red-500 text-sm">
-                  {errors.location.message}
-                </p>
-              )}
+              {errors.location && <p className="text-red-500 text-sm">{errors.location.message}</p>}
             </div>
 
             {/* Healthcare Professional */}
@@ -280,21 +256,19 @@ const AddCamp = () => {
                 </div>
                 <input
                   type="text"
-                  {...register("healthcareProfessional", {
-                    required: "Healthcare Professional is required",
+                  {...register('healthcareProfessional', {
+                    required: 'Healthcare Professional is required',
                   })}
                   className={`w-full pl-10 pr-4 py-3 rounded-xl border ${
                     errors.healthcareProfessional
-                      ? "border-red-400 focus:ring-red-300"
-                      : "border-gray-300 focus:ring-blue-300"
+                      ? 'border-red-400 focus:ring-red-300'
+                      : 'border-gray-300 focus:ring-blue-300'
                   } focus:outline-none focus:ring-2`}
                   placeholder="Enter professional's name"
                 />
               </div>
               {errors.healthcareProfessional && (
-                <p className="text-red-500 text-sm">
-                  {errors.healthcareProfessional.message}
-                </p>
+                <p className="text-red-500 text-sm">{errors.healthcareProfessional.message}</p>
               )}
             </div>
 
@@ -304,7 +278,7 @@ const AddCamp = () => {
                 Description (optional)
               </label>
               <textarea
-                {...register("description")}
+                {...register('description')}
                 rows={4}
                 className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-300 resize-none"
                 placeholder="Enter camp description..."
@@ -317,8 +291,8 @@ const AddCamp = () => {
               disabled={isSubmitting || imageUploading}
               className={`w-full py-4 px-6 rounded-xl font-bold text-white transition-all duration-300 ${
                 isSubmitting || imageUploading
-                  ? "bg-blue-400"
-                  : "bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 shadow-lg hover:shadow-xl"
+                  ? 'bg-blue-400'
+                  : 'bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 shadow-lg hover:shadow-xl'
               } flex items-center justify-center`}
             >
               {isSubmitting || imageUploading ? (
@@ -327,7 +301,7 @@ const AddCamp = () => {
                   Processing...
                 </>
               ) : (
-                "Create Medical Camp"
+                'Create Medical Camp'
               )}
             </button>
           </form>

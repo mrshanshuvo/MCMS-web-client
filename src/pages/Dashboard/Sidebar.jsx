@@ -1,4 +1,4 @@
-import { NavLink } from "react-router";
+import { NavLink } from 'react-router';
 import {
   Home,
   LayoutDashboard,
@@ -13,17 +13,17 @@ import {
   User2,
   Menu,
   X,
-} from "lucide-react";
-import useAuth from "../../hooks/useAuth";
-import useUserRole from "../../hooks/useUserRole";
-import { useState, useEffect } from "react";
+} from 'lucide-react';
+import useAuth from '../../hooks/useAuth';
+import useUserRole from '../../hooks/useUserRole';
+import { useState, useEffect } from 'react';
 
 const Sidebar = () => {
   const { user } = useAuth();
   const { role } = useUserRole();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-  const isOrganizer = role === "organizer";
+  const isOrganizer = role === 'organizer';
 
   useEffect(() => {
     const handleResize = () => {
@@ -31,16 +31,16 @@ const Sidebar = () => {
     };
 
     handleResize();
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   // Common links for both roles
   const commonLinks = [
-    { to: "/", label: "Home", icon: <Home size={18} /> },
+    { to: '/', label: 'Home', icon: <Home size={18} /> },
     {
-      to: "/dashboard",
-      label: "Dashboard",
+      to: '/dashboard',
+      label: 'Dashboard',
       icon: <LayoutDashboard size={18} />,
     },
   ];
@@ -48,23 +48,23 @@ const Sidebar = () => {
   // Organizer-specific links
   const organizerLinks = [
     {
-      to: "/dashboard/add-camp",
-      label: "Add New Camp",
+      to: '/dashboard/add-camp',
+      label: 'Add New Camp',
       icon: <PlusCircle size={18} />,
     },
     {
-      to: "/dashboard/organizer-profile",
-      label: "Organizer Profile",
+      to: '/dashboard/organizer-profile',
+      label: 'Organizer Profile',
       icon: <User2 size={18} />,
     },
     {
-      to: "/dashboard/manage-camps",
-      label: "Manage Camps",
+      to: '/dashboard/manage-camps',
+      label: 'Manage Camps',
       icon: <Settings size={18} />,
     },
     {
-      to: "/dashboard/manage-registrations",
-      label: "Manage Registrations",
+      to: '/dashboard/manage-registrations',
+      label: 'Manage Registrations',
       icon: <ClipboardList size={18} />,
     },
   ];
@@ -72,32 +72,29 @@ const Sidebar = () => {
   // Participant-specific links
   const participantLinks = [
     {
-      to: "/dashboard/analytics",
-      label: "Analytics",
+      to: '/dashboard/analytics',
+      label: 'Analytics',
       icon: <ChartBar size={18} />,
     },
     {
-      to: "/dashboard/profile",
-      label: "Participant Profile",
+      to: '/dashboard/profile',
+      label: 'Participant Profile',
       icon: <User size={18} />,
     },
     {
-      to: "/dashboard/registered-camps",
-      label: "Registered Camps",
+      to: '/dashboard/registered-camps',
+      label: 'Registered Camps',
       icon: <CalendarCheck size={18} />,
     },
     {
-      to: "/dashboard/payment-history",
-      label: "Payment History",
+      to: '/dashboard/payment-history',
+      label: 'Payment History',
       icon: <CreditCard size={18} />,
     },
   ];
 
   // Combine links based on role
-  const links = [
-    ...commonLinks,
-    ...(isOrganizer ? organizerLinks : participantLinks),
-  ];
+  const links = [...commonLinks, ...(isOrganizer ? organizerLinks : participantLinks)];
 
   return (
     <>
@@ -122,11 +119,7 @@ const Sidebar = () => {
       {/* Sidebar */}
       <aside
         className={`fixed lg:relative z-40 w-64 min-h-screen bg-gradient-to-b from-[#1e3a8a] to-[#0f766e] text-white p-5 flex flex-col transition-transform duration-300 ease-in-out ${
-          isMobile
-            ? isMobileMenuOpen
-              ? "translate-x-0"
-              : "-translate-x-full"
-            : "translate-x-0"
+          isMobile ? (isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full') : 'translate-x-0'
         }`}
       >
         {/* Close button for mobile */}
@@ -144,24 +137,24 @@ const Sidebar = () => {
           <div
             className={`inline-flex items-center px-4 py-2 rounded-full text-sm font-medium mb-3 ${
               isOrganizer
-                ? "bg-blue-100/10 backdrop-blur-sm border border-blue-300/20"
-                : "bg-teal-100/10 backdrop-blur-sm border border-teal-300/20"
+                ? 'bg-blue-100/10 backdrop-blur-sm border border-blue-300/20'
+                : 'bg-teal-100/10 backdrop-blur-sm border border-teal-300/20'
             }`}
           >
             <div
               className={`w-2 h-2 rounded-full mr-2 animate-pulse ${
-                isOrganizer ? "bg-blue-400" : "bg-teal-400"
+                isOrganizer ? 'bg-blue-400' : 'bg-teal-400'
               }`}
             ></div>
-            {isOrganizer ? "Organizer Dashboard" : "Participant Portal"}
+            {isOrganizer ? 'Organizer Dashboard' : 'Participant Portal'}
           </div>
 
           <div className="flex items-center">
             <div
               className={`p-2 rounded-lg mr-3 ${
                 isOrganizer
-                  ? "bg-blue-500/20 border border-blue-400/30"
-                  : "bg-teal-500/20 border border-teal-400/30"
+                  ? 'bg-blue-500/20 border border-blue-400/30'
+                  : 'bg-teal-500/20 border border-teal-400/30'
               }`}
             >
               {isOrganizer ? (
@@ -172,7 +165,7 @@ const Sidebar = () => {
             </div>
             <h2 className="text-xl sm:text-2xl font-bold">
               <span className="bg-gradient-to-r from-blue-300 to-teal-300 bg-clip-text text-transparent">
-                {user?.displayName || "User"}
+                {user?.displayName || 'User'}
               </span>
             </h2>
           </div>
@@ -188,9 +181,9 @@ const Sidebar = () => {
                 `flex items-center px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300 group ${
                   isActive
                     ? isOrganizer
-                      ? "bg-blue-500/10 backdrop-blur-sm border border-blue-400/20 shadow-lg"
-                      : "bg-teal-500/10 backdrop-blur-sm border border-teal-400/20 shadow-lg"
-                    : "hover:bg-white/5 hover:border-white/10 hover:shadow-md"
+                      ? 'bg-blue-500/10 backdrop-blur-sm border border-blue-400/20 shadow-lg'
+                      : 'bg-teal-500/10 backdrop-blur-sm border border-teal-400/20 shadow-lg'
+                    : 'hover:bg-white/5 hover:border-white/10 hover:shadow-md'
                 }`
               }
               onClick={() => isMobile && setIsMobileMenuOpen(false)}
@@ -199,11 +192,7 @@ const Sidebar = () => {
                 <>
                   <span
                     className={`mr-3 ${
-                      isActive
-                        ? isOrganizer
-                          ? "text-blue-300"
-                          : "text-teal-300"
-                        : "text-gray-300"
+                      isActive ? (isOrganizer ? 'text-blue-300' : 'text-teal-300') : 'text-gray-300'
                     }`}
                   >
                     {link.icon}
@@ -212,9 +201,7 @@ const Sidebar = () => {
                   <span className="ml-auto opacity-0 group-hover:opacity-100 transition-opacity">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
-                      className={`h-4 w-4 ${
-                        isOrganizer ? "text-blue-300/50" : "text-teal-300/50"
-                      }`}
+                      className={`h-4 w-4 ${isOrganizer ? 'text-blue-300/50' : 'text-teal-300/50'}`}
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"
@@ -236,11 +223,11 @@ const Sidebar = () => {
         {/* Footer */}
         <div
           className={`mt-auto pt-4 border-t ${
-            isOrganizer ? "border-blue-400/10" : "border-teal-400/10"
+            isOrganizer ? 'border-blue-400/10' : 'border-teal-400/10'
           } text-xs text-white/50`}
         >
           <p>CareCamp v4.0.0</p>
-          <p>Logged in as: {isOrganizer ? "Organizer" : "Participant"}</p>
+          <p>Logged in as: {isOrganizer ? 'Organizer' : 'Participant'}</p>
         </div>
       </aside>
     </>

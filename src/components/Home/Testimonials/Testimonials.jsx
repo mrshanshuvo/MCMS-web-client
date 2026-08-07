@@ -1,29 +1,27 @@
-import React from "react";
-import { Star } from "lucide-react";
+import React from 'react';
+import { Star } from 'lucide-react';
 
 const testimonials = [
   {
-    name: "Dr. Nazmul Huda",
-    role: "Chief Medical Officer",
-    quote: "CareCamp has revolutionized our approach to community healthcare.",
+    name: 'Dr. Nazmul Huda',
+    role: 'Chief Medical Officer',
+    quote: 'CareCamp has revolutionized our approach to community healthcare.',
     rating: 5,
-    image: "👨‍⚕️",
+    image: '👨‍⚕️',
   },
   {
-    name: "Shila Akter",
-    role: "Health Advocate",
-    quote:
-      "Connected me with nearby medical camps and transformed access to healthcare.",
+    name: 'Shila Akter',
+    role: 'Health Advocate',
+    quote: 'Connected me with nearby medical camps and transformed access to healthcare.',
     rating: 5,
-    image: "👩‍💼",
+    image: '👩‍💼',
   },
   {
-    name: "Rafsan Jamil",
-    role: "Program Director",
-    quote:
-      "Streamlined everything from volunteer coordination to supply management.",
+    name: 'Rafsan Jamil',
+    role: 'Program Director',
+    quote: 'Streamlined everything from volunteer coordination to supply management.',
     rating: 5,
-    image: "👨‍💻",
+    image: '👨‍💻',
   },
 ];
 
@@ -33,19 +31,14 @@ const Testimonials = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="text-center mb-12">
           <div className="inline-flex items-center gap-2 bg-[#495E57]/10 text-[#495E57] px-4 py-2 rounded-full text-sm font-medium mb-4">
-            <Star
-              size={16}
-              className="text-[#F4CE14]"
-              fill="#F4CE14"
-              aria-hidden="true"
-            />
+            <Star size={16} className="text-[#F4CE14]" fill="#F4CE14" aria-hidden="true" />
             Testimonials
           </div>
 
           <h2 className="text-3xl sm:text-4xl font-bold text-[#45474B] mb-4">
             Trusted by Healthcare
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#495E57] to-[#F4CE14]">
-              {" "}
+              {' '}
               Leaders
             </span>
           </h2>
@@ -70,10 +63,7 @@ const Testimonials = () => {
                 </div>
               </div>
 
-              <div
-                className="flex mb-4 items-center"
-                aria-label={`${t.rating} out of 5 stars`}
-              >
+              <div className="flex mb-4 items-center" aria-label={`${t.rating} out of 5 stars`}>
                 <span className="sr-only">{t.rating} out of 5 stars</span>
                 {Array.from({ length: t.rating }).map((_, idx) => (
                   <Star

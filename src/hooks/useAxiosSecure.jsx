@@ -1,10 +1,10 @@
-import { useEffect } from "react";
-import axios from "axios";
-import useAuth from "./useAuth";
-import { useNavigate } from "react-router";
+import { useEffect } from 'react';
+import axios from 'axios';
+import useAuth from './useAuth';
+import { useNavigate } from 'react-router';
 
 const axiosSecure = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || "http://localhost:5000",
+  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:5000',
 });
 
 const useAxiosSecure = () => {
@@ -18,7 +18,7 @@ const useAxiosSecure = () => {
         if (token) config.headers.authorization = `Bearer ${token}`;
         return config;
       },
-      (error) => Promise.reject(error),
+      (error) => Promise.reject(error)
     );
 
     const resId = axiosSecure.interceptors.response.use(
@@ -26,19 +26,19 @@ const useAxiosSecure = () => {
       async (error) => {
         const status = error.response?.status;
 
-        if (status === 403) navigate("/forbidden");
+        if (status === 403) navigate('/forbidden');
 
         if (status === 401) {
           try {
             await logOut();
-            navigate("/login");
+            navigate('/login');
           } catch (err) {
-            console.error("Error during logout:", err);
+            console.error('Error during logout:', err);
           }
         }
 
         return Promise.reject(error);
-      },
+      }
     );
 
     return () => {

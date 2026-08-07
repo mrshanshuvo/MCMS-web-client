@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useState } from 'react';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import {
   Loader2,
   CalendarCheck,
@@ -7,16 +7,16 @@ import {
   ChevronLeft,
   ChevronRight,
   ArrowRight,
-} from "lucide-react";
-import { Elements } from "@stripe/react-stripe-js";
-import { loadStripe } from "@stripe/stripe-js";
-import toast from "react-hot-toast";
-import CampCard from "./CampCard";
-import CampTable from "./CampTable";
-import PaymentDialog from "./PaymentDialog";
-import FeedbackModal from "./FeedbackModal";
-import useAuth from "../../../../hooks/useAuth";
-import useAxiosSecure from "../../../../hooks/useAxiosSecure";
+} from 'lucide-react';
+import { Elements } from '@stripe/react-stripe-js';
+import { loadStripe } from '@stripe/stripe-js';
+import toast from 'react-hot-toast';
+import CampCard from './CampCard';
+import CampTable from './CampTable';
+import PaymentDialog from './PaymentDialog';
+import FeedbackModal from './FeedbackModal';
+import useAuth from '../../../../hooks/useAuth';
+import useAxiosSecure from '../../../../hooks/useAxiosSecure';
 
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PK);
 
@@ -32,7 +32,7 @@ const RegisteredCamps = () => {
 
   // Fetch registered camps
   const { data, isLoading, isError, error, refetch } = useQuery({
-    queryKey: ["registeredCamps", user?.email, currentPage],
+    queryKey: ['registeredCamps', user?.email, currentPage],
     queryFn: async () => {
       const res = await axiosSecure.get(
         `/camps-with-registrations/${user.email}?page=${currentPage}&limit=${limit}`
@@ -53,44 +53,39 @@ const RegisteredCamps = () => {
       return res.data;
     },
     onSuccess: () => {
-      toast.success("Registration cancelled successfully");
-      queryClient.invalidateQueries(["registeredCamps"]);
+      toast.success('Registration cancelled successfully');
+      queryClient.invalidateQueries(['registeredCamps']);
     },
     onError: (error) => {
-      toast.error(
-        error.response?.data?.message || "Failed to cancel registration"
-      );
+      toast.error(error.response?.data?.message || 'Failed to cancel registration');
     },
   });
 
   // Submit feedback mutation
-  const { mutate: submitFeedback, isPending: isSubmittingFeedback } =
-    useMutation({
-      mutationFn: async ({ campId, rating, feedback }) => {
-        const res = await axiosSecure.post("/feedback", {
-          campId,
-          rating,
-          feedback,
-          name: user.displayName,
-          photoURL: user.photoURL,
-        });
-        return res.data;
-      },
-      onSuccess: () => {
-        toast.success("Feedback submitted successfully!");
-        queryClient.invalidateQueries(["registeredCamps"]);
-        setFeedbackCampId(null);
-      },
-      onError: (error) => {
-        toast.error(
-          error.response?.data?.message || "Failed to submit feedback"
-        );
-      },
-    });
+  const { mutate: submitFeedback, isPending: isSubmittingFeedback } = useMutation({
+    mutationFn: async ({ campId, rating, feedback }) => {
+      const res = await axiosSecure.post('/feedback', {
+        campId,
+        rating,
+        feedback,
+        name: user.displayName,
+        photoURL: user.photoURL,
+      });
+      return res.data;
+    },
+    onSuccess: () => {
+      toast.success('Feedback submitted successfully!');
+      queryClient.invalidateQueries(['registeredCamps']);
+      setFeedbackCampId(null);
+    },
+    onError: (error) => {
+      toast.error(error.response?.data?.message || 'Failed to submit feedback');
+    },
+  });
 
   const handlePaymentSuccess = () => {
     refetch();
-    toast.success("Payment completed successfully!");
+    toast.success('Payment completed successfully!');
     setPaymentCamp(null);
     setPaymentRegistration(null);
   };
@@ -122,12 +117,8 @@ const RegisteredCamps = () => {
         <div className="flex items-center">
           <AlertCircle className="h-5 w-5 text-red-500 mr-3" />
           <div>
-            <h3 className="text-sm font-medium text-red-800">
-              Error loading registered camps
-            </h3>
-            <p className="text-sm text-red-700 mt-1">
-              {error.message || "Please try again later"}
-            </p>
+            <h3 className="text-sm font-medium text-red-800">Error loading registered camps</h3>
+            <p className="text-sm text-red-700 mt-1">{error.message || 'Please try again later'}</p>
             <button
               onClick={() => refetch()}
               className="mt-2 text-sm text-red-600 hover:underline flex items-center"
@@ -174,7 +165,7 @@ const RegisteredCamps = () => {
           <h2 className="text-3xl font-bold text-gray-900 mb-2">
             My
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">
-              {" "}
+              {' '}
               Registered Camps
             </span>
           </h2>
@@ -201,7 +192,7 @@ const RegisteredCamps = () => {
                   if (!camp.hasFeedback) {
                     setFeedbackCampId(camp._id);
                   } else {
-                    toast.error("You already submitted feedback for this camp");
+                    toast.error('You already submitted feedback for this camp');
                   }
                 }}
                 feedbackDisabled={camp.hasFeedback}
@@ -225,7 +216,7 @@ const RegisteredCamps = () => {
                 if (!camp.hasFeedback) {
                   setFeedbackCampId(camp._id);
                 } else {
-                  toast.error("You already submitted feedback for this camp");
+                  toast.error('You already submitted feedback for this camp');
                 }
               }}
               isCancelling={isCancelling}
@@ -258,8 +249,8 @@ const RegisteredCamps = () => {
                 onClick={() => setCurrentPage(pageNum)}
                 className={`w-10 h-10 rounded-full flex items-center justify-center ${
                   currentPage === pageNum
-                    ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white"
-                    : "hover:bg-gray-100"
+                    ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white'
+                    : 'hover:bg-gray-100'
                 }`}
               >
                 {pageNum}

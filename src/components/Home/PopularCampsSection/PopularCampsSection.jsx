@@ -1,12 +1,12 @@
-import React from "react";
-import { useQuery } from "@tanstack/react-query";
-import { Link } from "react-router";
-import { MapPin, Calendar, Users, User, ArrowRight, Star } from "lucide-react";
-import Skeleton from "react-loading-skeleton";
-import "react-loading-skeleton/dist/skeleton.css";
+import React from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { Link } from 'react-router';
+import { MapPin, Calendar, Users, User, ArrowRight, Star } from 'lucide-react';
+import Skeleton from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css';
 
-import { FaBangladeshiTakaSign } from "react-icons/fa6";
-import useAxios from "../../../hooks/useAxios";
+import { FaBangladeshiTakaSign } from 'react-icons/fa6';
+import useAxios from '../../../hooks/useAxios';
 
 const PopularCampsSection = () => {
   const axios = useAxios();
@@ -19,9 +19,9 @@ const PopularCampsSection = () => {
     refetch,
     isFetching,
   } = useQuery({
-    queryKey: ["camps"],
+    queryKey: ['camps'],
     queryFn: async () => {
-      const res = await axios.get("/camps");
+      const res = await axios.get('/camps');
       return res.data?.camps || [];
     },
     staleTime: 60_000,
@@ -35,7 +35,7 @@ const PopularCampsSection = () => {
   // Fallback image URL
   const getFallbackImage = (campName) => {
     const placeholderUrl = `https://placehold.co/400x300/495E57/F4CE14/png?text=${encodeURIComponent(
-      campName,
+      campName
     )}`;
     return placeholderUrl;
   };
@@ -46,9 +46,7 @@ const PopularCampsSection = () => {
         <div className="container mx-auto px-4 text-center">
           <div className="bg-red-50 border border-red-200 text-red-700 px-6 py-4 rounded-lg max-w-2xl mx-auto">
             <h3 className="font-bold text-lg mb-2">Error Loading Camps</h3>
-            <p className="break-words">
-              {error?.message || "Something went wrong."}
-            </p>
+            <p className="break-words">{error?.message || 'Something went wrong.'}</p>
 
             <button
               type="button"
@@ -56,7 +54,7 @@ const PopularCampsSection = () => {
               disabled={isFetching}
               className="mt-4 bg-red-600 hover:bg-red-700 disabled:opacity-60 disabled:cursor-not-allowed text-white font-medium py-2 px-4 rounded transition-colors"
             >
-              {isFetching ? "Retrying..." : "Try Again"}
+              {isFetching ? 'Retrying...' : 'Try Again'}
             </button>
           </div>
         </div>
@@ -75,13 +73,12 @@ const PopularCampsSection = () => {
           <h2 className="text-3xl sm:text-4xl font-bold text-[#45474B] mb-4">
             Popular
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#495E57] to-[#F4CE14]">
-              {" "}
+              {' '}
               Medical Camps
             </span>
           </h2>
           <p className="text-lg text-[#45474B]/70 max-w-2xl mx-auto">
-            Join thousands of healthcare professionals in these upcoming medical
-            camps
+            Join thousands of healthcare professionals in these upcoming medical camps
           </p>
         </div>
 
@@ -124,9 +121,7 @@ const PopularCampsSection = () => {
                       </div>
                     </div>
                     <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-[#45474B] to-transparent p-4">
-                      <h3 className="text-xl font-bold text-white">
-                        {camp.name}
-                      </h3>
+                      <h3 className="text-xl font-bold text-white">{camp.name}</h3>
                     </div>
                   </div>
                   <div className="p-6">
@@ -135,33 +130,26 @@ const PopularCampsSection = () => {
                         <div className="flex-shrink-0 w-8 h-8 bg-[#495E57]/10 rounded-lg flex items-center justify-center mr-3">
                           <MapPin className="text-[#495E57]" size={16} />
                         </div>
-                        <span className="text-sm font-medium">
-                          {camp.location}
-                        </span>
+                        <span className="text-sm font-medium">{camp.location}</span>
                       </div>
                       <div className="flex items-center text-[#45474B]">
                         <div className="flex-shrink-0 w-8 h-8 bg-[#495E57]/10 rounded-lg flex items-center justify-center mr-3">
                           <Calendar className="text-[#495E57]" size={16} />
                         </div>
                         <span className="text-sm">
-                          {new Date(camp.dateTime).toLocaleDateString("en-US", {
-                            year: "numeric",
-                            month: "short",
-                            day: "numeric",
+                          {new Date(camp.dateTime).toLocaleDateString('en-US', {
+                            year: 'numeric',
+                            month: 'short',
+                            day: 'numeric',
                           })}
                         </span>
                       </div>
                       <div className="flex items-center text-[#45474B]">
                         <div className="flex-shrink-0 w-8 h-8 bg-[#F4CE14]/20 rounded-lg flex items-center justify-center mr-3">
-                          <FaBangladeshiTakaSign
-                            className="text-[#F4CE14]"
-                            size={16}
-                          />
+                          <FaBangladeshiTakaSign className="text-[#F4CE14]" size={16} />
                         </div>
                         <div className="flex gap-1 justify-center items-center">
-                          <span className="text-sm font-semibold">
-                            {camp.fees.toFixed(2)}
-                          </span>
+                          <span className="text-sm font-semibold">{camp.fees.toFixed(2)}</span>
                           <FaBangladeshiTakaSign size={14} />
                         </div>
                       </div>
@@ -169,9 +157,7 @@ const PopularCampsSection = () => {
                         <div className="flex-shrink-0 w-8 h-8 bg-[#495E57]/10 rounded-lg flex items-center justify-center mr-3">
                           <User className="text-[#495E57]" size={16} />
                         </div>
-                        <span className="text-sm">
-                          {camp.healthcareProfessional}
-                        </span>
+                        <span className="text-sm">{camp.healthcareProfessional}</span>
                       </div>
                       <div className="flex items-center text-[#45474B]">
                         <div className="flex-shrink-0 w-8 h-8 bg-[#495E57]/10 rounded-lg flex items-center justify-center mr-3">
@@ -188,10 +174,7 @@ const PopularCampsSection = () => {
                             <div
                               className="bg-[#F4CE14] h-1.5 rounded-full transition-all duration-500"
                               style={{
-                                width: `${Math.min(
-                                  (camp.participantCount / 500) * 100,
-                                  100,
-                                )}%`,
+                                width: `${Math.min((camp.participantCount / 500) * 100, 100)}%`,
                               }}
                             />
                           </div>

@@ -1,9 +1,9 @@
-import React, { useState } from "react";
-import { Star } from "lucide-react";
+import React, { useState } from 'react';
+import { Star } from 'lucide-react';
 
 const FeedbackModal = ({ campId, onClose, onSubmit }) => {
   const [rating, setRating] = useState(5);
-  const [feedback, setFeedback] = useState("");
+  const [feedback, setFeedback] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async (e) => {
@@ -51,11 +51,7 @@ const FeedbackModal = ({ campId, onClose, onSubmit }) => {
             />
           </div>
           <div className="flex justify-end space-x-3">
-            <button
-              type="button"
-              onClick={onClose}
-              className="px-4 py-2 border rounded-lg"
-            >
+            <button type="button" onClick={onClose} className="px-4 py-2 border rounded-lg">
               Cancel
             </button>
             <button
@@ -63,7 +59,7 @@ const FeedbackModal = ({ campId, onClose, onSubmit }) => {
               disabled={isSubmitting}
               className="px-4 py-2 bg-blue-600 text-white rounded-lg disabled:opacity-50"
             >
-              {isSubmitting ? "Submitting..." : "Submit"}
+              {isSubmitting ? 'Submitting...' : 'Submit'}
             </button>
           </div>
         </form>

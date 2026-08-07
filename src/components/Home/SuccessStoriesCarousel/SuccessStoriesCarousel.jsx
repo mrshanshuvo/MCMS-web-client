@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useRef } from "react";
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import {
   ArrowRight,
   ArrowLeft,
@@ -8,10 +8,10 @@ import {
   Users,
   Activity,
   Quote,
-} from "lucide-react";
-import useAxiosSecure from "../../../hooks/useAxiosSecure";
-import { useQuery } from "@tanstack/react-query";
-import { Link } from "react-router";
+} from 'lucide-react';
+import useAxiosSecure from '../../../hooks/useAxiosSecure';
+import { useQuery } from '@tanstack/react-query';
+import { Link } from 'react-router';
 
 const iconMap = {
   Users: (props) => <Users {...props} />,
@@ -37,9 +37,9 @@ const SuccessStoriesCarousel = () => {
     isLoading,
     isError,
   } = useQuery({
-    queryKey: ["successStories"],
+    queryKey: ['successStories'],
     queryFn: async () => {
-      const res = await axiosSecure.get("/successStories");
+      const res = await axiosSecure.get('/successStories');
       return res.data;
     },
   });
@@ -73,10 +73,7 @@ const SuccessStoriesCarousel = () => {
     setIsAutoPlaying(false);
 
     if (resumeTimerRef.current) clearTimeout(resumeTimerRef.current);
-    resumeTimerRef.current = setTimeout(
-      () => setIsAutoPlaying(true),
-      RESUME_DELAY,
-    );
+    resumeTimerRef.current = setTimeout(() => setIsAutoPlaying(true), RESUME_DELAY);
   };
 
   useEffect(() => {
@@ -115,22 +112,12 @@ const SuccessStoriesCarousel = () => {
       <div className="max-w-7xl mx-auto relative z-10">
         <div className="text-center mb-14">
           <div className="inline-flex items-center gap-2 px-4 py-2 bg-white rounded-full shadow-sm border border-[#495E57]/10 mb-6">
-            <Star
-              size={16}
-              className="text-[#F4CE14]"
-              fill="#F4CE14"
-              aria-hidden="true"
-            />
-            <span className="text-sm font-medium text-[#495E57]">
-              Real Impact Stories
-            </span>
+            <Star size={16} className="text-[#F4CE14]" fill="#F4CE14" aria-hidden="true" />
+            <span className="text-sm font-medium text-[#495E57]">Real Impact Stories</span>
           </div>
-          <h2 className="text-4xl sm:text-5xl font-bold text-[#45474B]">
-            Success Stories
-          </h2>
+          <h2 className="text-4xl sm:text-5xl font-bold text-[#45474B]">Success Stories</h2>
           <p className="mt-4 text-lg text-[#495E57]/70 max-w-2xl mx-auto">
-            Discover how healthcare professionals are transforming communities
-            with CareCamp
+            Discover how healthcare professionals are transforming communities with CareCamp
           </p>
         </div>
 
@@ -159,21 +146,15 @@ const SuccessStoriesCarousel = () => {
                         src={story.image}
                         alt={`${story.name}, ${story.role}`}
                         className="w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
-                        loading={index === 0 ? "eager" : "lazy"}
+                        loading={index === 0 ? 'eager' : 'lazy'}
                       />
                       <div className="absolute inset-0 bg-gradient-to-br from-[#495E57]/80 via-[#45474B]/60 to-transparent" />
                       <div className="absolute top-8 left-8 w-14 h-14 bg-[#F4CE14]/20 rounded-xl flex items-center justify-center">
-                        <Quote
-                          size={28}
-                          className="text-[#F4CE14]"
-                          aria-hidden="true"
-                        />
+                        <Quote size={28} className="text-[#F4CE14]" aria-hidden="true" />
                       </div>
                       <div className="absolute bottom-16 left-8 right-8">
                         <div className="bg-white/10 backdrop-blur-md rounded-2xl p-4 border border-white/20">
-                          <h3 className="text-2xl font-bold text-white">
-                            {story.name}
-                          </h3>
+                          <h3 className="text-2xl font-bold text-white">{story.name}</h3>
                           <p className="text-sm text-[#F4CE14]">{story.role}</p>
                         </div>
                       </div>
@@ -193,19 +174,13 @@ const SuccessStoriesCarousel = () => {
                       <div className="mb-8 p-5 bg-gradient-to-br from-[#F4CE14]/10 to-transparent rounded-2xl border-l-4 border-[#F4CE14]">
                         <div className="flex items-center gap-2 mb-2">
                           <div className="w-8 h-8 bg-[#F4CE14] rounded-lg flex items-center justify-center">
-                            <Star
-                              size={16}
-                              className="text-[#495E57]"
-                              aria-hidden="true"
-                            />
+                            <Star size={16} className="text-[#495E57]" aria-hidden="true" />
                           </div>
                           <span className="text-sm font-semibold text-[#495E57] uppercase tracking-wide">
                             Key Achievement
                           </span>
                         </div>
-                        <p className="text-lg font-semibold text-[#45474B]">
-                          {story.achievement}
-                        </p>
+                        <p className="text-lg font-semibold text-[#45474B]">{story.achievement}</p>
                       </div>
 
                       <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
@@ -217,15 +192,11 @@ const SuccessStoriesCarousel = () => {
                             <div className="w-10 h-10 bg-[#495E57]/10 rounded-xl flex items-center justify-center mx-auto mb-3 text-[#495E57] group-hover:bg-[#495E57] group-hover:text-[#F4CE14] transition-all duration-300">
                               {iconMap[stat.icon]?.({
                                 size: 18,
-                                "aria-hidden": true,
+                                'aria-hidden': true,
                               })}
                             </div>
-                            <p className="font-bold text-[#45474B] text-lg mb-1">
-                              {stat.value}
-                            </p>
-                            <p className="text-xs text-[#495E57]/60 font-medium">
-                              {stat.label}
-                            </p>
+                            <p className="font-bold text-[#45474B] text-lg mb-1">{stat.value}</p>
+                            <p className="text-xs text-[#495E57]/60 font-medium">{stat.label}</p>
                           </div>
                         ))}
                       </div>
@@ -268,17 +239,15 @@ const SuccessStoriesCarousel = () => {
                 className="group relative"
                 aria-label={`Go to slide ${index + 1}`}
                 aria-controls={`slide-${index}`}
-                aria-current={currentSlide === index ? "true" : undefined}
+                aria-current={currentSlide === index ? 'true' : undefined}
               >
                 {currentSlide === index ? (
                   <div className="w-12 h-3 rounded-full overflow-hidden bg-[#495E57]/30">
                     <div
                       className="h-full bg-[#F4CE14]"
                       style={{
-                        width: isAutoPlaying ? "100%" : "100%",
-                        transition: isAutoPlaying
-                          ? `width ${AUTO_PLAY_INTERVAL}ms linear`
-                          : "none",
+                        width: isAutoPlaying ? '100%' : '100%',
+                        transition: isAutoPlaying ? `width ${AUTO_PLAY_INTERVAL}ms linear` : 'none',
                       }}
                     />
                   </div>

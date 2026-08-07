@@ -1,25 +1,24 @@
-import React from "react";
-import { MapPin, Shield, Users, ChevronRight, Star } from "lucide-react";
+import React from 'react';
+import { MapPin, Shield, Users, ChevronRight, Star } from 'lucide-react';
 
 const features = [
   {
-    title: "Real-time Camp Tracking",
-    description:
-      "Advanced dashboard with live updates and comprehensive analytics.",
+    title: 'Real-time Camp Tracking',
+    description: 'Advanced dashboard with live updates and comprehensive analytics.',
     icon: MapPin,
-    stats: "99.9% Uptime",
+    stats: '99.9% Uptime',
   },
   {
-    title: "Enterprise Security",
-    description: "Bank-grade encryption and HIPAA compliance for medical data.",
+    title: 'Enterprise Security',
+    description: 'Bank-grade encryption and HIPAA compliance for medical data.',
     icon: Shield,
-    stats: "ISO 27001 Certified",
+    stats: 'ISO 27001 Certified',
   },
   {
-    title: "Smart Role Management",
-    description: "Customizable permissions for doctors, patients, and staff.",
+    title: 'Smart Role Management',
+    description: 'Customizable permissions for doctors, patients, and staff.',
     icon: Users,
-    stats: "50+ Role Types",
+    stats: '50+ Role Types',
   },
 ];
 
@@ -29,26 +28,20 @@ const FeaturesSection = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="text-center mb-12">
           <div className="inline-flex items-center gap-2 bg-[#495E57]/10 text-[#495E57] px-4 py-2 rounded-full text-sm font-medium mb-4">
-            <Star
-              size={16}
-              className="text-[#F4CE14]"
-              fill="#F4CE14"
-              aria-hidden="true"
-            />
+            <Star size={16} className="text-[#F4CE14]" fill="#F4CE14" aria-hidden="true" />
             Why Choose CareCamp
           </div>
 
           <h2 className="text-3xl sm:text-4xl font-bold text-[#45474B] mb-4">
             Powerful Features for
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#495E57] to-[#F4CE14]">
-              {" "}
+              {' '}
               Modern Healthcare
             </span>
           </h2>
 
           <p className="text-lg text-[#45474B]/70 max-w-3xl mx-auto">
-            Built with cutting-edge technology to streamline medical camp
-            operations.
+            Built with cutting-edge technology to streamline medical camp operations.
           </p>
         </div>
 
@@ -65,13 +58,9 @@ const FeaturesSection = () => {
                   <Icon className="text-white" size={24} aria-hidden="true" />
                 </div>
 
-                <h3 className="text-xl font-bold text-[#45474B] mb-3">
-                  {feature.title}
-                </h3>
+                <h3 className="text-xl font-bold text-[#45474B] mb-3">{feature.title}</h3>
 
-                <p className="text-[#45474B]/70 mb-4 leading-relaxed">
-                  {feature.description}
-                </p>
+                <p className="text-[#45474B]/70 mb-4 leading-relaxed">{feature.description}</p>
 
                 <div className="flex items-center justify-between">
                   <span className="text-xs font-semibold text-[#45474B] bg-[#F4CE14]/20 px-3 py-1 rounded-full">

@@ -1,7 +1,7 @@
-import React, { useState } from "react";
-import { format } from "date-fns";
-import { MoreHorizontal } from "lucide-react";
-import StatusBadge from "./StatusBadge";
+import React, { useState } from 'react';
+import { format } from 'date-fns';
+import { MoreHorizontal } from 'lucide-react';
+import StatusBadge from './StatusBadge';
 
 const CampCard = ({ camp, onPay, onCancel, onFeedback }) => {
   const [expanded, setExpanded] = useState(false);
@@ -14,7 +14,7 @@ const CampCard = ({ camp, onPay, onCancel, onFeedback }) => {
           <div>
             <h3 className="font-semibold text-gray-900">{camp.name}</h3>
             <p className="text-xs text-gray-500">
-              {format(new Date(camp.dateTime), "MMM d, yyyy h:mm a")}
+              {format(new Date(camp.dateTime), 'MMM d, yyyy h:mm a')}
             </p>
           </div>
           <button
@@ -37,9 +37,7 @@ const CampCard = ({ camp, onPay, onCancel, onFeedback }) => {
             </div>
             <div className="flex justify-between">
               <span className="text-sm text-gray-600">Participant:</span>
-              <span className="text-sm font-medium">
-                {participant?.participantName || "N/A"}
-              </span>
+              <span className="text-sm font-medium">{participant?.participantName || 'N/A'}</span>
             </div>
             <div className="flex justify-between">
               <span className="text-sm text-gray-600">Payment:</span>
@@ -50,7 +48,7 @@ const CampCard = ({ camp, onPay, onCancel, onFeedback }) => {
       </div>
 
       <div className="border-t border-gray-200 px-4 py-3 bg-gray-50 flex justify-between space-x-2">
-        {participant?.paymentStatus !== "Paid" ? (
+        {participant?.paymentStatus !== 'Paid' ? (
           <>
             <button
               onClick={() => onPay(camp)}

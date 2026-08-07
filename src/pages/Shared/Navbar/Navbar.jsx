@@ -1,8 +1,8 @@
-import React, { useState, useEffect, useRef, useContext, useMemo } from "react";
-import { NavLink, useNavigate } from "react-router";
-import { Menu, X, User, LogOut, LayoutDashboard } from "lucide-react";
-import { AuthContext } from "../../../contexts/AuthContext/AuthContext";
-import CareCampLogo from "../CareCampLogo/CareCampLogo";
+import React, { useState, useEffect, useRef, useContext, useMemo } from 'react';
+import { NavLink, useNavigate } from 'react-router';
+import { Menu, X, User, LogOut, LayoutDashboard } from 'lucide-react';
+import { AuthContext } from '../../../contexts/AuthContext/AuthContext';
+import CareCampLogo from '../CareCampLogo/CareCampLogo';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -20,33 +20,33 @@ const Navbar = () => {
     () =>
       !user
         ? [
-            { path: "/", label: "Home" },
-            { path: "/available-camps", label: "Available Camps" },
-            { path: "/about", label: "About Us" },
+            { path: '/', label: 'Home' },
+            { path: '/available-camps', label: 'Available Camps' },
+            { path: '/about', label: 'About Us' },
           ]
         : [
-            { path: "/", label: "Home" },
-            { path: "/available-camps", label: "Available Camps" },
-            { path: "/success-stories", label: "Success Stories" },
-            { path: "/about", label: "About Us" },
-            { path: "/contact", label: "Contact Us" },
+            { path: '/', label: 'Home' },
+            { path: '/available-camps', label: 'Available Camps' },
+            { path: '/success-stories', label: 'Success Stories' },
+            { path: '/about', label: 'About Us' },
+            { path: '/contact', label: 'Contact Us' },
           ],
-    [user],
+    [user]
   );
 
   const handleLogout = async () => {
     try {
       await logOut();
-      navigate("/");
+      navigate('/');
     } catch (error) {
-      console.error("Logout error:", error);
+      console.error('Logout error:', error);
     }
   };
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   // Close on outside click (dropdown + mobile menu)
@@ -68,28 +68,26 @@ const Navbar = () => {
       }
     };
 
-    document.addEventListener("pointerdown", handlePointerDown);
-    return () => document.removeEventListener("pointerdown", handlePointerDown);
+    document.addEventListener('pointerdown', handlePointerDown);
+    return () => document.removeEventListener('pointerdown', handlePointerDown);
   }, []);
 
   // Close on Escape
   useEffect(() => {
     const onKeyDown = (e) => {
-      if (e.key === "Escape") {
+      if (e.key === 'Escape') {
         setDropdownOpen(false);
         setIsOpen(false);
       }
     };
-    document.addEventListener("keydown", onKeyDown);
-    return () => document.removeEventListener("keydown", onKeyDown);
+    document.addEventListener('keydown', onKeyDown);
+    return () => document.removeEventListener('keydown', onKeyDown);
   }, []);
 
   return (
     <nav
       className={`sticky top-0 z-50 transition-all duration-300 ${
-        scrolled
-          ? "bg-white shadow-lg"
-          : "bg-white/95 backdrop-blur-md shadow-md"
+        scrolled ? 'bg-white shadow-lg' : 'bg-white/95 backdrop-blur-md shadow-md'
       }`}
     >
       <div className="container mx-auto px-4 py-4">
@@ -106,8 +104,8 @@ const Navbar = () => {
                     className={({ isActive }) =>
                       `px-4 py-2 font-medium rounded-lg transition-all duration-200 relative group ${
                         isActive
-                          ? "text-[#495E57] bg-[#F5F7F8]"
-                          : "text-[#45474B] hover:text-[#495E57] hover:bg-[#F5F7F8]"
+                          ? 'text-[#495E57] bg-[#F5F7F8]'
+                          : 'text-[#45474B] hover:text-[#495E57] hover:bg-[#F5F7F8]'
                       }`
                     }
                   >
@@ -125,10 +123,7 @@ const Navbar = () => {
                 className="bg-[#495E57] text-[#F5F7F8] px-6 py-2.5 rounded-xl font-semibold shadow-md hover:bg-[#45474B] hover:shadow-lg transition-all duration-300 flex items-center gap-2 group"
               >
                 <span>Join Us</span>
-                <User
-                  size={18}
-                  className="group-hover:scale-110 transition-transform"
-                />
+                <User size={18} className="group-hover:scale-110 transition-transform" />
               </NavLink>
             ) : (
               <div className="relative" ref={dropdownRef}>
@@ -141,8 +136,8 @@ const Navbar = () => {
                   aria-controls="user-menu"
                 >
                   <img
-                    src={user.photoURL || "/default-avatar.png"}
-                    alt={user.displayName || "User"}
+                    src={user.photoURL || '/default-avatar.png'}
+                    alt={user.displayName || 'User'}
                     className="w-10 h-10 rounded-full border-2 border-[#F4CE14]/30 group-hover:border-[#F4CE14]/60 transition-all shadow-md object-cover"
                   />
                 </button>
@@ -155,11 +150,9 @@ const Navbar = () => {
                   >
                     <div className="px-5 py-4 border-b border-[#495E57]/10 bg-gradient-to-br from-[#F5F7F8] to-white">
                       <p className="font-semibold text-[#45474B] truncate">
-                        {user.displayName || "User"}
+                        {user.displayName || 'User'}
                       </p>
-                      <p className="text-sm text-[#495E57]/60 truncate mt-0.5">
-                        {user.email}
-                      </p>
+                      <p className="text-sm text-[#495E57]/60 truncate mt-0.5">{user.email}</p>
                     </div>
 
                     <NavLink
@@ -171,9 +164,7 @@ const Navbar = () => {
                       <div className="w-8 h-8 rounded-lg bg-[#495E57]/10 flex items-center justify-center group-hover:bg-[#495E57]/20 transition-colors">
                         <LayoutDashboard size={16} className="text-[#495E57]" />
                       </div>
-                      <span className="text-[#45474B] font-medium">
-                        Dashboard
-                      </span>
+                      <span className="text-[#45474B] font-medium">Dashboard</span>
                     </NavLink>
 
                     <button
@@ -228,8 +219,8 @@ const Navbar = () => {
                     className={({ isActive }) =>
                       `block px-4 py-3 rounded-xl font-medium text-[#45474B] transition-all duration-200 ${
                         isActive
-                          ? "bg-[#F5F7F8] text-[#495E57]"
-                          : "hover:bg-[#F5F7F8] hover:text-[#495E57]"
+                          ? 'bg-[#F5F7F8] text-[#495E57]'
+                          : 'hover:bg-[#F5F7F8] hover:text-[#495E57]'
                       }`
                     }
                   >
@@ -241,9 +232,7 @@ const Navbar = () => {
               {user ? (
                 <>
                   <li className="px-4 py-3 text-sm text-[#495E57]/60 border-t border-[#495E57]/10 mt-4">
-                    <div className="font-medium text-[#45474B] mb-1">
-                      {user.displayName}
-                    </div>
+                    <div className="font-medium text-[#45474B] mb-1">{user.displayName}</div>
                     <div>{user.email}</div>
                   </li>
                   <li>

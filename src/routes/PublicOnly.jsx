@@ -1,5 +1,5 @@
-import useAuth from "../hooks/useAuth";
-import { Navigate, useLocation } from "react-router";
+import useAuth from '../hooks/useAuth';
+import { Navigate, useLocation } from 'react-router';
 
 const PublicOnly = ({ children }) => {
   const { user, loading } = useAuth();
@@ -15,7 +15,7 @@ const PublicOnly = ({ children }) => {
 
   // ✅ logged in → redirect away from auth pages
   if (user) {
-    const redirectTo = location.state?.from || "/dashboard";
+    const redirectTo = location.state?.from || '/dashboard';
     return <Navigate to={redirectTo} replace />;
   }
 

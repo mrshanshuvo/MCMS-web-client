@@ -1,43 +1,38 @@
-import React from "react";
-import {
-  CalendarCheck,
-  ClipboardList,
-  HeartPulse,
-  Stethoscope,
-} from "lucide-react";
-import { useNavigate } from "react-router";
+import React from 'react';
+import { CalendarCheck, ClipboardList, HeartPulse, Stethoscope } from 'lucide-react';
+import { useNavigate } from 'react-router';
 
 const ParticipantDashboard = () => {
   const navigate = useNavigate();
 
   const quickActions = [
     {
-      title: "Available Camps",
-      description: "Browse and register for upcoming medical camps",
+      title: 'Available Camps',
+      description: 'Browse and register for upcoming medical camps',
       icon: <Stethoscope className="text-blue-600" size={24} />,
-      action: () => navigate("/available-camps"),
-      color: "from-blue-100 to-blue-50",
+      action: () => navigate('/available-camps'),
+      color: 'from-blue-100 to-blue-50',
     },
     {
-      title: "My Registrations",
-      description: "View your registered camps and appointments",
+      title: 'My Registrations',
+      description: 'View your registered camps and appointments',
       icon: <CalendarCheck className="text-purple-600" size={24} />,
-      action: () => navigate("/dashboard/registered-camps"),
-      color: "from-purple-100 to-purple-50",
+      action: () => navigate('/dashboard/registered-camps'),
+      color: 'from-purple-100 to-purple-50',
     },
     {
-      title: "Medical History",
-      description: "Access your medical records and history",
+      title: 'Medical History',
+      description: 'Access your medical records and history',
       icon: <HeartPulse className="text-teal-600" size={24} />,
-      action: () => navigate("/dashboard/medical-history"),
-      color: "from-teal-100 to-teal-50",
+      action: () => navigate('/dashboard/medical-history'),
+      color: 'from-teal-100 to-teal-50',
     },
     {
-      title: "Feedback",
-      description: "Share your experience with our services",
+      title: 'Feedback',
+      description: 'Share your experience with our services',
       icon: <ClipboardList className="text-indigo-600" size={24} />,
-      action: () => navigate("/dashboard/feedback"),
-      color: "from-indigo-100 to-indigo-50",
+      action: () => navigate('/dashboard/feedback'),
+      color: 'from-indigo-100 to-indigo-50',
     },
   ];
 
@@ -53,13 +48,12 @@ const ParticipantDashboard = () => {
           <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-3">
             Welcome to Your
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">
-              {" "}
+              {' '}
               Health Dashboard
             </span>
           </h1>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Access all your medical camp information and health services in one
-            place
+            Access all your medical camp information and health services in one place
           </p>
         </div>
 
@@ -72,12 +66,8 @@ const ParticipantDashboard = () => {
               className={`bg-gradient-to-br ${action.color} border border-gray-200 rounded-2xl p-6 cursor-pointer hover:shadow-lg transition-all duration-300 hover:-translate-y-1`}
             >
               <div className="flex items-center mb-4">
-                <div className="p-3 rounded-xl bg-white shadow-sm mr-4">
-                  {action.icon}
-                </div>
-                <h3 className="text-lg font-semibold text-gray-800">
-                  {action.title}
-                </h3>
+                <div className="p-3 rounded-xl bg-white shadow-sm mr-4">{action.icon}</div>
+                <h3 className="text-lg font-semibold text-gray-800">{action.title}</h3>
               </div>
               <p className="text-gray-600">{action.description}</p>
             </div>
@@ -96,7 +86,7 @@ const ParticipantDashboard = () => {
             <div className="text-center py-8 text-gray-500">
               <p>You don't have any upcoming camp registrations</p>
               <button
-                onClick={() => navigate("/available-camps")}
+                onClick={() => navigate('/available-camps')}
                 className="mt-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-2 rounded-lg font-medium hover:shadow-lg transition-all"
               >
                 Browse Available Camps
@@ -136,19 +126,19 @@ const ParticipantDashboard = () => {
             </h3>
             <div className="space-y-2">
               <button
-                onClick={() => navigate("/dashboard/medical-history")}
+                onClick={() => navigate('/dashboard/medical-history')}
                 className="w-full text-left px-3 py-2 rounded-lg hover:bg-gray-50 transition-colors"
               >
                 View Full Medical History
               </button>
               <button
-                onClick={() => navigate("/dashboard/feedback")}
+                onClick={() => navigate('/dashboard/feedback')}
                 className="w-full text-left px-3 py-2 rounded-lg hover:bg-gray-50 transition-colors"
               >
                 Provide Feedback
               </button>
               <button
-                onClick={() => navigate("/profile")}
+                onClick={() => navigate('/profile')}
                 className="w-full text-left px-3 py-2 rounded-lg hover:bg-gray-50 transition-colors"
               >
                 Update Profile Information
