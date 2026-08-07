@@ -4,6 +4,7 @@ import { Menu, X, User, LogOut, LayoutDashboard } from 'lucide-react';
 import { AuthContext } from '../../../contexts/AuthContext/AuthContext';
 import CareCampLogo from '../CareCampLogo/CareCampLogo';
 import NotificationBell from '../../../components/Notifications/NotificationBell';
+import ThemeToggle from '../../../components/Common/ThemeToggle';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -121,15 +122,19 @@ const Navbar = () => {
 
             {/* Auth area */}
             {!user ? (
-              <NavLink
-                to="/login"
-                className="bg-[#495E57] text-[#F5F7F8] px-6 py-2.5 rounded-xl font-semibold shadow-md hover:bg-[#45474B] hover:shadow-lg transition-all duration-300 flex items-center gap-2 group"
-              >
-                <span>Join Us</span>
-                <User size={18} className="group-hover:scale-110 transition-transform" />
-              </NavLink>
+              <div className="flex items-center gap-3">
+                <ThemeToggle />
+                <NavLink
+                  to="/login"
+                  className="bg-[#495E57] text-[#F5F7F8] px-6 py-2.5 rounded-xl font-semibold shadow-md hover:bg-[#45474B] hover:shadow-lg transition-all duration-300 flex items-center gap-2 group"
+                >
+                  <span>Join Us</span>
+                  <User size={18} className="group-hover:scale-110 transition-transform" />
+                </NavLink>
+              </div>
             ) : (
               <div className="flex items-center gap-3" ref={dropdownRef}>
+                <ThemeToggle />
                 <NotificationBell />
                 <button
                   type="button"
