@@ -1,0 +1,9 @@
+{
+  "short_name": "CareCamp",
+  "name": "CareCamp - Medical Camp Management System",
+  "icons": [],
+  "start_url": ".",
+  "background_color": "#ffffff",
+  "theme_color": "#495E57",
+  "display": "standalone"
+}
