@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState, memo } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import useAxios from '../../hooks/useAxios';
 import SEO from '../../components/Common/SEO';
@@ -349,4 +349,4 @@ const AvailableCamps = () => {
   );
 };
 
-export default React.memo(AvailableCamps);
+export default memo(AvailableCamps);

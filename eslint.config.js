@@ -30,7 +30,15 @@ export default defineConfig([
     },
     rules: {
       'prettier/prettier': 'error',
-      'no-unused-vars': ['warn', { varsIgnorePattern: '^[A-Z_]' }],
+      'no-unused-vars': [
+        'error',
+        {
+          vars: 'all',
+          args: 'after-used',
+          varsIgnorePattern: '^[A-Z_]',
+          ignoreRestSiblings: true,
+        },
+      ],
     },
   },
 ]);
