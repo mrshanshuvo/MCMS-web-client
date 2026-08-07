@@ -24,13 +24,15 @@ const Navbar = () => {
             { path: '/', label: 'Home' },
             { path: '/available-camps', label: 'Available Camps' },
             { path: '/about', label: 'About Us' },
+            { path: '/faqs', label: 'FAQs' },
           ]
         : [
             { path: '/', label: 'Home' },
             { path: '/available-camps', label: 'Available Camps' },
             { path: '/success-stories', label: 'Success Stories' },
             { path: '/about', label: 'About Us' },
-            { path: '/contact', label: 'Contact Us' },
+            { path: '/blog', label: 'Blog' },
+            { path: '/faqs', label: 'FAQs' },
           ],
     [user]
   );
@@ -167,6 +169,18 @@ const Navbar = () => {
                         <LayoutDashboard size={16} className="text-[#495E57]" />
                       </div>
                       <span className="text-[#45474B] font-medium">Dashboard</span>
+                    </NavLink>
+
+                    <NavLink
+                      to="/dashboard/profile"
+                      className="flex items-center gap-3 px-5 py-3.5 hover:bg-[#F5F7F8] transition-colors group"
+                      onClick={() => setDropdownOpen(false)}
+                      role="menuitem"
+                    >
+                      <div className="w-8 h-8 rounded-lg bg-[#495E57]/10 flex items-center justify-center group-hover:bg-[#495E57]/20 transition-colors">
+                        <User size={16} className="text-[#495E57]" />
+                      </div>
+                      <span className="text-[#45474B] font-medium">Profile</span>
                     </NavLink>
 
                     <button

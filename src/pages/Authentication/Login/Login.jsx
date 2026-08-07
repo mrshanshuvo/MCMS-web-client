@@ -15,6 +15,7 @@ const Login = () => {
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm();
 
@@ -135,6 +136,32 @@ const Login = () => {
             <p className="text-gray-600 mt-2 text-sm">
               Sign in to access your medical camp dashboard
             </p>
+          </div>
+
+          {/* Quick Demo Credentials */}
+          <div className="pt-2 flex items-center justify-center gap-2">
+            <button
+              type="button"
+              onClick={() => {
+                setValue('email', 'participant@carecamp.com');
+                setValue('password', 'Password123!');
+                toast.success('Demo Participant credentials filled!');
+              }}
+              className="px-3 py-1.5 bg-teal-50 hover:bg-teal-100 text-teal-700 text-xs font-semibold rounded-lg border border-teal-200 transition-colors"
+            >
+              Demo Participant
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                setValue('email', 'organizer@carecamp.com');
+                setValue('password', 'Password123!');
+                toast.success('Demo Organizer credentials filled!');
+              }}
+              className="px-3 py-1.5 bg-blue-50 hover:bg-blue-100 text-blue-700 text-xs font-semibold rounded-lg border border-blue-200 transition-colors"
+            >
+              Demo Organizer
+            </button>
           </div>
         </div>
 
