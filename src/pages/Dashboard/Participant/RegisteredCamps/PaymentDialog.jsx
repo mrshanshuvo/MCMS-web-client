@@ -24,7 +24,7 @@ const PaymentDialog = ({ open, onClose, camp, registration, onPaymentSuccess }) 
         campId: camp._id,
       });
 
-      const clientSecret = response.data.clientSecret;
+      const clientSecret = response.data.data?.clientSecret ?? response.data.clientSecret;
 
       // ✅ Handle free camp (no payment intent needed)
       if (!clientSecret) {
