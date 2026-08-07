@@ -40,7 +40,7 @@ const FAQs = () => {
     cacheTime: 15 * 60 * 1000, // 15 minutes
   });
 
-  const faqs = faqsRes.data || [];
+  const faqs = useMemo(() => faqsRes?.data || [], [faqsRes]);
 
   // Memoized computations
   const categories = useMemo(() => ['All', ...new Set(faqs.map((faq) => faq.category))], [faqs]);
