@@ -138,20 +138,22 @@ const FeedbackRatings = () => {
     queryKey: ['homeFeedback'],
     queryFn: async () => {
       const res = await axios.get('/feedback', { params: { limit: 6 } });
-      return res.data || [];
+      const list = res.data?.data || res.data || [];
+      return Array.isArray(list) ? list : [];
     },
     staleTime: 60_000,
   });
 
   const { averageRating, ratingDistribution } = useMemo(() => {
+    const list = Array.isArray(feedbacks) ? feedbacks : [];
     const dist = [0, 0, 0, 0, 0];
-    const sum = feedbacks.reduce((acc, f) => {
+    const sum = list.reduce((acc, f) => {
       const r = clamp(Number(f?.rating) || 0, 1, 5);
       dist[r - 1] += 1;
       return acc + (Number(f?.rating) || 0);
     }, 0);
 
-    const avg = feedbacks.length ? sum / feedbacks.length : 0;
+    const avg = list.length ? sum / list.length : 0;
     return { averageRating: avg, ratingDistribution: dist };
   }, [feedbacks]);
 
