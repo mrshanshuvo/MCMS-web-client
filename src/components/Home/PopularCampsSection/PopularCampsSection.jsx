@@ -22,7 +22,7 @@ const PopularCampsSection = () => {
     queryKey: ['camps'],
     queryFn: async () => {
       const res = await axios.get('/camps');
-      return res.data?.camps || [];
+      return res.data?.data || res.data?.camps || res.data || [];
     },
     staleTime: 60_000,
   });
