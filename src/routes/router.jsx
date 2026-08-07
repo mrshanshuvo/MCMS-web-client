@@ -49,6 +49,7 @@ export const router = createBrowserRouter([
       { path: 'faqs', Component: FAQs },
       { path: 'docs', Component: Docs },
       { path: 'pPolicy', Component: PPolicy },
+      { path: 'privacy', Component: PPolicy },
       { path: 'terms', Component: TermsOfService },
       { path: 'contact', Component: ContactUs },
       { path: 'camp-details/:campId', Component: CampDetails },

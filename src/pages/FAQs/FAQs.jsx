@@ -37,7 +37,7 @@ const FAQs = () => {
       return res.data;
     },
     staleTime: 10 * 60 * 1000, // 10 minutes
-    cacheTime: 15 * 60 * 1000, // 15 minutes
+    gcTime: 15 * 60 * 1000, // 15 minutes
   });
 
   const faqs = useMemo(() => faqsRes?.data || [], [faqsRes]);

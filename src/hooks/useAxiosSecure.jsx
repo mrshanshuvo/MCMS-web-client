@@ -13,9 +13,15 @@ const useAxiosSecure = () => {
 
   useEffect(() => {
     const reqId = axiosSecure.interceptors.request.use(
-      (config) => {
-        const token = user?.accessToken;
-        if (token) config.headers.authorization = `Bearer ${token}`;
+      async (config) => {
+        if (user) {
+          try {
+            const token = await user.getIdToken();
+            config.headers.authorization = `Bearer ${token}`;
+          } catch (err) {
+            console.error('Failed to retrieve ID token:', err);
+          }
+        }
         return config;
       },
       (error) => Promise.reject(error)
@@ -45,7 +51,7 @@ const useAxiosSecure = () => {
       axiosSecure.interceptors.request.eject(reqId);
       axiosSecure.interceptors.response.eject(resId);
     };
-  }, [user?.accessToken, logOut, navigate]);
+  }, [user, logOut, navigate]);
 
   return axiosSecure;
 };

@@ -4,7 +4,7 @@ import { Link, useLocation, useNavigate } from 'react-router';
 import { FcGoogle } from 'react-icons/fc';
 import { Eye, EyeOff, Mail, Lock, AlertCircle } from 'lucide-react';
 import useAuth from '../../../hooks/useAuth';
-import { toast } from 'react-toastify';
+import toast from 'react-hot-toast';
 import useAxios from '../../../hooks/useAxios';
 
 const Login = () => {

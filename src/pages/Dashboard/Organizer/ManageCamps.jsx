@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { Pencil, Trash2, Loader2 } from 'lucide-react';
 import Swal from 'sweetalert2';
-import { toast } from 'react-toastify';
+import toast from 'react-hot-toast';
 import CampFormModal from './CampFormModal';
 import useAuth from '../../../hooks/useAuth';
 import useAxiosSecure from '../../../hooks/useAxiosSecure';
