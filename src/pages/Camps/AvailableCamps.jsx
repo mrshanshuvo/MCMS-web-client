@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
+import SEO from '../../components/Common/SEO';
+import CampCardSkeleton from '../../components/Common/CampCardSkeleton';
 import { Link } from 'react-router';
 import {
   MapPin,
@@ -62,7 +64,8 @@ const AvailableCamps = () => {
   };
 
   return (
-    <div className="bg-gradient-to-b from-[#F5F7F8] to-white min-h-screen py-12">
+    <div className="min-h-screen bg-gray-50/50 py-10 px-4 sm:px-6 lg:px-8">
+      <SEO title="Available Camps" description="Explore upcoming medical camps near you." />
       <div className="container mx-auto px-4 max-w-7xl">
         {/* Header */}
         <div className="text-center mb-12">

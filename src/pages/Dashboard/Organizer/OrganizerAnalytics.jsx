@@ -4,6 +4,7 @@ import useAxiosSecure from '../../../hooks/useAxiosSecure';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { Download, DollarSign, Users, Calendar, CheckCircle } from 'lucide-react';
 import toast from 'react-hot-toast';
+import SEO from '../../../components/Common/SEO';
 
 const OrganizerAnalytics = () => {
   const axiosSecure = useAxiosSecure();
@@ -82,6 +83,10 @@ const OrganizerAnalytics = () => {
 
   return (
     <div className="p-6 max-w-7xl mx-auto space-y-8">
+      <SEO
+        title="Organizer Analytics"
+        description="View camp performance, revenue metrics, and export data."
+      />
       {/* Header & Export Actions */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
