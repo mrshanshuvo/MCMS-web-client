@@ -15,8 +15,8 @@ import {
   Filter,
   Download,
 } from 'lucide-react';
-import axios from 'axios';
 import useAuth from '../../../hooks/useAuth';
+import useAxios from '../../../hooks/useAxios';
 import useAxiosSecure from '../../../hooks/useAxiosSecure';
 
 const statusStyles = {
@@ -27,11 +27,12 @@ const statusStyles = {
 };
 
 const CampInfo = ({ campId }) => {
+  const axiosInstance = useAxios();
   const { data: camp, isLoading } = useQuery({
     queryKey: ['camp', campId],
     queryFn: async () => {
-      const res = await axios.get(`https://mcms-server-red.vercel.app/camps/${campId}`);
-      return res.data.camp.camp;
+      const res = await axiosInstance.get(`/camps/${campId}`);
+      return res.data.data?.camp || res.data.camp;
     },
     enabled: !!campId,
   });
@@ -90,7 +91,7 @@ const PaymentHistory = () => {
   });
 
   const payments = data?.data || [];
-  const pagination = data?.pagination || {};
+  const pagination = data?.meta || data?.pagination || {};
 
   const handleSearch = (e) => {
     e.preventDefault();

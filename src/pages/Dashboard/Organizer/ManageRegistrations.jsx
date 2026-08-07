@@ -23,7 +23,7 @@ const ManageRegistrations = () => {
   });
 
   const registrations = registrationsData.data || [];
-  const pagination = registrationsData.pagination || {};
+  const pagination = registrationsData.meta || registrationsData.pagination || {};
 
   // DELETE mutation
   const deleteMutation = useMutation({

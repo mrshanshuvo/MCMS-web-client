@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import axios from 'axios';
 import Swal from 'sweetalert2';
 import useAuth from '../../../hooks/useAuth';
+import useAxiosSecure from '../../../hooks/useAxiosSecure';
 import { User, Mail, Briefcase, Edit, Save, X, Loader2, Phone, MapPin } from 'lucide-react';
 
 const OrganizerProfile = () => {
-  const { user: authUser, token } = useAuth();
+  const { user: authUser } = useAuth();
+  const axiosSecure = useAxiosSecure();
   const queryClient = useQueryClient();
   const [editing, setEditing] = useState(false);
 
@@ -19,7 +20,7 @@ const OrganizerProfile = () => {
   } = useForm();
 
   const {
-    data: profile,
+    data: profileRes,
     isLoading,
     isError,
     error,
@@ -27,29 +28,21 @@ const OrganizerProfile = () => {
     queryKey: ['organizerProfile', authUser?.email],
     enabled: !!authUser?.email,
     queryFn: async () => {
-      const res = await axios.get(`https://mcms-server-red.vercel.app/users/${authUser.email}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const res = await axiosSecure.get(`/users/${authUser.email}`);
       return res.data;
     },
-    onSuccess: (data) => reset(data),
   });
+
+  const profile = profileRes?.data || profileRes;
 
   const updateMutation = useMutation({
     mutationFn: (updatedData) =>
-      axios.put(
-        `https://mcms-server-red.vercel.app/users/${authUser.email}`,
-        {
-          name: updatedData.name,
-          photoURL: updatedData.photoURL,
-          phone: updatedData.phone,
-          address: updatedData.address,
-          role: profile?.role || 'organizer',
-        },
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      ),
+      axiosSecure.put(`/users/${authUser.email}`, {
+        name: updatedData.name,
+        photoURL: updatedData.photoURL,
+        phone: updatedData.phone,
+        address: updatedData.address,
+      }),
     onSuccess: () => {
       Swal.fire({
         title: 'Success!',

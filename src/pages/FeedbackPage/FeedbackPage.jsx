@@ -3,23 +3,30 @@ import { useQuery } from '@tanstack/react-query';
 import { Link, useSearchParams } from 'react-router';
 import { useState, useMemo } from 'react';
 
+import useAxios from '../../hooks/useAxios';
+
 const FeedbackPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [searchTerm, setSearchTerm] = useState(searchParams.get('search') || '');
   const [ratingFilter, setRatingFilter] = useState(searchParams.get('rating') || 'all');
+  const axiosInstance = useAxios();
 
   const {
-    data: feedbacks = [],
+    data: feedbackRes = {},
     isLoading,
     isError,
   } = useQuery({
     queryKey: ['allFeedback'],
     queryFn: async () => {
-      const res = await fetch(`https://mcms-server-red.vercel.app/feedback`);
-      if (!res.ok) throw new Error('Failed to fetch feedback');
-      return res.json();
+      const res = await axiosInstance.get('/feedback');
+      return res.data;
     },
   });
+
+  const feedbacks = useMemo(
+    () => feedbackRes?.data || (Array.isArray(feedbackRes) ? feedbackRes : []),
+    [feedbackRes]
+  );
 
   // Calculate statistics
   const stats = useMemo(() => {

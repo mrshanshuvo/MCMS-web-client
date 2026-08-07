@@ -1,6 +1,7 @@
 import React from 'react';
 import { useQuery } from '@tanstack/react-query';
 import useAuth from '../../../hooks/useAuth';
+import useAxiosSecure from '../../../hooks/useAxiosSecure';
 import {
   BarChart,
   Bar,
@@ -15,33 +16,25 @@ import {
 import { Calendar, Loader2, AlertCircle } from 'lucide-react';
 import { FaBangladeshiTakaSign } from 'react-icons/fa6';
 
-const fetchAnalytics = async (uid, token) => {
-  const res = await fetch(`https://mcms-server-red.vercel.app/analytics/${uid}`, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
-  if (!res.ok) {
-    throw new Error('Failed to fetch analytics');
-  }
-  const result = await res.json();
-  return result.data || [];
-};
-
 const Analytics = () => {
   const { user } = useAuth();
+  const axiosSecure = useAxiosSecure();
+
   const {
-    data = [],
+    data: analyticsData = [],
     isLoading,
     isError,
     error,
   } = useQuery({
-    queryKey: ['analytics', user?.uid],
-    queryFn: () => fetchAnalytics(user?.uid, user?.accessToken),
+    queryKey: ['participantAnalytics', user?.uid],
+    queryFn: async () => {
+      const res = await axiosSecure.get(`/analytics/${user.uid}`);
+      return res.data?.data || [];
+    },
     enabled: !!user?.uid,
   });
 
-  const chartData = data.map((camp) => ({
+  const chartData = analyticsData.map((camp) => ({
     name: camp.campName || 'Unnamed Camp',
     fees: camp.fees || 0,
     date: camp.date ? new Date(camp.date).toLocaleDateString() : 'N/A',
@@ -116,7 +109,7 @@ const Analytics = () => {
     );
   }
 
-  if (!data.length) {
+  if (!analyticsData.length) {
     return (
       <div className="bg-blue-50 rounded-xl p-8 text-center">
         <Calendar className="mx-auto h-12 w-12 text-blue-400 mb-4" />

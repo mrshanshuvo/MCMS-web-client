@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useParams } from 'react-router';
 import { useQuery } from '@tanstack/react-query';
-import axios from 'axios';
 import {
   MapPin,
   Calendar,
@@ -15,32 +14,29 @@ import {
   Star,
 } from 'lucide-react';
 import useAuth from '../../hooks/useAuth';
+import useAxios from '../../hooks/useAxios';
+import useAxiosSecure from '../../hooks/useAxiosSecure';
+import useUserRole from '../../hooks/useUserRole';
 import Swal from 'sweetalert2';
 import { FaBangladeshiTakaSign } from 'react-icons/fa6';
 
-const fetchCampById = async (campId) => {
-  const res = await axios.get(`https://mcms-server-red.vercel.app/camps/${campId}`);
-  return res.data.camp;
+const fetchCampById = async (campId, axiosInstance) => {
+  const res = await axiosInstance.get(`/camps/${campId}`);
+  return res.data.data?.camp || res.data.camp;
 };
 
-const checkRegistrationStatus = async (campId, idToken) => {
-  const res = await axios.get(`https://mcms-server-red.vercel.app/registrations/check`, {
+const checkRegistrationStatus = async (campId, axiosSecure) => {
+  const res = await axiosSecure.get(`/registrations/check`, {
     params: { campId },
-    headers: {
-      Authorization: `Bearer ${idToken}`,
-    },
   });
-  return res.data.registered;
-};
-
-const fetchUserRole = async (email) => {
-  const res = await axios.get(`https://mcms-server-red.vercel.app/users/${email}/role`);
-  return res.data.role || 'participant';
+  return res.data.data?.registered ?? res.data.registered;
 };
 
 const CampDetails = () => {
   const { campId } = useParams();
   const { user } = useAuth();
+  const axiosInstance = useAxios();
+  const axiosSecure = useAxiosSecure();
 
   // modal open state
   const [modalOpen, setModalOpen] = useState(false);
@@ -66,22 +62,12 @@ const CampDetails = () => {
     refetch: refetchCamp,
   } = useQuery({
     queryKey: ['camp', campId],
-    queryFn: () => fetchCampById(campId),
+    queryFn: () => fetchCampById(campId, axiosInstance),
     staleTime: 5 * 60 * 1000,
     enabled: !!campId,
   });
 
-  // Fetch user role
-  const {
-    data: role = 'participant',
-    isLoading: roleLoading,
-    isError: roleError,
-  } = useQuery({
-    queryKey: ['userRole', user?.email],
-    queryFn: () => fetchUserRole(user.email),
-    enabled: !!user?.email,
-    staleTime: 5 * 60 * 1000,
-  });
+  const { role, roleLoading, error: roleError } = useUserRole();
 
   // Check registration status
   const {
@@ -90,10 +76,7 @@ const CampDetails = () => {
     refetch: refetchRegistration,
   } = useQuery({
     queryKey: ['registrationStatus', campId, user?.email],
-    queryFn: async () => {
-      const idToken = await user.getIdToken();
-      return await checkRegistrationStatus(campId, idToken);
-    },
+    queryFn: () => checkRegistrationStatus(campId, axiosSecure),
     enabled: !!user && !!campId,
     staleTime: 5 * 60 * 1000,
   });
@@ -171,37 +154,19 @@ const CampDetails = () => {
     setJoinError('');
 
     try {
-      const idToken = await user.getIdToken();
-
       // 1. Register the participant
-      await axios.post(
-        'https://mcms-server-red.vercel.app/registrations',
-        {
-          campId,
-          participantName: formData.participantName,
-          participantEmail: formData.participantEmail,
-          age: formData.age,
-          phoneNumber: formData.phoneNumber,
-          gender: formData.gender,
-          emergencyContact: formData.emergencyContact,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${idToken}`,
-          },
-        }
-      );
+      await axiosSecure.post('/registrations', {
+        campId,
+        participantName: formData.participantName,
+        participantEmail: formData.participantEmail,
+        age: formData.age,
+        phoneNumber: formData.phoneNumber,
+        gender: formData.gender,
+        emergencyContact: formData.emergencyContact,
+      });
 
       // 2. Increment participant count
-      await axios.patch(
-        `https://mcms-server-red.vercel.app/camps/${campId}/increment`,
-        {},
-        {
-          headers: {
-            Authorization: `Bearer ${idToken}`,
-          },
-        }
-      );
+      await axiosSecure.patch(`/camps/${campId}/increment`, {});
 
       setJoinSuccess(true);
       setModalOpen(false);

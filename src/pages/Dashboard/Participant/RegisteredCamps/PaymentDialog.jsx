@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
 import { Loader2, AlertCircle, CheckCircle } from 'lucide-react';
-import useAuth from '../../../../hooks/useAuth';
+import useAxiosSecure from '../../../../hooks/useAxiosSecure';
 
 const PaymentDialog = ({ open, onClose, camp, registration, onPaymentSuccess }) => {
   const stripe = useStripe();
@@ -9,7 +9,7 @@ const PaymentDialog = ({ open, onClose, camp, registration, onPaymentSuccess }) 
   const [error, setError] = useState(null);
   const [isProcessing, setIsProcessing] = useState(false);
   const [paymentIntent, setPaymentIntent] = useState(null);
-  const { user } = useAuth();
+  const axiosSecure = useAxiosSecure();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -17,39 +17,23 @@ const PaymentDialog = ({ open, onClose, camp, registration, onPaymentSuccess }) 
     setError(null);
 
     if (!stripe || !elements) return;
-    const token = user.accessToken;
 
     try {
-      const response = await fetch(`https://mcms-server-red.vercel.app/create-payment-intent`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          amount: camp.fees,
-          campId: camp._id,
-        }),
+      const response = await axiosSecure.post('/create-payment-intent', {
+        amount: camp.fees,
+        campId: camp._id,
       });
 
-      if (!response.ok) throw new Error('Failed to create payment intent');
-      const { clientSecret } = await response.json();
+      const clientSecret = response.data.clientSecret;
 
       // ✅ Handle free camp (no payment intent needed)
       if (!clientSecret) {
-        await fetch(`https://mcms-server-red.vercel.app/payments`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({
-            campId: camp._id,
-            registrationId: registration._id,
-            transactionId: `FREE_PAYMENT_${Date.now()}`,
-            amount: 0,
-            paymentMethod: 'FREE',
-          }),
+        await axiosSecure.post('/payments', {
+          campId: camp._id,
+          registrationId: registration._id,
+          transactionId: `FREE_PAYMENT_${Date.now()}`,
+          amount: 0,
+          paymentMethod: 'FREE',
         });
 
         setPaymentIntent({ status: 'succeeded', id: 'FREE_PAYMENT' });
@@ -71,18 +55,11 @@ const PaymentDialog = ({ open, onClose, camp, registration, onPaymentSuccess }) 
 
       if (paymentIntent.status === 'succeeded') {
         setPaymentIntent(paymentIntent);
-        await fetch(`https://mcms-server-red.vercel.app/payments`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({
-            campId: camp._id,
-            registrationId: registration._id,
-            transactionId: paymentIntent.id,
-            amount: paymentIntent.amount,
-          }),
+        await axiosSecure.post('/payments', {
+          campId: camp._id,
+          registrationId: registration._id,
+          transactionId: paymentIntent.id,
+          amount: paymentIntent.amount / 100,
         });
         onPaymentSuccess();
       }

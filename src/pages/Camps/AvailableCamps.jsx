@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import axios from 'axios';
+import useAxios from '../../hooks/useAxios';
 import SEO from '../../components/Common/SEO';
 import CampCardSkeleton from '../../components/Common/CampCardSkeleton';
 import { Link } from 'react-router';
@@ -21,14 +21,14 @@ import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import { FaBangladeshiTakaSign } from 'react-icons/fa6';
 
-const fetchCamps = async ({ queryKey }) => {
+const fetchCamps = async ({ queryKey, axiosInstance }) => {
   const [_key, { page, search, sort }] = queryKey;
   const params = new URLSearchParams();
   if (page) params.append('page', page);
   if (search) params.append('search', search);
   if (sort) params.append('sort', sort);
 
-  const res = await axios.get(`https://mcms-server-red.vercel.app/camps?${params.toString()}`);
+  const res = await axiosInstance.get(`/camps?${params.toString()}`);
   return res.data;
 };
 
@@ -38,9 +38,11 @@ const AvailableCamps = () => {
   const [sort, setSort] = useState('participantCount');
   const [layout, setLayout] = useState('grid-3'); // 'grid-2' or 'grid-3'
 
+  const axiosInstance = useAxios();
+
   const { data, isLoading, isError, error, isPreviousData } = useQuery({
     queryKey: ['camps', { page, search, sort }],
-    queryFn: fetchCamps,
+    queryFn: ({ queryKey }) => fetchCamps({ queryKey, axiosInstance }),
     keepPreviousData: true,
   });
 
@@ -57,6 +59,9 @@ const AvailableCamps = () => {
   const toggleLayout = () => {
     setLayout(layout === 'grid-3' ? 'grid-2' : 'grid-3');
   };
+
+  const camps = data?.data || [];
+  const totalPages = data?.meta?.totalPages || 1;
 
   // Fallback image URL
   const getFallbackImage = (campName) => {
@@ -199,7 +204,7 @@ const AvailableCamps = () => {
                     layout === 'grid-3' ? 'sm:grid-cols-2 lg:grid-cols-3' : 'sm:grid-cols-2'
                   } gap-8`}
                 >
-                  {data.camps.map((camp) => (
+                  {camps.map((camp) => (
                     <div
                       key={camp._id}
                       className="bg-white border border-[#495E57]/10 rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all duration-300 hover:-translate-y-1 group"
@@ -301,14 +306,14 @@ const AvailableCamps = () => {
                     Previous
                   </button>
                   <div className="flex items-center gap-2">
-                    {Array.from({ length: Math.min(5, data.totalPages) }, (_, i) => {
+                    {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
                       let pageNum;
-                      if (data.totalPages <= 5) {
+                      if (totalPages <= 5) {
                         pageNum = i + 1;
                       } else if (page <= 3) {
                         pageNum = i + 1;
-                      } else if (page >= data.totalPages - 2) {
-                        pageNum = data.totalPages - 4 + i;
+                      } else if (page >= totalPages - 2) {
+                        pageNum = totalPages - 4 + i;
                       } else {
                         pageNum = page - 2 + i;
                       }
@@ -326,11 +331,10 @@ const AvailableCamps = () => {
                         </button>
                       );
                     })}
-                    {data.totalPages > 5 && <span className="mx-2 text-[#45474B]">...</span>}
                   </div>
                   <button
-                    onClick={() => setPage((old) => (old < data.totalPages ? old + 1 : old))}
-                    disabled={page === data.totalPages || data.totalPages === 0}
+                    onClick={() => setPage((old) => (old < totalPages ? old + 1 : old))}
+                    disabled={page === totalPages || totalPages === 0}
                     className="flex items-center gap-2 px-4 py-2 border border-[#495E57]/20 rounded-lg hover:bg-[#495E57]/10 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-[#45474B]"
                   >
                     Next <ChevronRight size={16} />

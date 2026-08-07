@@ -23,8 +23,8 @@ const ManageCamps = () => {
     },
   });
 
-  const camps = data?.camps || [];
-  const totalPages = data?.totalPages || 1;
+  const camps = data?.data || data?.camps || [];
+  const totalPages = data?.meta?.totalPages || data?.totalPages || 1;
 
   const handleDelete = async (id) => {
     const confirm = await Swal.fire({
