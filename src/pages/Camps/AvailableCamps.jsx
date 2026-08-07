@@ -168,7 +168,7 @@ const AvailableCamps = () => {
           </div>
         ) : (
           <>
-            {data.camps.length === 0 ? (
+            {camps.length === 0 ? (
               <div className="text-center py-12">
                 <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-[#495E57]/10">
                   <Search className="h-6 w-6 text-[#495E57]" />
