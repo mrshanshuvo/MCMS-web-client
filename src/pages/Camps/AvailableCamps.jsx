@@ -17,8 +17,6 @@ import {
   List,
   Star,
 } from 'lucide-react';
-import Skeleton from 'react-loading-skeleton';
-import 'react-loading-skeleton/dist/skeleton.css';
 import { FaBangladeshiTakaSign } from 'react-icons/fa6';
 
 const fetchCamps = async ({ queryKey, axiosInstance }) => {
@@ -40,7 +38,7 @@ const AvailableCamps = () => {
 
   const axiosInstance = useAxios();
 
-  const { data, isLoading, isError, error, isPreviousData } = useQuery({
+  const { data, isLoading, isError, error } = useQuery({
     queryKey: ['camps', { page, search, sort }],
     queryFn: ({ queryKey }) => fetchCamps({ queryKey, axiosInstance }),
     keepPreviousData: true,
@@ -158,31 +156,14 @@ const AvailableCamps = () => {
               </div>
             </div>
           </div>
-        ) : isLoading || isPreviousData ? (
+        ) : isLoading ? (
           <div
             className={`grid grid-cols-1 ${
               layout === 'grid-3' ? 'sm:grid-cols-2 lg:grid-cols-3' : 'sm:grid-cols-2'
             } gap-8`}
           >
             {[...Array(6)].map((_, index) => (
-              <div
-                key={index}
-                className="bg-white border border-[#495E57]/10 rounded-xl overflow-hidden shadow-sm"
-              >
-                <Skeleton height={200} className="w-full" />
-                <div className="p-6">
-                  <Skeleton count={1} height={28} className="mb-4 rounded-lg" />
-                  <div className="space-y-4">
-                    {[...Array(4)].map((_, i) => (
-                      <div key={i} className="flex items-center">
-                        <Skeleton circle width={32} height={32} className="mr-3" />
-                        <Skeleton width={120} height={16} />
-                      </div>
-                    ))}
-                  </div>
-                  <Skeleton height={48} className="mt-4 rounded-lg" />
-                </div>
-              </div>
+              <CampCardSkeleton key={index} />
             ))}
           </div>
         ) : (
