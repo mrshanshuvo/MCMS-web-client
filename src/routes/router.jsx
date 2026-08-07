@@ -15,6 +15,7 @@ import OrganizerRoute from './OrganizerRoute';
 import PrivateRoute from './PrivateRoute';
 import ParticipantRoute from './ParticipantRoute';
 import DashboardRouter from './DashboardRouter';
+import OrganizerAnalytics from '../pages/Dashboard/Organizer/OrganizerAnalytics';
 import Analytics from '../pages/Dashboard/Participant/Analytics';
 import ParticipantProfile from '../pages/Dashboard/Participant/ParticipantProfile';
 import PaymentHistory from '../pages/Dashboard/Participant/PaymentHistory';
@@ -84,6 +85,14 @@ export const router = createBrowserRouter([
         element: (
           <OrganizerRoute>
             <OrganizerProfile />
+          </OrganizerRoute>
+        ),
+      },
+      {
+        path: 'organizer-analytics',
+        element: (
+          <OrganizerRoute>
+            <OrganizerAnalytics />
           </OrganizerRoute>
         ),
       },

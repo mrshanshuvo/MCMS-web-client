@@ -3,6 +3,7 @@ import { NavLink, useNavigate } from 'react-router';
 import { Menu, X, User, LogOut, LayoutDashboard } from 'lucide-react';
 import { AuthContext } from '../../../contexts/AuthContext/AuthContext';
 import CareCampLogo from '../CareCampLogo/CareCampLogo';
+import NotificationBell from '../../../components/Notifications/NotificationBell';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -126,7 +127,8 @@ const Navbar = () => {
                 <User size={18} className="group-hover:scale-110 transition-transform" />
               </NavLink>
             ) : (
-              <div className="relative" ref={dropdownRef}>
+              <div className="flex items-center gap-3" ref={dropdownRef}>
+                <NotificationBell />
                 <button
                   type="button"
                   className="flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-[#F5F7F8] transition-all duration-200 group"

@@ -58,6 +58,11 @@ const Sidebar = () => {
       icon: <User2 size={18} />,
     },
     {
+      to: '/dashboard/organizer-analytics',
+      label: 'Analytics & Reports',
+      icon: <ChartBar size={18} />,
+    },
+    {
       to: '/dashboard/manage-camps',
       label: 'Manage Camps',
       icon: <Settings size={18} />,
