@@ -1,17 +1,24 @@
 import React, { useState, useEffect, useRef, useContext, useMemo } from 'react';
 import { NavLink, useNavigate } from 'react-router';
-import { Menu, X, User, LogOut, LayoutDashboard } from 'lucide-react';
+import { Menu, X, User, LogOut, LayoutDashboard, UserCheck } from 'lucide-react';
 import { AuthContext } from '../../../contexts/AuthContext/AuthContext';
 import CareCampLogo from '../CareCampLogo/CareCampLogo';
 import NotificationBell from '../../../components/Notifications/NotificationBell';
 import ThemeToggle from '../../../components/Common/ThemeToggle';
 
+import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+} from '@/components/ui/dropdown-menu';
+
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [dropdownOpen, setDropdownOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-
-  const dropdownRef = useRef(null);
   const mobileMenuRef = useRef(null);
   const menuBtnRef = useRef(null);
 
@@ -38,30 +45,32 @@ const Navbar = () => {
     [user]
   );
 
+  const userInitials = useMemo(() => {
+    if (!user?.displayName) return 'U';
+    const parts = user.displayName.trim().split(' ');
+    if (parts.length >= 2) return `${parts[0][0]}${parts[1][0]}`.toUpperCase();
+    return parts[0].substring(0, 2).toUpperCase();
+  }, [user]);
+
   const handleLogout = async () => {
     try {
       await logOut();
       navigate('/');
-    } catch (error) {
-      console.error('Logout error:', error);
+    } catch {
+      // Logout handler fallback
     }
   };
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 20);
+    const handleScroll = () => setScrolled(window.scrollY > 15);
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Close on outside click (dropdown + mobile menu)
+  // Close mobile menu on outside click or escape
   useEffect(() => {
     const handlePointerDown = (e) => {
       const target = e.target;
-
-      if (dropdownRef.current && !dropdownRef.current.contains(target)) {
-        setDropdownOpen(false);
-      }
-
       if (
         mobileMenuRef.current &&
         !mobileMenuRef.current.contains(target) &&
@@ -71,238 +80,156 @@ const Navbar = () => {
         setIsOpen(false);
       }
     };
+    const onKeyDown = (e) => {
+      if (e.key === 'Escape') setIsOpen(false);
+    };
 
     document.addEventListener('pointerdown', handlePointerDown);
-    return () => document.removeEventListener('pointerdown', handlePointerDown);
-  }, []);
-
-  // Close on Escape
-  useEffect(() => {
-    const onKeyDown = (e) => {
-      if (e.key === 'Escape') {
-        setDropdownOpen(false);
-        setIsOpen(false);
-      }
-    };
     document.addEventListener('keydown', onKeyDown);
-    return () => document.removeEventListener('keydown', onKeyDown);
+    return () => {
+      document.removeEventListener('pointerdown', handlePointerDown);
+      document.removeEventListener('keydown', onKeyDown);
+    };
   }, []);
 
   return (
     <nav
-      className={`sticky top-0 z-50 transition-all duration-300 ${
-        scrolled ? 'bg-white shadow-lg' : 'bg-white/95 backdrop-blur-md shadow-md'
+      className={`sticky top-0 z-50 transition-all duration-200 border-b ${
+        scrolled
+          ? 'bg-white/95 dark:bg-slate-900/95 backdrop-blur-md shadow-sm border-slate-200/80 dark:border-slate-800/80'
+          : 'bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm border-slate-200/40 dark:border-slate-800/40'
       }`}
     >
-      <div className="container mx-auto px-4 py-4">
-        <div className="flex justify-between items-center">
-          <CareCampLogo />
+      <div className="container mx-auto px-4 py-2 flex items-center justify-between h-14">
+        {/* Logo */}
+        <CareCampLogo />
 
-          {/* Desktop Nav */}
-          <div className="hidden lg:flex items-center gap-8">
-            <ul className="flex gap-1 items-center">
-              {navLinks.map((link) => (
-                <li key={link.path}>
-                  <NavLink
-                    to={link.path}
-                    className={({ isActive }) =>
-                      `px-4 py-2 font-medium rounded-lg transition-all duration-200 relative group ${
-                        isActive
-                          ? 'text-[#495E57] bg-[#F5F7F8]'
-                          : 'text-[#45474B] hover:text-[#495E57] hover:bg-[#F5F7F8]'
-                      }`
-                    }
-                  >
-                    {link.label}
-                    <span className="absolute bottom-1 left-4 right-4 h-0.5 bg-[#F4CE14] scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
-                  </NavLink>
-                </li>
-              ))}
-            </ul>
+        {/* Desktop Navigation Links */}
+        <div className="hidden lg:flex items-center gap-1">
+          {navLinks.map((link) => (
+            <NavLink
+              key={link.path}
+              to={link.path}
+              className={({ isActive }) =>
+                `px-3 py-1.5 text-sm font-medium rounded-full transition-all duration-150 ${
+                  isActive
+                    ? 'text-[#495E57] bg-[#495E57]/10 dark:text-emerald-400 dark:bg-emerald-500/10 font-semibold'
+                    : 'text-slate-600 hover:text-[#495E57] hover:bg-slate-100 dark:text-slate-300 dark:hover:text-white dark:hover:bg-slate-800'
+                }`
+              }
+            >
+              {link.label}
+            </NavLink>
+          ))}
+        </div>
 
-            {/* Auth area */}
-            {!user ? (
-              <div className="flex items-center gap-3">
-                <ThemeToggle />
-                <NavLink
-                  to="/login"
-                  className="bg-[#495E57] text-[#F5F7F8] px-6 py-2.5 rounded-xl font-semibold shadow-md hover:bg-[#45474B] hover:shadow-lg transition-all duration-300 flex items-center gap-2 group"
-                >
-                  <span>Join Us</span>
-                  <User size={18} className="group-hover:scale-110 transition-transform" />
-                </NavLink>
-              </div>
-            ) : (
-              <div className="flex items-center gap-3" ref={dropdownRef}>
-                <ThemeToggle />
-                <NotificationBell />
-                <button
-                  type="button"
-                  className="flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-[#F5F7F8] transition-all duration-200 group"
-                  onClick={() => setDropdownOpen((v) => !v)}
-                  aria-haspopup="menu"
-                  aria-expanded={dropdownOpen}
-                  aria-controls="user-menu"
-                >
-                  <img
-                    src={user.photoURL || '/default-avatar.png'}
-                    alt={user.displayName || 'User'}
-                    className="w-10 h-10 rounded-full border-2 border-[#F4CE14]/30 group-hover:border-[#F4CE14]/60 transition-all shadow-md object-cover"
-                  />
-                </button>
+        {/* Right Section / Auth Actions */}
+        <div className="flex items-center gap-2 sm:gap-3">
+          <ThemeToggle />
 
-                {dropdownOpen && (
-                  <div
-                    id="user-menu"
-                    role="menu"
-                    className="absolute right-0 mt-3 w-64 bg-white shadow-2xl rounded-2xl overflow-hidden border border-[#495E57]/10 animate-[slideDown_0.2s_ease-out]"
-                  >
-                    <div className="px-5 py-4 border-b border-[#495E57]/10 bg-gradient-to-br from-[#F5F7F8] to-white">
-                      <p className="font-semibold text-[#45474B] truncate">
-                        {user.displayName || 'User'}
+          {!user ? (
+            <NavLink
+              to="/login"
+              className="bg-[#495E57] hover:bg-[#3d4f49] text-white px-4 py-1.5 rounded-full text-sm font-medium shadow-sm hover:shadow transition-all duration-200 flex items-center gap-1.5 group"
+            >
+              <span>Join Us</span>
+              <User size={16} className="group-hover:scale-110 transition-transform" />
+            </NavLink>
+          ) : (
+            <>
+              <NotificationBell />
+
+              {/* Shadcn Dropdown Menu for User Profile */}
+              <DropdownMenu>
+                <DropdownMenuTrigger className="focus:outline-none rounded-full ring-offset-2 focus:ring-2 focus:ring-[#495E57]">
+                  <Avatar className="h-8 w-8 border border-slate-200 dark:border-slate-700 shadow-sm transition-transform hover:scale-105">
+                    <AvatarImage src={user.photoURL} alt={user.displayName || 'User'} />
+                    <AvatarFallback className="bg-[#495E57] text-white text-xs font-semibold">
+                      {userInitials}
+                    </AvatarFallback>
+                  </Avatar>
+                </DropdownMenuTrigger>
+
+                <DropdownMenuContent align="end" className="w-56 p-1.5 shadow-lg rounded-xl border">
+                  <DropdownMenuLabel className="font-normal px-2 py-2">
+                    <div className="flex flex-col space-y-1">
+                      <p className="text-sm font-semibold text-slate-800 dark:text-slate-100 truncate">
+                        {user.displayName || 'Participant'}
                       </p>
-                      <p className="text-sm text-[#495E57]/60 truncate mt-0.5">{user.email}</p>
+                      <p className="text-xs text-slate-500 dark:text-slate-400 truncate">
+                        {user.email}
+                      </p>
                     </div>
+                  </DropdownMenuLabel>
+                  <DropdownMenuSeparator />
 
-                    <NavLink
-                      to="/dashboard"
-                      className="flex items-center gap-3 px-5 py-3.5 hover:bg-[#F5F7F8] transition-colors group"
-                      onClick={() => setDropdownOpen(false)}
-                      role="menuitem"
-                    >
-                      <div className="w-8 h-8 rounded-lg bg-[#495E57]/10 flex items-center justify-center group-hover:bg-[#495E57]/20 transition-colors">
-                        <LayoutDashboard size={16} className="text-[#495E57]" />
-                      </div>
-                      <span className="text-[#45474B] font-medium">Dashboard</span>
-                    </NavLink>
+                  <DropdownMenuItem
+                    onClick={() => navigate('/dashboard')}
+                    className="cursor-pointer rounded-lg px-2 py-2 text-sm text-slate-700 dark:text-slate-200 focus:bg-slate-100 dark:focus:bg-slate-800"
+                  >
+                    <LayoutDashboard className="mr-2 h-4 w-4 text-[#495E57]" />
+                    <span>Dashboard</span>
+                  </DropdownMenuItem>
 
-                    <NavLink
-                      to="/dashboard/profile"
-                      className="flex items-center gap-3 px-5 py-3.5 hover:bg-[#F5F7F8] transition-colors group"
-                      onClick={() => setDropdownOpen(false)}
-                      role="menuitem"
-                    >
-                      <div className="w-8 h-8 rounded-lg bg-[#495E57]/10 flex items-center justify-center group-hover:bg-[#495E57]/20 transition-colors">
-                        <User size={16} className="text-[#495E57]" />
-                      </div>
-                      <span className="text-[#45474B] font-medium">Profile</span>
-                    </NavLink>
+                  <DropdownMenuItem
+                    onClick={() => navigate('/dashboard/profile')}
+                    className="cursor-pointer rounded-lg px-2 py-2 text-sm text-slate-700 dark:text-slate-200 focus:bg-slate-100 dark:focus:bg-slate-800"
+                  >
+                    <UserCheck className="mr-2 h-4 w-4 text-[#495E57]" />
+                    <span>My Profile</span>
+                  </DropdownMenuItem>
 
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setDropdownOpen(false);
-                        handleLogout();
-                      }}
-                      className="w-full text-left flex items-center gap-3 px-5 py-3.5 hover:bg-red-50 transition-colors border-t border-[#495E57]/10 group"
-                      role="menuitem"
-                    >
-                      <div className="w-8 h-8 rounded-lg bg-red-50 flex items-center justify-center group-hover:bg-red-100 transition-colors">
-                        <LogOut size={16} className="text-red-500" />
-                      </div>
-                      <span className="text-[#45474B] font-medium">Logout</span>
-                    </button>
-                  </div>
-                )}
-              </div>
-            )}
-          </div>
+                  <DropdownMenuSeparator />
+
+                  <DropdownMenuItem
+                    onClick={handleLogout}
+                    className="cursor-pointer rounded-lg px-2 py-2 text-sm text-red-600 focus:bg-red-50 dark:focus:bg-red-950/50"
+                  >
+                    <LogOut className="mr-2 h-4 w-4 text-red-500" />
+                    <span>Logout</span>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </>
+          )}
 
           {/* Mobile Menu Button */}
           <button
             ref={menuBtnRef}
             type="button"
             onClick={() => setIsOpen((v) => !v)}
-            className="lg:hidden p-2.5 rounded-xl hover:bg-[#F5F7F8] transition-colors text-[#45474B]"
+            className="lg:hidden p-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors text-slate-600 dark:text-slate-300"
             aria-label="Toggle Menu"
-            aria-expanded={isOpen}
-            aria-controls="mobile-menu"
           >
-            {isOpen ? <X size={24} /> : <Menu size={24} />}
+            {isOpen ? <X size={20} /> : <Menu size={20} />}
           </button>
         </div>
       </div>
 
-      {/* Mobile Menu */}
+      {/* Mobile Menu Dropdown */}
       {isOpen && (
         <div
-          id="mobile-menu"
           ref={mobileMenuRef}
-          className="lg:hidden bg-white border-t border-[#495E57]/10 absolute w-full shadow-2xl animate-[slideDown_0.3s_ease-out]"
+          className="lg:hidden bg-white/95 dark:bg-slate-900/95 border-b border-slate-200 dark:border-slate-800 px-4 py-3 space-y-2 shadow-lg animate-in slide-in-from-top-2"
         >
-          <div className="container mx-auto px-4 py-6">
-            <ul className="space-y-2">
-              {navLinks.map((link) => (
-                <li key={link.path}>
-                  <NavLink
-                    to={link.path}
-                    onClick={() => setIsOpen(false)}
-                    className={({ isActive }) =>
-                      `block px-4 py-3 rounded-xl font-medium text-[#45474B] transition-all duration-200 ${
-                        isActive
-                          ? 'bg-[#F5F7F8] text-[#495E57]'
-                          : 'hover:bg-[#F5F7F8] hover:text-[#495E57]'
-                      }`
-                    }
-                  >
-                    {link.label}
-                  </NavLink>
-                </li>
-              ))}
-
-              {user ? (
-                <>
-                  <li className="px-4 py-3 text-sm text-[#495E57]/60 border-t border-[#495E57]/10 mt-4">
-                    <div className="font-medium text-[#45474B] mb-1">{user.displayName}</div>
-                    <div>{user.email}</div>
-                  </li>
-                  <li>
-                    <NavLink
-                      to="/dashboard"
-                      onClick={() => setIsOpen(false)}
-                      className="flex items-center gap-3 px-4 py-3 rounded-xl text-[#45474B] hover:bg-[#F5F7F8] transition-all"
-                    >
-                      <LayoutDashboard size={20} />
-                      <span className="font-medium">Dashboard</span>
-                    </NavLink>
-                  </li>
-                  <li>
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setIsOpen(false);
-                        handleLogout();
-                      }}
-                      className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-red-600 hover:bg-red-50 transition-all"
-                    >
-                      <LogOut size={20} />
-                      <span className="font-medium">Logout</span>
-                    </button>
-                  </li>
-                </>
-              ) : (
-                <li className="mt-4">
-                  <NavLink
-                    to="/login"
-                    onClick={() => setIsOpen(false)}
-                    className="flex items-center justify-center gap-2 bg-[#495E57] text-[#F5F7F8] px-4 py-3 rounded-xl font-semibold shadow-md hover:bg-[#45474B] transition-all"
-                  >
-                    <span>Join Us</span>
-                    <User size={18} />
-                  </NavLink>
-                </li>
-              )}
-            </ul>
-          </div>
+          {navLinks.map((link) => (
+            <NavLink
+              key={link.path}
+              to={link.path}
+              onClick={() => setIsOpen(false)}
+              className={({ isActive }) =>
+                `block px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                  isActive
+                    ? 'bg-[#495E57]/10 text-[#495E57] dark:text-emerald-400 font-semibold'
+                    : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'
+                }`
+              }
+            >
+              {link.label}
+            </NavLink>
+          ))}
         </div>
       )}
-
-      <style>{`
-        @keyframes slideDown {
-          from { opacity: 0; transform: translateY(-10px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-      `}</style>
     </nav>
   );
 };
