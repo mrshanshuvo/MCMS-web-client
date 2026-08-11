@@ -6,59 +6,59 @@ import {
   CalendarCheck,
   ShieldCheck,
   ArrowRight,
-  Star,
+  Sparkles,
+  Award,
+  Clock,
+  Building2,
 } from 'lucide-react';
 import { Link } from 'react-router';
 
-// Constants
 const FEATURES = [
   {
-    icon: <CalendarCheck className="w-8 h-8" />,
+    icon: <CalendarCheck className="w-7 h-7 text-[#495E57] dark:text-[#F4CE14]" />,
     title: 'Camp Management',
-    description: 'Efficiently organize and schedule medical camps with our comprehensive tools',
+    description: 'Efficiently organize and schedule medical camps with our comprehensive tools.',
   },
   {
-    icon: <Users className="w-8 h-8" />,
+    icon: <Users className="w-7 h-7 text-[#495E57] dark:text-[#F4CE14]" />,
     title: 'Participant Engagement',
-    description: 'Connect with communities and maximize participation through our platform',
+    description: 'Connect with communities and maximize participation through our platform.',
   },
   {
-    icon: <ShieldCheck className="w-8 h-8" />,
+    icon: <ShieldCheck className="w-7 h-7 text-[#495E57] dark:text-[#F4CE14]" />,
     title: 'Secure Registration',
-    description: 'Protected sign-up process with verified medical professional participation',
+    description: 'Protected sign-up process with verified medical professional participation.',
   },
   {
-    icon: <Stethoscope className="w-8 h-8" />,
+    icon: <Stethoscope className="w-7 h-7 text-[#495E57] dark:text-[#F4CE14]" />,
     title: 'Healthcare Access',
-    description: 'Bridge the gap between providers and underserved communities',
+    description: 'Bridge the gap between healthcare providers and underserved communities.',
   },
 ];
 
 const STATS = [
-  { number: '250+', label: 'Camps Organized' },
-  { number: '5,000+', label: 'Participants Served' },
-  { number: '100+', label: 'Healthcare Partners' },
-  { number: '24/7', label: 'Support Available' },
+  { number: '250+', label: 'Camps Organized', icon: Building2 },
+  { number: '5,000+', label: 'Participants Served', icon: Users },
+  { number: '100+', label: 'Healthcare Partners', icon: Award },
+  { number: '24/7', label: 'Support Available', icon: Clock },
 ];
 
 const AboutUs = () => {
-  // Memoized components
   const HeaderSection = useMemo(
     () => (
       <div className="text-center mb-12">
-        <div className="inline-flex items-center px-4 py-2 bg-[#495E57]/10 rounded-full text-[#495E57] font-medium mb-4">
-          <Star size={16} className="text-[#F4CE14] mr-2" fill="#F4CE14" />
-          About Our Platform
-        </div>
-        <h1 className="text-4xl font-bold text-[#45474B] mb-4">
-          Medical Camp Management System
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#495E57] to-[#F4CE14]">
-            {' '}
-            (CareCamp)
+        <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md rounded-full border border-slate-200/80 dark:border-slate-800 shadow-xs mb-4">
+          <HeartPulse size={16} className="text-[#495E57] dark:text-[#F4CE14]" />
+          <span className="text-xs font-bold uppercase tracking-wider text-slate-800 dark:text-slate-200">
+            About Our Platform
           </span>
+        </div>
+        <h1 className="text-3xl sm:text-5xl font-black text-slate-900 dark:text-slate-100 mb-4 tracking-tight">
+          Medical Camp Management System{' '}
+          <span className="text-[#495E57] dark:text-[#F4CE14] block sm:inline">(CareCamp)</span>
         </h1>
-        <p className="text-xl text-[#45474B]/70 max-w-3xl mx-auto leading-relaxed">
-          Revolutionizing how medical camps are organized and accessed
+        <p className="text-base sm:text-xl text-slate-600 dark:text-slate-300 max-w-3xl mx-auto leading-relaxed">
+          Revolutionizing how medical camps are organized and accessed across Bangladesh.
         </p>
       </div>
     ),
@@ -67,37 +67,36 @@ const AboutUs = () => {
 
   const MainContent = useMemo(
     () => (
-      <div className="bg-white rounded-2xl shadow-sm overflow-hidden border border-[#495E57]/10">
+      <div className="bg-white dark:bg-slate-900 rounded-3xl shadow-sm overflow-hidden border border-slate-200/80 dark:border-slate-800 transition-colors">
         <div className="grid md:grid-cols-2">
           {/* Text Content */}
-          <div className="p-8 sm:p-10 lg:p-12">
-            <div className="space-y-6 text-[#45474B]/70 text-lg leading-relaxed">
-              <p className="text-xl text-[#45474B] font-medium">
-                CareCamp is a comprehensive platform designed to streamline the planning,
-                management, and participation of medical camps. It empowers organizers to
-                efficiently coordinate events while providing participants with an intuitive
-                interface to discover and join camps that matter.
-              </p>
-              <p>
-                With real-time updates, secure registration, transparent payment tracking, and
-                actionable feedback, CareCamp ensures every medical camp runs smoothly, maximizes
-                impact, and fosters a healthier community.
-              </p>
-              <p className="font-medium text-[#45474B]">
-                Our mission is to bridge the gap between healthcare providers and communities in
-                need by leveraging technology that is simple, reliable, and accessible to all.
-              </p>
-            </div>
+          <div className="p-8 sm:p-10 lg:p-12 space-y-6">
+            <p className="text-lg sm:text-xl font-medium text-slate-900 dark:text-slate-100 leading-relaxed">
+              CareCamp is a comprehensive platform designed to streamline the planning, management,
+              and participation of medical camps. It empowers organizers to efficiently coordinate
+              events while providing participants with an intuitive interface to discover and join
+              camps that matter.
+            </p>
+            <p className="text-slate-600 dark:text-slate-300 leading-relaxed text-sm sm:text-base">
+              With real-time updates, secure registration, transparent payment tracking, and
+              actionable feedback, CareCamp ensures every medical camp runs smoothly, maximizes
+              impact, and fosters a healthier community.
+            </p>
+            <p className="font-semibold text-slate-800 dark:text-slate-200 text-sm sm:text-base border-l-4 border-[#495E57] dark:border-[#F4CE14] pl-4 py-1">
+              Our mission is to bridge the gap between healthcare providers and communities in need
+              by leveraging technology that is simple, reliable, and accessible to all.
+            </p>
 
-            <div className="mt-10">
+            <div className="pt-4">
               <Link
                 to="/available-camps"
-                className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-[#495E57] to-[#495E57]/90 text-white rounded-xl font-medium hover:shadow-lg transition-all duration-200 group focus:outline-none focus:ring-2 focus:ring-[#495E57] focus:ring-offset-2"
+                className="inline-flex items-center px-6 py-3.5 bg-[#495E57] dark:bg-[#F4CE14] text-white dark:text-slate-950 font-bold rounded-2xl shadow-md hover:opacity-90 transition-all duration-200 group text-sm cursor-pointer"
                 aria-label="Explore available medical camps"
               >
-                Explore Available Camps
+                <span>Explore Available Camps</span>
                 <ArrowRight
-                  className="ml-2 text-[#F4CE14] transition-transform duration-200 group-hover:translate-x-1"
+                  className="ml-2 group-hover:translate-x-1 transition-transform"
+                  size={16}
                   aria-hidden="true"
                 />
               </Link>
@@ -105,26 +104,31 @@ const AboutUs = () => {
           </div>
 
           {/* Features Grid */}
-          <div className="bg-gradient-to-br from-[#495E57]/5 to-[#F4CE14]/5 p-8 sm:p-10 lg:p-12 border-t md:border-t-0 md:border-l border-[#495E57]/10">
-            <h2 className="text-2xl font-semibold text-[#45474B] mb-6">Key Features</h2>
+          <div className="bg-slate-50 dark:bg-slate-950/60 p-8 sm:p-10 lg:p-12 border-t md:border-t-0 md:border-l border-slate-200/80 dark:border-slate-800">
+            <h2 className="text-xl font-bold text-slate-900 dark:text-slate-100 mb-6 flex items-center gap-2">
+              <Sparkles className="h-5 w-5 text-[#495E57] dark:text-[#F4CE14]" />
+              <span>Key Features</span>
+            </h2>
             <div
-              className="grid grid-cols-1 sm:grid-cols-2 gap-6"
+              className="grid grid-cols-1 sm:grid-cols-2 gap-4"
               role="list"
               aria-label="Key features"
             >
               {FEATURES.map((feature, index) => (
                 <div
                   key={index}
-                  className="bg-white p-5 rounded-xl border border-[#495E57]/10 hover:shadow-md transition-all duration-200 group"
+                  className="bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200/80 dark:border-slate-800 hover:shadow-md transition-all duration-200 group"
                   role="listitem"
                 >
-                  <div className="flex items-start space-x-4">
-                    <div className="bg-[#495E57]/10 p-2 rounded-lg text-[#495E57] group-hover:scale-110 transition-transform duration-200">
+                  <div className="flex items-start space-x-3.5">
+                    <div className="p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 group-hover:scale-110 transition-transform duration-200 shrink-0">
                       {feature.icon}
                     </div>
                     <div className="flex-1 min-w-0">
-                      <h3 className="font-semibold text-[#45474B] mb-2">{feature.title}</h3>
-                      <p className="text-[#45474B]/70 text-sm leading-relaxed">
+                      <h3 className="font-bold text-slate-900 dark:text-slate-100 text-sm mb-1">
+                        {feature.title}
+                      </h3>
+                      <p className="text-slate-500 dark:text-slate-400 text-xs leading-relaxed">
                         {feature.description}
                       </p>
                     </div>
@@ -142,24 +146,29 @@ const AboutUs = () => {
   const StatsSection = useMemo(
     () => (
       <div
-        className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-4"
+        className="mt-12 grid grid-cols-2 md:grid-cols-4 gap-4"
         role="region"
         aria-label="Platform statistics"
       >
-        {STATS.map((stat, index) => (
-          <div
-            key={index}
-            className="bg-white p-6 rounded-xl shadow-sm border border-[#495E57]/10 text-center hover:shadow-md transition-all duration-200"
-          >
-            <p
-              className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#495E57] to-[#F4CE14]"
-              aria-label={`${stat.number} ${stat.label}`}
+        {STATS.map((stat, index) => {
+          const IconComp = stat.icon;
+          return (
+            <div
+              key={index}
+              className="bg-white dark:bg-slate-900 p-6 rounded-2xl shadow-sm border border-slate-200/80 dark:border-slate-800 text-center hover:shadow-md transition-all duration-200"
             >
-              {stat.number}
-            </p>
-            <p className="text-[#45474B]/70 mt-2 font-medium">{stat.label}</p>
-          </div>
-        ))}
+              <div className="w-10 h-10 mx-auto mb-3 rounded-full bg-[#495E57]/10 dark:bg-[#F4CE14]/10 flex items-center justify-center text-[#495E57] dark:text-[#F4CE14]">
+                <IconComp size={20} />
+              </div>
+              <p className="text-3xl font-black text-slate-900 dark:text-slate-100 tracking-tight">
+                {stat.number}
+              </p>
+              <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 mt-1">
+                {stat.label}
+              </p>
+            </div>
+          );
+        })}
       </div>
     ),
     []
@@ -167,11 +176,11 @@ const AboutUs = () => {
 
   return (
     <div
-      className="min-h-screen bg-gradient-to-b from-[#F5F7F8] to-white py-16 px-4 sm:px-6 lg:px-8"
+      className="min-h-screen bg-[#F5F7F8] dark:bg-slate-950 py-12 sm:py-16 px-4 sm:px-6 lg:px-8 transition-colors duration-200"
       role="main"
       aria-label="About CareCamp"
     >
-      <div className="max-w-7xl mx-auto">
+      <div className="max-w-6xl mx-auto">
         {HeaderSection}
         {MainContent}
         {StatsSection}

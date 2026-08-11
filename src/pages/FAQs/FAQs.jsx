@@ -1,28 +1,17 @@
 import React, { useState, useMemo, useCallback } from 'react';
-import { ChevronDown, ChevronUp, HelpCircle, Loader2, Star } from 'lucide-react';
+import { Plus, Minus, Loader2 } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
 import useAxiosSecure from '../../hooks/useAxiosSecure';
 import { Link, useSearchParams } from 'react-router';
 
-// Constants
 const FAQS_PER_PAGE = 5;
-const CATEGORY_COLORS = {
-  General: { bg: 'bg-[#495E57]/10', text: 'text-[#495E57]' },
-  Registration: { bg: 'bg-[#495E57]/10', text: 'text-[#495E57]' },
-  Payments: { bg: 'bg-[#495E57]/10', text: 'text-[#495E57]' },
-  Organizers: { bg: 'bg-[#495E57]/10', text: 'text-[#495E57]' },
-  Eligibility: { bg: 'bg-[#495E57]/10', text: 'text-[#495E57]' },
-  Feedback: { bg: 'bg-[#495E57]/10', text: 'text-[#495E57]' },
-  default: { bg: 'bg-[#495E57]/10', text: 'text-[#495E57]' },
-};
 
 const FAQs = () => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const [openIndex, setOpenIndex] = useState(null);
+  const [openIndex, setOpenIndex] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const axiosSecure = useAxiosSecure();
 
-  // Get initial state from URL params
   const activeCategory = searchParams.get('category') || 'All';
 
   const {
@@ -36,19 +25,16 @@ const FAQs = () => {
       const res = await axiosSecure.get('/faqs');
       return res.data;
     },
-    staleTime: 10 * 60 * 1000, // 10 minutes
-    gcTime: 15 * 60 * 1000, // 15 minutes
+    staleTime: 10 * 60 * 1000,
   });
 
   const faqs = useMemo(() => faqsRes?.data || [], [faqsRes]);
 
-  // Memoized computations
   const categories = useMemo(() => ['All', ...new Set(faqs.map((faq) => faq.category))], [faqs]);
 
-  const filteredFAQs = useMemo(
-    () => (activeCategory === 'All' ? faqs : faqs.filter((faq) => faq.category === activeCategory)),
-    [faqs, activeCategory]
-  );
+  const filteredFAQs = useMemo(() => {
+    return faqs.filter((faq) => activeCategory === 'All' || faq.category === activeCategory);
+  }, [faqs, activeCategory]);
 
   const totalPages = useMemo(
     () => Math.ceil(filteredFAQs.length / FAQS_PER_PAGE),
@@ -60,7 +46,6 @@ const FAQs = () => {
     [filteredFAQs, currentPage]
   );
 
-  // Event handlers
   const toggleFAQ = useCallback(
     (index) => {
       setOpenIndex(index === openIndex ? null : index);
@@ -78,73 +63,33 @@ const FAQs = () => {
       }
       setSearchParams(newParams);
       setCurrentPage(1);
-      setOpenIndex(null);
+      setOpenIndex(0);
     },
     [searchParams, setSearchParams]
   );
 
-  const goToPage = useCallback(
-    (page) => {
-      if (page < 1 || page > totalPages) return;
-      setCurrentPage(page);
-      setOpenIndex(null);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    },
-    [totalPages]
-  );
-
-  const getPaginationRange = useCallback(() => {
-    const range = [];
-    const maxVisiblePages = 5;
-
-    if (totalPages <= maxVisiblePages) {
-      for (let i = 1; i <= totalPages; i++) {
-        range.push(i);
-      }
-    } else {
-      const leftBound = Math.max(1, currentPage - 2);
-      const rightBound = Math.min(totalPages, currentPage + 2);
-
-      if (leftBound > 1) range.push(1);
-      if (leftBound > 2) range.push('...');
-
-      for (let i = leftBound; i <= rightBound; i++) {
-        range.push(i);
-      }
-
-      if (rightBound < totalPages - 1) range.push('...');
-      if (rightBound < totalPages) range.push(totalPages);
-    }
-
-    return range;
-  }, [currentPage, totalPages]);
-
-  const getCategoryColors = useCallback((category) => {
-    return CATEGORY_COLORS[category] || CATEGORY_COLORS.default;
-  }, []);
-
-  // Loading state
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-[#F5F7F8] to-white flex items-center justify-center">
+      <div className="min-h-screen bg-[#F5F7F8] dark:bg-slate-950 flex items-center justify-center">
         <div className="text-center">
-          <Loader2 className="animate-spin h-12 w-12 text-[#495E57] mx-auto mb-4" />
-          <p className="text-[#45474B] text-lg">Loading FAQs...</p>
+          <Loader2 className="animate-spin h-10 w-10 text-[#495E57] dark:text-[#F4CE14] mx-auto mb-4" />
+          <p className="text-slate-600 dark:text-slate-400 text-sm font-medium">Loading FAQs...</p>
         </div>
       </div>
     );
   }
 
-  // Error state
   if (isError) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-[#F5F7F8] to-white flex items-center justify-center">
-        <div className="text-center p-6 bg-white rounded-xl shadow-sm border border-[#495E57]/10 max-w-md mx-4">
-          <h3 className="text-xl font-semibold text-red-600 mb-2">Failed to load FAQs</h3>
-          <p className="text-[#45474B]/70 mb-4">{error?.message || 'Please try again later'}</p>
+      <div className="min-h-screen bg-[#F5F7F8] dark:bg-slate-950 flex items-center justify-center p-4">
+        <div className="text-center p-8 bg-white dark:bg-slate-900 rounded-3xl shadow-sm border border-slate-200 dark:border-slate-800 max-w-md w-full">
+          <h3 className="text-lg font-bold text-red-600 mb-2">Failed to load FAQs</h3>
+          <p className="text-slate-500 dark:text-slate-400 text-sm mb-4">
+            {error?.message || 'Please try again later'}
+          </p>
           <button
             onClick={() => window.location.reload()}
-            className="bg-[#495E57]/10 text-[#495E57] px-4 py-2 rounded-lg font-medium hover:bg-[#495E57]/20 transition-colors focus:outline-none focus:ring-2 focus:ring-[#495E57] focus:ring-offset-2"
+            className="px-4 py-2 bg-[#495E57] text-white rounded-xl font-bold text-xs hover:opacity-90 transition cursor-pointer"
           >
             Retry
           </button>
@@ -154,201 +99,146 @@ const FAQs = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#F5F7F8] to-white py-16 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-4xl mx-auto">
-        {/* Header */}
-        <div className="text-center mb-12">
-          <div className="inline-flex items-center px-4 py-2 bg-[#495E57]/10 rounded-full text-[#495E57] font-medium mb-4">
-            <Star size={16} className="text-[#F4CE14] mr-2" fill="#F4CE14" />
-            Need Help?
+    <div className="min-h-screen bg-[#F5F7F8] dark:bg-slate-950 py-12 sm:py-20 px-4 sm:px-6 lg:px-8 transition-colors duration-200">
+      <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-start">
+        {/* Left Column Header & Category Pills */}
+        <div className="lg:col-span-5 space-y-6">
+          <div>
+            <h1 className="text-4xl sm:text-6xl font-black text-slate-900 dark:text-slate-100 tracking-tight">
+              FAQs
+            </h1>
+            <p className="text-base sm:text-lg text-slate-600 dark:text-slate-400 mt-4 leading-relaxed font-normal">
+              Everything you need to know about medical camps, registration, payments, and
+              healthcare services.
+            </p>
           </div>
-          <h2 className="text-4xl font-bold text-[#45474B] mb-4">
-            Frequently Asked{' '}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#495E57] to-[#F4CE14]">
-              Questions
-            </span>
-          </h2>
-          <p className="text-xl text-[#45474B]/70 max-w-3xl mx-auto">
-            Find answers to common questions about CareCamp
-          </p>
-        </div>
 
-        {/* Category Filter */}
-        <div
-          className="flex flex-wrap gap-3 justify-center mb-8"
-          role="tablist"
-          aria-label="FAQ categories"
-        >
-          {categories.map((category) => {
-            const isActive = activeCategory === category;
-            return (
-              <button
-                key={category}
-                onClick={() => handleCategoryChange(category)}
-                className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#495E57] focus:ring-offset-2 ${
-                  isActive
-                    ? 'bg-gradient-to-r from-[#495E57] to-[#495E57]/90 text-white shadow-sm'
-                    : 'bg-white text-[#45474B] hover:bg-[#495E57]/5 border border-[#495E57]/20'
-                }`}
-                role="tab"
-                aria-selected={isActive}
-                aria-controls="faq-content"
-              >
-                {category}
-              </button>
-            );
-          })}
-        </div>
-
-        {/* FAQ List */}
-        <div
-          id="faq-content"
-          className="bg-white rounded-2xl shadow-sm overflow-hidden border border-[#495E57]/10 divide-y divide-[#495E57]/10"
-          role="tabpanel"
-        >
-          {paginatedFAQs.length > 0 ? (
-            paginatedFAQs.map((faq, index) => {
-              const isOpen = openIndex === index;
-              const categoryColors = getCategoryColors(faq.category);
-
+          {/* Category Pill Buttons */}
+          <div className="flex flex-wrap gap-2.5 pt-2" role="tablist" aria-label="FAQ Categories">
+            {categories.map((category) => {
+              const isActive = activeCategory === category;
               return (
-                <div
-                  key={faq._id || index}
-                  className={`transition-colors duration-200 ${
-                    isOpen ? 'bg-[#495E57]/5' : 'hover:bg-[#495E57]/3'
+                <button
+                  key={category}
+                  onClick={() => handleCategoryChange(category)}
+                  className={`px-5 py-2.5 rounded-full text-xs sm:text-sm font-semibold transition-all duration-200 cursor-pointer ${
+                    isActive
+                      ? 'bg-slate-950 text-white dark:bg-white dark:text-slate-950 shadow-sm'
+                      : 'border border-slate-300 dark:border-slate-800 text-slate-800 dark:text-slate-200 hover:border-slate-400 dark:hover:border-slate-700 bg-white/60 dark:bg-slate-900/60'
                   }`}
+                  role="tab"
+                  aria-selected={isActive}
                 >
-                  <button
-                    className="w-full text-left p-6 flex justify-between items-start gap-4 focus:outline-none focus:ring-2 focus:ring-[#495E57] focus:ring-inset rounded-lg"
-                    onClick={() => toggleFAQ(index)}
-                    aria-expanded={isOpen}
-                    aria-controls={`faq-answer-${index}`}
-                  >
-                    <div className="flex items-start gap-4 flex-1">
-                      <div
-                        className={`mt-1 p-2 rounded-lg ${categoryColors.bg} ${categoryColors.text} shrink-0`}
-                        aria-hidden="true"
-                      >
-                        <HelpCircle size={18} />
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <p className="text-lg font-semibold text-[#45474B] text-left leading-relaxed">
-                          {faq.question}
-                        </p>
-                        <span
-                          className={`inline-block mt-2 text-xs font-medium ${categoryColors.bg} ${categoryColors.text} px-3 py-1 rounded-full`}
-                        >
-                          {faq.category}
-                        </span>
-                      </div>
-                    </div>
-                    <span
-                      className="text-[#495E57] shrink-0 mt-1 transition-transform duration-200"
-                      aria-hidden="true"
-                    >
-                      {isOpen ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
-                    </span>
-                  </button>
-                  {isOpen && (
-                    <div
-                      id={`faq-answer-${index}`}
-                      className="px-6 pb-6 ml-16 text-[#45474B]/70 leading-relaxed animate-fadeIn"
-                      aria-live="polite"
-                    >
-                      {faq.answer}
-                    </div>
-                  )}
-                </div>
+                  {category}
+                </button>
               );
-            })
-          ) : (
-            <div className="p-8 text-center text-[#45474B]/70">
-              No questions found in this category
+            })}
+          </div>
+        </div>
+
+        {/* Right Column Accordion & Bottom Contact Box */}
+        <div className="lg:col-span-7 space-y-10">
+          {/* Accordion Items List */}
+          <div className="divide-y divide-slate-200 dark:divide-slate-800 border-t border-slate-200 dark:border-slate-800">
+            {paginatedFAQs.length > 0 ? (
+              paginatedFAQs.map((faq, index) => {
+                const isOpen = openIndex === index;
+                return (
+                  <div key={faq._id || index} className="py-6">
+                    <button
+                      className="w-full flex justify-between items-center text-left gap-4 cursor-pointer focus:outline-none group"
+                      onClick={() => toggleFAQ(index)}
+                      aria-expanded={isOpen}
+                    >
+                      <span className="text-lg sm:text-xl font-bold text-slate-900 dark:text-slate-100 group-hover:text-[#495E57] dark:group-hover:text-[#F4CE14] transition-colors leading-snug">
+                        {faq.question}
+                      </span>
+                      <span className="text-slate-900 dark:text-slate-100 shrink-0 p-1">
+                        {isOpen ? <Minus size={22} /> : <Plus size={22} />}
+                      </span>
+                    </button>
+
+                    {isOpen && (
+                      <div className="pt-4 text-slate-600 dark:text-slate-300 text-sm sm:text-base leading-relaxed">
+                        {faq.answer}
+                      </div>
+                    )}
+                  </div>
+                );
+              })
+            ) : (
+              <div className="py-8 text-slate-400 text-sm">
+                No questions found in this category.
+              </div>
+            )}
+          </div>
+
+          {/* Pagination Controls */}
+          {totalPages > 1 && (
+            <div className="flex items-center justify-between pt-4 border-t border-slate-200 dark:border-slate-800">
+              <button
+                type="button"
+                onClick={() => {
+                  setCurrentPage((prev) => Math.max(1, prev - 1));
+                  setOpenIndex(0);
+                }}
+                disabled={currentPage === 1}
+                className="px-4 py-2 rounded-xl border border-slate-200 dark:border-slate-800 text-xs font-bold text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
+              >
+                Previous
+              </button>
+
+              <div className="flex items-center gap-1.5">
+                {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNum) => (
+                  <button
+                    key={pageNum}
+                    type="button"
+                    onClick={() => {
+                      setCurrentPage(pageNum);
+                      setOpenIndex(0);
+                    }}
+                    className={`w-8 h-8 rounded-xl text-xs font-bold flex items-center justify-center cursor-pointer transition ${
+                      currentPage === pageNum
+                        ? 'bg-slate-950 text-white dark:bg-white dark:text-slate-950 shadow-sm'
+                        : 'border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'
+                    }`}
+                  >
+                    {pageNum}
+                  </button>
+                ))}
+              </div>
+
+              <button
+                type="button"
+                onClick={() => {
+                  setCurrentPage((prev) => Math.min(totalPages, prev + 1));
+                  setOpenIndex(0);
+                }}
+                disabled={currentPage === totalPages}
+                className="px-4 py-2 rounded-xl border border-slate-200 dark:border-slate-800 text-xs font-bold text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
+              >
+                Next
+              </button>
             </div>
           )}
-        </div>
 
-        {/* Pagination */}
-        {totalPages > 1 && (
-          <div className="flex justify-center items-center gap-2 mt-8" aria-label="Pagination">
-            <button
-              onClick={() => goToPage(currentPage - 1)}
-              disabled={currentPage === 1}
-              className="px-4 py-2 rounded-lg border border-[#495E57]/20 hover:bg-[#495E57]/5 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 flex items-center gap-1 text-[#45474B] focus:outline-none focus:ring-2 focus:ring-[#495E57] focus:ring-offset-2"
-              aria-label="Go to previous page"
-            >
-              <ChevronDown className="rotate-90" size={16} aria-hidden="true" />
-              Previous
-            </button>
-
-            {getPaginationRange().map((page, index) =>
-              page === '...' ? (
-                <span key={index} className="px-2 py-1 text-[#45474B]/50" aria-hidden="true">
-                  ...
-                </span>
-              ) : (
-                <button
-                  key={index}
-                  onClick={() => goToPage(page)}
-                  className={`w-10 h-10 rounded-full flex items-center justify-center transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#495E57] focus:ring-offset-2 ${
-                    currentPage === page
-                      ? 'bg-gradient-to-r from-[#495E57] to-[#495E57]/90 text-white shadow-sm'
-                      : 'hover:bg-[#495E57]/5 text-[#45474B]'
-                  }`}
-                  aria-label={`Go to page ${page}`}
-                  aria-current={currentPage === page ? 'page' : undefined}
-                >
-                  {page}
-                </button>
-              )
-            )}
-
-            <button
-              onClick={() => goToPage(currentPage + 1)}
-              disabled={currentPage === totalPages}
-              className="px-4 py-2 rounded-lg border border-[#495E57]/20 hover:bg-[#495E57]/5 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 flex items-center gap-1 text-[#45474B] focus:outline-none focus:ring-2 focus:ring-[#495E57] focus:ring-offset-2"
-              aria-label="Go to next page"
-            >
-              Next
-              <ChevronDown className="-rotate-90" size={16} aria-hidden="true" />
-            </button>
-          </div>
-        )}
-
-        {/* Results Info */}
-        {filteredFAQs.length > 0 && (
-          <div
-            className="text-center mt-4 text-[#45474B]/60 text-sm"
-            aria-live="polite"
-            aria-atomic="true"
-          >
-            Showing {Math.min((currentPage - 1) * FAQS_PER_PAGE + 1, filteredFAQs.length)} -{' '}
-            {Math.min(currentPage * FAQS_PER_PAGE, filteredFAQs.length)} of {filteredFAQs.length}{' '}
-            questions
-            {activeCategory !== 'All' && ` in "${activeCategory}"`}
-          </div>
-        )}
-
-        {/* Contact CTA */}
-        <div className="mt-12 text-center">
-          <div className="bg-gradient-to-r from-[#495E57]/5 to-[#F4CE14]/5 rounded-2xl p-8 border border-[#495E57]/10">
-            <h3 className="text-2xl font-semibold text-[#45474B] mb-3">Still need help?</h3>
-            <p className="text-[#45474B]/70 mb-6 max-w-2xl mx-auto leading-relaxed">
-              Can't find what you're looking for? Our support team is ready to assist you with any
-              questions.
+          {/* Bottom Contact Box */}
+          <div className="bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-8 border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-4">
+            <h3 className="text-xl font-bold text-slate-900 dark:text-slate-100">
+              Still have questions?
+            </h3>
+            <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">
+              Contact our support team and we will make sure everything is clear and intuitive for
+              you!
             </p>
-            <Link
-              to="/contact"
-              className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-[#495E57] to-[#495E57]/90 text-white rounded-xl font-medium hover:shadow-lg transition-all duration-200 group focus:outline-none focus:ring-2 focus:ring-[#495E57] focus:ring-offset-2"
-              aria-label="Contact our support team"
-            >
-              Contact Support
-              <ChevronDown
-                className="ml-1 -rotate-90 group-hover:translate-x-1 transition-transform duration-200"
-                size={18}
-                aria-hidden="true"
-              />
-            </Link>
+            <div className="pt-2">
+              <Link
+                to="/contact"
+                className="inline-block px-6 py-3 bg-[#495E57] dark:bg-[#F4CE14] text-white dark:text-slate-950 font-bold rounded-2xl text-xs sm:text-sm hover:opacity-90 transition cursor-pointer shadow-sm"
+              >
+                Contact Support
+              </Link>
+            </div>
           </div>
         </div>
       </div>
