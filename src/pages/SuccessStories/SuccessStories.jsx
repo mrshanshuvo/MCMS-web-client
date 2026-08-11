@@ -1,15 +1,7 @@
 import React, { useState } from 'react';
-import { Users, CheckCircle, Activity, Star, Heart, ChevronLeft, ChevronRight } from 'lucide-react';
+import { CheckCircle, Star, ChevronLeft, ChevronRight } from 'lucide-react';
 import useAxiosSecure from '../../hooks/useAxiosSecure';
 import { useQuery } from '@tanstack/react-query';
-
-const iconMap = {
-  Users: <Users className="text-[#F4CE14]" size={18} />,
-  CheckCircle: <CheckCircle className="text-[#495E57]" size={18} />,
-  Activity: <Activity className="text-[#F4CE14]" size={18} />,
-  Star: <Star className="text-[#F4CE14] fill-[#F4CE14]" size={18} />,
-  Heart: <Heart className="text-[#495E57] fill-[#495E57]" size={18} />,
-};
 
 const STORIES_PER_PAGE = 6;
 
@@ -56,16 +48,19 @@ const SuccessStories = () => {
         </div>
 
         <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-          {paginatedStories.map((story) => (
+          {paginatedStories.map((story, idx) => (
             <div
-              key={story.id}
+              key={story._id || story.id || idx}
               className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-all duration-300 hover:-translate-y-1 border border-[#495E57]/10"
             >
               {/* Image */}
               <div className="relative h-48 w-full overflow-hidden">
                 <img
-                  src={story.image}
-                  alt={story.name}
+                  src={
+                    story.image ||
+                    'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400'
+                  }
+                  alt={story.patientName || story.name || 'Success Story'}
                   className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-black/10 to-transparent" />
@@ -75,24 +70,22 @@ const SuccessStories = () => {
               <div className="p-6">
                 <div className="flex items-start justify-between mb-3">
                   <div>
-                    <h3 className="text-xl font-bold text-[#45474B]">{story.name}</h3>
-                    <p className="text-[#495E57] font-medium">{story.role}</p>
+                    <h3 className="text-xl font-bold text-[#45474B]">
+                      {story.patientName || story.name || 'Patient Story'}
+                    </h3>
+                    <p className="text-[#495E57] font-medium">
+                      {story.campName || story.role || 'Medical Camp'}
+                    </p>
                   </div>
                   <div className="flex">
                     {[...Array(5)].map((_, i) => (
-                      <Star
-                        key={i}
-                        className={`${
-                          i < story.rating ? 'text-[#F4CE14] fill-[#F4CE14]' : 'text-[#495E57]/30'
-                        } ml-1`}
-                        size={16}
-                      />
+                      <Star key={i} className="text-[#F4CE14] fill-[#F4CE14] ml-1" size={16} />
                     ))}
                   </div>
                 </div>
 
                 <blockquote className="text-[#45474B]/80 mb-4 italic relative pl-4 border-l-2 border-[#F4CE14]">
-                  "{story.quote}"
+                  "{story.story || story.quote || 'CareCamp made a major impact on my life.'}"
                 </blockquote>
 
                 <div className="mb-4">
@@ -100,22 +93,9 @@ const SuccessStories = () => {
                     <CheckCircle className="mr-1 text-[#495E57]" size={14} />
                     Key Achievement
                   </span>
-                  <p className="font-semibold text-[#45474B]">{story.achievement}</p>
-                </div>
-
-                <div className="grid grid-cols-3 gap-3">
-                  {story.stats.map((stat, index) => (
-                    <div
-                      key={index}
-                      className="bg-[#F5F7F8] rounded-lg p-3 hover:bg-[#495E57]/10 transition-colors"
-                    >
-                      <div className="flex items-center justify-center mb-1">
-                        {iconMap[stat.icon]}
-                      </div>
-                      <p className="font-bold text-[#45474B] text-center">{stat.value}</p>
-                      <p className="text-xs text-[#45474B]/60 text-center">{stat.label}</p>
-                    </div>
-                  ))}
+                  <p className="font-semibold text-[#45474B]">
+                    {story.title || story.achievement || 'Impactful Medical Assistance'}
+                  </p>
                 </div>
               </div>
             </div>

@@ -14,12 +14,15 @@ const useAxiosSecure = () => {
   useEffect(() => {
     const reqId = axiosSecure.interceptors.request.use(
       async (config) => {
-        if (user) {
+        const localToken = localStorage.getItem('token');
+        if (localToken) {
+          config.headers.authorization = `Bearer ${localToken}`;
+        } else if (user) {
           try {
             const token = await user.getIdToken();
             config.headers.authorization = `Bearer ${token}`;
-          } catch (err) {
-            console.error('Failed to retrieve ID token:', err);
+          } catch {
+            // Token retrieval fallback
           }
         }
         return config;

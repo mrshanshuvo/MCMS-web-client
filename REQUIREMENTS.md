@@ -1,6 +1,7 @@
 # Project Requirements - Frontend (Web Client)
 
 ## 1. Global UI & Design Rules
+
 - **Color Palette**: Maximum 3 primary colors (+ optional neutral color).
 - **Theme Support**: Light & Dark mode support with proper visual contrast.
 - **Layout & Spacing**: Consistent layout, spacing, and alignment throughout the application.
@@ -10,6 +11,7 @@
 - **Content Quality**: No placeholder or dummy content allowed.
 
 ## 2. Home / Landing Page
+
 - **Navbar**:
   - Full-width background layout.
   - Minimum 4 routes when logged out (e.g., Home, Camps/Items, About, Login).
@@ -28,6 +30,7 @@
   - Contact information and social media links included.
 
 ## 3. Core Listing / Card Section
+
 - **Card Structure**:
   - Image, Title, Short Description, Meta Info (Price/Fees, Date, Rating, Location, etc.), and "View Details" button.
 - **Card Styling & Layout**:
@@ -36,6 +39,7 @@
   - Skeleton loaders while fetching asynchronous data.
 
 ## 4. Details Page
+
 - Publicly accessible page.
 - Media showcase / multiple image gallery (if applicable).
 - Structured content sections:
@@ -45,6 +49,7 @@
   - Related items / Recommended camps
 
 ## 5. Listing / Explore Page
+
 - Search bar with real-time query support.
 - Filtering using at least 2 fields (e.g., category, price/cost, rating, date, location).
 - Sorting options (e.g., price low to high, date, popularity).
@@ -52,12 +57,14 @@
 - Fully functional filter reset and state synchronization.
 
 ## 6. Authentication System (UI & Client Logic)
+
 - Login and Registration pages with clean UI.
 - **Demo Login Button**: Auto-fill credentials for quick testing (User & Admin).
 - **Social Login**: Google / Facebook authentication integration.
 - Client-side token / session management and route protection.
 
 ## 7. Dashboard (Role-Based UI)
+
 - **Role Support**: User / Admin / Manager interface views.
 - **Sidebar Navigation**:
   - User: Minimum 4 menu items (e.g., Overview, Registered Camps, Profile, Settings).
@@ -70,9 +77,11 @@
   - Editable user profile page.
 
 ## 8. Additional Pages
+
 - At least 2–3 additional complete pages (e.g., About Us, Contact, Blog, Support, Privacy / Terms).
 
 ## 9. UX & Form Handling Rules
+
 - Client-side form validation (required fields, email/password patterns, number bounds).
 - Loading states (spinners or disabled submit buttons during requests).
 - Accessible input elements with properly linked `<label>` tags and ARIA support.
@@ -86,6 +95,7 @@
   - Profile Update Form
 
 ## 10. Code Quality & Technical Rules
+
 - Clean and organized component folder structure.
 - Reusable UI components (Buttons, Inputs, Modals, Cards).
 - Custom React hooks for API data fetching and state management.

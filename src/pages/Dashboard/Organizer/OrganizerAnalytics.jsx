@@ -1,10 +1,24 @@
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import useAxiosSecure from '../../../hooks/useAxiosSecure';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+  PieChart,
+  Pie,
+  Cell,
+  Legend,
+} from 'recharts';
 import { Download, DollarSign, Users, Calendar, CheckCircle } from 'lucide-react';
 import toast from 'react-hot-toast';
 import SEO from '../../../components/Common/SEO';
+
+const COLORS = ['#0f766e', '#0284c7', '#6366f1', '#8b5cf6', '#ec4899', '#f59e0b', '#10b981'];
 
 const OrganizerAnalytics = () => {
   const axiosSecure = useAxiosSecure();
@@ -14,7 +28,7 @@ const OrganizerAnalytics = () => {
   const { data: overviewRes, isLoading } = useQuery({
     queryKey: ['organizerOverview'],
     queryFn: async () => {
-      const res = await axiosSecure.get('/analytics/organizer/overview');
+      const res = await axiosSecure.get('/analytics/overview');
       return res.data;
     },
   });
@@ -27,6 +41,11 @@ const OrganizerAnalytics = () => {
     name: `${item.year}-${String(item.month).padStart(2, '0')}`,
     revenue: item.revenue,
     transactions: item.transactions,
+  }));
+
+  const pieChartData = campsBreakdown.map((camp) => ({
+    name: camp.campName,
+    value: camp.participantCount || 0,
   }));
 
   const handleDownloadRegistrationsCSV = async () => {
@@ -43,8 +62,7 @@ const OrganizerAnalytics = () => {
       link.click();
       link.remove();
       toast.success('Registrations CSV downloaded!');
-    } catch (err) {
-      console.error(err);
+    } catch {
       toast.error('Failed to export registrations CSV');
     } finally {
       setDownloadingRegs(false);
@@ -65,8 +83,7 @@ const OrganizerAnalytics = () => {
       link.click();
       link.remove();
       toast.success('Payments CSV downloaded!');
-    } catch (err) {
-      console.error(err);
+    } catch {
       toast.error('Failed to export payments CSV');
     } finally {
       setDownloadingPayments(false);
@@ -166,26 +183,62 @@ const OrganizerAnalytics = () => {
         </div>
       </div>
 
-      {/* Revenue Chart */}
-      <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
-        <h3 className="text-lg font-bold text-gray-800 mb-4">Monthly Revenue Trends</h3>
-        {formattedChartData.length === 0 ? (
-          <div className="p-8 text-center text-sm text-gray-400">
-            No completed payment transactions yet to render chart.
-          </div>
-        ) : (
-          <div className="h-72 w-full">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={formattedChartData}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
-                <XAxis dataKey="name" stroke="#888" fontSize={12} />
-                <YAxis stroke="#888" fontSize={12} />
-                <Tooltip />
-                <Bar dataKey="revenue" fill="#0f766e" radius={[6, 6, 0, 0]} />
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
-        )}
+      {/* Charts Grid: Bar Chart & Pie Chart */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* Revenue Bar Chart */}
+        <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
+          <h3 className="text-lg font-bold text-gray-800 mb-4">Monthly Revenue Trends</h3>
+          {formattedChartData.length === 0 ? (
+            <div className="p-8 text-center text-sm text-gray-400">
+              No completed payment transactions yet to render chart.
+            </div>
+          ) : (
+            <div className="h-72 w-full">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={formattedChartData}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
+                  <XAxis dataKey="name" stroke="#888" fontSize={12} />
+                  <YAxis stroke="#888" fontSize={12} />
+                  <Tooltip />
+                  <Bar dataKey="revenue" fill="#0f766e" radius={[6, 6, 0, 0]} />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+          )}
+        </div>
+
+        {/* Camp Participant Pie Chart */}
+        <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
+          <h3 className="text-lg font-bold text-gray-800 mb-4">Participant Distribution by Camp</h3>
+          {pieChartData.length === 0 ? (
+            <div className="p-8 text-center text-sm text-gray-400">
+              No camp breakdown data available.
+            </div>
+          ) : (
+            <div className="h-72 w-full">
+              <ResponsiveContainer width="100%" height="100%">
+                <PieChart>
+                  <Pie
+                    data={pieChartData}
+                    cx="50%"
+                    cy="50%"
+                    outerRadius={80}
+                    dataKey="value"
+                    label={({ name, percent }) =>
+                      `${name.substring(0, 12)}... (${(percent * 100).toFixed(0)}%)`
+                    }
+                  >
+                    {pieChartData.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                    ))}
+                  </Pie>
+                  <Tooltip />
+                  <Legend />
+                </PieChart>
+              </ResponsiveContainer>
+            </div>
+          )}
+        </div>
       </div>
 
       {/* Camps Breakdown Table */}

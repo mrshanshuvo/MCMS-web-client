@@ -193,7 +193,7 @@ const Blog = () => {
                         </span>
                         <div className="flex items-center text-xs text-[#45474B]/60">
                           <Clock className="w-3 h-3 mr-1" />
-                          {post.readingTime}
+                          {post.readTime || post.readingTime || '5 min read'}
                         </div>
                       </div>
                       <h3 className="text-xl font-bold mb-3 text-[#45474B] line-clamp-2 group-hover:text-[#495E57] transition-colors">
@@ -203,7 +203,7 @@ const Blog = () => {
                         <User className="w-4 h-4 mr-1" />
                         {post.author} •
                         <CalendarDays className="w-4 h-4 ml-2 mr-1" />
-                        {post.date}
+                        {post.createdAt || post.date}
                       </div>
                       <p className="text-[#45474B]/70 mb-5 line-clamp-3 leading-relaxed">
                         {post.summary}

@@ -1,6 +1,7 @@
 import React, { useRef, useState, useMemo, useCallback } from 'react';
 import emailjs from '@emailjs/browser';
 import toast, { Toaster } from 'react-hot-toast';
+import useAxios from '../../hooks/useAxios';
 import {
   Mail,
   Phone,
@@ -73,6 +74,7 @@ const SOCIAL_LINKS = [
 const ContactUs = () => {
   const form = useRef();
   const [loading, setLoading] = useState(false);
+  const axiosInstance = useAxios();
 
   // Environment variables with fallbacks
   const SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE_ID;
@@ -124,15 +126,22 @@ const ContactUs = () => {
       }
 
       try {
-        await emailjs.sendForm(SERVICE_ID, TEMPLATE_ID, form.current, PUBLIC_KEY);
+        if (SERVICE_ID && TEMPLATE_ID && PUBLIC_KEY) {
+          await emailjs.sendForm(SERVICE_ID, TEMPLATE_ID, form.current, PUBLIC_KEY);
+        }
+        await axiosInstance.post('/contact', {
+          name,
+          email,
+          subject: 'Website Contact Form',
+          message,
+        });
 
         toast.success(
           "Message sent successfully! We'll get back to you soon.",
           toastStyles.success
         );
         form.current.reset();
-      } catch (error) {
-        console.error('EmailJS Error:', error);
+      } catch {
         toast.error(
           'Failed to send message. Please try again or contact us directly.',
           toastStyles.error
@@ -141,7 +150,7 @@ const ContactUs = () => {
         setLoading(false);
       }
     },
-    [SERVICE_ID, TEMPLATE_ID, PUBLIC_KEY, toastStyles]
+    [SERVICE_ID, TEMPLATE_ID, PUBLIC_KEY, toastStyles, axiosInstance]
   );
 
   // Memoized components
