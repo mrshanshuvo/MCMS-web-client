@@ -4,6 +4,7 @@ import { Loader2, Trash2 } from 'lucide-react';
 import Swal from 'sweetalert2';
 import toast from 'react-hot-toast';
 import useAxiosSecure from '../../../hooks/useAxiosSecure';
+import { Button } from '@/components/ui/button';
 
 const ManageRegistrations = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -108,8 +109,10 @@ const ManageRegistrations = () => {
                 <td className="hidden lg:table-cell">{reg.paymentStatus}</td>
                 <td className="hidden lg:table-cell">{reg.confirmationStatus}</td>
                 <td>
-                  <button
-                    className="btn btn-sm btn-error px-2 sm:px-3"
+                  <Button
+                    variant="destructive"
+                    size="sm"
+                    className="px-2 sm:px-3 flex items-center gap-1"
                     onClick={() => handleCancel(reg._id)}
                     disabled={
                       reg.paymentStatus === 'Paid' && reg.confirmationStatus === 'Confirmed'
@@ -122,7 +125,7 @@ const ManageRegistrations = () => {
                   >
                     <Trash2 size={16} />
                     <span className="hidden sm:inline ml-1">Cancel</span>
-                  </button>
+                  </Button>
                 </td>
               </tr>
             ))}
@@ -136,19 +139,20 @@ const ManageRegistrations = () => {
           Showing {registrations.length} of {pagination.totalCount || 0} registrations
         </p>
         <div className="flex items-center gap-2">
-          <button className="btn btn-sm" onClick={handlePrev} disabled={currentPage === 1}>
+          <Button variant="outline" size="sm" onClick={handlePrev} disabled={currentPage === 1}>
             Previous
-          </button>
+          </Button>
           <span>
             Page {currentPage} of {pagination.totalPages || 1}
           </span>
-          <button
-            className="btn btn-sm"
+          <Button
+            variant="outline"
+            size="sm"
             onClick={handleNext}
             disabled={currentPage === pagination.totalPages}
           >
             Next
-          </button>
+          </Button>
         </div>
       </div>
     </div>
