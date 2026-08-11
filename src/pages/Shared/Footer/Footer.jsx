@@ -1,17 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router';
-import {
-  MapPin,
-  Mail,
-  Phone,
-  Clock,
-  Heart,
-  Star,
-  Facebook,
-  Twitter,
-  Linkedin,
-  Youtube,
-} from 'lucide-react';
+import { MapPin, Mail, Phone, Clock, Facebook, Twitter, Linkedin, Youtube } from 'lucide-react';
 import CareCampLogo from '../CareCampLogo/CareCampLogo';
 
 const SOCIAL_LINKS = [
@@ -117,7 +106,7 @@ const Footer = () => {
 
   return (
     <footer
-      className="bg-gradient-to-br from-[#495E57] via-[#495E57]/90 to-[#45474B] text-white mt-16"
+      className="bg-[#495E57] dark:bg-slate-900 text-white border-t border-slate-200/10 dark:border-slate-800"
       aria-label="Site footer"
     >
       <div className="container mx-auto px-4 py-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-10">
@@ -214,46 +203,14 @@ const Footer = () => {
       </div>
 
       {/* Bottom Footer */}
-      <div className="bg-gradient-to-r from-[#45474B] via-[#495E57]/80 to-[#45474B] py-6 border-t border-white/10">
-        <div className="container mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-4">
-          <div
-            className="text-white/80 text-sm flex items-center"
+      <div className="bg-[#3d4f49] dark:bg-slate-950 py-2 border-t border-white/10 dark:border-slate-800 text-center">
+        <div className="container mx-auto px-4 flex justify-center items-center">
+          <p
+            className="text-white/80 text-sm text-center"
             aria-label={`Copyright ${currentYear} CareCamp. All rights reserved.`}
           >
-            <Star className="mr-2 text-[#F4CE14]" size={14} fill="#F4CE14" aria-hidden="true" />©{' '}
-            {currentYear} CareCamp. All rights reserved.
-          </div>
-
-          <div className="flex flex-wrap items-center gap-x-4 gap-y-2" aria-label="Legal links">
-            <NavLink
-              to="/pPolicy"
-              className={({ isActive }) =>
-                `${linkBase} ${isActive ? 'text-[#F4CE14] font-medium' : ''}`
-              }
-              aria-label="Read our privacy policy"
-            >
-              Privacy Policy
-            </NavLink>
-
-            <NavLink
-              to="/terms"
-              className={({ isActive }) =>
-                `${linkBase} ${isActive ? 'text-[#F4CE14] font-medium' : ''}`
-              }
-              aria-label="View terms of service"
-            >
-              Terms of Service
-            </NavLink>
-
-            <div
-              className="flex items-center text-sm text-white/80"
-              aria-label="Made with love in Bangladesh"
-            >
-              Made with{' '}
-              <Heart className="mx-2 text-red-400 fill-current" size={14} aria-hidden="true" /> in
-              Bangladesh
-            </div>
-          </div>
+            © {currentYear} CareCamp. All rights reserved.
+          </p>
         </div>
       </div>
     </footer>

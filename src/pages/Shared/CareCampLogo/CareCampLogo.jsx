@@ -3,9 +3,9 @@ import { NavLink } from 'react-router';
 const CareCampLogo = ({ variant = 'dark', showSubtitle = true, size = 'md' }) => {
   const isLight = variant === 'light';
 
-  const textMain = isLight ? 'text-white' : 'text-[#45474B]';
+  const textMain = isLight ? 'text-white' : 'text-[#45474B] dark:text-slate-100';
   const textHover = isLight ? 'group-hover:text-[#F4CE14]' : 'group-hover:text-[#495E57]';
-  const subText = isLight ? 'text-white/75' : 'text-[#495E57]/70';
+  const subText = isLight ? 'text-white/75' : 'text-[#495E57]/70 dark:text-slate-400';
 
   const boxBg = isLight ? 'bg-[#F5F7F8]' : 'bg-[#F5F7F8]';
   const boxBorder = isLight ? 'border-[#F4CE14]/40' : 'border-[#495E57]/15';

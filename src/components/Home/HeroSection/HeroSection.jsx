@@ -39,19 +39,19 @@ const HeroSection = () => {
   );
 
   return (
-    <section className="relative bg-[#F5F7F8] overflow-hidden">
+    <section className="relative bg-[#F5F7F8] dark:bg-slate-950 text-[#45474B] dark:text-slate-100 overflow-hidden transition-colors duration-200">
       {/* Background grid */}
       <div
-        className="absolute inset-0 opacity-100"
+        className="absolute inset-0 opacity-100 dark:opacity-20"
         style={{ backgroundImage: `url("data:image/svg+xml,${gridPattern}")` }}
         aria-hidden="true"
       />
       <div
-        className="absolute top-0 right-0 w-[600px] h-[600px] bg-gradient-to-bl from-[#F4CE14]/10 to-transparent rounded-full blur-3xl"
+        className="absolute top-0 right-0 w-[600px] h-[600px] bg-gradient-to-bl from-[#F4CE14]/10 dark:from-[#F4CE14]/5 to-transparent rounded-full blur-3xl"
         aria-hidden="true"
       />
       <div
-        className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-[#495E57]/5 rounded-full blur-3xl"
+        className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-[#495E57]/5 dark:bg-[#495E57]/10 rounded-full blur-3xl"
         aria-hidden="true"
       />
 
@@ -64,7 +64,7 @@ const HeroSection = () => {
             }`}
           >
             {/* Mini Badge */}
-            <div className="inline-flex items-center gap-3 px-4 py-2 bg-[#495E57] rounded-full">
+            <div className="inline-flex items-center gap-3 px-4 py-2 bg-[#495E57] dark:bg-slate-900 rounded-full border border-transparent dark:border-slate-800">
               <div className="flex -space-x-2" aria-hidden="true">
                 {['👨', '👩', '👨'].map((icon, i) => (
                   <div
@@ -75,14 +75,14 @@ const HeroSection = () => {
                   </div>
                 ))}
               </div>
-              <span className="text-sm font-medium text-[#F5F7F8]">
+              <span className="text-sm font-medium text-[#F5F7F8] dark:text-slate-200">
                 10,000+ professionals trust us
               </span>
             </div>
 
             {/* Heading */}
             <div className="space-y-6">
-              <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold leading-[1.05] text-[#45474B]">
+              <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold leading-[1.05] text-[#45474B] dark:text-slate-100">
                 Empowering Healthcare
                 <span className="block relative mt-2">
                   <span
@@ -90,10 +90,10 @@ const HeroSection = () => {
                     aria-hidden="true"
                   />
                 </span>
-                <span className="block mt-3 text-[#495E57]">Communities</span>
+                <span className="block mt-3 text-[#495E57] dark:text-[#F4CE14]">Communities</span>
               </h1>
 
-              <p className="text-xl lg:text-2xl text-[#45474B]/70 leading-relaxed max-w-2xl">
+              <p className="text-xl lg:text-2xl text-[#45474B]/70 dark:text-slate-300 leading-relaxed max-w-2xl">
                 Connect, organize, and deliver healthcare where it matters most. CareCamp brings
                 medical camps to life with seamless coordination and real impact.
               </p>
@@ -119,12 +119,16 @@ const HeroSection = () => {
                 },
               ].map((item, i) => (
                 <div key={i} className="flex items-start gap-3">
-                  <div className="w-10 h-10 rounded-lg bg-[#495E57] flex items-center justify-center flex-shrink-0">
+                  <div className="w-10 h-10 rounded-lg bg-[#495E57] dark:bg-slate-900 flex items-center justify-center flex-shrink-0 border border-transparent dark:border-slate-800">
                     {item.icon}
                   </div>
                   <div>
-                    <div className="font-semibold text-[#45474B]">{item.title}</div>
-                    <div className="text-sm text-[#45474B]/60">{item.subtitle}</div>
+                    <div className="font-semibold text-[#45474B] dark:text-slate-100">
+                      {item.title}
+                    </div>
+                    <div className="text-sm text-[#45474B]/60 dark:text-slate-400">
+                      {item.subtitle}
+                    </div>
                   </div>
                 </div>
               ))}
@@ -132,10 +136,9 @@ const HeroSection = () => {
 
             {/* Buttons */}
             <div className="flex flex-col sm:flex-row gap-6 pt-4">
-              {/* Link styled as button (no nested button) */}
               <Link
                 to="/available-camps"
-                className="group relative bg-[#495E57] text-[#F5F7F8] font-semibold px-8 py-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center overflow-hidden"
+                className="group relative bg-[#495E57] dark:bg-[#495E57] text-[#F5F7F8] dark:text-white font-semibold px-8 py-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center overflow-hidden"
               >
                 <span className="relative z-10 flex items-center">
                   Explore Medical Camps
@@ -151,10 +154,10 @@ const HeroSection = () => {
               <button
                 type="button"
                 onClick={() => setShowDemo(true)}
-                className="relative group flex items-center justify-center px-8 py-4 border-2 border-[#495E57] text-[#495E57] rounded-xl hover:bg-[#495E57] hover:text-[#F5F7F8] transition-all duration-300 overflow-hidden cursor-pointer"
+                className="relative group flex items-center justify-center px-8 py-4 border-2 border-[#495E57] dark:border-slate-700 text-[#495E57] dark:text-slate-200 rounded-xl hover:bg-[#495E57] dark:hover:bg-slate-800 hover:text-[#F5F7F8] dark:hover:text-white transition-all duration-300 overflow-hidden cursor-pointer"
               >
                 <span
-                  className="absolute inset-0 rounded-xl bg-[#495E57]/10 group-hover:animate-ping"
+                  className="absolute inset-0 rounded-xl bg-[#495E57]/10 dark:bg-slate-800/50 group-hover:animate-ping"
                   aria-hidden="true"
                 />
                 <Play
@@ -172,7 +175,7 @@ const HeroSection = () => {
       {/* Demo Modal */}
       {showDemo && (
         <div
-          className="fixed inset-0 z-50 bg-black/70 flex items-center justify-center p-4"
+          className="fixed inset-0 z-50 bg-black/70 backdrop-blur-xs flex items-center justify-center p-4"
           onMouseDown={(e) => {
             if (e.target === e.currentTarget) setShowDemo(false);
           }}
@@ -180,7 +183,7 @@ const HeroSection = () => {
           aria-modal="true"
           aria-label="CareCamp demo video"
         >
-          <div className="bg-white rounded-2xl w-full max-w-3xl shadow-2xl relative overflow-hidden animate-[fadeIn_0.2s_ease-out]">
+          <div className="bg-white dark:bg-slate-900 rounded-2xl w-full max-w-3xl shadow-2xl relative overflow-hidden animate-[fadeIn_0.2s_ease-out] border border-transparent dark:border-slate-800">
             <button
               type="button"
               onClick={() => setShowDemo(false)}

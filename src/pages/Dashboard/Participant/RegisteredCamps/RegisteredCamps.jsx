@@ -63,11 +63,12 @@ const RegisteredCamps = () => {
 
   // Submit feedback mutation
   const { mutate: submitFeedback, isPending: isSubmittingFeedback } = useMutation({
-    mutationFn: async ({ campId, rating, feedback }) => {
+    mutationFn: async ({ campId, rating, feedback, images }) => {
       const res = await axiosSecure.post('/feedback', {
         campId,
         rating,
         feedback,
+        images: images || [],
         name: user.displayName,
         photoURL: user.photoURL,
       });

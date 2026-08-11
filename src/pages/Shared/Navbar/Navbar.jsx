@@ -18,7 +18,6 @@ import {
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
   const mobileMenuRef = useRef(null);
   const menuBtnRef = useRef(null);
 
@@ -61,12 +60,6 @@ const Navbar = () => {
     }
   };
 
-  useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 15);
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
   // Close mobile menu on outside click or escape
   useEffect(() => {
     const handlePointerDown = (e) => {
@@ -93,13 +86,7 @@ const Navbar = () => {
   }, []);
 
   return (
-    <nav
-      className={`sticky top-0 z-50 transition-all duration-200 border-b ${
-        scrolled
-          ? 'bg-white/95 dark:bg-slate-900/95 backdrop-blur-md shadow-sm border-slate-200/80 dark:border-slate-800/80'
-          : 'bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm border-slate-200/40 dark:border-slate-800/40'
-      }`}
-    >
+    <nav className="fixed top-0 left-0 right-0 w-full z-50 border-b bg-white dark:bg-slate-900 backdrop-blur-md border-slate-200 dark:border-slate-800 text-slate-800 dark:text-slate-100 shadow-xs transition-colors duration-200">
       <div className="container mx-auto px-4 py-2 flex items-center justify-between h-14">
         {/* Logo */}
         <CareCampLogo />
@@ -113,7 +100,7 @@ const Navbar = () => {
               className={({ isActive }) =>
                 `px-3 py-1.5 text-sm font-medium rounded-full transition-all duration-150 ${
                   isActive
-                    ? 'text-[#495E57] bg-[#495E57]/10 dark:text-emerald-400 dark:bg-emerald-500/10 font-semibold'
+                    ? 'text-[#495E57] bg-[#495E57]/10 dark:text-[#F4CE14] dark:bg-[#F4CE14]/15 font-semibold'
                     : 'text-slate-600 hover:text-[#495E57] hover:bg-slate-100 dark:text-slate-300 dark:hover:text-white dark:hover:bg-slate-800'
                 }`
               }
@@ -140,7 +127,7 @@ const Navbar = () => {
               <NotificationBell />
 
               {/* Shadcn Dropdown Menu for User Profile */}
-              <DropdownMenu>
+              <DropdownMenu modal={false}>
                 <DropdownMenuTrigger className="focus:outline-none rounded-full ring-offset-2 focus:ring-2 focus:ring-[#495E57]">
                   <Avatar className="h-8 w-8 border border-slate-200 dark:border-slate-700 shadow-sm transition-transform hover:scale-105">
                     <AvatarImage src={user.photoURL} alt={user.displayName || 'User'} />
@@ -150,42 +137,54 @@ const Navbar = () => {
                   </Avatar>
                 </DropdownMenuTrigger>
 
-                <DropdownMenuContent align="end" className="w-56 p-1.5 shadow-lg rounded-xl border">
-                  <DropdownMenuLabel className="font-normal px-2 py-2">
-                    <div className="flex flex-col space-y-1">
-                      <p className="text-sm font-semibold text-slate-800 dark:text-slate-100 truncate">
-                        {user.displayName || 'Participant'}
-                      </p>
-                      <p className="text-xs text-slate-500 dark:text-slate-400 truncate">
-                        {user.email}
-                      </p>
+                <DropdownMenuContent
+                  align="end"
+                  className="w-64 p-2 shadow-xl rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 animate-in fade-in-80 zoom-in-95"
+                >
+                  <DropdownMenuLabel className="font-normal p-2.5 bg-slate-50 dark:bg-slate-800/60 rounded-xl mb-1 border border-slate-100 dark:border-slate-700/50">
+                    <div className="flex items-center gap-3">
+                      <Avatar className="h-9 w-9 border border-slate-200 dark:border-slate-700">
+                        <AvatarImage src={user.photoURL} alt={user.displayName || 'User'} />
+                        <AvatarFallback className="bg-[#495E57] text-white text-xs font-semibold">
+                          {userInitials}
+                        </AvatarFallback>
+                      </Avatar>
+                      <div className="flex flex-col space-y-0.5 min-w-0">
+                        <p className="text-sm font-semibold text-slate-900 dark:text-slate-100 truncate">
+                          {user.displayName || 'Participant'}
+                        </p>
+                        <p className="text-xs text-slate-500 dark:text-slate-400 truncate">
+                          {user.email}
+                        </p>
+                      </div>
                     </div>
                   </DropdownMenuLabel>
-                  <DropdownMenuSeparator />
+
+                  <DropdownMenuSeparator className="my-1 bg-slate-200 dark:bg-slate-800" />
 
                   <DropdownMenuItem
                     onClick={() => navigate('/dashboard')}
-                    className="cursor-pointer rounded-lg px-2 py-2 text-sm text-slate-700 dark:text-slate-200 focus:bg-slate-100 dark:focus:bg-slate-800"
+                    className="cursor-pointer rounded-xl px-3 py-2.5 text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 focus:bg-slate-100 dark:focus:bg-slate-800 transition-colors"
                   >
-                    <LayoutDashboard className="mr-2 h-4 w-4 text-[#495E57]" />
+                    <LayoutDashboard className="mr-2.5 h-4 w-4 text-[#495E57] dark:text-[#F4CE14]" />
                     <span>Dashboard</span>
                   </DropdownMenuItem>
 
                   <DropdownMenuItem
                     onClick={() => navigate('/dashboard/profile')}
-                    className="cursor-pointer rounded-lg px-2 py-2 text-sm text-slate-700 dark:text-slate-200 focus:bg-slate-100 dark:focus:bg-slate-800"
+                    className="cursor-pointer rounded-xl px-3 py-2.5 text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 focus:bg-slate-100 dark:focus:bg-slate-800 transition-colors"
                   >
-                    <UserCheck className="mr-2 h-4 w-4 text-[#495E57]" />
+                    <UserCheck className="mr-2.5 h-4 w-4 text-[#495E57] dark:text-[#F4CE14]" />
                     <span>My Profile</span>
                   </DropdownMenuItem>
 
-                  <DropdownMenuSeparator />
+                  <DropdownMenuSeparator className="my-1 bg-slate-200 dark:bg-slate-800" />
 
                   <DropdownMenuItem
                     onClick={handleLogout}
-                    className="cursor-pointer rounded-lg px-2 py-2 text-sm text-red-600 focus:bg-red-50 dark:focus:bg-red-950/50"
+                    className="cursor-pointer rounded-xl px-3 py-2.5 text-sm font-medium text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/40 focus:bg-red-50 dark:focus:bg-red-950/40 transition-colors"
                   >
-                    <LogOut className="mr-2 h-4 w-4 text-red-500" />
+                    <LogOut className="mr-2.5 h-4 w-4 text-red-500" />
                     <span>Logout</span>
                   </DropdownMenuItem>
                 </DropdownMenuContent>
@@ -220,7 +219,7 @@ const Navbar = () => {
               className={({ isActive }) =>
                 `block px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                   isActive
-                    ? 'bg-[#495E57]/10 text-[#495E57] dark:text-emerald-400 font-semibold'
+                    ? 'bg-[#495E57]/10 text-[#495E57] dark:bg-[#F4CE14]/15 dark:text-[#F4CE14] font-semibold'
                     : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'
                 }`
               }

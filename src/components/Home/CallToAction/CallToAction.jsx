@@ -1,68 +1,45 @@
 import React from 'react';
-import { ArrowRight, Play, CheckCircle, Star } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import { Link } from 'react-router';
+import familyDoctorImg from '../../../assets/young-family-with-protective-face-masks-talking-doctor-medical-clinic.jpg';
 
 const CallToAction = () => {
   return (
-    <section className="bg-gradient-to-br from-[#495E57] via-[#495E57]/90 to-[#45474B] text-white">
-      <div className="max-w-5xl mx-auto text-center px-4 py-16">
-        <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm text-white px-4 py-2 rounded-full text-sm font-medium mb-4">
-          <Star size={16} className="text-[#F4CE14]" fill="#F4CE14" aria-hidden="true" />
-          Join CareCamp Today
+    <section className="py-12 sm:py-16 bg-[#F5F7F8] dark:bg-slate-950 px-4 sm:px-6 transition-colors duration-200">
+      <div className="max-w-6xl mx-auto rounded-3xl sm:rounded-[36px] overflow-hidden relative shadow-2xl min-h-[380px] sm:min-h-[440px] flex items-center">
+        {/* Full Image Background */}
+        <img
+          src={familyDoctorImg}
+          alt="Family consulting with doctor at medical clinic"
+          className="absolute inset-0 w-full h-full object-cover object-center"
+        />
+
+        {/* Subtle Dark Gradient Overlay for Crisp Text Readability */}
+        <div className="absolute inset-0 bg-gradient-to-r from-black/40 via-black/20 to-transparent" />
+
+        {/* Foreground Content */}
+        <div className="relative z-10 p-8 sm:p-14 lg:p-16 max-w-2xl space-y-8">
+          <h2 className="text-3xl sm:text-5xl lg:text-6xl text-white tracking-tight leading-[1.15] drop-shadow-md">
+            <span className="font-black">A healthier </span>
+            <span className="font-light opacity-90">chapter</span>
+            <br />
+            <span className="font-black">starts at </span>
+            <span className="text-[#F4CE14] font-black">CareCamp.</span>
+          </h2>
+
+          <div>
+            <Link
+              to="/available-camps"
+              className="inline-flex items-center gap-3 bg-white text-slate-800 font-bold text-sm sm:text-base px-6 sm:px-7 py-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 group/btn w-fit cursor-pointer"
+              aria-label="Discover Medical Camps"
+            >
+              <span>Discover Camps</span>
+              <div className="w-8 h-8 rounded-full bg-[#495E57] text-[#F4CE14] flex items-center justify-center group-hover/btn:translate-x-1 transition-transform duration-300">
+                <ArrowRight size={16} />
+              </div>
+            </Link>
+          </div>
         </div>
-
-        <h2 className="text-3xl sm:text-4xl font-bold mb-6 leading-tight">
-          Ready to Transform
-          <span className="block bg-gradient-to-r from-[#F4CE14] to-[#F4CE14]/80 bg-clip-text text-transparent">
-            Healthcare Delivery?
-          </span>
-        </h2>
-
-        <p className="text-lg text-white/80 mb-8 max-w-2xl mx-auto leading-relaxed">
-          Join our network making healthcare accessible to underserved communities.
-        </p>
-
-        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-          {/* Use Link for navigation */}
-          <Link
-            to="/available-camps"
-            className="bg-gradient-to-r from-[#F4CE14] to-[#F4CE14]/90 text-[#45474B] font-bold px-8 py-3 rounded-lg shadow-lg hover:shadow-xl hover:shadow-[#F4CE14]/25 transition-all duration-300 flex items-center justify-center group"
-            aria-label="Start your journey by exploring available medical camps"
-          >
-            Start Your Journey
-            <ArrowRight
-              className="ml-2 group-hover:translate-x-1 transition-transform duration-300"
-              size={20}
-              aria-hidden="true"
-            />
-          </Link>
-
-          {/* Keep button if it opens a modal */}
-          <button
-            type="button"
-            className="flex items-center justify-center px-8 py-3 border-2 border-white/30 rounded-lg backdrop-blur-sm hover:bg-white/10 hover:border-white/50 transition-all duration-300 font-medium group"
-            aria-label="Schedule a demo"
-            onClick={() => {
-              // open demo modal here
-            }}
-          >
-            <Play
-              className="mr-2 group-hover:scale-110 transition-transform duration-300"
-              size={18}
-              aria-hidden="true"
-            />
-            Schedule Demo
-          </button>
-        </div>
-
-        <ul className="mt-8 flex flex-wrap justify-center gap-6 text-sm text-white/60">
-          {['No setup fees', 'Free training', '24/7 support'].map((item) => (
-            <li key={item} className="flex items-center">
-              <CheckCircle size={16} className="text-[#F4CE14] mr-2" aria-hidden="true" />
-              {item}
-            </li>
-          ))}
-        </ul>
       </div>
     </section>
   );

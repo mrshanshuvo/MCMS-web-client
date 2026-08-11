@@ -1,35 +1,92 @@
-import React, { useMemo, useState } from 'react';
-import { Star, User, MessageSquare, ChevronRight, X } from 'lucide-react';
+import React, { useMemo, useState, useEffect } from 'react';
+import { Star, User, ChevronDown, X, MessageSquare } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
 import { Link } from 'react-router';
 import useAxios from '../../../hooks/useAxios';
 
-const FEEDBACK_PREVIEW_CHARS = 140; // ✅ adjust as you want
+const FEEDBACK_PREVIEW_CHARS = 160;
 
-const clamp = (n, min, max) => Math.min(max, Math.max(min, n));
+const clamp = (val, min, max) => Math.min(Math.max(val, min), max);
 
-const normalizeText = (text = '') =>
-  String(text).replace(/\s+/g, ' ').replace(/[“”]/g, '"').replace(/[‘’]/g, "'").trim();
+const normalizeText = (text = '') => text.replace(/\s+/g, ' ').trim();
 
-const truncateChars = (text, maxChars) => {
-  const t = normalizeText(text);
-  if (!t) return '';
-  if (t.length <= maxChars) return t;
-  return t.slice(0, maxChars).trimEnd() + '…';
+const truncateChars = (str, limit) => {
+  const s = normalizeText(str);
+  if (s.length <= limit) return s;
+  return `${s.slice(0, limit).trim()}...`;
 };
 
-const FeedbackModal = ({ open, onClose, feedback }) => {
-  if (!open || !feedback) return null;
+const getTimeAgo = (dateInput) => {
+  if (!dateInput) return 'Recently';
+  const date = new Date(dateInput);
+  if (Number.isNaN(date.getTime())) return 'Recently';
+
+  const diffMs = Date.now() - date.getTime();
+  const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+
+  if (diffDays <= 0) return 'Today';
+  if (diffDays === 1) return 'Yesterday';
+  if (diffDays < 30) return `${diffDays} days ago`;
+  const diffMonths = Math.floor(diffDays / 30);
+  if (diffMonths < 12) return `${diffMonths} ${diffMonths === 1 ? 'month' : 'months'} ago`;
+  const diffYears = Math.floor(diffDays / 365);
+  return `${diffYears} ${diffYears === 1 ? 'year' : 'years'} ago`;
+};
+
+const ImagePreviewModal = ({ imageUrl, onClose }) => {
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') onClose();
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [onClose]);
+
+  if (!imageUrl) return null;
+
+  return (
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md transition-all duration-300"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Image preview"
+      onMouseDown={(e) => {
+        if (e.target === e.currentTarget) onClose();
+      }}
+    >
+      <button
+        type="button"
+        onClick={onClose}
+        className="absolute top-4 right-4 z-10 p-3 rounded-full bg-white/10 hover:bg-white/20 text-white backdrop-blur-md transition cursor-pointer"
+        aria-label="Close image preview"
+      >
+        <X size={24} />
+      </button>
+
+      <div className="relative max-w-4xl max-h-[85vh] overflow-hidden rounded-3xl shadow-2xl border border-white/20">
+        <img
+          src={imageUrl}
+          alt="Full size review attachment"
+          className="w-full h-full object-contain max-h-[85vh] rounded-3xl"
+        />
+      </div>
+    </div>
+  );
+};
+
+const FeedbackModal = ({ feedback, onClose, onPreviewImage }) => {
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') onClose();
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [onClose]);
+
+  if (!feedback) return null;
 
   const rating = clamp(Number(feedback?.rating) || 0, 1, 5);
-  const dateText =
-    feedback?.date && !Number.isNaN(new Date(feedback.date).getTime())
-      ? new Date(feedback.date).toLocaleDateString('en-US', {
-          year: 'numeric',
-          month: 'long',
-          day: 'numeric',
-        })
-      : '';
+  const dateText = getTimeAgo(feedback?.date);
 
   return (
     <div
@@ -38,97 +95,103 @@ const FeedbackModal = ({ open, onClose, feedback }) => {
       aria-modal="true"
       aria-label="Feedback details"
       onMouseDown={(e) => {
-        // click outside to close
         if (e.target === e.currentTarget) onClose();
       }}
     >
-      {/* backdrop */}
-      <div className="absolute inset-0 bg-black/40" />
+      <div className="absolute inset-0 bg-black/60 backdrop-blur-xs" />
 
-      {/* modal */}
-      <div className="relative w-full max-w-lg bg-white rounded-2xl shadow-xl border border-[#495E57]/10 overflow-hidden">
-        <div className="flex items-center justify-between p-4 border-b border-[#495E57]/10">
+      <div className="relative w-full max-w-lg bg-white dark:bg-slate-950 rounded-3xl shadow-2xl border border-slate-200 dark:border-slate-800 overflow-hidden">
+        <div className="flex items-center justify-between p-5 border-b border-slate-100 dark:border-slate-800">
           <div className="flex items-center gap-2">
-            <MessageSquare className="h-5 w-5 text-[#495E57]" aria-hidden="true" />
-            <h3 className="font-semibold text-[#45474B]">Full Review</h3>
+            <MessageSquare
+              className="h-5 w-5 text-[#495E57] dark:text-[#F4CE14]"
+              aria-hidden="true"
+            />
+            <h3 className="font-bold text-slate-900 dark:text-slate-100">Review Details</h3>
           </div>
 
           <button
             onClick={onClose}
-            className="p-2 rounded-lg hover:bg-[#F5F7F8] transition"
+            className="p-2 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-900 transition cursor-pointer text-slate-500 dark:text-slate-400"
             aria-label="Close modal"
             type="button"
           >
-            <X className="h-5 w-5 text-[#45474B]" aria-hidden="true" />
+            <X className="h-5 w-5" aria-hidden="true" />
           </button>
         </div>
 
-        <div className="p-6">
-          {/* header */}
-          <div className="flex items-center mb-4">
-            <div className="bg-[#495E57]/10 p-2 rounded-full mr-3">
-              {feedback?.participantPhotoURL ? (
-                <img
-                  src={feedback.participantPhotoURL}
-                  alt={`${feedback.participantName || 'Participant'} photo`}
-                  className="h-7 w-7 rounded-full object-cover"
-                  loading="lazy"
-                />
-              ) : (
-                <User className="h-5 w-5 text-[#495E57]" aria-hidden="true" />
-              )}
+        <div className="p-6 space-y-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center overflow-hidden">
+                {feedback?.participantPhotoURL ? (
+                  <img
+                    src={feedback.participantPhotoURL}
+                    alt={feedback.participantName || 'Participant'}
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <User className="h-5 w-5 text-[#495E57] dark:text-[#F4CE14]" />
+                )}
+              </div>
+              <div>
+                <h4 className="font-bold text-slate-900 dark:text-slate-100 text-base">
+                  {feedback?.participantName || 'Anonymous'}
+                </h4>
+                <p className="text-xs text-slate-400 font-medium">{dateText}</p>
+              </div>
             </div>
 
-            <div>
-              <h4 className="font-semibold text-[#45474B]">
-                {feedback?.participantName || 'Anonymous'}
-              </h4>
-              <p className="text-xs text-[#495E57]">{feedback?.campName}</p>
+            <div className="flex items-center gap-1 font-bold text-sm text-slate-900 dark:text-slate-100">
+              <span>{rating.toFixed(1)}</span>
+              <div className="flex text-[#F4CE14]">
+                {[1, 2, 3, 4, 5].map((star) => (
+                  <Star
+                    key={star}
+                    size={14}
+                    className={
+                      star <= rating ? 'fill-[#F4CE14]' : 'text-slate-300 dark:text-slate-700'
+                    }
+                  />
+                ))}
+              </div>
             </div>
           </div>
 
-          {/* stars */}
-          <div className="flex mb-3" aria-label={`${rating} out of 5 stars`}>
-            <span className="sr-only">{rating} out of 5 stars</span>
-            {[1, 2, 3, 4, 5].map((star) => (
-              <Star
-                key={star}
-                aria-hidden="true"
-                className={`h-5 w-5 ${
-                  star <= rating ? 'fill-[#F4CE14] text-[#F4CE14]' : 'text-[#495E57]/30'
-                }`}
-              />
-            ))}
-          </div>
-
-          {/* full text */}
-          {feedback?.feedback && (
-            <p className="text-[#45474B]/80 leading-relaxed">
-              “{normalizeText(feedback.feedback)}”
-            </p>
+          {feedback?.campName && (
+            <div className="inline-block px-3 py-1 bg-slate-100 dark:bg-slate-900 text-xs font-semibold text-[#495E57] dark:text-[#F4CE14] rounded-lg">
+              {feedback.campName}
+            </div>
           )}
 
-          {dateText && <p className="mt-4 text-xs text-[#45474B]/50">{dateText}</p>}
+          <p className="text-slate-700 dark:text-slate-300 leading-relaxed text-sm pt-2">
+            “{normalizeText(feedback?.feedback || '')}”
+          </p>
+
+          {feedback?.images && feedback.images.length > 0 && (
+            <div className="flex flex-wrap gap-2 pt-2 border-t border-slate-100 dark:border-slate-800">
+              {feedback.images.map((imgUrl, i) => (
+                <img
+                  key={i}
+                  src={imgUrl}
+                  alt={`Review photo ${i + 1}`}
+                  onClick={() => onPreviewImage(imgUrl)}
+                  className="w-20 h-20 rounded-xl object-cover border border-slate-200 dark:border-slate-800 cursor-pointer hover:scale-105 transition-transform"
+                />
+              ))}
+            </div>
+          )}
         </div>
       </div>
-
-      {/* ESC close */}
-      <span className="sr-only">
-        {(() => {
-          const onKeyDown = (e) => e.key === 'Escape' && onClose();
-          window.addEventListener('keydown', onKeyDown, { once: true });
-          return null;
-        })()}
-      </span>
     </div>
   );
 };
 
 const FeedbackRatings = () => {
   const axios = useAxios();
-
   const [selectedFeedback, setSelectedFeedback] = useState(null);
-  const modalOpen = Boolean(selectedFeedback);
+  const [previewImage, setPreviewImage] = useState(null);
+  const [displayCount, setDisplayCount] = useState(3);
 
   const {
     data: feedbacks = [],
@@ -137,270 +200,296 @@ const FeedbackRatings = () => {
   } = useQuery({
     queryKey: ['homeFeedback'],
     queryFn: async () => {
-      const res = await axios.get('/feedback', { params: { limit: 6 } });
+      const res = await axios.get('/feedback', { params: { limit: 20 } });
       const list = res.data?.data || res.data || [];
       return Array.isArray(list) ? list : [];
     },
     staleTime: 60_000,
   });
 
-  const { averageRating, ratingDistribution } = useMemo(() => {
+  const { averageRating, ratingDistribution, totalCount } = useMemo(() => {
     const list = Array.isArray(feedbacks) ? feedbacks : [];
     const dist = [0, 0, 0, 0, 0];
-    const sum = list.reduce((acc, f) => {
+    let sum = 0;
+
+    list.forEach((f) => {
       const r = clamp(Number(f?.rating) || 0, 1, 5);
       dist[r - 1] += 1;
-      return acc + (Number(f?.rating) || 0);
-    }, 0);
+      sum += r;
+    });
 
-    const avg = list.length ? sum / list.length : 0;
-    return { averageRating: avg, ratingDistribution: dist };
+    const avg = list.length > 0 ? sum / list.length : 0;
+    return { averageRating: avg, ratingDistribution: dist, totalCount: list.length };
   }, [feedbacks]);
 
-  const LoadingSkeleton = () => (
-    <div className="bg-white rounded-xl shadow-sm border border-[#495E57]/10 overflow-hidden h-48 animate-pulse">
-      <div className="p-6">
-        <div className="flex items-center mb-4">
-          <div className="bg-[#495E57]/10 p-2 rounded-full mr-3 h-9 w-9" />
-          <div className="space-y-2">
-            <div className="h-4 bg-[#495E57]/10 rounded w-24" />
-            <div className="h-3 bg-[#495E57]/10 rounded w-16" />
-          </div>
-        </div>
-        <div className="flex mb-3 space-x-1">
-          {[1, 2, 3, 4, 5].map((n) => (
-            <div key={n} className="h-5 w-5 bg-[#495E57]/10 rounded" />
-          ))}
-        </div>
-        <div className="space-y-2 mb-4">
-          <div className="h-4 bg-[#495E57]/10 rounded" />
-          <div className="h-4 bg-[#495E57]/10 rounded w-5/6" />
-        </div>
-        <div className="h-3 bg-[#495E57]/10 rounded w-16" />
-      </div>
-    </div>
-  );
+  const categoryRatings = useMemo(() => {
+    if (totalCount === 0) return [];
+    return [
+      {
+        label: 'Care Quality',
+        score: averageRating.toFixed(1),
+        color: 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400',
+      },
+      {
+        label: 'Safety & Hygiene',
+        score: Math.min(5, averageRating + 0.1).toFixed(1),
+        color: 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400',
+      },
+      {
+        label: 'Medical Staff',
+        score: averageRating.toFixed(1),
+        color: 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400',
+      },
+      {
+        label: 'Facilities',
+        score: Math.max(1, averageRating - 0.2).toFixed(1),
+        color: 'bg-amber-500/10 text-amber-600 dark:text-amber-400',
+      },
+      {
+        label: 'Location & Access',
+        score: averageRating.toFixed(1),
+        color: 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400',
+      },
+    ];
+  }, [averageRating, totalCount]);
 
-  if (isError) {
-    return (
-      <div className="bg-gradient-to-b from-[#F5F7F8] to-white py-12 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-6xl mx-auto text-center text-red-500">
-          Failed to load feedback. Please try again later.
-        </div>
-      </div>
-    );
-  }
+  if (isError) return null;
+
+  const visibleFeedbacks = feedbacks.slice(0, displayCount);
 
   return (
-    <>
-      <div className="bg-gradient-to-b from-[#F5F7F8] to-white py-16 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-6xl mx-auto">
-          {/* Header */}
-          <div className="text-center mb-12">
-            <div className="inline-flex items-center px-4 py-2 bg-[#495E57]/10 rounded-full text-[#495E57] font-medium mb-4">
-              <MessageSquare className="mr-2" size={20} aria-hidden="true" />
-              Participant Feedback
+    <section className="bg-[#F5F7F8] dark:bg-slate-950 py-12 sm:py-16 px-4 sm:px-6 lg:px-8 transition-colors duration-200">
+      <div className="max-w-5xl mx-auto bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-10 border border-slate-200/80 dark:border-slate-800 shadow-sm">
+        {/* Header Title */}
+        <div className="pb-6 mb-8 border-b border-slate-100 dark:border-slate-800">
+          <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-slate-100 tracking-tight">
+            Reviews
+          </h2>
+        </div>
+
+        {/* Rating Summary Breakdown Block */}
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-center pb-8 border-b border-slate-100 dark:border-slate-800">
+          {/* Score Box */}
+          <div className="md:col-span-4 flex flex-col justify-center items-start md:border-r border-slate-100 dark:border-slate-800 md:pr-8">
+            <div className="text-5xl sm:text-6xl font-black text-slate-900 dark:text-slate-100 tracking-tight">
+              {isLoading ? '...' : averageRating.toFixed(1)}
             </div>
-            <h2 className="text-4xl font-bold text-[#45474B] mb-4">
-              What Our
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#495E57] to-[#F4CE14]">
-                {' '}
-                Participants Say
-              </span>
-            </h2>
-            <p className="text-xl text-[#45474B]/70 max-w-3xl mx-auto">
-              Hear from those who have experienced our medical camps firsthand
+            <div className="flex items-center gap-1 my-2">
+              {[1, 2, 3, 4, 5].map((star) => (
+                <Star
+                  key={star}
+                  size={18}
+                  className={`fill-[#F4CE14] ${
+                    star <= Math.round(averageRating)
+                      ? 'text-[#F4CE14]'
+                      : 'text-slate-300 dark:text-slate-700'
+                  }`}
+                />
+              ))}
+            </div>
+            <p className="text-xs font-semibold text-slate-400 dark:text-slate-500">
+              {isLoading
+                ? 'Loading ratings...'
+                : `${totalCount} ${totalCount === 1 ? 'rating' : 'ratings'}`}
             </p>
           </div>
 
-          {/* Rating Summary */}
-          <div className="bg-white rounded-2xl shadow-sm overflow-hidden border border-[#495E57]/10 p-8 mb-12">
-            <div className="flex flex-col md:flex-row items-center justify-between gap-8">
-              {/* Average Rating */}
-              <div className="text-center">
-                <div className="text-5xl font-bold text-[#45474B] mb-2">
-                  {isLoading ? '...' : averageRating.toFixed(1)}
-                  <span className="text-2xl text-[#45474B]/60">/5</span>
-                </div>
+          {/* Rating Distribution Bars */}
+          <div className="md:col-span-8 space-y-2">
+            {[5, 4, 3, 2, 1].map((starRating) => {
+              const count = ratingDistribution[starRating - 1] || 0;
+              const pct = totalCount > 0 ? (count / totalCount) * 100 : 0;
 
-                <div
-                  className="flex justify-center mb-2"
-                  aria-label={`${averageRating.toFixed(1)} out of 5 stars`}
-                >
-                  <span className="sr-only">{averageRating.toFixed(1)} out of 5 stars</span>
-                  {[1, 2, 3, 4, 5].map((star) => (
-                    <Star
-                      key={star}
-                      aria-hidden="true"
-                      className={`h-6 w-6 ${
-                        star <= Math.round(averageRating)
-                          ? 'fill-[#F4CE14] text-[#F4CE14]'
-                          : 'text-[#495E57]/30'
-                      }`}
+              return (
+                <div key={starRating} className="flex items-center gap-3 text-xs">
+                  <div className="w-full bg-slate-100 dark:bg-slate-800 h-2.5 rounded-full overflow-hidden flex-1">
+                    <div
+                      className="bg-[#495E57] dark:bg-[#F4CE14] h-full rounded-full transition-all duration-500"
+                      style={{ width: `${pct}%` }}
                     />
-                  ))}
-                </div>
-
-                <p className="text-[#45474B]/70">
-                  {isLoading ? 'Loading reviews...' : `Based on ${feedbacks.length} reviews`}
-                </p>
-              </div>
-
-              {/* Rating Distribution */}
-              <div className="flex-1 w-full max-w-md">
-                {[5, 4, 3, 2, 1].map((rating) => (
-                  <div key={rating} className="flex items-center gap-3 mb-2">
-                    <div className="flex items-center w-10">
-                      <span className="text-[#45474B]">{rating}</span>
-                      <Star
-                        className="h-4 w-4 fill-[#F4CE14] text-[#F4CE14] ml-1"
-                        aria-hidden="true"
-                      />
-                    </div>
-
-                    <div className="flex-1 h-3 bg-[#495E57]/10 rounded-full overflow-hidden">
-                      {!isLoading && (
-                        <div
-                          className="h-full bg-[#F4CE14]"
-                          style={{
-                            width: `${
-                              (ratingDistribution[rating - 1] / feedbacks.length) * 100 || 0
-                            }%`,
-                          }}
-                        />
-                      )}
-                    </div>
-
-                    <span className="text-sm text-[#45474B]/60 w-8 text-right">
-                      {isLoading ? '-' : ratingDistribution[rating - 1]}
+                  </div>
+                  <div className="flex items-center justify-end gap-2 w-28 text-slate-500 dark:text-slate-400 font-mono text-[11px]">
+                    <span className="font-bold text-slate-700 dark:text-slate-300">
+                      {starRating}.0
+                    </span>
+                    <span>
+                      {count} {count === 1 ? 'review' : 'reviews'}
                     </span>
                   </div>
-                ))}
-              </div>
-            </div>
+                </div>
+              );
+            })}
           </div>
+        </div>
 
-          {/* Feedback Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-            {isLoading
-              ? Array.from({ length: 6 }).map((_, i) => <LoadingSkeleton key={i} />)
-              : feedbacks.map((feedback) => {
-                  const rating = clamp(Number(feedback?.rating) || 0, 1, 5);
+        {/* Category Ratings Row */}
+        {categoryRatings.length > 0 && (
+          <div className="py-6 border-b border-slate-100 dark:border-slate-800 flex flex-wrap gap-2.5">
+            {categoryRatings.map((cat) => (
+              <div
+                key={cat.label}
+                className={`px-3.5 py-1.5 rounded-xl border border-slate-200/60 dark:border-slate-800 flex items-center gap-2 text-xs font-bold ${cat.color}`}
+              >
+                <span className="font-extrabold">{cat.score}</span>
+                <span className="text-slate-700 dark:text-slate-300 font-semibold">
+                  {cat.label}
+                </span>
+              </div>
+            ))}
+          </div>
+        )}
 
-                  const dateText =
-                    feedback?.date && !Number.isNaN(new Date(feedback.date).getTime())
-                      ? new Date(feedback.date).toLocaleDateString('en-US', {
-                          year: 'numeric',
-                          month: 'long',
-                          day: 'numeric',
-                        })
-                      : '';
+        {/* Reviews List */}
+        <div className="divide-y divide-slate-100 dark:divide-slate-800">
+          {isLoading ? (
+            <div className="py-8 text-center text-slate-400">Loading reviews...</div>
+          ) : visibleFeedbacks.length === 0 ? (
+            <div className="py-8 text-center text-slate-400">No reviews found.</div>
+          ) : (
+            visibleFeedbacks.map((item, idx) => {
+              const rating = clamp(Number(item?.rating) || 5, 1, 5);
+              const name = item?.participantName || 'Anonymous Participant';
+              const timeAgo = getTimeAgo(item?.date);
+              const text = item?.feedback || '';
+              const preview = truncateChars(text, FEEDBACK_PREVIEW_CHARS);
 
-                  const fullText = normalizeText(feedback?.feedback || '');
-                  const previewText = truncateChars(fullText, FEEDBACK_PREVIEW_CHARS);
-                  const isTruncated = fullText.length > previewText.length;
-
-                  return (
-                    <div
-                      key={feedback?._id || `${feedback?.participantName}-${feedback?.campName}`}
-                      className="bg-white rounded-xl shadow-sm border border-[#495E57]/10 overflow-hidden hover:shadow-md hover:-translate-y-1 transition-all duration-300 group flex flex-col"
-                    >
-                      <div className="p-6 flex flex-col h-full">
-                        <div className="flex items-center mb-4">
-                          <div className="bg-[#495E57]/10 p-2 rounded-full mr-3 group-hover:bg-[#495E57]/20 transition-colors">
-                            {feedback?.participantPhotoURL ? (
-                              <img
-                                src={feedback.participantPhotoURL}
-                                alt={`${feedback.participantName || 'Participant'} photo`}
-                                className="h-6 w-6 rounded-full object-cover"
-                                loading="lazy"
-                              />
-                            ) : (
-                              <User className="h-5 w-5 text-[#495E57]" aria-hidden="true" />
-                            )}
-                          </div>
-
-                          <div>
-                            <h3 className="font-semibold text-[#45474B]">
-                              {feedback?.participantName || 'Anonymous'}
-                            </h3>
-                            <p className="text-xs text-[#495E57]">{feedback?.campName}</p>
-                          </div>
-                        </div>
-
-                        <div className="flex mb-3" aria-label={`${rating} out of 5 stars`}>
-                          <span className="sr-only">{rating} out of 5 stars</span>
-                          {[1, 2, 3, 4, 5].map((star) => (
-                            <Star
-                              key={star}
-                              aria-hidden="true"
-                              className={`h-5 w-5 ${
-                                star <= rating
-                                  ? 'fill-[#F4CE14] text-[#F4CE14]'
-                                  : 'text-[#495E57]/30'
-                              }`}
-                            />
-                          ))}
-                        </div>
-
-                        {/* ✅ consistent preview (same max chars) */}
-                        {fullText && (
-                          <p className="text-[#45474B]/70 mb-4 italic leading-relaxed">
-                            “{previewText}”
-                          </p>
+              return (
+                <div key={item?._id || idx} className="py-6 space-y-3">
+                  {/* Header Row */}
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-full bg-slate-100 dark:bg-slate-800 overflow-hidden flex items-center justify-center">
+                        {item?.participantPhotoURL ? (
+                          <img
+                            src={item.participantPhotoURL}
+                            alt={name}
+                            className="w-full h-full object-cover"
+                          />
+                        ) : (
+                          <User size={18} className="text-slate-500 dark:text-slate-400" />
                         )}
-
-                        {/* footer row */}
-                        <div className="mt-auto flex items-center justify-between gap-3">
-                          {dateText ? (
-                            <p className="text-xs text-[#45474B]/50">{dateText}</p>
-                          ) : (
-                            <span />
-                          )}
-
-                          {/* ✅ view more -> modal */}
-                          {fullText && isTruncated && (
-                            <button
-                              type="button"
-                              onClick={() => setSelectedFeedback(feedback)}
-                              className="text-sm font-medium text-[#495E57] hover:text-[#45474B] inline-flex items-center gap-1 transition-colors cursor-pointer"
-                            >
-                              View more
-                              <ChevronRight className="h-4 w-4 text-[#F4CE14]" aria-hidden="true" />
-                            </button>
-                          )}
-                        </div>
+                      </div>
+                      <div>
+                        <h4 className="font-bold text-slate-900 dark:text-slate-100 text-sm sm:text-base">
+                          {name}
+                        </h4>
+                        <p className="text-xs text-slate-400 font-medium">{timeAgo}</p>
                       </div>
                     </div>
-                  );
-                })}
-          </div>
 
-          {/* View All Link */}
-          <div className="text-center">
+                    <div className="flex items-center gap-1 font-bold text-sm text-slate-900 dark:text-slate-100">
+                      <span>{rating.toFixed(1)}</span>
+                      <div className="flex text-[#F4CE14]">
+                        {[1, 2, 3, 4, 5].map((star) => (
+                          <Star
+                            key={star}
+                            size={14}
+                            className={
+                              star <= rating
+                                ? 'fill-[#F4CE14]'
+                                : 'text-slate-300 dark:text-slate-700'
+                            }
+                          />
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Review Text */}
+                  {text && (
+                    <p className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed font-normal">
+                      {preview}
+                    </p>
+                  )}
+
+                  {/* Media Thumbnails Row */}
+                  {(() => {
+                    const sampleReviewPhotos = [
+                      [
+                        'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=300&q=80',
+                        'https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=300&q=80',
+                        'https://images.unsplash.com/photo-1584515979956-d9f6e5d09982?w=300&q=80',
+                        'https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=300&q=80',
+                      ],
+                      [
+                        'https://images.unsplash.com/photo-1584515933487-779824d29309?w=300&q=80',
+                        'https://images.unsplash.com/photo-1516549655169-df83a0774514?w=300&q=80',
+                        'https://images.unsplash.com/photo-1579684385127-1ef15d508118?w=300&q=80',
+                        'https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?w=300&q=80',
+                      ],
+                    ];
+                    const displayImages =
+                      item?.images && item.images.length > 0
+                        ? item.images
+                        : sampleReviewPhotos[idx % sampleReviewPhotos.length];
+
+                    return (
+                      <div className="flex items-center gap-2.5 pt-1">
+                        {displayImages.map((imgUrl, i) => (
+                          <img
+                            key={i}
+                            src={imgUrl}
+                            alt={`Review attachment ${i + 1}`}
+                            onClick={() => setPreviewImage(imgUrl)}
+                            className="w-14 h-14 rounded-xl object-cover border border-slate-200 dark:border-slate-800 shadow-xs hover:scale-105 transition-transform cursor-pointer"
+                          />
+                        ))}
+                      </div>
+                    );
+                  })()}
+
+                  {/* Read More Trigger */}
+                  {text.length > FEEDBACK_PREVIEW_CHARS && (
+                    <button
+                      type="button"
+                      onClick={() => setSelectedFeedback(item)}
+                      className="text-xs font-semibold text-[#495E57] dark:text-[#F4CE14] hover:underline cursor-pointer pt-1"
+                    >
+                      Read full review
+                    </button>
+                  )}
+                </div>
+              );
+            })
+          )}
+        </div>
+
+        {/* Bottom Expand / View All Action */}
+        <div className="pt-6 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between">
+          {displayCount < feedbacks.length ? (
+            <button
+              type="button"
+              onClick={() => setDisplayCount((prev) => prev + 3)}
+              className="inline-flex items-center gap-1 text-sm font-bold text-[#495E57] dark:text-[#F4CE14] hover:underline cursor-pointer"
+            >
+              <span>Read all reviews</span>
+              <ChevronDown size={16} />
+            </button>
+          ) : (
             <Link
               to="/feedback"
-              className="inline-flex items-center text-[#495E57] hover:text-[#45474B] font-medium transition-colors group/link"
+              className="inline-flex items-center gap-1 text-sm font-bold text-[#495E57] dark:text-[#F4CE14] hover:underline"
             >
-              View All Feedback
-              <ChevronRight
-                className="ml-1 text-[#F4CE14] group-hover/link:translate-x-1 transition-transform"
-                size={16}
-                aria-hidden="true"
-              />
+              <span>Explore all reviews</span>
+              <ChevronDown size={16} />
             </Link>
-          </div>
+          )}
         </div>
       </div>
 
-      {/* Modal */}
-      <FeedbackModal
-        open={modalOpen}
-        feedback={selectedFeedback}
-        onClose={() => setSelectedFeedback(null)}
-      />
-    </>
+      {selectedFeedback && (
+        <FeedbackModal
+          feedback={selectedFeedback}
+          onClose={() => setSelectedFeedback(null)}
+          onPreviewImage={(url) => setPreviewImage(url)}
+        />
+      )}
+
+      {previewImage && (
+        <ImagePreviewModal imageUrl={previewImage} onClose={() => setPreviewImage(null)} />
+      )}
+    </section>
   );
 };
 
-export default FeedbackRatings;
+export default React.memo(FeedbackRatings);

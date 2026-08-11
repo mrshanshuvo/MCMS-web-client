@@ -1,5 +1,7 @@
 @import 'tailwindcss';
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -23,7 +25,7 @@
     --ring: 160 12% 33%;
     --radius: 0.75rem;
 
-    --bg-main: #f8fafc;
+    --bg-main: #ffffff;
     --bg-card: #ffffff;
     --text-primary: #0f172a;
     --text-secondary: #475569;
@@ -63,44 +65,51 @@ body {
   background-color: var(--bg-main);
   color: var(--text-primary);
   transition:
-    background-color 0.3s ease,
-    color 0.3s ease;
+    background-color 0.2s ease,
+    color 0.2s ease;
 }
 
-/* Global Dark Mode Overrides */
-.dark body {
-  background-color: #0f172a !important;
-  color: #f8fafc !important;
+/* Modern Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 9px;
+  height: 9px;
 }
 
-.dark .bg-white {
-  background-color: #1e293b !important;
-  color: #f8fafc !important;
+::-webkit-scrollbar-track {
+  background: transparent;
 }
 
-.dark .bg-gray-50,
-.dark .bg-gray-50-50,
-.dark .bg-slate-100 {
-  background-color: #0f172a !important;
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 9999px;
+  border: 2px solid transparent;
+  background-clip: content-box;
 }
 
-.dark .text-gray-900,
-.dark .text-gray-800,
-.dark .text-slate-800 {
-  color: #f8fafc !important;
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+  border: 2px solid transparent;
+  background-clip: content-box;
 }
 
-.dark .text-gray-600,
-.dark .text-gray-500 {
-  color: #94a3b8 !important;
+.dark ::-webkit-scrollbar-thumb {
+  background: #334155;
+  border: 2px solid transparent;
+  background-clip: content-box;
 }
 
-.dark .border-gray-100,
-.dark .border-gray-200 {
-  border-color: #334155 !important;
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: #475569;
+  border: 2px solid transparent;
+  background-clip: content-box;
 }
 
-.dark nav {
-  background-color: #1e293b !important;
-  border-color: #334155 !important;
+/* Firefox scrollbar support */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #cbd5e1 transparent;
+}
+
+.dark * {
+  scrollbar-color: #334155 transparent;
 }

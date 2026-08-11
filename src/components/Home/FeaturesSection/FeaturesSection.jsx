@@ -1,5 +1,7 @@
 import React from 'react';
-import { MapPin, Shield, Users, ChevronRight, Star } from 'lucide-react';
+import { MapPin, Shield, Users, ChevronRight, ShieldCheck } from 'lucide-react';
+import { Card, CardContent } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
 
 const features = [
   {
@@ -24,25 +26,20 @@ const features = [
 
 const FeaturesSection = () => {
   return (
-    <section className="py-16 bg-gradient-to-b from-[#F5F7F8] to-white">
+    <section className="bg-[#F5F7F8] dark:bg-slate-900 border-y border-slate-200/60 dark:border-slate-800/80 py-16 sm:py-20 transition-colors duration-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
-        <div className="text-center mb-12">
-          <div className="inline-flex items-center gap-2 bg-[#495E57]/10 text-[#495E57] px-4 py-2 rounded-full text-sm font-medium mb-4">
-            <Star size={16} className="text-[#F4CE14]" fill="#F4CE14" aria-hidden="true" />
-            Why Choose CareCamp
+        {/* Top Minimalist Header Line */}
+        <div className="flex items-end justify-between pb-3 mb-10 border-b border-slate-300/70 dark:border-slate-800">
+          <div className="inline-flex items-center gap-2.5 px-5 py-2 bg-white/90 dark:bg-slate-950/90 backdrop-blur-md rounded-2xl shadow-sm border border-slate-200/80 dark:border-slate-800 transition-colors">
+            <ShieldCheck size={20} className="text-[#F4CE14]" aria-hidden="true" />
+            <span className="text-xl sm:text-2xl font-bold tracking-tight text-[#495E57] dark:text-slate-100">
+              Why Choose CareCamp
+            </span>
           </div>
 
-          <h2 className="text-3xl sm:text-4xl font-bold text-[#45474B] mb-4">
-            Powerful Features for
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#495E57] to-[#F4CE14]">
-              {' '}
-              Modern Healthcare
-            </span>
-          </h2>
-
-          <p className="text-lg text-[#45474B]/70 max-w-3xl mx-auto">
-            Built with cutting-edge technology to streamline medical camp operations.
-          </p>
+          <div className="hidden sm:block text-xs sm:text-sm text-slate-500 dark:text-slate-400 font-medium">
+            Cutting-Edge Medical Operations
+          </div>
         </div>
 
         <ul className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -50,28 +47,36 @@ const FeaturesSection = () => {
             const Icon = feature.icon;
 
             return (
-              <li
-                key={feature.title}
-                className="bg-white p-6 rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1 border border-[#495E57]/10 group"
-              >
-                <div className="inline-flex p-3 rounded-xl bg-gradient-to-r from-[#495E57] to-[#495E57]/80 mb-4 group-hover:scale-110 transition-transform duration-300">
-                  <Icon className="text-white" size={24} aria-hidden="true" />
-                </div>
+              <li key={feature.title}>
+                <Card className="bg-white dark:bg-slate-950 p-6 rounded-3xl shadow-sm hover:shadow-2xl transition-all duration-300 hover:-translate-y-1.5 border border-slate-200/80 dark:border-slate-800 group h-full flex flex-col justify-between">
+                  <CardContent className="p-0 space-y-4">
+                    <div className="inline-flex p-3 rounded-2xl bg-[#495E57] dark:bg-slate-800 text-[#F4CE14] mb-2 group-hover:scale-110 transition-transform duration-300 shadow-sm">
+                      <Icon size={24} aria-hidden="true" />
+                    </div>
 
-                <h3 className="text-xl font-bold text-[#45474B] mb-3">{feature.title}</h3>
+                    <h3 className="text-xl font-bold text-slate-800 dark:text-slate-100 leading-snug">
+                      {feature.title}
+                    </h3>
 
-                <p className="text-[#45474B]/70 mb-4 leading-relaxed">{feature.description}</p>
+                    <p className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+                      {feature.description}
+                    </p>
+                  </CardContent>
 
-                <div className="flex items-center justify-between">
-                  <span className="text-xs font-semibold text-[#45474B] bg-[#F4CE14]/20 px-3 py-1 rounded-full">
-                    {feature.stats}
-                  </span>
-                  <ChevronRight
-                    className="text-[#495E57] group-hover:translate-x-1 transition-transform duration-300"
-                    size={18}
-                    aria-hidden="true"
-                  />
-                </div>
+                  <div className="flex items-center justify-between pt-6 border-t border-slate-100 dark:border-slate-800/80 mt-4">
+                    <Badge
+                      variant="outline"
+                      className="text-xs font-semibold text-[#495E57] dark:text-[#F4CE14] bg-[#F4CE14]/15 dark:bg-[#F4CE14]/10 border-transparent rounded-full px-3 py-1"
+                    >
+                      {feature.stats}
+                    </Badge>
+                    <ChevronRight
+                      className="text-[#495E57] dark:text-[#F4CE14] group-hover:translate-x-1 transition-transform duration-300"
+                      size={18}
+                      aria-hidden="true"
+                    />
+                  </div>
+                </Card>
               </li>
             );
           })}
